@@ -7,5 +7,4 @@ package main
 const (
 	CheckExit = 1 << iota
 	ShowOutput
-	Background
 )

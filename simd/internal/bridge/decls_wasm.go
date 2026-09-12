@@ -22,6 +22,14 @@ func LoadFloat64x2Part(s []float64) (Float64x2, int)
 
 func BroadcastFloat64x2(x float64) Float64x2
 
+type Int8x16 archsimd.Int8x16
+
+func LoadInt8x16(s []int8) Int8x16
+
+func LoadInt8x16Part(s []int8) (Int8x16, int)
+
+func BroadcastInt8x16(x int8) Int8x16
+
 type Int16x8 archsimd.Int16x8
 
 func LoadInt16x8(s []int16) Int16x8
@@ -46,18 +54,18 @@ func LoadInt64x2Part(s []int64) (Int64x2, int)
 
 func BroadcastInt64x2(x int64) Int64x2
 
-type Int8x16 archsimd.Int8x16
-
-func LoadInt8x16(s []int8) Int8x16
-
-func LoadInt8x16Part(s []int8) (Int8x16, int)
-
-func BroadcastInt8x16(x int8) Int8x16
-
+type Mask8x16 archsimd.Mask8x16
 type Mask16x8 archsimd.Mask16x8
 type Mask32x4 archsimd.Mask32x4
 type Mask64x2 archsimd.Mask64x2
-type Mask8x16 archsimd.Mask8x16
+type Uint8x16 archsimd.Uint8x16
+
+func LoadUint8x16(s []uint8) Uint8x16
+
+func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
+
 type Uint16x8 archsimd.Uint16x8
 
 func LoadUint16x8(s []uint16) Uint16x8
@@ -81,14 +89,6 @@ func LoadUint64x2(s []uint64) Uint64x2
 func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
 func BroadcastUint64x2(x uint64) Uint64x2
-
-type Uint8x16 archsimd.Uint8x16
-
-func LoadUint8x16(s []uint8) Uint8x16
-
-func LoadUint8x16Part(s []uint8) (Uint8x16, int)
-
-func BroadcastUint8x16(x uint8) Uint8x16
 
 func (x Int8x16) Abs() Int8x16
 
@@ -612,6 +612,8 @@ func (x Float32x4) Neg() Float32x4
 
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
 
+func (x Float32x4) ReduceSum() float32
+
 func (x Float32x4) Sqrt() Float32x4
 
 func (x Float32x4) Store(s []float32)
@@ -657,6 +659,8 @@ func (x Float64x2) MulAdd(y Float64x2, z Float64x2) Float64x2
 func (x Float64x2) Neg() Float64x2
 
 func (x Float64x2) NotEqual(y Float64x2) Mask64x2
+
+func (x Float64x2) ReduceSum() float64
 
 func (x Float64x2) Sqrt() Float64x2
 

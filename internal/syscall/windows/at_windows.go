@@ -28,6 +28,10 @@ const (
 
 func Openat(dirfd syscall.Handle, name string, flag uint64, perm uint32) (_ syscall.Handle, e1 error)
 
+// TestOpenatFallback should only be used for testing purposes.
+// When set, Openat simulates a system that does not support OBJ_DONT_REPARSE.
+var TestOpenatFallback bool
+
 func Mkdirat(dirfd syscall.Handle, name string, mode uint32) error
 
 func Deleteat(dirfd syscall.Handle, name string, options uint32) error

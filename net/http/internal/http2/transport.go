@@ -26,7 +26,7 @@ import (
 // for concurrent use by multiple goroutines.
 type Transport struct {
 	t1       TransportConfig
-	connPool noDialClientConnPool
+	connPool *clientConnPool
 	*transportTestHooks
 }
 
@@ -133,19 +133,7 @@ type ClientConn struct {
 
 var ErrNoCachedConn error = noCachedConnError{}
 
-// RoundTripOpt are options for the Transport.RoundTripOpt method.
-type RoundTripOpt struct {
-	// OnlyCachedConn controls whether RoundTripOpt may
-	// create a new TCP connection. If set true and
-	// no cached connection is available, RoundTripOpt
-	// will return ErrNoCachedConn.
-	OnlyCachedConn bool
-}
-
 func (t *Transport) RoundTrip(req *ClientRequest) (*ClientResponse, error)
-
-// RoundTripOpt is like RoundTrip, but takes options.
-func (t *Transport) RoundTripOpt(req *ClientRequest, opt RoundTripOpt) (*ClientResponse, error)
 
 func (t *Transport) IdleConnStrsForTesting() []string
 

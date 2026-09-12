@@ -17,3 +17,9 @@ func CheckSlices[T number](t *testing.T, got, want []T) bool
 // and also consumes the two slices so that a
 // test/benchmark won't be dead-code eliminated.
 func CheckSlicesLogInput[T number](t *testing.T, got, want []T, flakiness float64, logInput func()) bool
+
+// CheckSlicesLogInput compares two slices for equality,
+// reporting a test error if there is a problem,
+// and also consumes the two slices so that a
+// test/benchmark won't be dead-code eliminated.
+func CheckScalarsLogInput[T number](t *testing.T, got, want T, flakiness float64, logInput func()) bool

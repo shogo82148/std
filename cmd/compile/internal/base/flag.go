@@ -81,6 +81,7 @@ type CmdFlags struct {
 	Dynlink            *bool        "help:\"support references to Go symbols defined in other shared libraries\""
 	EmbedCfg           func(string) "help:\"read go:embed configuration from `file`\""
 	Env                func(string) "help:\"add `definition` of the form key=value to environment\""
+	ExportFD           int          "help:\"write a byte to file descriptor `fd` once the export data has been written\""
 	GenDwarfInl        int          "help:\"generate DWARF inline info records\""
 	GoVersion          string       "help:\"required version of the runtime\""
 	ImportCfg          func(string) "help:\"read import configuration from `file`\""

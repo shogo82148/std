@@ -39,9 +39,9 @@ type Server struct {
 	activeConns map[*serverConn]struct{}
 }
 
-func (s *Server) Configure(conf ServerConfig, tcfg *tls.Config) error
-
 func (s *Server) GracefulShutdown()
+
+func (s *Server) Configure(conf ServerConfig, tcfg *tls.Config) error
 
 // ServeConnOpts are options for the Server.ServeConn method.
 type ServeConnOpts struct {
@@ -49,13 +49,11 @@ type ServeConnOpts struct {
 	// If nil, context.Background is used.
 	Context context.Context
 
-	// BaseConfig optionally sets the base configuration
-	// for values. If nil, defaults are used.
+	// BaseConfig is the configuration of the net/http.Server
+	// which is serving this connection.
 	BaseConfig ServerConfig
 
-	// Handler specifies which handler to use for processing
-	// requests. If nil, BaseConfig.Handler is used. If BaseConfig
-	// or BaseConfig.Handler is nil, http.DefaultServeMux is used.
+	// Handler specifies which handler to use for processing requests.
 	Handler Handler
 
 	// Settings is the decoded contents of the HTTP2-Settings header

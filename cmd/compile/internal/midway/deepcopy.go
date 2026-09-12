@@ -11,16 +11,17 @@ import (
 
 // DeepCopier clones syntax nodes and maintains types2.Info mappings.
 type DeepCopier struct {
-	VecLen   int
-	info     *types2.Info
-	pkg      *types2.Package
-	analyzer *Analyzer
-	suffix   string
+	VecLen          int
+	info            *types2.Info
+	pkg             *types2.Package
+	analyzer        *Analyzer
+	dependentSuffix string
+	variantSuffix   string
 
 	vars map[*types2.Var]*types2.Var
 }
 
-func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, suffix string) *DeepCopier
+func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, depSuffix, varSuffix string) *DeepCopier
 
 // OnName rewrites "dependent" and SIMD names to their architecture-specific version.
 func (c *DeepCopier) OnName(id *syntax.Name) *syntax.Name

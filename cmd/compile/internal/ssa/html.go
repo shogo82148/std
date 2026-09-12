@@ -4,6 +4,9 @@
 
 package ssa
 
+// ValueHTML returns a string to render the Value with the given ID.
+func ValueHTML(id ID) string
+
 func (v *Value) HTML() string
 
 func (v *Value) LongHTML(debugStr string) string

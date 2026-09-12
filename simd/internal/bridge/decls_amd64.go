@@ -6,14 +6,6 @@ package bridge
 
 import "github.com/shogo82148/std/simd/archsimd"
 
-type Float32x16 archsimd.Float32x16
-
-func LoadFloat32x16(s []float32) Float32x16
-
-func LoadFloat32x16Part(s []float32) (Float32x16, int)
-
-func BroadcastFloat32x16(x float32) Float32x16
-
 type Float32x4 archsimd.Float32x4
 
 func LoadFloat32x4(s []float32) Float32x4
@@ -29,6 +21,14 @@ func LoadFloat32x8(s []float32) Float32x8
 func LoadFloat32x8Part(s []float32) (Float32x8, int)
 
 func BroadcastFloat32x8(x float32) Float32x8
+
+type Float32x16 archsimd.Float32x16
+
+func LoadFloat32x16(s []float32) Float32x16
+
+func LoadFloat32x16Part(s []float32) (Float32x16, int)
+
+func BroadcastFloat32x16(x float32) Float32x16
 
 type Float64x2 archsimd.Float64x2
 
@@ -54,6 +54,38 @@ func LoadFloat64x8Part(s []float64) (Float64x8, int)
 
 func BroadcastFloat64x8(x float64) Float64x8
 
+type Int8x16 archsimd.Int8x16
+
+func LoadInt8x16(s []int8) Int8x16
+
+func LoadInt8x16Part(s []int8) (Int8x16, int)
+
+func BroadcastInt8x16(x int8) Int8x16
+
+type Int8x32 archsimd.Int8x32
+
+func LoadInt8x32(s []int8) Int8x32
+
+func LoadInt8x32Part(s []int8) (Int8x32, int)
+
+func BroadcastInt8x32(x int8) Int8x32
+
+type Int8x64 archsimd.Int8x64
+
+func LoadInt8x64(s []int8) Int8x64
+
+func LoadInt8x64Part(s []int8) (Int8x64, int)
+
+func BroadcastInt8x64(x int8) Int8x64
+
+type Int16x8 archsimd.Int16x8
+
+func LoadInt16x8(s []int16) Int16x8
+
+func LoadInt16x8Part(s []int16) (Int16x8, int)
+
+func BroadcastInt16x8(x int16) Int16x8
+
 type Int16x16 archsimd.Int16x16
 
 func LoadInt16x16(s []int16) Int16x16
@@ -70,22 +102,6 @@ func LoadInt16x32Part(s []int16) (Int16x32, int)
 
 func BroadcastInt16x32(x int16) Int16x32
 
-type Int16x8 archsimd.Int16x8
-
-func LoadInt16x8(s []int16) Int16x8
-
-func LoadInt16x8Part(s []int16) (Int16x8, int)
-
-func BroadcastInt16x8(x int16) Int16x8
-
-type Int32x16 archsimd.Int32x16
-
-func LoadInt32x16(s []int32) Int32x16
-
-func LoadInt32x16Part(s []int32) (Int32x16, int)
-
-func BroadcastInt32x16(x int32) Int32x16
-
 type Int32x4 archsimd.Int32x4
 
 func LoadInt32x4(s []int32) Int32x4
@@ -101,6 +117,14 @@ func LoadInt32x8(s []int32) Int32x8
 func LoadInt32x8Part(s []int32) (Int32x8, int)
 
 func BroadcastInt32x8(x int32) Int32x8
+
+type Int32x16 archsimd.Int32x16
+
+func LoadInt32x16(s []int32) Int32x16
+
+func LoadInt32x16Part(s []int32) (Int32x16, int)
+
+func BroadcastInt32x16(x int32) Int32x16
 
 type Int64x2 archsimd.Int64x2
 
@@ -126,42 +150,50 @@ func LoadInt64x8Part(s []int64) (Int64x8, int)
 
 func BroadcastInt64x8(x int64) Int64x8
 
-type Int8x16 archsimd.Int8x16
-
-func LoadInt8x16(s []int8) Int8x16
-
-func LoadInt8x16Part(s []int8) (Int8x16, int)
-
-func BroadcastInt8x16(x int8) Int8x16
-
-type Int8x32 archsimd.Int8x32
-
-func LoadInt8x32(s []int8) Int8x32
-
-func LoadInt8x32Part(s []int8) (Int8x32, int)
-
-func BroadcastInt8x32(x int8) Int8x32
-
-type Int8x64 archsimd.Int8x64
-
-func LoadInt8x64(s []int8) Int8x64
-
-func LoadInt8x64Part(s []int8) (Int8x64, int)
-
-func BroadcastInt8x64(x int8) Int8x64
-
-type Mask16x16 archsimd.Mask16x16
-type Mask16x32 archsimd.Mask16x32
-type Mask16x8 archsimd.Mask16x8
-type Mask32x16 archsimd.Mask32x16
-type Mask32x4 archsimd.Mask32x4
-type Mask32x8 archsimd.Mask32x8
-type Mask64x2 archsimd.Mask64x2
-type Mask64x4 archsimd.Mask64x4
-type Mask64x8 archsimd.Mask64x8
 type Mask8x16 archsimd.Mask8x16
 type Mask8x32 archsimd.Mask8x32
 type Mask8x64 archsimd.Mask8x64
+type Mask16x8 archsimd.Mask16x8
+type Mask16x16 archsimd.Mask16x16
+type Mask16x32 archsimd.Mask16x32
+type Mask32x4 archsimd.Mask32x4
+type Mask32x8 archsimd.Mask32x8
+type Mask32x16 archsimd.Mask32x16
+type Mask64x2 archsimd.Mask64x2
+type Mask64x4 archsimd.Mask64x4
+type Mask64x8 archsimd.Mask64x8
+type Uint8x16 archsimd.Uint8x16
+
+func LoadUint8x16(s []uint8) Uint8x16
+
+func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
+
+type Uint8x32 archsimd.Uint8x32
+
+func LoadUint8x32(s []uint8) Uint8x32
+
+func LoadUint8x32Part(s []uint8) (Uint8x32, int)
+
+func BroadcastUint8x32(x uint8) Uint8x32
+
+type Uint8x64 archsimd.Uint8x64
+
+func LoadUint8x64(s []uint8) Uint8x64
+
+func LoadUint8x64Part(s []uint8) (Uint8x64, int)
+
+func BroadcastUint8x64(x uint8) Uint8x64
+
+type Uint16x8 archsimd.Uint16x8
+
+func LoadUint16x8(s []uint16) Uint16x8
+
+func LoadUint16x8Part(s []uint16) (Uint16x8, int)
+
+func BroadcastUint16x8(x uint16) Uint16x8
+
 type Uint16x16 archsimd.Uint16x16
 
 func LoadUint16x16(s []uint16) Uint16x16
@@ -178,22 +210,6 @@ func LoadUint16x32Part(s []uint16) (Uint16x32, int)
 
 func BroadcastUint16x32(x uint16) Uint16x32
 
-type Uint16x8 archsimd.Uint16x8
-
-func LoadUint16x8(s []uint16) Uint16x8
-
-func LoadUint16x8Part(s []uint16) (Uint16x8, int)
-
-func BroadcastUint16x8(x uint16) Uint16x8
-
-type Uint32x16 archsimd.Uint32x16
-
-func LoadUint32x16(s []uint32) Uint32x16
-
-func LoadUint32x16Part(s []uint32) (Uint32x16, int)
-
-func BroadcastUint32x16(x uint32) Uint32x16
-
 type Uint32x4 archsimd.Uint32x4
 
 func LoadUint32x4(s []uint32) Uint32x4
@@ -209,6 +225,14 @@ func LoadUint32x8(s []uint32) Uint32x8
 func LoadUint32x8Part(s []uint32) (Uint32x8, int)
 
 func BroadcastUint32x8(x uint32) Uint32x8
+
+type Uint32x16 archsimd.Uint32x16
+
+func LoadUint32x16(s []uint32) Uint32x16
+
+func LoadUint32x16Part(s []uint32) (Uint32x16, int)
+
+func BroadcastUint32x16(x uint32) Uint32x16
 
 type Uint64x2 archsimd.Uint64x2
 
@@ -233,30 +257,6 @@ func LoadUint64x8(s []uint64) Uint64x8
 func LoadUint64x8Part(s []uint64) (Uint64x8, int)
 
 func BroadcastUint64x8(x uint64) Uint64x8
-
-type Uint8x16 archsimd.Uint8x16
-
-func LoadUint8x16(s []uint8) Uint8x16
-
-func LoadUint8x16Part(s []uint8) (Uint8x16, int)
-
-func BroadcastUint8x16(x uint8) Uint8x16
-
-type Uint8x32 archsimd.Uint8x32
-
-func LoadUint8x32(s []uint8) Uint8x32
-
-func LoadUint8x32Part(s []uint8) (Uint8x32, int)
-
-func BroadcastUint8x32(x uint8) Uint8x32
-
-type Uint8x64 archsimd.Uint8x64
-
-func LoadUint8x64(s []uint8) Uint8x64
-
-func LoadUint8x64Part(s []uint8) (Uint8x64, int)
-
-func BroadcastUint8x64(x uint8) Uint8x64
 
 func (x Int8x16) Abs() Int8x16
 
@@ -432,395 +432,395 @@ func (x Int8x32) Xor(y Int8x32) Int8x32
 
 func (x Int8x64) Xor(y Int8x64) Int8x64
 
+func (x Int16x8) Abs() Int16x8
+
 func (x Int16x16) Abs() Int16x16
 
 func (x Int16x32) Abs() Int16x32
 
-func (x Int16x8) Abs() Int16x8
+func (x Int16x8) Add(y Int16x8) Int16x8
 
 func (x Int16x16) Add(y Int16x16) Int16x16
 
 func (x Int16x32) Add(y Int16x32) Int16x32
 
-func (x Int16x8) Add(y Int16x8) Int16x8
+func (x Int16x8) AddSaturated(y Int16x8) Int16x8
 
 func (x Int16x16) AddSaturated(y Int16x16) Int16x16
 
 func (x Int16x32) AddSaturated(y Int16x32) Int16x32
 
-func (x Int16x8) AddSaturated(y Int16x8) Int16x8
+func (x Int16x8) And(y Int16x8) Int16x8
 
 func (x Int16x16) And(y Int16x16) Int16x16
 
 func (x Int16x32) And(y Int16x32) Int16x32
 
-func (x Int16x8) And(y Int16x8) Int16x8
+func (x Int16x8) AndNot(y Int16x8) Int16x8
 
 func (x Int16x16) AndNot(y Int16x16) Int16x16
 
 func (x Int16x32) AndNot(y Int16x32) Int16x32
 
-func (x Int16x8) AndNot(y Int16x8) Int16x8
+func (x Int16x8) ConvertToUint16() Uint16x8
 
 func (x Int16x16) ConvertToUint16() Uint16x16
 
 func (x Int16x32) ConvertToUint16() Uint16x32
 
-func (x Int16x8) ConvertToUint16() Uint16x8
+func (x Int16x8) Equal(y Int16x8) Mask16x8
 
 func (x Int16x16) Equal(y Int16x16) Mask16x16
 
 func (x Int16x32) Equal(y Int16x32) Mask16x32
 
-func (x Int16x8) Equal(y Int16x8) Mask16x8
+func (x Int16x8) Greater(y Int16x8) Mask16x8
 
 func (x Int16x16) Greater(y Int16x16) Mask16x16
 
 func (x Int16x32) Greater(y Int16x32) Mask16x32
 
-func (x Int16x8) Greater(y Int16x8) Mask16x8
+func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
 
 func (x Int16x16) GreaterEqual(y Int16x16) Mask16x16
 
 func (x Int16x32) GreaterEqual(y Int16x32) Mask16x32
 
-func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
+func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
 
 func (x Int16x16) IfElse(mask Mask16x16, y Int16x16) Int16x16
 
 func (x Int16x32) IfElse(mask Mask16x32, y Int16x32) Int16x32
 
-func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
+func (x Int16x8) Len() int
 
 func (x Int16x16) Len() int
 
 func (x Int16x32) Len() int
 
-func (x Int16x8) Len() int
+func (x Int16x8) Less(y Int16x8) Mask16x8
 
 func (x Int16x16) Less(y Int16x16) Mask16x16
 
 func (x Int16x32) Less(y Int16x32) Mask16x32
 
-func (x Int16x8) Less(y Int16x8) Mask16x8
+func (x Int16x8) LessEqual(y Int16x8) Mask16x8
 
 func (x Int16x16) LessEqual(y Int16x16) Mask16x16
 
 func (x Int16x32) LessEqual(y Int16x32) Mask16x32
 
-func (x Int16x8) LessEqual(y Int16x8) Mask16x8
+func (x Int16x8) Masked(mask Mask16x8) Int16x8
 
 func (x Int16x16) Masked(mask Mask16x16) Int16x16
 
 func (x Int16x32) Masked(mask Mask16x32) Int16x32
 
-func (x Int16x8) Masked(mask Mask16x8) Int16x8
+func (x Int16x8) Max(y Int16x8) Int16x8
 
 func (x Int16x16) Max(y Int16x16) Int16x16
 
 func (x Int16x32) Max(y Int16x32) Int16x32
 
-func (x Int16x8) Max(y Int16x8) Int16x8
+func (x Int16x8) Min(y Int16x8) Int16x8
 
 func (x Int16x16) Min(y Int16x16) Int16x16
 
 func (x Int16x32) Min(y Int16x32) Int16x32
 
-func (x Int16x8) Min(y Int16x8) Int16x8
+func (x Int16x8) Mul(y Int16x8) Int16x8
 
 func (x Int16x16) Mul(y Int16x16) Int16x16
 
 func (x Int16x32) Mul(y Int16x32) Int16x32
 
-func (x Int16x8) Mul(y Int16x8) Int16x8
+func (x Int16x8) Neg() Int16x8
 
 func (x Int16x16) Neg() Int16x16
 
 func (x Int16x32) Neg() Int16x32
 
-func (x Int16x8) Neg() Int16x8
+func (x Int16x8) Not() Int16x8
 
 func (x Int16x16) Not() Int16x16
 
 func (x Int16x32) Not() Int16x32
 
-func (x Int16x8) Not() Int16x8
+func (x Int16x8) NotEqual(y Int16x8) Mask16x8
 
 func (x Int16x16) NotEqual(y Int16x16) Mask16x16
 
 func (x Int16x32) NotEqual(y Int16x32) Mask16x32
 
-func (x Int16x8) NotEqual(y Int16x8) Mask16x8
+func (x Int16x8) Or(y Int16x8) Int16x8
 
 func (x Int16x16) Or(y Int16x16) Int16x16
 
 func (x Int16x32) Or(y Int16x32) Int16x32
 
-func (x Int16x8) Or(y Int16x8) Int16x8
+func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
 
 func (x Int16x16) RotateAllLeft(dist uint64) Int16x16
 
 func (x Int16x32) RotateAllLeft(dist uint64) Int16x32
 
-func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
+func (x Int16x8) RotateAllRight(dist uint64) Int16x8
 
 func (x Int16x16) RotateAllRight(dist uint64) Int16x16
 
 func (x Int16x32) RotateAllRight(dist uint64) Int16x32
 
-func (x Int16x8) RotateAllRight(dist uint64) Int16x8
+func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
 func (x Int16x16) ShiftAllLeft(shift uint64) Int16x16
 
 func (x Int16x32) ShiftAllLeft(shift uint64) Int16x32
 
-func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
+func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
 
 func (x Int16x16) ShiftAllRight(shift uint64) Int16x16
 
 func (x Int16x32) ShiftAllRight(shift uint64) Int16x32
 
-func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
+func (x Int16x8) Store(s []int16)
 
 func (x Int16x16) Store(s []int16)
 
 func (x Int16x32) Store(s []int16)
 
-func (x Int16x8) Store(s []int16)
+func (x Int16x8) StorePart(s []int16) int
 
 func (x Int16x16) StorePart(s []int16) int
 
 func (x Int16x32) StorePart(s []int16) int
 
-func (x Int16x8) StorePart(s []int16) int
+func (x Int16x8) String() string
 
 func (x Int16x16) String() string
 
 func (x Int16x32) String() string
 
-func (x Int16x8) String() string
+func (x Int16x8) Sub(y Int16x8) Int16x8
 
 func (x Int16x16) Sub(y Int16x16) Int16x16
 
 func (x Int16x32) Sub(y Int16x32) Int16x32
 
-func (x Int16x8) Sub(y Int16x8) Int16x8
+func (x Int16x8) SubSaturated(y Int16x8) Int16x8
 
 func (x Int16x16) SubSaturated(y Int16x16) Int16x16
 
 func (x Int16x32) SubSaturated(y Int16x32) Int16x32
 
-func (x Int16x8) SubSaturated(y Int16x8) Int16x8
+func (x Int16x8) ToBits() Uint16x8
 
 func (x Int16x16) ToBits() Uint16x16
 
 func (x Int16x32) ToBits() Uint16x32
 
-func (x Int16x8) ToBits() Uint16x8
+func (x Int16x8) ToMask() Mask16x8
 
 func (x Int16x16) ToMask() Mask16x16
 
 func (x Int16x32) ToMask() Mask16x32
 
-func (x Int16x8) ToMask() Mask16x8
+func (x Int16x8) Xor(y Int16x8) Int16x8
 
 func (x Int16x16) Xor(y Int16x16) Int16x16
 
 func (x Int16x32) Xor(y Int16x32) Int16x32
 
-func (x Int16x8) Xor(y Int16x8) Int16x8
-
-func (x Int32x16) Abs() Int32x16
-
 func (x Int32x4) Abs() Int32x4
 
 func (x Int32x8) Abs() Int32x8
 
-func (x Int32x16) Add(y Int32x16) Int32x16
+func (x Int32x16) Abs() Int32x16
 
 func (x Int32x4) Add(y Int32x4) Int32x4
 
 func (x Int32x8) Add(y Int32x8) Int32x8
 
-func (x Int32x16) And(y Int32x16) Int32x16
+func (x Int32x16) Add(y Int32x16) Int32x16
 
 func (x Int32x4) And(y Int32x4) Int32x4
 
 func (x Int32x8) And(y Int32x8) Int32x8
 
-func (x Int32x16) AndNot(y Int32x16) Int32x16
+func (x Int32x16) And(y Int32x16) Int32x16
 
 func (x Int32x4) AndNot(y Int32x4) Int32x4
 
 func (x Int32x8) AndNot(y Int32x8) Int32x8
 
-func (x Int32x16) ConvertToFloat32() Float32x16
+func (x Int32x16) AndNot(y Int32x16) Int32x16
 
 func (x Int32x4) ConvertToFloat32() Float32x4
 
 func (x Int32x8) ConvertToFloat32() Float32x8
 
-func (x Int32x16) ConvertToUint32() Uint32x16
+func (x Int32x16) ConvertToFloat32() Float32x16
 
 func (x Int32x4) ConvertToUint32() Uint32x4
 
 func (x Int32x8) ConvertToUint32() Uint32x8
 
-func (x Int32x16) Equal(y Int32x16) Mask32x16
+func (x Int32x16) ConvertToUint32() Uint32x16
 
 func (x Int32x4) Equal(y Int32x4) Mask32x4
 
 func (x Int32x8) Equal(y Int32x8) Mask32x8
 
-func (x Int32x16) Greater(y Int32x16) Mask32x16
+func (x Int32x16) Equal(y Int32x16) Mask32x16
 
 func (x Int32x4) Greater(y Int32x4) Mask32x4
 
 func (x Int32x8) Greater(y Int32x8) Mask32x8
 
-func (x Int32x16) GreaterEqual(y Int32x16) Mask32x16
+func (x Int32x16) Greater(y Int32x16) Mask32x16
 
 func (x Int32x4) GreaterEqual(y Int32x4) Mask32x4
 
 func (x Int32x8) GreaterEqual(y Int32x8) Mask32x8
 
-func (x Int32x16) IfElse(mask Mask32x16, y Int32x16) Int32x16
+func (x Int32x16) GreaterEqual(y Int32x16) Mask32x16
 
 func (x Int32x4) IfElse(mask Mask32x4, y Int32x4) Int32x4
 
 func (x Int32x8) IfElse(mask Mask32x8, y Int32x8) Int32x8
 
-func (x Int32x16) Len() int
+func (x Int32x16) IfElse(mask Mask32x16, y Int32x16) Int32x16
 
 func (x Int32x4) Len() int
 
 func (x Int32x8) Len() int
 
-func (x Int32x16) Less(y Int32x16) Mask32x16
+func (x Int32x16) Len() int
 
 func (x Int32x4) Less(y Int32x4) Mask32x4
 
 func (x Int32x8) Less(y Int32x8) Mask32x8
 
-func (x Int32x16) LessEqual(y Int32x16) Mask32x16
+func (x Int32x16) Less(y Int32x16) Mask32x16
 
 func (x Int32x4) LessEqual(y Int32x4) Mask32x4
 
 func (x Int32x8) LessEqual(y Int32x8) Mask32x8
 
-func (x Int32x16) Masked(mask Mask32x16) Int32x16
+func (x Int32x16) LessEqual(y Int32x16) Mask32x16
 
 func (x Int32x4) Masked(mask Mask32x4) Int32x4
 
 func (x Int32x8) Masked(mask Mask32x8) Int32x8
 
-func (x Int32x16) Max(y Int32x16) Int32x16
+func (x Int32x16) Masked(mask Mask32x16) Int32x16
 
 func (x Int32x4) Max(y Int32x4) Int32x4
 
 func (x Int32x8) Max(y Int32x8) Int32x8
 
-func (x Int32x16) Min(y Int32x16) Int32x16
+func (x Int32x16) Max(y Int32x16) Int32x16
 
 func (x Int32x4) Min(y Int32x4) Int32x4
 
 func (x Int32x8) Min(y Int32x8) Int32x8
 
-func (x Int32x16) Mul(y Int32x16) Int32x16
+func (x Int32x16) Min(y Int32x16) Int32x16
 
 func (x Int32x4) Mul(y Int32x4) Int32x4
 
 func (x Int32x8) Mul(y Int32x8) Int32x8
 
-func (x Int32x16) Neg() Int32x16
+func (x Int32x16) Mul(y Int32x16) Int32x16
 
 func (x Int32x4) Neg() Int32x4
 
 func (x Int32x8) Neg() Int32x8
 
-func (x Int32x16) Not() Int32x16
+func (x Int32x16) Neg() Int32x16
 
 func (x Int32x4) Not() Int32x4
 
 func (x Int32x8) Not() Int32x8
 
-func (x Int32x16) NotEqual(y Int32x16) Mask32x16
+func (x Int32x16) Not() Int32x16
 
 func (x Int32x4) NotEqual(y Int32x4) Mask32x4
 
 func (x Int32x8) NotEqual(y Int32x8) Mask32x8
 
-func (x Int32x16) Or(y Int32x16) Int32x16
+func (x Int32x16) NotEqual(y Int32x16) Mask32x16
 
 func (x Int32x4) Or(y Int32x4) Int32x4
 
 func (x Int32x8) Or(y Int32x8) Int32x8
 
-func (x Int32x16) RotateAllLeft(dist uint64) Int32x16
+func (x Int32x16) Or(y Int32x16) Int32x16
 
 func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
 
 func (x Int32x8) RotateAllLeft(dist uint64) Int32x8
 
-func (x Int32x16) RotateAllRight(dist uint64) Int32x16
+func (x Int32x16) RotateAllLeft(dist uint64) Int32x16
 
 func (x Int32x4) RotateAllRight(dist uint64) Int32x4
 
 func (x Int32x8) RotateAllRight(dist uint64) Int32x8
 
-func (x Int32x16) ShiftAllLeft(shift uint64) Int32x16
+func (x Int32x16) RotateAllRight(dist uint64) Int32x16
 
 func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
 func (x Int32x8) ShiftAllLeft(shift uint64) Int32x8
 
-func (x Int32x16) ShiftAllRight(shift uint64) Int32x16
+func (x Int32x16) ShiftAllLeft(shift uint64) Int32x16
 
 func (x Int32x4) ShiftAllRight(shift uint64) Int32x4
 
 func (x Int32x8) ShiftAllRight(shift uint64) Int32x8
 
-func (x Int32x16) Store(s []int32)
+func (x Int32x16) ShiftAllRight(shift uint64) Int32x16
 
 func (x Int32x4) Store(s []int32)
 
 func (x Int32x8) Store(s []int32)
 
-func (x Int32x16) StorePart(s []int32) int
+func (x Int32x16) Store(s []int32)
 
 func (x Int32x4) StorePart(s []int32) int
 
 func (x Int32x8) StorePart(s []int32) int
 
-func (x Int32x16) String() string
+func (x Int32x16) StorePart(s []int32) int
 
 func (x Int32x4) String() string
 
 func (x Int32x8) String() string
 
-func (x Int32x16) Sub(y Int32x16) Int32x16
+func (x Int32x16) String() string
 
 func (x Int32x4) Sub(y Int32x4) Int32x4
 
 func (x Int32x8) Sub(y Int32x8) Int32x8
 
-func (x Int32x16) ToBits() Uint32x16
+func (x Int32x16) Sub(y Int32x16) Int32x16
 
 func (x Int32x4) ToBits() Uint32x4
 
 func (x Int32x8) ToBits() Uint32x8
 
-func (x Int32x16) ToMask() Mask32x16
+func (x Int32x16) ToBits() Uint32x16
 
 func (x Int32x4) ToMask() Mask32x4
 
 func (x Int32x8) ToMask() Mask32x8
 
-func (x Int32x16) Xor(y Int32x16) Int32x16
+func (x Int32x16) ToMask() Mask32x16
 
 func (x Int32x4) Xor(y Int32x4) Int32x4
 
 func (x Int32x8) Xor(y Int32x8) Int32x8
+
+func (x Int32x16) Xor(y Int32x16) Int32x16
 
 func (x Int64x2) Add(y Int64x2) Int64x2
 
@@ -1134,401 +1134,401 @@ func (x Uint8x32) Xor(y Uint8x32) Uint8x32
 
 func (x Uint8x64) Xor(y Uint8x64) Uint8x64
 
+func (x Uint16x8) Add(y Uint16x8) Uint16x8
+
 func (x Uint16x16) Add(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Add(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Add(y Uint16x8) Uint16x8
+func (x Uint16x8) AddSaturated(y Uint16x8) Uint16x8
 
 func (x Uint16x16) AddSaturated(y Uint16x16) Uint16x16
 
 func (x Uint16x32) AddSaturated(y Uint16x32) Uint16x32
 
-func (x Uint16x8) AddSaturated(y Uint16x8) Uint16x8
+func (x Uint16x8) And(y Uint16x8) Uint16x8
 
 func (x Uint16x16) And(y Uint16x16) Uint16x16
 
 func (x Uint16x32) And(y Uint16x32) Uint16x32
 
-func (x Uint16x8) And(y Uint16x8) Uint16x8
+func (x Uint16x8) AndNot(y Uint16x8) Uint16x8
 
 func (x Uint16x16) AndNot(y Uint16x16) Uint16x16
 
 func (x Uint16x32) AndNot(y Uint16x32) Uint16x32
 
-func (x Uint16x8) AndNot(y Uint16x8) Uint16x8
+func (x Uint16x8) Average(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Average(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Average(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Average(y Uint16x8) Uint16x8
+func (x Uint16x8) BitsToInt16() Int16x8
 
 func (x Uint16x16) BitsToInt16() Int16x16
 
 func (x Uint16x32) BitsToInt16() Int16x32
 
-func (x Uint16x8) BitsToInt16() Int16x8
+func (x Uint16x8) ConvertToInt16() Int16x8
 
 func (x Uint16x16) ConvertToInt16() Int16x16
 
 func (x Uint16x32) ConvertToInt16() Int16x32
 
-func (x Uint16x8) ConvertToInt16() Int16x8
+func (x Uint16x8) Equal(y Uint16x8) Mask16x8
 
 func (x Uint16x16) Equal(y Uint16x16) Mask16x16
 
 func (x Uint16x32) Equal(y Uint16x32) Mask16x32
 
-func (x Uint16x8) Equal(y Uint16x8) Mask16x8
+func (x Uint16x8) Greater(y Uint16x8) Mask16x8
 
 func (x Uint16x16) Greater(y Uint16x16) Mask16x16
 
 func (x Uint16x32) Greater(y Uint16x32) Mask16x32
 
-func (x Uint16x8) Greater(y Uint16x8) Mask16x8
+func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x16) GreaterEqual(y Uint16x16) Mask16x16
 
 func (x Uint16x32) GreaterEqual(y Uint16x32) Mask16x32
 
-func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
+func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
 
 func (x Uint16x16) IfElse(mask Mask16x16, y Uint16x16) Uint16x16
 
 func (x Uint16x32) IfElse(mask Mask16x32, y Uint16x32) Uint16x32
 
-func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
+func (x Uint16x8) Len() int
 
 func (x Uint16x16) Len() int
 
 func (x Uint16x32) Len() int
 
-func (x Uint16x8) Len() int
+func (x Uint16x8) Less(y Uint16x8) Mask16x8
 
 func (x Uint16x16) Less(y Uint16x16) Mask16x16
 
 func (x Uint16x32) Less(y Uint16x32) Mask16x32
 
-func (x Uint16x8) Less(y Uint16x8) Mask16x8
+func (x Uint16x8) LessEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x16) LessEqual(y Uint16x16) Mask16x16
 
 func (x Uint16x32) LessEqual(y Uint16x32) Mask16x32
 
-func (x Uint16x8) LessEqual(y Uint16x8) Mask16x8
+func (x Uint16x8) Masked(mask Mask16x8) Uint16x8
 
 func (x Uint16x16) Masked(mask Mask16x16) Uint16x16
 
 func (x Uint16x32) Masked(mask Mask16x32) Uint16x32
 
-func (x Uint16x8) Masked(mask Mask16x8) Uint16x8
+func (x Uint16x8) Max(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Max(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Max(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Max(y Uint16x8) Uint16x8
+func (x Uint16x8) Min(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Min(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Min(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Min(y Uint16x8) Uint16x8
+func (x Uint16x8) Mul(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Mul(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Mul(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Mul(y Uint16x8) Uint16x8
+func (x Uint16x8) Not() Uint16x8
 
 func (x Uint16x16) Not() Uint16x16
 
 func (x Uint16x32) Not() Uint16x32
 
-func (x Uint16x8) Not() Uint16x8
+func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x16) NotEqual(y Uint16x16) Mask16x16
 
 func (x Uint16x32) NotEqual(y Uint16x32) Mask16x32
 
-func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
+func (x Uint16x8) Or(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Or(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Or(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Or(y Uint16x8) Uint16x8
+func (x Uint16x8) ReshapeToUint32s() Uint32x4
 
 func (x Uint16x16) ReshapeToUint32s() Uint32x8
 
 func (x Uint16x32) ReshapeToUint32s() Uint32x16
 
-func (x Uint16x8) ReshapeToUint32s() Uint32x4
+func (x Uint16x8) ReshapeToUint64s() Uint64x2
 
 func (x Uint16x16) ReshapeToUint64s() Uint64x4
 
 func (x Uint16x32) ReshapeToUint64s() Uint64x8
 
-func (x Uint16x8) ReshapeToUint64s() Uint64x2
+func (x Uint16x8) ReshapeToUint8s() Uint8x16
 
 func (x Uint16x16) ReshapeToUint8s() Uint8x32
 
 func (x Uint16x32) ReshapeToUint8s() Uint8x64
 
-func (x Uint16x8) ReshapeToUint8s() Uint8x16
+func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
 
 func (x Uint16x16) RotateAllLeft(dist uint64) Uint16x16
 
 func (x Uint16x32) RotateAllLeft(dist uint64) Uint16x32
 
-func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
+func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
 
 func (x Uint16x16) RotateAllRight(dist uint64) Uint16x16
 
 func (x Uint16x32) RotateAllRight(dist uint64) Uint16x32
 
-func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
+func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
 func (x Uint16x16) ShiftAllLeft(shift uint64) Uint16x16
 
 func (x Uint16x32) ShiftAllLeft(shift uint64) Uint16x32
 
-func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
+func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
 
 func (x Uint16x16) ShiftAllRight(shift uint64) Uint16x16
 
 func (x Uint16x32) ShiftAllRight(shift uint64) Uint16x32
 
-func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
+func (x Uint16x8) Store(s []uint16)
 
 func (x Uint16x16) Store(s []uint16)
 
 func (x Uint16x32) Store(s []uint16)
 
-func (x Uint16x8) Store(s []uint16)
+func (x Uint16x8) StorePart(s []uint16) int
 
 func (x Uint16x16) StorePart(s []uint16) int
 
 func (x Uint16x32) StorePart(s []uint16) int
 
-func (x Uint16x8) StorePart(s []uint16) int
+func (x Uint16x8) String() string
 
 func (x Uint16x16) String() string
 
 func (x Uint16x32) String() string
 
-func (x Uint16x8) String() string
+func (x Uint16x8) Sub(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Sub(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Sub(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Sub(y Uint16x8) Uint16x8
+func (x Uint16x8) SubSaturated(y Uint16x8) Uint16x8
 
 func (x Uint16x16) SubSaturated(y Uint16x16) Uint16x16
 
 func (x Uint16x32) SubSaturated(y Uint16x32) Uint16x32
 
-func (x Uint16x8) SubSaturated(y Uint16x8) Uint16x8
+func (x Uint16x8) Xor(y Uint16x8) Uint16x8
 
 func (x Uint16x16) Xor(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Xor(y Uint16x32) Uint16x32
 
-func (x Uint16x8) Xor(y Uint16x8) Uint16x8
-
-func (x Uint32x16) Add(y Uint32x16) Uint32x16
-
 func (x Uint32x4) Add(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Add(y Uint32x8) Uint32x8
 
-func (x Uint32x16) And(y Uint32x16) Uint32x16
+func (x Uint32x16) Add(y Uint32x16) Uint32x16
 
 func (x Uint32x4) And(y Uint32x4) Uint32x4
 
 func (x Uint32x8) And(y Uint32x8) Uint32x8
 
-func (x Uint32x16) AndNot(y Uint32x16) Uint32x16
+func (x Uint32x16) And(y Uint32x16) Uint32x16
 
 func (x Uint32x4) AndNot(y Uint32x4) Uint32x4
 
 func (x Uint32x8) AndNot(y Uint32x8) Uint32x8
 
-func (x Uint32x16) BitsToFloat32() Float32x16
+func (x Uint32x16) AndNot(y Uint32x16) Uint32x16
 
 func (x Uint32x4) BitsToFloat32() Float32x4
 
 func (x Uint32x8) BitsToFloat32() Float32x8
 
-func (x Uint32x16) BitsToInt32() Int32x16
+func (x Uint32x16) BitsToFloat32() Float32x16
 
 func (x Uint32x4) BitsToInt32() Int32x4
 
 func (x Uint32x8) BitsToInt32() Int32x8
 
-func (x Uint32x16) ConvertToInt32() Int32x16
+func (x Uint32x16) BitsToInt32() Int32x16
 
 func (x Uint32x4) ConvertToInt32() Int32x4
 
 func (x Uint32x8) ConvertToInt32() Int32x8
 
-func (x Uint32x16) Equal(y Uint32x16) Mask32x16
+func (x Uint32x16) ConvertToInt32() Int32x16
 
 func (x Uint32x4) Equal(y Uint32x4) Mask32x4
 
 func (x Uint32x8) Equal(y Uint32x8) Mask32x8
 
-func (x Uint32x16) Greater(y Uint32x16) Mask32x16
+func (x Uint32x16) Equal(y Uint32x16) Mask32x16
 
 func (x Uint32x4) Greater(y Uint32x4) Mask32x4
 
 func (x Uint32x8) Greater(y Uint32x8) Mask32x8
 
-func (x Uint32x16) GreaterEqual(y Uint32x16) Mask32x16
+func (x Uint32x16) Greater(y Uint32x16) Mask32x16
 
 func (x Uint32x4) GreaterEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x8) GreaterEqual(y Uint32x8) Mask32x8
 
-func (x Uint32x16) IfElse(mask Mask32x16, y Uint32x16) Uint32x16
+func (x Uint32x16) GreaterEqual(y Uint32x16) Mask32x16
 
 func (x Uint32x4) IfElse(mask Mask32x4, y Uint32x4) Uint32x4
 
 func (x Uint32x8) IfElse(mask Mask32x8, y Uint32x8) Uint32x8
 
-func (x Uint32x16) Len() int
+func (x Uint32x16) IfElse(mask Mask32x16, y Uint32x16) Uint32x16
 
 func (x Uint32x4) Len() int
 
 func (x Uint32x8) Len() int
 
-func (x Uint32x16) Less(y Uint32x16) Mask32x16
+func (x Uint32x16) Len() int
 
 func (x Uint32x4) Less(y Uint32x4) Mask32x4
 
 func (x Uint32x8) Less(y Uint32x8) Mask32x8
 
-func (x Uint32x16) LessEqual(y Uint32x16) Mask32x16
+func (x Uint32x16) Less(y Uint32x16) Mask32x16
 
 func (x Uint32x4) LessEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x8) LessEqual(y Uint32x8) Mask32x8
 
-func (x Uint32x16) Masked(mask Mask32x16) Uint32x16
+func (x Uint32x16) LessEqual(y Uint32x16) Mask32x16
 
 func (x Uint32x4) Masked(mask Mask32x4) Uint32x4
 
 func (x Uint32x8) Masked(mask Mask32x8) Uint32x8
 
-func (x Uint32x16) Max(y Uint32x16) Uint32x16
+func (x Uint32x16) Masked(mask Mask32x16) Uint32x16
 
 func (x Uint32x4) Max(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Max(y Uint32x8) Uint32x8
 
-func (x Uint32x16) Min(y Uint32x16) Uint32x16
+func (x Uint32x16) Max(y Uint32x16) Uint32x16
 
 func (x Uint32x4) Min(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Min(y Uint32x8) Uint32x8
 
-func (x Uint32x16) Mul(y Uint32x16) Uint32x16
+func (x Uint32x16) Min(y Uint32x16) Uint32x16
 
 func (x Uint32x4) Mul(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Mul(y Uint32x8) Uint32x8
 
-func (x Uint32x16) Not() Uint32x16
+func (x Uint32x16) Mul(y Uint32x16) Uint32x16
 
 func (x Uint32x4) Not() Uint32x4
 
 func (x Uint32x8) Not() Uint32x8
 
-func (x Uint32x16) NotEqual(y Uint32x16) Mask32x16
+func (x Uint32x16) Not() Uint32x16
 
 func (x Uint32x4) NotEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x8) NotEqual(y Uint32x8) Mask32x8
 
-func (x Uint32x16) Or(y Uint32x16) Uint32x16
+func (x Uint32x16) NotEqual(y Uint32x16) Mask32x16
 
 func (x Uint32x4) Or(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Or(y Uint32x8) Uint32x8
 
-func (x Uint32x16) ReshapeToUint16s() Uint16x32
+func (x Uint32x16) Or(y Uint32x16) Uint32x16
 
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 
 func (x Uint32x8) ReshapeToUint16s() Uint16x16
 
-func (x Uint32x16) ReshapeToUint64s() Uint64x8
+func (x Uint32x16) ReshapeToUint16s() Uint16x32
 
 func (x Uint32x4) ReshapeToUint64s() Uint64x2
 
 func (x Uint32x8) ReshapeToUint64s() Uint64x4
 
-func (x Uint32x16) ReshapeToUint8s() Uint8x64
+func (x Uint32x16) ReshapeToUint64s() Uint64x8
 
 func (x Uint32x4) ReshapeToUint8s() Uint8x16
 
 func (x Uint32x8) ReshapeToUint8s() Uint8x32
 
-func (x Uint32x16) RotateAllLeft(dist uint64) Uint32x16
+func (x Uint32x16) ReshapeToUint8s() Uint8x64
 
 func (x Uint32x4) RotateAllLeft(dist uint64) Uint32x4
 
 func (x Uint32x8) RotateAllLeft(dist uint64) Uint32x8
 
-func (x Uint32x16) RotateAllRight(dist uint64) Uint32x16
+func (x Uint32x16) RotateAllLeft(dist uint64) Uint32x16
 
 func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
 
 func (x Uint32x8) RotateAllRight(dist uint64) Uint32x8
 
-func (x Uint32x16) ShiftAllLeft(shift uint64) Uint32x16
+func (x Uint32x16) RotateAllRight(dist uint64) Uint32x16
 
 func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
 func (x Uint32x8) ShiftAllLeft(shift uint64) Uint32x8
 
-func (x Uint32x16) ShiftAllRight(shift uint64) Uint32x16
+func (x Uint32x16) ShiftAllLeft(shift uint64) Uint32x16
 
 func (x Uint32x4) ShiftAllRight(shift uint64) Uint32x4
 
 func (x Uint32x8) ShiftAllRight(shift uint64) Uint32x8
 
-func (x Uint32x16) Store(s []uint32)
+func (x Uint32x16) ShiftAllRight(shift uint64) Uint32x16
 
 func (x Uint32x4) Store(s []uint32)
 
 func (x Uint32x8) Store(s []uint32)
 
-func (x Uint32x16) StorePart(s []uint32) int
+func (x Uint32x16) Store(s []uint32)
 
 func (x Uint32x4) StorePart(s []uint32) int
 
 func (x Uint32x8) StorePart(s []uint32) int
 
-func (x Uint32x16) String() string
+func (x Uint32x16) StorePart(s []uint32) int
 
 func (x Uint32x4) String() string
 
 func (x Uint32x8) String() string
 
-func (x Uint32x16) Sub(y Uint32x16) Uint32x16
+func (x Uint32x16) String() string
 
 func (x Uint32x4) Sub(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Sub(y Uint32x8) Uint32x8
 
-func (x Uint32x16) Xor(y Uint32x16) Uint32x16
+func (x Uint32x16) Sub(y Uint32x16) Uint32x16
 
 func (x Uint32x4) Xor(y Uint32x4) Uint32x4
 
 func (x Uint32x8) Xor(y Uint32x8) Uint32x8
+
+func (x Uint32x16) Xor(y Uint32x16) Uint32x16
 
 func (x Uint64x2) Add(y Uint64x2) Uint64x2
 
@@ -1716,149 +1716,155 @@ func (x Uint64x4) Xor(y Uint64x4) Uint64x4
 
 func (x Uint64x8) Xor(y Uint64x8) Uint64x8
 
-func (x Float32x16) Abs() Float32x16
-
 func (x Float32x4) Abs() Float32x4
 
 func (x Float32x8) Abs() Float32x8
 
-func (x Float32x16) Add(y Float32x16) Float32x16
+func (x Float32x16) Abs() Float32x16
 
 func (x Float32x4) Add(y Float32x4) Float32x4
 
 func (x Float32x8) Add(y Float32x8) Float32x8
 
-func (x Float32x16) ConvertToInt32() Int32x16
+func (x Float32x16) Add(y Float32x16) Float32x16
 
 func (x Float32x4) ConvertToInt32() Int32x4
 
 func (x Float32x8) ConvertToInt32() Int32x8
 
-func (x Float32x16) Div(y Float32x16) Float32x16
+func (x Float32x16) ConvertToInt32() Int32x16
 
 func (x Float32x4) Div(y Float32x4) Float32x4
 
 func (x Float32x8) Div(y Float32x8) Float32x8
 
-func (x Float32x16) Equal(y Float32x16) Mask32x16
+func (x Float32x16) Div(y Float32x16) Float32x16
 
 func (x Float32x4) Equal(y Float32x4) Mask32x4
 
 func (x Float32x8) Equal(y Float32x8) Mask32x8
 
-func (x Float32x16) Greater(y Float32x16) Mask32x16
+func (x Float32x16) Equal(y Float32x16) Mask32x16
 
 func (x Float32x4) Greater(y Float32x4) Mask32x4
 
 func (x Float32x8) Greater(y Float32x8) Mask32x8
 
-func (x Float32x16) GreaterEqual(y Float32x16) Mask32x16
+func (x Float32x16) Greater(y Float32x16) Mask32x16
 
 func (x Float32x4) GreaterEqual(y Float32x4) Mask32x4
 
 func (x Float32x8) GreaterEqual(y Float32x8) Mask32x8
 
-func (x Float32x16) IfElse(mask Mask32x16, y Float32x16) Float32x16
+func (x Float32x16) GreaterEqual(y Float32x16) Mask32x16
 
 func (x Float32x4) IfElse(mask Mask32x4, y Float32x4) Float32x4
 
 func (x Float32x8) IfElse(mask Mask32x8, y Float32x8) Float32x8
 
-func (x Float32x16) Len() int
+func (x Float32x16) IfElse(mask Mask32x16, y Float32x16) Float32x16
 
 func (x Float32x4) Len() int
 
 func (x Float32x8) Len() int
 
-func (x Float32x16) Less(y Float32x16) Mask32x16
+func (x Float32x16) Len() int
 
 func (x Float32x4) Less(y Float32x4) Mask32x4
 
 func (x Float32x8) Less(y Float32x8) Mask32x8
 
-func (x Float32x16) LessEqual(y Float32x16) Mask32x16
+func (x Float32x16) Less(y Float32x16) Mask32x16
 
 func (x Float32x4) LessEqual(y Float32x4) Mask32x4
 
 func (x Float32x8) LessEqual(y Float32x8) Mask32x8
 
-func (x Float32x16) Masked(mask Mask32x16) Float32x16
+func (x Float32x16) LessEqual(y Float32x16) Mask32x16
 
 func (x Float32x4) Masked(mask Mask32x4) Float32x4
 
 func (x Float32x8) Masked(mask Mask32x8) Float32x8
 
-func (x Float32x16) Max(y Float32x16) Float32x16
+func (x Float32x16) Masked(mask Mask32x16) Float32x16
 
 func (x Float32x4) Max(y Float32x4) Float32x4
 
 func (x Float32x8) Max(y Float32x8) Float32x8
 
-func (x Float32x16) Min(y Float32x16) Float32x16
+func (x Float32x16) Max(y Float32x16) Float32x16
 
 func (x Float32x4) Min(y Float32x4) Float32x4
 
 func (x Float32x8) Min(y Float32x8) Float32x8
 
-func (x Float32x16) Mul(y Float32x16) Float32x16
+func (x Float32x16) Min(y Float32x16) Float32x16
 
 func (x Float32x4) Mul(y Float32x4) Float32x4
 
 func (x Float32x8) Mul(y Float32x8) Float32x8
 
-func (x Float32x16) MulAdd(y Float32x16, z Float32x16) Float32x16
+func (x Float32x16) Mul(y Float32x16) Float32x16
 
 func (x Float32x4) MulAdd(y Float32x4, z Float32x4) Float32x4
 
 func (x Float32x8) MulAdd(y Float32x8, z Float32x8) Float32x8
 
-func (x Float32x16) Neg() Float32x16
+func (x Float32x16) MulAdd(y Float32x16, z Float32x16) Float32x16
 
 func (x Float32x4) Neg() Float32x4
 
 func (x Float32x8) Neg() Float32x8
 
-func (x Float32x16) NotEqual(y Float32x16) Mask32x16
+func (x Float32x16) Neg() Float32x16
 
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
 
 func (x Float32x8) NotEqual(y Float32x8) Mask32x8
 
-func (x Float32x16) Sqrt() Float32x16
+func (x Float32x16) NotEqual(y Float32x16) Mask32x16
+
+func (x Float32x4) ReduceSum() float32
+
+func (x Float32x8) ReduceSum() float32
+
+func (x Float32x16) ReduceSum() float32
 
 func (x Float32x4) Sqrt() Float32x4
 
 func (x Float32x8) Sqrt() Float32x8
 
-func (x Float32x16) Store(s []float32)
+func (x Float32x16) Sqrt() Float32x16
 
 func (x Float32x4) Store(s []float32)
 
 func (x Float32x8) Store(s []float32)
 
-func (x Float32x16) StorePart(s []float32) int
+func (x Float32x16) Store(s []float32)
 
 func (x Float32x4) StorePart(s []float32) int
 
 func (x Float32x8) StorePart(s []float32) int
 
-func (x Float32x16) String() string
+func (x Float32x16) StorePart(s []float32) int
 
 func (x Float32x4) String() string
 
 func (x Float32x8) String() string
 
-func (x Float32x16) Sub(y Float32x16) Float32x16
+func (x Float32x16) String() string
 
 func (x Float32x4) Sub(y Float32x4) Float32x4
 
 func (x Float32x8) Sub(y Float32x8) Float32x8
 
-func (x Float32x16) ToBits() Uint32x16
+func (x Float32x16) Sub(y Float32x16) Float32x16
 
 func (x Float32x4) ToBits() Uint32x4
 
 func (x Float32x8) ToBits() Uint32x8
+
+func (x Float32x16) ToBits() Uint32x16
 
 func (x Float64x2) Abs() Float64x2
 
@@ -1962,6 +1968,12 @@ func (x Float64x4) NotEqual(y Float64x4) Mask64x4
 
 func (x Float64x8) NotEqual(y Float64x8) Mask64x8
 
+func (x Float64x2) ReduceSum() float64
+
+func (x Float64x4) ReduceSum() float64
+
+func (x Float64x8) ReduceSum() float64
+
 func (x Float64x2) Sqrt() Float64x2
 
 func (x Float64x4) Sqrt() Float64x4
@@ -2022,53 +2034,53 @@ func (x Mask8x32) ToInt8s() Int8x32
 
 func (x Mask8x64) ToInt8s() Int8x64
 
+func (x Mask16x8) And(y Mask16x8) Mask16x8
+
 func (x Mask16x16) And(y Mask16x16) Mask16x16
 
 func (x Mask16x32) And(y Mask16x32) Mask16x32
 
-func (x Mask16x8) And(y Mask16x8) Mask16x8
+func (x Mask16x8) Or(y Mask16x8) Mask16x8
 
 func (x Mask16x16) Or(y Mask16x16) Mask16x16
 
 func (x Mask16x32) Or(y Mask16x32) Mask16x32
 
-func (x Mask16x8) Or(y Mask16x8) Mask16x8
+func (x Mask16x8) String() string
 
 func (x Mask16x16) String() string
 
 func (x Mask16x32) String() string
 
-func (x Mask16x8) String() string
+func (x Mask16x8) ToInt16s() Int16x8
 
 func (x Mask16x16) ToInt16s() Int16x16
 
 func (x Mask16x32) ToInt16s() Int16x32
 
-func (x Mask16x8) ToInt16s() Int16x8
-
-func (x Mask32x16) And(y Mask32x16) Mask32x16
-
 func (x Mask32x4) And(y Mask32x4) Mask32x4
 
 func (x Mask32x8) And(y Mask32x8) Mask32x8
 
-func (x Mask32x16) Or(y Mask32x16) Mask32x16
+func (x Mask32x16) And(y Mask32x16) Mask32x16
 
 func (x Mask32x4) Or(y Mask32x4) Mask32x4
 
 func (x Mask32x8) Or(y Mask32x8) Mask32x8
 
-func (x Mask32x16) String() string
+func (x Mask32x16) Or(y Mask32x16) Mask32x16
 
 func (x Mask32x4) String() string
 
 func (x Mask32x8) String() string
 
-func (x Mask32x16) ToInt32s() Int32x16
+func (x Mask32x16) String() string
 
 func (x Mask32x4) ToInt32s() Int32x4
 
 func (x Mask32x8) ToInt32s() Int32x8
+
+func (x Mask32x16) ToInt32s() Int32x16
 
 func (x Mask64x2) And(y Mask64x2) Mask64x2
 

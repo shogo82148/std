@@ -125,3 +125,93 @@ func (x Float32x16) ReduceSum() float32
 //
 // Emulated, CPU Feature: AVX512
 func (x Float64x8) ReduceSum() float64
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Int16x8) ReduceSum() int16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Uint16x8) ReduceSum() uint16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Int32x4) ReduceSum() int32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Uint32x4) ReduceSum() uint32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Int16x16) ReduceSum() int16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint16x16) ReduceSum() uint16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Int32x8) ReduceSum() int32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint32x8) ReduceSum() uint32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Int16x32) ReduceSum() int16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint16x32) ReduceSum() uint16
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Int32x16) ReduceSum() int32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint32x16) ReduceSum() uint32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Int8x16) ReduceSum() int8
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Uint8x16) ReduceSum() uint8
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Int8x32) ReduceSum() int8
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint8x32) ReduceSum() uint8
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Int8x64) ReduceSum() int8
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint8x64) ReduceSum() uint8

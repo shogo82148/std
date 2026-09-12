@@ -36,6 +36,8 @@ type FD struct {
 	// The file offset for the next read or write.
 	// Overlapped IO operations don't use the real file pointer,
 	// so we need to keep track of the offset ourselves.
+	// Read and Write only use this for kindFile.
+	// Protected by both the read and write locks.
 	offset int64
 
 	// For console I/O.
@@ -47,8 +49,8 @@ type FD struct {
 	// Semaphore signaled when file is closed.
 	csema uint32
 
-	// Don't wait from completion port notifications for successful
-	// operations that complete synchronously.
+	// Whether to wait for an IOCP completion packet for operations that
+	// complete synchronously. Only used while associated is true.
 	waitOnSuccess bool
 
 	// Whether this is a streaming descriptor, as opposed to a
@@ -58,6 +60,10 @@ type FD struct {
 	// Whether a zero byte read indicates EOF. This is false for a
 	// message based socket connection.
 	ZeroReadIsEOF bool
+
+	// KeepFileCompletionModes prevents Init from changing the file object's
+	// completion notification modes.
+	KeepFileCompletionModes bool
 
 	// Whether the handle is owned by os.File.
 	isFile bool
@@ -80,10 +86,10 @@ type FD struct {
 // Init initializes the FD. The Sysfd field should already be set.
 // This can be called multiple times on a single FD.
 // The net argument is a network name from the net package (e.g., "tcp"),
-// or "file" or "console" or "dir".
-// Set pollable to true if fd should be managed by runtime netpoll.
-// Pollable must be set to true for overlapped fds.
-func (fd *FD) Init(net string, pollable bool) error
+// or "file", "console", or "pipe".
+// The overlapped argument reports whether the handle was opened for overlapped I/O.
+// Such handles use the runtime poller when possible, or explicit events otherwise.
+func (fd *FD) Init(net string, overlapped bool) error
 
 // DisassociateIOCP disassociates the file handle from the IOCP.
 // The disassociate operation will not succeed if there is any

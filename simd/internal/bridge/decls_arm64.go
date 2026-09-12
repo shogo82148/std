@@ -14,6 +14,14 @@ func LoadFloat32x4Part(s []float32) (Float32x4, int)
 
 func BroadcastFloat32x4(x float32) Float32x4
 
+type Float32x4nclm archsimd.Float32x4
+
+func LoadFloat32x4nclm(s []float32) Float32x4nclm
+
+func LoadFloat32x4nclmPart(s []float32) (Float32x4nclm, int)
+
+func BroadcastFloat32x4nclm(x float32) Float32x4nclm
+
 type Float64x2 archsimd.Float64x2
 
 func LoadFloat64x2(s []float64) Float64x2
@@ -22,29 +30,13 @@ func LoadFloat64x2Part(s []float64) (Float64x2, int)
 
 func BroadcastFloat64x2(x float64) Float64x2
 
-type Int16x8 archsimd.Int16x8
+type Float64x2nclm archsimd.Float64x2
 
-func LoadInt16x8(s []int16) Int16x8
+func LoadFloat64x2nclm(s []float64) Float64x2nclm
 
-func LoadInt16x8Part(s []int16) (Int16x8, int)
+func LoadFloat64x2nclmPart(s []float64) (Float64x2nclm, int)
 
-func BroadcastInt16x8(x int16) Int16x8
-
-type Int32x4 archsimd.Int32x4
-
-func LoadInt32x4(s []int32) Int32x4
-
-func LoadInt32x4Part(s []int32) (Int32x4, int)
-
-func BroadcastInt32x4(x int32) Int32x4
-
-type Int64x2 archsimd.Int64x2
-
-func LoadInt64x2(s []int64) Int64x2
-
-func LoadInt64x2Part(s []int64) (Int64x2, int)
-
-func BroadcastInt64x2(x int64) Int64x2
+func BroadcastFloat64x2nclm(x float64) Float64x2nclm
 
 type Int8x16 archsimd.Int8x16
 
@@ -54,10 +46,86 @@ func LoadInt8x16Part(s []int8) (Int8x16, int)
 
 func BroadcastInt8x16(x int8) Int8x16
 
-type Mask16x8 archsimd.Mask16x8
-type Mask32x4 archsimd.Mask32x4
-type Mask64x2 archsimd.Mask64x2
+type Int8x16nclm archsimd.Int8x16
+
+func LoadInt8x16nclm(s []int8) Int8x16nclm
+
+func LoadInt8x16nclmPart(s []int8) (Int8x16nclm, int)
+
+func BroadcastInt8x16nclm(x int8) Int8x16nclm
+
+type Int16x8 archsimd.Int16x8
+
+func LoadInt16x8(s []int16) Int16x8
+
+func LoadInt16x8Part(s []int16) (Int16x8, int)
+
+func BroadcastInt16x8(x int16) Int16x8
+
+type Int16x8nclm archsimd.Int16x8
+
+func LoadInt16x8nclm(s []int16) Int16x8nclm
+
+func LoadInt16x8nclmPart(s []int16) (Int16x8nclm, int)
+
+func BroadcastInt16x8nclm(x int16) Int16x8nclm
+
+type Int32x4 archsimd.Int32x4
+
+func LoadInt32x4(s []int32) Int32x4
+
+func LoadInt32x4Part(s []int32) (Int32x4, int)
+
+func BroadcastInt32x4(x int32) Int32x4
+
+type Int32x4nclm archsimd.Int32x4
+
+func LoadInt32x4nclm(s []int32) Int32x4nclm
+
+func LoadInt32x4nclmPart(s []int32) (Int32x4nclm, int)
+
+func BroadcastInt32x4nclm(x int32) Int32x4nclm
+
+type Int64x2 archsimd.Int64x2
+
+func LoadInt64x2(s []int64) Int64x2
+
+func LoadInt64x2Part(s []int64) (Int64x2, int)
+
+func BroadcastInt64x2(x int64) Int64x2
+
+type Int64x2nclm archsimd.Int64x2
+
+func LoadInt64x2nclm(s []int64) Int64x2nclm
+
+func LoadInt64x2nclmPart(s []int64) (Int64x2nclm, int)
+
+func BroadcastInt64x2nclm(x int64) Int64x2nclm
+
 type Mask8x16 archsimd.Mask8x16
+type Mask8x16nclm archsimd.Mask8x16
+type Mask16x8 archsimd.Mask16x8
+type Mask16x8nclm archsimd.Mask16x8
+type Mask32x4 archsimd.Mask32x4
+type Mask32x4nclm archsimd.Mask32x4
+type Mask64x2 archsimd.Mask64x2
+type Mask64x2nclm archsimd.Mask64x2
+type Uint8x16 archsimd.Uint8x16
+
+func LoadUint8x16(s []uint8) Uint8x16
+
+func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
+
+type Uint8x16nclm archsimd.Uint8x16
+
+func LoadUint8x16nclm(s []uint8) Uint8x16nclm
+
+func LoadUint8x16nclmPart(s []uint8) (Uint8x16nclm, int)
+
+func BroadcastUint8x16nclm(x uint8) Uint8x16nclm
+
 type Uint16x8 archsimd.Uint16x8
 
 func LoadUint16x8(s []uint16) Uint16x8
@@ -65,6 +133,14 @@ func LoadUint16x8(s []uint16) Uint16x8
 func LoadUint16x8Part(s []uint16) (Uint16x8, int)
 
 func BroadcastUint16x8(x uint16) Uint16x8
+
+type Uint16x8nclm archsimd.Uint16x8
+
+func LoadUint16x8nclm(s []uint16) Uint16x8nclm
+
+func LoadUint16x8nclmPart(s []uint16) (Uint16x8nclm, int)
+
+func BroadcastUint16x8nclm(x uint16) Uint16x8nclm
 
 type Uint32x4 archsimd.Uint32x4
 
@@ -74,6 +150,14 @@ func LoadUint32x4Part(s []uint32) (Uint32x4, int)
 
 func BroadcastUint32x4(x uint32) Uint32x4
 
+type Uint32x4nclm archsimd.Uint32x4
+
+func LoadUint32x4nclm(s []uint32) Uint32x4nclm
+
+func LoadUint32x4nclmPart(s []uint32) (Uint32x4nclm, int)
+
+func BroadcastUint32x4nclm(x uint32) Uint32x4nclm
+
 type Uint64x2 archsimd.Uint64x2
 
 func LoadUint64x2(s []uint64) Uint64x2
@@ -82,447 +166,881 @@ func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
 func BroadcastUint64x2(x uint64) Uint64x2
 
-type Uint8x16 archsimd.Uint8x16
+type Uint64x2nclm archsimd.Uint64x2
 
-func LoadUint8x16(s []uint8) Uint8x16
+func LoadUint64x2nclm(s []uint64) Uint64x2nclm
 
-func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+func LoadUint64x2nclmPart(s []uint64) (Uint64x2nclm, int)
 
-func BroadcastUint8x16(x uint8) Uint8x16
+func BroadcastUint64x2nclm(x uint64) Uint64x2nclm
 
 func (x Int8x16) Abs() Int8x16
 
+func (x Int8x16nclm) Abs() Int8x16nclm
+
 func (x Int8x16) Add(y Int8x16) Int8x16
+
+func (x Int8x16nclm) Add(y Int8x16nclm) Int8x16nclm
 
 func (x Int8x16) AddSaturated(y Int8x16) Int8x16
 
+func (x Int8x16nclm) AddSaturated(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) And(y Int8x16) Int8x16
+
+func (x Int8x16nclm) And(y Int8x16nclm) Int8x16nclm
 
 func (x Int8x16) AndNot(y Int8x16) Int8x16
 
+func (x Int8x16nclm) AndNot(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) ConvertToUint8() Uint8x16
+
+func (x Int8x16nclm) ConvertToUint8() Uint8x16nclm
 
 func (x Int8x16) Equal(y Int8x16) Mask8x16
 
+func (x Int8x16nclm) Equal(y Int8x16nclm) Mask8x16nclm
+
 func (x Int8x16) Greater(y Int8x16) Mask8x16
+
+func (x Int8x16nclm) Greater(y Int8x16nclm) Mask8x16nclm
 
 func (x Int8x16) GreaterEqual(y Int8x16) Mask8x16
 
+func (x Int8x16nclm) GreaterEqual(y Int8x16nclm) Mask8x16nclm
+
 func (x Int8x16) IfElse(mask Mask8x16, y Int8x16) Int8x16
+
+func (x Int8x16nclm) IfElse(mask Mask8x16nclm, y Int8x16nclm) Int8x16nclm
 
 func (x Int8x16) Len() int
 
+func (x Int8x16nclm) Len() int
+
 func (x Int8x16) Less(y Int8x16) Mask8x16
+
+func (x Int8x16nclm) Less(y Int8x16nclm) Mask8x16nclm
 
 func (x Int8x16) LessEqual(y Int8x16) Mask8x16
 
+func (x Int8x16nclm) LessEqual(y Int8x16nclm) Mask8x16nclm
+
 func (x Int8x16) Masked(mask Mask8x16) Int8x16
+
+func (x Int8x16nclm) Masked(mask Mask8x16nclm) Int8x16nclm
 
 func (x Int8x16) Max(y Int8x16) Int8x16
 
+func (x Int8x16nclm) Max(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) Min(y Int8x16) Int8x16
+
+func (x Int8x16nclm) Min(y Int8x16nclm) Int8x16nclm
 
 func (x Int8x16) Mul(y Int8x16) Int8x16
 
+func (x Int8x16nclm) Mul(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) Neg() Int8x16
+
+func (x Int8x16nclm) Neg() Int8x16nclm
 
 func (x Int8x16) Not() Int8x16
 
+func (x Int8x16nclm) Not() Int8x16nclm
+
 func (x Int8x16) NotEqual(y Int8x16) Mask8x16
+
+func (x Int8x16nclm) NotEqual(y Int8x16nclm) Mask8x16nclm
 
 func (x Int8x16) Or(y Int8x16) Int8x16
 
+func (x Int8x16nclm) Or(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) Store(s []int8)
+
+func (x Int8x16nclm) Store(s []int8)
 
 func (x Int8x16) StorePart(s []int8) int
 
+func (x Int8x16nclm) StorePart(s []int8) int
+
 func (x Int8x16) String() string
+
+func (x Int8x16nclm) String() string
 
 func (x Int8x16) Sub(y Int8x16) Int8x16
 
+func (x Int8x16nclm) Sub(y Int8x16nclm) Int8x16nclm
+
 func (x Int8x16) SubSaturated(y Int8x16) Int8x16
+
+func (x Int8x16nclm) SubSaturated(y Int8x16nclm) Int8x16nclm
 
 func (x Int8x16) ToBits() Uint8x16
 
+func (x Int8x16nclm) ToBits() Uint8x16nclm
+
 func (x Int8x16) ToMask() Mask8x16
+
+func (x Int8x16nclm) ToMask() Mask8x16nclm
 
 func (x Int8x16) Xor(y Int8x16) Int8x16
 
+func (x Int8x16nclm) Xor(y Int8x16nclm) Int8x16nclm
+
 func (x Int16x8) Abs() Int16x8
+
+func (x Int16x8nclm) Abs() Int16x8nclm
 
 func (x Int16x8) Add(y Int16x8) Int16x8
 
+func (x Int16x8nclm) Add(y Int16x8nclm) Int16x8nclm
+
 func (x Int16x8) AddSaturated(y Int16x8) Int16x8
+
+func (x Int16x8nclm) AddSaturated(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) And(y Int16x8) Int16x8
 
+func (x Int16x8nclm) And(y Int16x8nclm) Int16x8nclm
+
 func (x Int16x8) AndNot(y Int16x8) Int16x8
+
+func (x Int16x8nclm) AndNot(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) ConvertToUint16() Uint16x8
 
+func (x Int16x8nclm) ConvertToUint16() Uint16x8nclm
+
 func (x Int16x8) Equal(y Int16x8) Mask16x8
+
+func (x Int16x8nclm) Equal(y Int16x8nclm) Mask16x8nclm
 
 func (x Int16x8) Greater(y Int16x8) Mask16x8
 
+func (x Int16x8nclm) Greater(y Int16x8nclm) Mask16x8nclm
+
 func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
+
+func (x Int16x8nclm) GreaterEqual(y Int16x8nclm) Mask16x8nclm
 
 func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
 
+func (x Int16x8nclm) IfElse(mask Mask16x8nclm, y Int16x8nclm) Int16x8nclm
+
 func (x Int16x8) Len() int
+
+func (x Int16x8nclm) Len() int
 
 func (x Int16x8) Less(y Int16x8) Mask16x8
 
+func (x Int16x8nclm) Less(y Int16x8nclm) Mask16x8nclm
+
 func (x Int16x8) LessEqual(y Int16x8) Mask16x8
+
+func (x Int16x8nclm) LessEqual(y Int16x8nclm) Mask16x8nclm
 
 func (x Int16x8) Masked(mask Mask16x8) Int16x8
 
+func (x Int16x8nclm) Masked(mask Mask16x8nclm) Int16x8nclm
+
 func (x Int16x8) Max(y Int16x8) Int16x8
+
+func (x Int16x8nclm) Max(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) Min(y Int16x8) Int16x8
 
+func (x Int16x8nclm) Min(y Int16x8nclm) Int16x8nclm
+
 func (x Int16x8) Mul(y Int16x8) Int16x8
+
+func (x Int16x8nclm) Mul(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) Neg() Int16x8
 
+func (x Int16x8nclm) Neg() Int16x8nclm
+
 func (x Int16x8) Not() Int16x8
+
+func (x Int16x8nclm) Not() Int16x8nclm
 
 func (x Int16x8) NotEqual(y Int16x8) Mask16x8
 
+func (x Int16x8nclm) NotEqual(y Int16x8nclm) Mask16x8nclm
+
 func (x Int16x8) Or(y Int16x8) Int16x8
+
+func (x Int16x8nclm) Or(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
 
+func (x Int16x8nclm) RotateAllLeft(dist uint64) Int16x8nclm
+
 func (x Int16x8) RotateAllRight(dist uint64) Int16x8
+
+func (x Int16x8nclm) RotateAllRight(dist uint64) Int16x8nclm
 
 func (x Int16x8) ShiftAllLeft(y uint64) Int16x8
 
+func (x Int16x8nclm) ShiftAllLeft(y uint64) Int16x8nclm
+
 func (x Int16x8) ShiftAllRight(y uint64) Int16x8
+
+func (x Int16x8nclm) ShiftAllRight(y uint64) Int16x8nclm
 
 func (x Int16x8) Store(s []int16)
 
+func (x Int16x8nclm) Store(s []int16)
+
 func (x Int16x8) StorePart(s []int16) int
+
+func (x Int16x8nclm) StorePart(s []int16) int
 
 func (x Int16x8) String() string
 
+func (x Int16x8nclm) String() string
+
 func (x Int16x8) Sub(y Int16x8) Int16x8
+
+func (x Int16x8nclm) Sub(y Int16x8nclm) Int16x8nclm
 
 func (x Int16x8) SubSaturated(y Int16x8) Int16x8
 
+func (x Int16x8nclm) SubSaturated(y Int16x8nclm) Int16x8nclm
+
 func (x Int16x8) ToBits() Uint16x8
+
+func (x Int16x8nclm) ToBits() Uint16x8nclm
 
 func (x Int16x8) ToMask() Mask16x8
 
+func (x Int16x8nclm) ToMask() Mask16x8nclm
+
 func (x Int16x8) Xor(y Int16x8) Int16x8
+
+func (x Int16x8nclm) Xor(y Int16x8nclm) Int16x8nclm
 
 func (x Int32x4) Abs() Int32x4
 
+func (x Int32x4nclm) Abs() Int32x4nclm
+
 func (x Int32x4) Add(y Int32x4) Int32x4
+
+func (x Int32x4nclm) Add(y Int32x4nclm) Int32x4nclm
 
 func (x Int32x4) And(y Int32x4) Int32x4
 
+func (x Int32x4nclm) And(y Int32x4nclm) Int32x4nclm
+
 func (x Int32x4) AndNot(y Int32x4) Int32x4
+
+func (x Int32x4nclm) AndNot(y Int32x4nclm) Int32x4nclm
 
 func (x Int32x4) ConvertToFloat32() Float32x4
 
+func (x Int32x4nclm) ConvertToFloat32() Float32x4nclm
+
 func (x Int32x4) ConvertToUint32() Uint32x4
+
+func (x Int32x4nclm) ConvertToUint32() Uint32x4nclm
 
 func (x Int32x4) Equal(y Int32x4) Mask32x4
 
+func (x Int32x4nclm) Equal(y Int32x4nclm) Mask32x4nclm
+
 func (x Int32x4) Greater(y Int32x4) Mask32x4
+
+func (x Int32x4nclm) Greater(y Int32x4nclm) Mask32x4nclm
 
 func (x Int32x4) GreaterEqual(y Int32x4) Mask32x4
 
+func (x Int32x4nclm) GreaterEqual(y Int32x4nclm) Mask32x4nclm
+
 func (x Int32x4) IfElse(mask Mask32x4, y Int32x4) Int32x4
+
+func (x Int32x4nclm) IfElse(mask Mask32x4nclm, y Int32x4nclm) Int32x4nclm
 
 func (x Int32x4) Len() int
 
+func (x Int32x4nclm) Len() int
+
 func (x Int32x4) Less(y Int32x4) Mask32x4
+
+func (x Int32x4nclm) Less(y Int32x4nclm) Mask32x4nclm
 
 func (x Int32x4) LessEqual(y Int32x4) Mask32x4
 
+func (x Int32x4nclm) LessEqual(y Int32x4nclm) Mask32x4nclm
+
 func (x Int32x4) Masked(mask Mask32x4) Int32x4
+
+func (x Int32x4nclm) Masked(mask Mask32x4nclm) Int32x4nclm
 
 func (x Int32x4) Max(y Int32x4) Int32x4
 
+func (x Int32x4nclm) Max(y Int32x4nclm) Int32x4nclm
+
 func (x Int32x4) Min(y Int32x4) Int32x4
+
+func (x Int32x4nclm) Min(y Int32x4nclm) Int32x4nclm
 
 func (x Int32x4) Mul(y Int32x4) Int32x4
 
+func (x Int32x4nclm) Mul(y Int32x4nclm) Int32x4nclm
+
 func (x Int32x4) Neg() Int32x4
+
+func (x Int32x4nclm) Neg() Int32x4nclm
 
 func (x Int32x4) Not() Int32x4
 
+func (x Int32x4nclm) Not() Int32x4nclm
+
 func (x Int32x4) NotEqual(y Int32x4) Mask32x4
+
+func (x Int32x4nclm) NotEqual(y Int32x4nclm) Mask32x4nclm
 
 func (x Int32x4) Or(y Int32x4) Int32x4
 
+func (x Int32x4nclm) Or(y Int32x4nclm) Int32x4nclm
+
 func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
+
+func (x Int32x4nclm) RotateAllLeft(dist uint64) Int32x4nclm
 
 func (x Int32x4) RotateAllRight(dist uint64) Int32x4
 
+func (x Int32x4nclm) RotateAllRight(dist uint64) Int32x4nclm
+
 func (x Int32x4) ShiftAllLeft(y uint64) Int32x4
+
+func (x Int32x4nclm) ShiftAllLeft(y uint64) Int32x4nclm
 
 func (x Int32x4) ShiftAllRight(y uint64) Int32x4
 
+func (x Int32x4nclm) ShiftAllRight(y uint64) Int32x4nclm
+
 func (x Int32x4) Store(s []int32)
+
+func (x Int32x4nclm) Store(s []int32)
 
 func (x Int32x4) StorePart(s []int32) int
 
+func (x Int32x4nclm) StorePart(s []int32) int
+
 func (x Int32x4) String() string
+
+func (x Int32x4nclm) String() string
 
 func (x Int32x4) Sub(y Int32x4) Int32x4
 
+func (x Int32x4nclm) Sub(y Int32x4nclm) Int32x4nclm
+
 func (x Int32x4) ToBits() Uint32x4
+
+func (x Int32x4nclm) ToBits() Uint32x4nclm
 
 func (x Int32x4) ToMask() Mask32x4
 
+func (x Int32x4nclm) ToMask() Mask32x4nclm
+
 func (x Int32x4) Xor(y Int32x4) Int32x4
+
+func (x Int32x4nclm) Xor(y Int32x4nclm) Int32x4nclm
 
 func (x Int64x2) Add(y Int64x2) Int64x2
 
+func (x Int64x2nclm) Add(y Int64x2nclm) Int64x2nclm
+
 func (x Int64x2) And(y Int64x2) Int64x2
+
+func (x Int64x2nclm) And(y Int64x2nclm) Int64x2nclm
 
 func (x Int64x2) AndNot(y Int64x2) Int64x2
 
+func (x Int64x2nclm) AndNot(y Int64x2nclm) Int64x2nclm
+
 func (x Int64x2) ConvertToUint64() Uint64x2
+
+func (x Int64x2nclm) ConvertToUint64() Uint64x2nclm
 
 func (x Int64x2) Equal(y Int64x2) Mask64x2
 
+func (x Int64x2nclm) Equal(y Int64x2nclm) Mask64x2nclm
+
 func (x Int64x2) Greater(y Int64x2) Mask64x2
+
+func (x Int64x2nclm) Greater(y Int64x2nclm) Mask64x2nclm
 
 func (x Int64x2) GreaterEqual(y Int64x2) Mask64x2
 
+func (x Int64x2nclm) GreaterEqual(y Int64x2nclm) Mask64x2nclm
+
 func (x Int64x2) IfElse(mask Mask64x2, y Int64x2) Int64x2
+
+func (x Int64x2nclm) IfElse(mask Mask64x2nclm, y Int64x2nclm) Int64x2nclm
 
 func (x Int64x2) Len() int
 
+func (x Int64x2nclm) Len() int
+
 func (x Int64x2) Less(y Int64x2) Mask64x2
+
+func (x Int64x2nclm) Less(y Int64x2nclm) Mask64x2nclm
 
 func (x Int64x2) LessEqual(y Int64x2) Mask64x2
 
+func (x Int64x2nclm) LessEqual(y Int64x2nclm) Mask64x2nclm
+
 func (x Int64x2) Masked(mask Mask64x2) Int64x2
+
+func (x Int64x2nclm) Masked(mask Mask64x2nclm) Int64x2nclm
 
 func (x Int64x2) Neg() Int64x2
 
+func (x Int64x2nclm) Neg() Int64x2nclm
+
 func (x Int64x2) Not() Int64x2
+
+func (x Int64x2nclm) Not() Int64x2nclm
 
 func (x Int64x2) NotEqual(y Int64x2) Mask64x2
 
+func (x Int64x2nclm) NotEqual(y Int64x2nclm) Mask64x2nclm
+
 func (x Int64x2) Or(y Int64x2) Int64x2
+
+func (x Int64x2nclm) Or(y Int64x2nclm) Int64x2nclm
 
 func (x Int64x2) RotateAllLeft(dist uint64) Int64x2
 
+func (x Int64x2nclm) RotateAllLeft(dist uint64) Int64x2nclm
+
 func (x Int64x2) RotateAllRight(dist uint64) Int64x2
+
+func (x Int64x2nclm) RotateAllRight(dist uint64) Int64x2nclm
 
 func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
 
+func (x Int64x2nclm) ShiftAllLeft(y uint64) Int64x2nclm
+
 func (x Int64x2) Store(s []int64)
+
+func (x Int64x2nclm) Store(s []int64)
 
 func (x Int64x2) StorePart(s []int64) int
 
+func (x Int64x2nclm) StorePart(s []int64) int
+
 func (x Int64x2) String() string
+
+func (x Int64x2nclm) String() string
 
 func (x Int64x2) Sub(y Int64x2) Int64x2
 
+func (x Int64x2nclm) Sub(y Int64x2nclm) Int64x2nclm
+
 func (x Int64x2) ToBits() Uint64x2
+
+func (x Int64x2nclm) ToBits() Uint64x2nclm
 
 func (x Int64x2) ToMask() Mask64x2
 
+func (x Int64x2nclm) ToMask() Mask64x2nclm
+
 func (x Int64x2) Xor(y Int64x2) Int64x2
+
+func (x Int64x2nclm) Xor(y Int64x2nclm) Int64x2nclm
 
 func (x Uint8x16) Add(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) Add(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) AddSaturated(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) AddSaturated(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint8x16) And(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) And(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) AndNot(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) AndNot(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint8x16) Average(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) Average(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) BitsToInt8() Int8x16
+
+func (x Uint8x16nclm) BitsToInt8() Int8x16nclm
 
 func (x Uint8x16) ConvertToInt8() Int8x16
 
+func (x Uint8x16nclm) ConvertToInt8() Int8x16nclm
+
 func (x Uint8x16) Equal(y Uint8x16) Mask8x16
+
+func (x Uint8x16nclm) Equal(y Uint8x16nclm) Mask8x16nclm
 
 func (x Uint8x16) IfElse(mask Mask8x16, y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) IfElse(mask Mask8x16nclm, y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) Len() int
+
+func (x Uint8x16nclm) Len() int
 
 func (x Uint8x16) Masked(mask Mask8x16) Uint8x16
 
+func (x Uint8x16nclm) Masked(mask Mask8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) Max(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) Max(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint8x16) Min(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) Min(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) Mul(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) Mul(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint8x16) Not() Uint8x16
 
+func (x Uint8x16nclm) Not() Uint8x16nclm
+
 func (x Uint8x16) NotEqual(y Uint8x16) Mask8x16
+
+func (x Uint8x16nclm) NotEqual(y Uint8x16nclm) Mask8x16nclm
 
 func (x Uint8x16) Or(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) Or(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) ReshapeToUint16s() Uint16x8
+
+func (x Uint8x16nclm) ReshapeToUint16s() Uint16x8nclm
 
 func (x Uint8x16) ReshapeToUint32s() Uint32x4
 
+func (x Uint8x16nclm) ReshapeToUint32s() Uint32x4nclm
+
 func (x Uint8x16) ReshapeToUint64s() Uint64x2
+
+func (x Uint8x16nclm) ReshapeToUint64s() Uint64x2nclm
 
 func (x Uint8x16) Store(s []uint8)
 
+func (x Uint8x16nclm) Store(s []uint8)
+
 func (x Uint8x16) StorePart(s []uint8) int
+
+func (x Uint8x16nclm) StorePart(s []uint8) int
 
 func (x Uint8x16) String() string
 
+func (x Uint8x16nclm) String() string
+
 func (x Uint8x16) Sub(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) Sub(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint8x16) SubSaturated(y Uint8x16) Uint8x16
 
+func (x Uint8x16nclm) SubSaturated(y Uint8x16nclm) Uint8x16nclm
+
 func (x Uint8x16) Xor(y Uint8x16) Uint8x16
+
+func (x Uint8x16nclm) Xor(y Uint8x16nclm) Uint8x16nclm
 
 func (x Uint16x8) Add(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) Add(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) AddSaturated(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) AddSaturated(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint16x8) And(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) And(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) AndNot(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) AndNot(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint16x8) Average(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) Average(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) BitsToInt16() Int16x8
+
+func (x Uint16x8nclm) BitsToInt16() Int16x8nclm
 
 func (x Uint16x8) ConvertToInt16() Int16x8
 
+func (x Uint16x8nclm) ConvertToInt16() Int16x8nclm
+
 func (x Uint16x8) Equal(y Uint16x8) Mask16x8
+
+func (x Uint16x8nclm) Equal(y Uint16x8nclm) Mask16x8nclm
 
 func (x Uint16x8) Greater(y Uint16x8) Mask16x8
 
+func (x Uint16x8nclm) Greater(y Uint16x8nclm) Mask16x8nclm
+
 func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
+
+func (x Uint16x8nclm) GreaterEqual(y Uint16x8nclm) Mask16x8nclm
 
 func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) IfElse(mask Mask16x8nclm, y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) Len() int
+
+func (x Uint16x8nclm) Len() int
 
 func (x Uint16x8) Less(y Uint16x8) Mask16x8
 
+func (x Uint16x8nclm) Less(y Uint16x8nclm) Mask16x8nclm
+
 func (x Uint16x8) LessEqual(y Uint16x8) Mask16x8
+
+func (x Uint16x8nclm) LessEqual(y Uint16x8nclm) Mask16x8nclm
 
 func (x Uint16x8) Masked(mask Mask16x8) Uint16x8
 
+func (x Uint16x8nclm) Masked(mask Mask16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) Max(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) Max(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint16x8) Min(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) Min(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) Mul(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) Mul(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint16x8) Not() Uint16x8
 
+func (x Uint16x8nclm) Not() Uint16x8nclm
+
 func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
+
+func (x Uint16x8nclm) NotEqual(y Uint16x8nclm) Mask16x8nclm
 
 func (x Uint16x8) Or(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) Or(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) ReshapeToUint32s() Uint32x4
+
+func (x Uint16x8nclm) ReshapeToUint32s() Uint32x4nclm
 
 func (x Uint16x8) ReshapeToUint64s() Uint64x2
 
+func (x Uint16x8nclm) ReshapeToUint64s() Uint64x2nclm
+
 func (x Uint16x8) ReshapeToUint8s() Uint8x16
+
+func (x Uint16x8nclm) ReshapeToUint8s() Uint8x16nclm
 
 func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
 
+func (x Uint16x8nclm) RotateAllLeft(dist uint64) Uint16x8nclm
+
 func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
+
+func (x Uint16x8nclm) RotateAllRight(dist uint64) Uint16x8nclm
 
 func (x Uint16x8) ShiftAllLeft(y uint64) Uint16x8
 
+func (x Uint16x8nclm) ShiftAllLeft(y uint64) Uint16x8nclm
+
 func (x Uint16x8) ShiftAllRight(y uint64) Uint16x8
+
+func (x Uint16x8nclm) ShiftAllRight(y uint64) Uint16x8nclm
 
 func (x Uint16x8) Store(s []uint16)
 
+func (x Uint16x8nclm) Store(s []uint16)
+
 func (x Uint16x8) StorePart(s []uint16) int
+
+func (x Uint16x8nclm) StorePart(s []uint16) int
 
 func (x Uint16x8) String() string
 
+func (x Uint16x8nclm) String() string
+
 func (x Uint16x8) Sub(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) Sub(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint16x8) SubSaturated(y Uint16x8) Uint16x8
 
+func (x Uint16x8nclm) SubSaturated(y Uint16x8nclm) Uint16x8nclm
+
 func (x Uint16x8) Xor(y Uint16x8) Uint16x8
+
+func (x Uint16x8nclm) Xor(y Uint16x8nclm) Uint16x8nclm
 
 func (x Uint32x4) Add(y Uint32x4) Uint32x4
 
+func (x Uint32x4nclm) Add(y Uint32x4nclm) Uint32x4nclm
+
 func (x Uint32x4) And(y Uint32x4) Uint32x4
+
+func (x Uint32x4nclm) And(y Uint32x4nclm) Uint32x4nclm
 
 func (x Uint32x4) AndNot(y Uint32x4) Uint32x4
 
+func (x Uint32x4nclm) AndNot(y Uint32x4nclm) Uint32x4nclm
+
 func (x Uint32x4) BitsToFloat32() Float32x4
+
+func (x Uint32x4nclm) BitsToFloat32() Float32x4nclm
 
 func (x Uint32x4) BitsToInt32() Int32x4
 
+func (x Uint32x4nclm) BitsToInt32() Int32x4nclm
+
 func (x Uint32x4) ConvertToInt32() Int32x4
+
+func (x Uint32x4nclm) ConvertToInt32() Int32x4nclm
 
 func (x Uint32x4) Equal(y Uint32x4) Mask32x4
 
+func (x Uint32x4nclm) Equal(y Uint32x4nclm) Mask32x4nclm
+
 func (x Uint32x4) Greater(y Uint32x4) Mask32x4
+
+func (x Uint32x4nclm) Greater(y Uint32x4nclm) Mask32x4nclm
 
 func (x Uint32x4) GreaterEqual(y Uint32x4) Mask32x4
 
+func (x Uint32x4nclm) GreaterEqual(y Uint32x4nclm) Mask32x4nclm
+
 func (x Uint32x4) IfElse(mask Mask32x4, y Uint32x4) Uint32x4
+
+func (x Uint32x4nclm) IfElse(mask Mask32x4nclm, y Uint32x4nclm) Uint32x4nclm
 
 func (x Uint32x4) Len() int
 
+func (x Uint32x4nclm) Len() int
+
 func (x Uint32x4) Less(y Uint32x4) Mask32x4
+
+func (x Uint32x4nclm) Less(y Uint32x4nclm) Mask32x4nclm
 
 func (x Uint32x4) LessEqual(y Uint32x4) Mask32x4
 
+func (x Uint32x4nclm) LessEqual(y Uint32x4nclm) Mask32x4nclm
+
 func (x Uint32x4) Masked(mask Mask32x4) Uint32x4
+
+func (x Uint32x4nclm) Masked(mask Mask32x4nclm) Uint32x4nclm
 
 func (x Uint32x4) Max(y Uint32x4) Uint32x4
 
+func (x Uint32x4nclm) Max(y Uint32x4nclm) Uint32x4nclm
+
 func (x Uint32x4) Min(y Uint32x4) Uint32x4
+
+func (x Uint32x4nclm) Min(y Uint32x4nclm) Uint32x4nclm
 
 func (x Uint32x4) Mul(y Uint32x4) Uint32x4
 
+func (x Uint32x4nclm) Mul(y Uint32x4nclm) Uint32x4nclm
+
 func (x Uint32x4) Not() Uint32x4
+
+func (x Uint32x4nclm) Not() Uint32x4nclm
 
 func (x Uint32x4) NotEqual(y Uint32x4) Mask32x4
 
+func (x Uint32x4nclm) NotEqual(y Uint32x4nclm) Mask32x4nclm
+
 func (x Uint32x4) Or(y Uint32x4) Uint32x4
+
+func (x Uint32x4nclm) Or(y Uint32x4nclm) Uint32x4nclm
 
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 
+func (x Uint32x4nclm) ReshapeToUint16s() Uint16x8nclm
+
 func (x Uint32x4) ReshapeToUint64s() Uint64x2
+
+func (x Uint32x4nclm) ReshapeToUint64s() Uint64x2nclm
 
 func (x Uint32x4) ReshapeToUint8s() Uint8x16
 
+func (x Uint32x4nclm) ReshapeToUint8s() Uint8x16nclm
+
 func (x Uint32x4) RotateAllLeft(dist uint64) Uint32x4
+
+func (x Uint32x4nclm) RotateAllLeft(dist uint64) Uint32x4nclm
 
 func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
 
+func (x Uint32x4nclm) RotateAllRight(dist uint64) Uint32x4nclm
+
 func (x Uint32x4) ShiftAllLeft(y uint64) Uint32x4
+
+func (x Uint32x4nclm) ShiftAllLeft(y uint64) Uint32x4nclm
 
 func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
 
+func (x Uint32x4nclm) ShiftAllRight(y uint64) Uint32x4nclm
+
 func (x Uint32x4) Store(s []uint32)
+
+func (x Uint32x4nclm) Store(s []uint32)
 
 func (x Uint32x4) StorePart(s []uint32) int
 
+func (x Uint32x4nclm) StorePart(s []uint32) int
+
 func (x Uint32x4) String() string
+
+func (x Uint32x4nclm) String() string
 
 func (x Uint32x4) Sub(y Uint32x4) Uint32x4
 
+func (x Uint32x4nclm) Sub(y Uint32x4nclm) Uint32x4nclm
+
 func (x Uint32x4) Xor(y Uint32x4) Uint32x4
+
+func (x Uint32x4nclm) Xor(y Uint32x4nclm) Uint32x4nclm
 
 func (x Uint64x2) Add(y Uint64x2) Uint64x2
 
+func (x Uint64x2nclm) Add(y Uint64x2nclm) Uint64x2nclm
+
 func (x Uint64x2) And(y Uint64x2) Uint64x2
+
+func (x Uint64x2nclm) And(y Uint64x2nclm) Uint64x2nclm
 
 func (x Uint64x2) AndNot(y Uint64x2) Uint64x2
 
+func (x Uint64x2nclm) AndNot(y Uint64x2nclm) Uint64x2nclm
+
 func (x Uint64x2) BitsToFloat64() Float64x2
 
+func (x Uint64x2nclm) BitsToFloat64() Float64x2nclm
+
 func (x Uint64x2) BitsToInt64() Int64x2
+
+func (x Uint64x2nclm) BitsToInt64() Int64x2nclm
 
 func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
 
@@ -530,174 +1048,356 @@ func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
 
 func (x Uint64x2) ConvertToInt64() Int64x2
 
+func (x Uint64x2nclm) ConvertToInt64() Int64x2nclm
+
 func (x Uint64x2) Equal(y Uint64x2) Mask64x2
+
+func (x Uint64x2nclm) Equal(y Uint64x2nclm) Mask64x2nclm
 
 func (x Uint64x2) Greater(y Uint64x2) Mask64x2
 
+func (x Uint64x2nclm) Greater(y Uint64x2nclm) Mask64x2nclm
+
 func (x Uint64x2) GreaterEqual(y Uint64x2) Mask64x2
+
+func (x Uint64x2nclm) GreaterEqual(y Uint64x2nclm) Mask64x2nclm
 
 func (x Uint64x2) IfElse(mask Mask64x2, y Uint64x2) Uint64x2
 
+func (x Uint64x2nclm) IfElse(mask Mask64x2nclm, y Uint64x2nclm) Uint64x2nclm
+
 func (x Uint64x2) Len() int
+
+func (x Uint64x2nclm) Len() int
 
 func (x Uint64x2) Less(y Uint64x2) Mask64x2
 
+func (x Uint64x2nclm) Less(y Uint64x2nclm) Mask64x2nclm
+
 func (x Uint64x2) LessEqual(y Uint64x2) Mask64x2
+
+func (x Uint64x2nclm) LessEqual(y Uint64x2nclm) Mask64x2nclm
 
 func (x Uint64x2) Masked(mask Mask64x2) Uint64x2
 
+func (x Uint64x2nclm) Masked(mask Mask64x2nclm) Uint64x2nclm
+
 func (x Uint64x2) Not() Uint64x2
+
+func (x Uint64x2nclm) Not() Uint64x2nclm
 
 func (x Uint64x2) NotEqual(y Uint64x2) Mask64x2
 
+func (x Uint64x2nclm) NotEqual(y Uint64x2nclm) Mask64x2nclm
+
 func (x Uint64x2) Or(y Uint64x2) Uint64x2
+
+func (x Uint64x2nclm) Or(y Uint64x2nclm) Uint64x2nclm
 
 func (x Uint64x2) ReshapeToUint16s() Uint16x8
 
+func (x Uint64x2nclm) ReshapeToUint16s() Uint16x8nclm
+
 func (x Uint64x2) ReshapeToUint32s() Uint32x4
+
+func (x Uint64x2nclm) ReshapeToUint32s() Uint32x4nclm
 
 func (x Uint64x2) ReshapeToUint8s() Uint8x16
 
+func (x Uint64x2nclm) ReshapeToUint8s() Uint8x16nclm
+
 func (x Uint64x2) RotateAllLeft(dist uint64) Uint64x2
+
+func (x Uint64x2nclm) RotateAllLeft(dist uint64) Uint64x2nclm
 
 func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
 
+func (x Uint64x2nclm) RotateAllRight(dist uint64) Uint64x2nclm
+
 func (x Uint64x2) ShiftAllLeft(y uint64) Uint64x2
+
+func (x Uint64x2nclm) ShiftAllLeft(y uint64) Uint64x2nclm
 
 func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
 
+func (x Uint64x2nclm) ShiftAllRight(y uint64) Uint64x2nclm
+
 func (x Uint64x2) Store(s []uint64)
+
+func (x Uint64x2nclm) Store(s []uint64)
 
 func (x Uint64x2) StorePart(s []uint64) int
 
+func (x Uint64x2nclm) StorePart(s []uint64) int
+
 func (x Uint64x2) String() string
+
+func (x Uint64x2nclm) String() string
 
 func (x Uint64x2) Sub(y Uint64x2) Uint64x2
 
+func (x Uint64x2nclm) Sub(y Uint64x2nclm) Uint64x2nclm
+
 func (x Uint64x2) Xor(y Uint64x2) Uint64x2
+
+func (x Uint64x2nclm) Xor(y Uint64x2nclm) Uint64x2nclm
 
 func (x Float32x4) Abs() Float32x4
 
+func (x Float32x4nclm) Abs() Float32x4nclm
+
 func (x Float32x4) Add(y Float32x4) Float32x4
+
+func (x Float32x4nclm) Add(y Float32x4nclm) Float32x4nclm
 
 func (x Float32x4) ConvertToInt32() Int32x4
 
+func (x Float32x4nclm) ConvertToInt32() Int32x4nclm
+
 func (x Float32x4) Div(y Float32x4) Float32x4
+
+func (x Float32x4nclm) Div(y Float32x4nclm) Float32x4nclm
 
 func (x Float32x4) Equal(y Float32x4) Mask32x4
 
+func (x Float32x4nclm) Equal(y Float32x4nclm) Mask32x4nclm
+
 func (x Float32x4) Greater(y Float32x4) Mask32x4
+
+func (x Float32x4nclm) Greater(y Float32x4nclm) Mask32x4nclm
 
 func (x Float32x4) GreaterEqual(y Float32x4) Mask32x4
 
+func (x Float32x4nclm) GreaterEqual(y Float32x4nclm) Mask32x4nclm
+
 func (x Float32x4) IfElse(mask Mask32x4, y Float32x4) Float32x4
+
+func (x Float32x4nclm) IfElse(mask Mask32x4nclm, y Float32x4nclm) Float32x4nclm
 
 func (x Float32x4) Len() int
 
+func (x Float32x4nclm) Len() int
+
 func (x Float32x4) Less(y Float32x4) Mask32x4
+
+func (x Float32x4nclm) Less(y Float32x4nclm) Mask32x4nclm
 
 func (x Float32x4) LessEqual(y Float32x4) Mask32x4
 
+func (x Float32x4nclm) LessEqual(y Float32x4nclm) Mask32x4nclm
+
 func (x Float32x4) Masked(mask Mask32x4) Float32x4
+
+func (x Float32x4nclm) Masked(mask Mask32x4nclm) Float32x4nclm
 
 func (x Float32x4) Max(y Float32x4) Float32x4
 
+func (x Float32x4nclm) Max(y Float32x4nclm) Float32x4nclm
+
 func (x Float32x4) Min(y Float32x4) Float32x4
+
+func (x Float32x4nclm) Min(y Float32x4nclm) Float32x4nclm
 
 func (x Float32x4) Mul(y Float32x4) Float32x4
 
+func (x Float32x4nclm) Mul(y Float32x4nclm) Float32x4nclm
+
 func (x Float32x4) MulAdd(y Float32x4, z Float32x4) Float32x4
+
+func (x Float32x4nclm) MulAdd(y Float32x4nclm, z Float32x4nclm) Float32x4nclm
 
 func (x Float32x4) Neg() Float32x4
 
+func (x Float32x4nclm) Neg() Float32x4nclm
+
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
+
+func (x Float32x4nclm) NotEqual(y Float32x4nclm) Mask32x4nclm
+
+func (x Float32x4) ReduceSum() float32
+
+func (x Float32x4nclm) ReduceSum() float32
 
 func (x Float32x4) Sqrt() Float32x4
 
+func (x Float32x4nclm) Sqrt() Float32x4nclm
+
 func (x Float32x4) Store(s []float32)
+
+func (x Float32x4nclm) Store(s []float32)
 
 func (x Float32x4) StorePart(s []float32) int
 
+func (x Float32x4nclm) StorePart(s []float32) int
+
 func (x Float32x4) String() string
+
+func (x Float32x4nclm) String() string
 
 func (x Float32x4) Sub(y Float32x4) Float32x4
 
+func (x Float32x4nclm) Sub(y Float32x4nclm) Float32x4nclm
+
 func (x Float32x4) ToBits() Uint32x4
+
+func (x Float32x4nclm) ToBits() Uint32x4nclm
 
 func (x Float64x2) Abs() Float64x2
 
+func (x Float64x2nclm) Abs() Float64x2nclm
+
 func (x Float64x2) Add(y Float64x2) Float64x2
+
+func (x Float64x2nclm) Add(y Float64x2nclm) Float64x2nclm
 
 func (x Float64x2) Div(y Float64x2) Float64x2
 
+func (x Float64x2nclm) Div(y Float64x2nclm) Float64x2nclm
+
 func (x Float64x2) Equal(y Float64x2) Mask64x2
+
+func (x Float64x2nclm) Equal(y Float64x2nclm) Mask64x2nclm
 
 func (x Float64x2) Greater(y Float64x2) Mask64x2
 
+func (x Float64x2nclm) Greater(y Float64x2nclm) Mask64x2nclm
+
 func (x Float64x2) GreaterEqual(y Float64x2) Mask64x2
+
+func (x Float64x2nclm) GreaterEqual(y Float64x2nclm) Mask64x2nclm
 
 func (x Float64x2) IfElse(mask Mask64x2, y Float64x2) Float64x2
 
+func (x Float64x2nclm) IfElse(mask Mask64x2nclm, y Float64x2nclm) Float64x2nclm
+
 func (x Float64x2) Len() int
+
+func (x Float64x2nclm) Len() int
 
 func (x Float64x2) Less(y Float64x2) Mask64x2
 
+func (x Float64x2nclm) Less(y Float64x2nclm) Mask64x2nclm
+
 func (x Float64x2) LessEqual(y Float64x2) Mask64x2
+
+func (x Float64x2nclm) LessEqual(y Float64x2nclm) Mask64x2nclm
 
 func (x Float64x2) Masked(mask Mask64x2) Float64x2
 
+func (x Float64x2nclm) Masked(mask Mask64x2nclm) Float64x2nclm
+
 func (x Float64x2) Max(y Float64x2) Float64x2
+
+func (x Float64x2nclm) Max(y Float64x2nclm) Float64x2nclm
 
 func (x Float64x2) Min(y Float64x2) Float64x2
 
+func (x Float64x2nclm) Min(y Float64x2nclm) Float64x2nclm
+
 func (x Float64x2) Mul(y Float64x2) Float64x2
+
+func (x Float64x2nclm) Mul(y Float64x2nclm) Float64x2nclm
 
 func (x Float64x2) MulAdd(y Float64x2, z Float64x2) Float64x2
 
+func (x Float64x2nclm) MulAdd(y Float64x2nclm, z Float64x2nclm) Float64x2nclm
+
 func (x Float64x2) Neg() Float64x2
+
+func (x Float64x2nclm) Neg() Float64x2nclm
 
 func (x Float64x2) NotEqual(y Float64x2) Mask64x2
 
+func (x Float64x2nclm) NotEqual(y Float64x2nclm) Mask64x2nclm
+
+func (x Float64x2) ReduceSum() float64
+
+func (x Float64x2nclm) ReduceSum() float64
+
 func (x Float64x2) Sqrt() Float64x2
+
+func (x Float64x2nclm) Sqrt() Float64x2nclm
 
 func (x Float64x2) Store(s []float64)
 
+func (x Float64x2nclm) Store(s []float64)
+
 func (x Float64x2) StorePart(s []float64) int
+
+func (x Float64x2nclm) StorePart(s []float64) int
 
 func (x Float64x2) String() string
 
+func (x Float64x2nclm) String() string
+
 func (x Float64x2) Sub(y Float64x2) Float64x2
+
+func (x Float64x2nclm) Sub(y Float64x2nclm) Float64x2nclm
 
 func (x Float64x2) ToBits() Uint64x2
 
+func (x Float64x2nclm) ToBits() Uint64x2nclm
+
 func (x Mask8x16) And(y Mask8x16) Mask8x16
+
+func (x Mask8x16nclm) And(y Mask8x16nclm) Mask8x16nclm
 
 func (x Mask8x16) Or(y Mask8x16) Mask8x16
 
+func (x Mask8x16nclm) Or(y Mask8x16nclm) Mask8x16nclm
+
 func (x Mask8x16) String() string
+
+func (x Mask8x16nclm) String() string
 
 func (x Mask8x16) ToInt8s() Int8x16
 
+func (x Mask8x16nclm) ToInt8s() Int8x16nclm
+
 func (x Mask16x8) And(y Mask16x8) Mask16x8
+
+func (x Mask16x8nclm) And(y Mask16x8nclm) Mask16x8nclm
 
 func (x Mask16x8) Or(y Mask16x8) Mask16x8
 
+func (x Mask16x8nclm) Or(y Mask16x8nclm) Mask16x8nclm
+
 func (x Mask16x8) String() string
+
+func (x Mask16x8nclm) String() string
 
 func (x Mask16x8) ToInt16s() Int16x8
 
+func (x Mask16x8nclm) ToInt16s() Int16x8nclm
+
 func (x Mask32x4) And(y Mask32x4) Mask32x4
+
+func (x Mask32x4nclm) And(y Mask32x4nclm) Mask32x4nclm
 
 func (x Mask32x4) Or(y Mask32x4) Mask32x4
 
+func (x Mask32x4nclm) Or(y Mask32x4nclm) Mask32x4nclm
+
 func (x Mask32x4) String() string
+
+func (x Mask32x4nclm) String() string
 
 func (x Mask32x4) ToInt32s() Int32x4
 
+func (x Mask32x4nclm) ToInt32s() Int32x4nclm
+
 func (x Mask64x2) And(y Mask64x2) Mask64x2
+
+func (x Mask64x2nclm) And(y Mask64x2nclm) Mask64x2nclm
 
 func (x Mask64x2) Or(y Mask64x2) Mask64x2
 
+func (x Mask64x2nclm) Or(y Mask64x2nclm) Mask64x2nclm
+
 func (x Mask64x2) String() string
 
+func (x Mask64x2nclm) String() string
+
 func (x Mask64x2) ToInt64s() Int64x2
+
+func (x Mask64x2nclm) ToInt64s() Int64x2nclm
