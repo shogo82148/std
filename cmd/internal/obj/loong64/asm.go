@@ -87,6 +87,10 @@ func OP_IR(op uint32, i uint32, r2 uint32) uint32
 
 func OP_15I(op uint32, i uint32) uint32
 
+func OP_3RRR(op uint32, ca, fk, fj, fd uint32) uint32
+
+func OP_5IIRR(op uint32, index, imm, rj, rd uint32) uint32
+
 // i1 -> msb
 // r2 -> rj
 // i3 -> lsb

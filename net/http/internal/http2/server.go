@@ -2,18 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// TODO: turn off the serve goroutine when idle, so
-// an idle conn only has the readFrames goroutine active. (which could
-// also be optimized probably to pin less memory in crypto/tls). This
-// would involve tracking when the serve goroutine is active (atomic
-// int32 read/CAS probably?) and starting it up when frames arrive,
-// and shutting it down when all handlers exit. the occasional PING
-// packets could use time.AfterFunc to call sc.wakeStartServeLoop()
-// (which is a no-op if already running) and then queue the PING write
-// as normal. The serve loop would then exit in most cases (if no
-// Handlers running) and not be woken up again until the PING packet
-// returns.
-
 // TODO (maybe): add a mechanism for Handlers to going into
 // half-closed-local mode (rw.(io.Closer) test?) but not exit their
 // handler, and continue to be able to read from the
@@ -65,10 +53,24 @@ type ServeConnOpts struct {
 	// SawClientPreface is set if the HTTP/2 connection preface
 	// has already been read from the connection.
 	SawClientPreface bool
+
+	// OnClose is an optional callback that runs exactly once, after the
+	// connection is done being served and has been closed. It may run on
+	// any goroutine.
+	//
+	// Setting OnClose also grants ServeConn permission to return before
+	// the connection is done (see the ServeConn documentation), so
+	// callers providing it must release their per-connection resources
+	// here rather than after ServeConn returns.
+	OnClose func()
 }
 
 // ServeConn serves HTTP/2 requests on the provided connection and
-// blocks until the connection is no longer readable.
+// blocks until the connection is no longer readable. As an exception,
+// if opts.OnClose is set, ServeConn may instead return as soon as the
+// connection goes idle, handing its servicing off to background
+// goroutines; the connection is still being served after ServeConn
+// returns, and opts.OnClose reports when it is done.
 //
 // ServeConn starts speaking HTTP/2 assuming that c has not had any
 // reads or writes. It writes its initial settings frame and expects
