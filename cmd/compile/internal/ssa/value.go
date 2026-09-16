@@ -82,6 +82,8 @@ func (v *Value) AuxArm64BitField() arm64BitField
 
 func (v *Value) AuxArm64ConditionalParams() arm64ConditionalParams
 
+func (v *Value) AuxSizeAndAlign() (int64, int64)
+
 // long form print.  v# = opcode <type> [aux] args [: reg] (names)
 func (v *Value) LongString() string
 
