@@ -33,6 +33,15 @@ type FD struct {
 	// I/O poller.
 	pd pollDesc
 
+	// lazyInit is set by Init before the FD is made available to callers.
+	// initOnce serializes first use; initMu protects initialization against
+	// Close and DisassociateIOCP. Close cancels I/O before waiting for initMu,
+	// and DisassociateIOCP only tries to lock it.
+	lazyInit bool
+	initOnce sync.Once
+	initMu   sync.Mutex
+	skipIOCP bool
+
 	// The file offset for the next read or write.
 	// Overlapped IO operations don't use the real file pointer,
 	// so we need to keep track of the offset ourselves.
@@ -89,7 +98,9 @@ type FD struct {
 // or "file", "console", or "pipe".
 // The overlapped argument reports whether the handle was opened for overlapped I/O.
 // Such handles use the runtime poller when possible, or explicit events otherwise.
-func (fd *FD) Init(net string, overlapped bool) error
+// If overlapped is nil, mode detection and poller initialization are deferred
+// until first use.
+func (fd *FD) Init(net string, overlapped *bool) error
 
 // DisassociateIOCP disassociates the file handle from the IOCP.
 // The disassociate operation will not succeed if there is any
