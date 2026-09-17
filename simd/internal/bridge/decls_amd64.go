@@ -384,6 +384,12 @@ func (x Int8x32) Or(y Int8x32) Int8x32
 
 func (x Int8x64) Or(y Int8x64) Int8x64
 
+func (x Int8x16) ReduceSum() int8
+
+func (x Int8x32) ReduceSum() int8
+
+func (x Int8x64) ReduceSum() int8
+
 func (x Int8x16) Store(s []int8)
 
 func (x Int8x32) Store(s []int8)
@@ -557,6 +563,12 @@ func (x Int16x8) Or(y Int16x8) Int16x8
 func (x Int16x16) Or(y Int16x16) Int16x16
 
 func (x Int16x32) Or(y Int16x32) Int16x32
+
+func (x Int16x8) ReduceSum() int16
+
+func (x Int16x16) ReduceSum() int16
+
+func (x Int16x32) ReduceSum() int16
 
 func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
 
@@ -755,6 +767,12 @@ func (x Int32x4) Or(y Int32x4) Int32x4
 func (x Int32x8) Or(y Int32x8) Int32x8
 
 func (x Int32x16) Or(y Int32x16) Int32x16
+
+func (x Int32x4) ReduceSum() int32
+
+func (x Int32x8) ReduceSum() int32
+
+func (x Int32x16) ReduceSum() int32
 
 func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
 
@@ -1080,6 +1098,12 @@ func (x Uint8x32) Or(y Uint8x32) Uint8x32
 
 func (x Uint8x64) Or(y Uint8x64) Uint8x64
 
+func (x Uint8x16) ReduceSum() uint8
+
+func (x Uint8x32) ReduceSum() uint8
+
+func (x Uint8x64) ReduceSum() uint8
+
 func (x Uint8x16) ReshapeToUint16s() Uint16x8
 
 func (x Uint8x32) ReshapeToUint16s() Uint16x16
@@ -1259,6 +1283,12 @@ func (x Uint16x8) Or(y Uint16x8) Uint16x8
 func (x Uint16x16) Or(y Uint16x16) Uint16x16
 
 func (x Uint16x32) Or(y Uint16x32) Uint16x32
+
+func (x Uint16x8) ReduceSum() uint16
+
+func (x Uint16x16) ReduceSum() uint16
+
+func (x Uint16x32) ReduceSum() uint16
 
 func (x Uint16x8) ReshapeToUint32s() Uint32x4
 
@@ -1457,6 +1487,12 @@ func (x Uint32x4) Or(y Uint32x4) Uint32x4
 func (x Uint32x8) Or(y Uint32x8) Uint32x8
 
 func (x Uint32x16) Or(y Uint32x16) Uint32x16
+
+func (x Uint32x4) ReduceSum() uint32
+
+func (x Uint32x8) ReduceSum() uint32
+
+func (x Uint32x16) ReduceSum() uint32
 
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 

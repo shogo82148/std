@@ -132,6 +132,8 @@ func (x Int8x16) NotEqual(y Int8x16) Mask8x16
 
 func (x Int8x16) Or(y Int8x16) Int8x16
 
+func (x Int8x16) ReduceSum() int8
+
 func (x Int8x16) Store(s []int8)
 
 func (x Int8x16) StorePart(s []int8) int
@@ -189,6 +191,8 @@ func (x Int16x8) Not() Int16x8
 func (x Int16x8) NotEqual(y Int16x8) Mask16x8
 
 func (x Int16x8) Or(y Int16x8) Int16x8
+
+func (x Int16x8) ReduceSum() int16
 
 func (x Int16x8) RotateAllLeft(shift uint64) Int16x8
 
@@ -255,6 +259,8 @@ func (x Int32x4) Not() Int32x4
 func (x Int32x4) NotEqual(y Int32x4) Mask32x4
 
 func (x Int32x4) Or(y Int32x4) Int32x4
+
+func (x Int32x4) ReduceSum() int32
 
 func (x Int32x4) RotateAllLeft(shift uint64) Int32x4
 
@@ -364,6 +370,8 @@ func (x Uint8x16) NotEqual(y Uint8x16) Mask8x16
 
 func (x Uint8x16) Or(y Uint8x16) Uint8x16
 
+func (x Uint8x16) ReduceSum() uint8
+
 func (x Uint8x16) ReshapeToUint16s() Uint16x8
 
 func (x Uint8x16) ReshapeToUint32s() Uint32x4
@@ -423,6 +431,8 @@ func (x Uint16x8) Not() Uint16x8
 func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x8) Or(y Uint16x8) Uint16x8
+
+func (x Uint16x8) ReduceSum() uint16
 
 func (x Uint16x8) ReshapeToUint32s() Uint32x4
 
@@ -489,6 +499,8 @@ func (x Uint32x4) Not() Uint32x4
 func (x Uint32x4) NotEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x4) Or(y Uint32x4) Uint32x4
+
+func (x Uint32x4) ReduceSum() uint32
 
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 
