@@ -42416,11 +42416,11 @@ var OpcodeTable = [...]OpInfo{
 		asm:     x86.AVPCLMULQDQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{0, RegMask{V1: 281474976645120, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
 			},
 			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{0, RegMask{V1: 2147418112, V2: 0}},
 			},
 		},
 	},
@@ -61309,11 +61309,11 @@ var OpcodeTable = [...]OpInfo{
 		asm:       x86.AVPCLMULQDQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
 				{1, RegMask{V1: 72057594037977087, V2: 0}},
-				{0, RegMask{V1: 281474976645120, V2: 0}},
 			},
 			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{0, RegMask{V1: 2147418112, V2: 0}},
 			},
 		},
 	},

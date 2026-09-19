@@ -105,6 +105,14 @@ func (X86Features) AVX512VPOPCNTDQ() bool
 // GOARCH amd64.
 func (X86Features) AVXAES() bool
 
+// AVXPCLMULQDQ returns whether the CPU supports the AVXPCLMULQDQ feature.
+//
+// If it returns true, then the CPU also supports PCLMULQDQ and AVX.
+//
+// AVXPCLMULQDQ is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) AVXPCLMULQDQ() bool
+
 // AVXVNNI returns whether the CPU supports the AVXVNNI feature.
 //
 // If it returns true, then the CPU also supports AVX and AVX2.
@@ -134,3 +142,11 @@ func (X86Features) SHA() bool
 // VAES is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) VAES() bool
+
+// VPCLMULQDQ returns whether the CPU supports the VPCLMULQDQ feature.
+//
+// If it returns true, then the CPU also supports AVX.
+//
+// VPCLMULQDQ is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) VPCLMULQDQ() bool
