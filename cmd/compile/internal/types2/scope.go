@@ -9,6 +9,8 @@ package types2
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/syntax"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
+	"github.com/shogo82148/std/sync/atomic"
 )
 
 // A Scope maintains a set of objects and links to its containing
@@ -16,13 +18,14 @@ import (
 // and looked up by name. The zero value for Scope is a ready-to-use
 // empty scope.
 type Scope struct {
-	parent   *Scope
-	children []*Scope
-	number   int
-	elems    map[string]Object
-	pos, end syntax.Pos
-	comment  string
-	isFunc   bool
+	parent      *Scope
+	children    []*Scope
+	number      int
+	objects     map[string]Object
+	pos, end    syntax.Pos
+	comment     string
+	isFunc      bool
+	sortedNames atomic.Pointer[[]string]
 }
 
 // NewScope returns a new, empty scope contained in the given parent
@@ -32,10 +35,11 @@ func NewScope(parent *Scope, pos, end syntax.Pos, comment string) *Scope
 // Parent returns the scope's containing (parent) scope.
 func (s *Scope) Parent() *Scope
 
-// Len returns the number of scope elements.
+// Len returns the number of scope objects.
 func (s *Scope) Len() int
 
-// Names returns the scope's element names in sorted order.
+// Names returns the scope's object names in sorted order.
+// The caller must not mutate the array.
 func (s *Scope) Names() []string
 
 // NumChildren returns the number of scopes nested in s.
@@ -47,6 +51,15 @@ func (s *Scope) Child(i int) *Scope
 // Lookup returns the object in scope s with the given name if such an
 // object exists; otherwise the result is nil.
 func (s *Scope) Lookup(name string) Object
+
+// Objects returns the sequence of objects in the scope in name order.
+//
+// The caller should not mutate the Scope during iteration.
+//
+// Example:
+//
+//	for obj := range s.Objects() { ... }
+func (s *Scope) Objects() iter.Seq[Object]
 
 // Insert attempts to insert an object obj into scope s.
 // If s already contains an alternative object alt with
