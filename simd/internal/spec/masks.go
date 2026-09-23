@@ -20,7 +20,7 @@ type UintN uint64
 // MaskFromBits constructs a mask from a bitmap value. If bit i of y is set,
 // then mask element i of the result is set.
 //
-//specgen:name {z}FromBits
+//specgen:name {{.z}}FromBits
 //specgen:require x=uint{zL}
 func MaskFromBits[E MaskElt, W FixedWidth](x UintN) (z Vec[E, W])
 
@@ -34,6 +34,6 @@ func MaskToBits[E MaskElt, W FixedWidth](x Vec[E, W]) (z UintN)
 // MaskToZ converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true".
 //
-//specgen:name To{z}
+//specgen:name To{{.z}}
 //specgen:require z=Int{xN}x{xL}
 func MaskToZ[E MaskElt, W Width, zE Ints](x Vec[E, W]) (z Vec[zE, W])

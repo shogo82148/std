@@ -63,679 +63,801 @@ type (
 	Uint8x64   struct{ v []uint8 }
 )
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Float32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float32x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float32x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Float32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Float32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Float32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float32x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Float32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Float32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float32x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Float32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Float32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float32x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Float32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Float32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float32x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float32s) ConvertToInt32() (z Int32s)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float32s) ConvertToUint32() (z Uint32s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float64x2) ConvertToInt64() (z Int64x2)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float64x2) ConvertToUint64() (z Uint64x2)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Float64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float64x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float64x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Float64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Float64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Float64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Float64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float64x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Float64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Float64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Float64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float64x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Float64s) ConvertToInt64() (z Int64s)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Float64s) ConvertToUint64() (z Uint64s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int8x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Int8x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Int8x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int8x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int8x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int8x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Int8x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int8x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int8x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int8x64) ConvertToUint8() (z Uint8x64)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int8s) ConvertToUint8() (z Uint8s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int16x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int16x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Int16x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Int16x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int16x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int16x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int16x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int16x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int16x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Int16x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Int16x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int16x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int16x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int16x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Int16x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int16x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int16x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int16s) ConvertToUint16() (z Uint16s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int32x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Int32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int32x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int32x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Int32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Int32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int32x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Int32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Int32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Int32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int32x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int32s) ConvertToFloat32() (z Float32s)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int32s) ConvertToUint32() (z Uint32s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int64x2) ConvertToUint64() (z Uint64x2)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int64x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Int64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int64x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Int64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Int64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Int64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Int64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Int64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Int64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int64x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Int64s) ConvertToFloat64() (z Float64s)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Int64s) ConvertToUint64() (z Uint64s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint8x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint8x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint8x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint8x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Uint8x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Uint8x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint8x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint8x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Uint8x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint8x64) ConvertToInt8() (z Int8x64)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint8s) ConvertToInt8() (z Int8s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint16x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint16x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint16x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint16x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint16x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint16x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Uint16x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Uint16x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint16x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint16x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint16x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint16x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Uint16x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Uint16x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint16x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint16x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Uint16x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint16s) ConvertToInt16() (z Int16s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint32x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint32x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Uint32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint32x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint32x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Uint32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint64 converts element values to uint64. The result has the same number of lanes.
+// ConvertToUint64 converts element values to uint64.
 func (x Uint32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
 func (x Uint32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint32x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
 func (x Uint32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Uint32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint32s) ConvertToFloat32() (z Float32s)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint32s) ConvertToInt32() (z Int32s)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint64x2) ConvertToInt64() (z Int64x2)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
+//
+// The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint64x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint64x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
+//
+// The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Uint64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToFloat32 converts element values to float32. The result has the same number of lanes.
+// ConvertToFloat32 converts element values to float32.
 func (x Uint64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8. The result has the same number of lanes.
+// ConvertToInt8 converts element values to int8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16. The result has the same number of lanes.
+// ConvertToInt16 converts element values to int16.
 func (x Uint64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32. The result has the same number of lanes.
+// ConvertToInt32 converts element values to int32.
 func (x Uint64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint64x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8. The result has the same number of lanes.
+// ConvertToUint8 converts element values to uint8.
+//
+// The low 8 elements of the result are set. The rest are zero.
 func (x Uint64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16. The result has the same number of lanes.
+// ConvertToUint16 converts element values to uint16.
 func (x Uint64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32. The result has the same number of lanes.
+// ConvertToUint32 converts element values to uint32.
 func (x Uint64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToFloat64 converts element values to float64. The result has the same number of lanes.
+// ConvertToFloat64 converts element values to float64.
 func (x Uint64s) ConvertToFloat64() (z Float64s)
 
-// ConvertToInt64 converts element values to int64. The result has the same number of lanes.
+// ConvertToInt64 converts element values to int64.
 func (x Uint64s) ConvertToInt64() (z Int64s)
 
 // ExtendLo8ToInt16 extends the lowest 8 vector elements to int16.
@@ -2764,6 +2886,78 @@ func (x Uint32x16) DotProductPairsSaturated(y Int32x16) (z Int64x8)
 //	w[i] = x[i] * y[i]        // Double width, saturated
 //	z[i] = w[2*i] + w[2*i+1]  // Saturated
 func (x Uint32s) DotProductPairsSaturated(y Int32s) (z Int64s)
+
+// ToBits reinterprets the bits of each element of x as type uint8.
+func (x Int8x16) ToBits() (z Uint8x16)
+
+// ToBits reinterprets the bits of each element of x as type uint8.
+func (x Int8x32) ToBits() (z Uint8x32)
+
+// ToBits reinterprets the bits of each element of x as type uint8.
+func (x Int8x64) ToBits() (z Uint8x64)
+
+// ToBits reinterprets the bits of each element of x as type uint8.
+func (x Int8s) ToBits() (z Uint8s)
+
+// ToBits reinterprets the bits of each element of x as type uint16.
+func (x Int16x8) ToBits() (z Uint16x8)
+
+// ToBits reinterprets the bits of each element of x as type uint16.
+func (x Int16x16) ToBits() (z Uint16x16)
+
+// ToBits reinterprets the bits of each element of x as type uint16.
+func (x Int16x32) ToBits() (z Uint16x32)
+
+// ToBits reinterprets the bits of each element of x as type uint16.
+func (x Int16s) ToBits() (z Uint16s)
+
+// ToBits reinterprets the bits of each element of x as type uint32.
+func (x Int32x4) ToBits() (z Uint32x4)
+
+// ToBits reinterprets the bits of each element of x as type uint32.
+func (x Int32x8) ToBits() (z Uint32x8)
+
+// ToBits reinterprets the bits of each element of x as type uint32.
+func (x Int32x16) ToBits() (z Uint32x16)
+
+// ToBits reinterprets the bits of each element of x as type uint32.
+func (x Int32s) ToBits() (z Uint32s)
+
+// ToBits reinterprets the bits of each element of x as type uint64.
+func (x Int64x2) ToBits() (z Uint64x2)
+
+// ToBits reinterprets the bits of each element of x as type uint64.
+func (x Int64x4) ToBits() (z Uint64x4)
+
+// ToBits reinterprets the bits of each element of x as type uint64.
+func (x Int64x8) ToBits() (z Uint64x8)
+
+// ToBits reinterprets the bits of each element of x as type uint64.
+func (x Int64s) ToBits() (z Uint64s)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float32x4) ToBits() (z Uint32x4)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float32x8) ToBits() (z Uint32x8)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float32x16) ToBits() (z Uint32x16)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float32s) ToBits() (z Uint32s)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float64x2) ToBits() (z Uint64x2)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float64x4) ToBits() (z Uint64x4)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float64x8) ToBits() (z Uint64x8)
+
+// ToBits returns the IEEE 754 binary representation of each element of x.
+func (x Float64s) ToBits() (z Uint64s)
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector. The least
 // significant bit of element 0 is bit 0
