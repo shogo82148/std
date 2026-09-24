@@ -32,6 +32,9 @@ package types
 // fields traversed to get to the found entry, starting at depth 0.
 //
 // See also [LookupFieldOrMethod], which returns the components separately.
+//
+// Selections should generally be passed and returned by pointer.
+// The lack of a pointer here was an unfortunate mistake.
 func LookupSelection(T Type, addressable bool, pkg *Package, name string) (Selection, bool)
 
 // LookupFieldOrMethod looks up a field or method with given package and name
