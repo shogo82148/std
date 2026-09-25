@@ -12243,11 +12243,13 @@ var OpcodeTable = [...]OpInfo{
 		Reg:    RegInfo{},
 	},
 	{
-		Name:   "LoweredGetG",
-		ArgLen: 1,
+		Name:         "LoweredGetG",
+		ArgLen:       1,
+		ClobberFlags: true,
 		Reg: RegInfo{
+			Clobbers: RegMask{V1: 1, V2: 0},
 			Outputs: []OutputInfo{
-				{0, RegMask{V1: 239, V2: 0}},
+				{0, RegMask{V1: 238, V2: 0}},
 			},
 		},
 	},
@@ -20703,11 +20705,13 @@ var OpcodeTable = [...]OpInfo{
 		Reg:    RegInfo{},
 	},
 	{
-		Name:   "LoweredGetG",
-		ArgLen: 1,
+		Name:         "LoweredGetG",
+		ArgLen:       1,
+		ClobberFlags: true,
 		Reg: RegInfo{
+			Clobbers: RegMask{V1: 4096, V2: 0},
 			Outputs: []OutputInfo{
-				{0, RegMask{V1: 49135, V2: 0}},
+				{0, RegMask{V1: 45039, V2: 0}},
 			},
 		},
 	},

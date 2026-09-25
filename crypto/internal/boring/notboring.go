@@ -8,7 +8,6 @@ package boring
 
 import (
 	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/cipher"
 	"github.com/shogo82148/std/hash"
 )
 
@@ -36,9 +35,9 @@ func SHA512([]byte) [64]byte
 
 func NewHMAC(h func() hash.Hash, key []byte) hash.Hash
 
-func NewAESCipher(key []byte) (cipher.Block, error)
-func NewGCMTLS(cipher.Block) (cipher.AEAD, error)
-func NewGCMTLS13(cipher.Block) (cipher.AEAD, error)
+func NewAESCipher(key []byte) (Block, error)
+func NewGCMTLS(Block) (AEAD, error)
+func NewGCMTLS13(Block) (AEAD, error)
 
 type PublicKeyECDSA struct{ _ int }
 type PrivateKeyECDSA struct{ _ int }

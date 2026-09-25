@@ -74,3 +74,7 @@ func (p *GCProg) AddType(off int64, typ loader.Sym)
 
 // add a trampoline with symbol s (to be laid down after the current function)
 func (ctxt *Link) AddTramp(s *loader.SymbolBuilder, typ sym.SymKind)
+
+// AddDwarfDirectTrampoline records a direct trampoline whose static target can
+// be described by an address-valued DW_AT_trampoline.
+func (ctxt *Link) AddDwarfDirectTrampoline(s, target loader.Sym, addend int64, ownerCU *sym.CompilationUnit)

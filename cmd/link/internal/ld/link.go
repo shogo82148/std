@@ -87,7 +87,8 @@ type Link struct {
 	PackageFile  map[string]string
 	PackageShlib map[string]string
 
-	tramps []loader.Sym
+	tramps           []loader.Sym
+	dwarfTrampolines []dwarfTrampoline
 
 	compUnits []*sym.CompilationUnit
 	runtimeCU *sym.CompilationUnit

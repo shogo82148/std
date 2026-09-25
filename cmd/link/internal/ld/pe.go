@@ -33,6 +33,24 @@ type IMAGE_EXPORT_DIRECTORY struct {
 	AddressOfNameOrdinals uint32
 }
 
+type IMAGE_TLS_DIRECTORY32 struct {
+	StartAddressOfRawData uint32
+	EndAddressOfRawData   uint32
+	AddressOfIndex        uint32
+	AddressOfCallBacks    uint32
+	SizeOfZeroFill        uint32
+	Characteristics       uint32
+}
+
+type IMAGE_TLS_DIRECTORY64 struct {
+	StartAddressOfRawData uint64
+	EndAddressOfRawData   uint64
+	AddressOfIndex        uint64
+	AddressOfCallBacks    uint64
+	SizeOfZeroFill        uint32
+	Characteristics       uint32
+}
+
 var (
 	// PEBASE is the base address for the executable.
 	// It is small for 32-bit and large for 64-bit.

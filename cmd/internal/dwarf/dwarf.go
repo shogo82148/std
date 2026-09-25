@@ -214,6 +214,10 @@ const (
 	DW_ABRV_PUTVAR_START
 )
 
+// DW_ABRV_LINKER_TRAMPOLINE follows all compiler-emitted abbreviations so that
+// adding it does not renumber abbreviations in existing object files.
+var DW_ABRV_LINKER_TRAMPOLINE = DW_ABRV_PUTVAR_START + len(putvarAbbrevs)
+
 // Abbrevs returns the finalized abbrev array for the platform,
 // expanding any DW_FORM pseudo-ops to real values.
 func Abbrevs() []dwAbbrev
