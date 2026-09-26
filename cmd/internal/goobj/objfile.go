@@ -122,6 +122,7 @@ const (
 	SymFlagNoSplit
 	SymFlagReflectMethod
 	SymFlagGoType
+	SymFlagWeakDef
 )
 
 // Sym.Flag2
@@ -155,6 +156,7 @@ func (s *Sym) Leaf() bool
 func (s *Sym) NoSplit() bool
 func (s *Sym) ReflectMethod() bool
 func (s *Sym) IsGoType() bool
+func (s *Sym) WeakDef() bool
 func (s *Sym) UsedInIface() bool
 func (s *Sym) IsItab() bool
 func (s *Sym) IsDict() bool

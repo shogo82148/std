@@ -26,6 +26,10 @@ func HashFunc(f *Func) []byte
 func (f *Func) String() string
 
 // RewriteHash returns a hash of f suitable for detecting rewrite cycles.
+//
+// Dead and unreachable code is included in the hash. Rewriting keeps working
+// on such code, so leaving it out would let the hash repeat while rewriting
+// was still making progress elsewhere, which looks just like a cycle.
 func (f *Func) RewriteHash() string
 
 func (p StringFuncPrinter) Header(f *Func)

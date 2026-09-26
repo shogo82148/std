@@ -572,6 +572,14 @@ const (
 
 	// LinknameStd indicates this is a go:linknamestd'd symbol.
 	AttrLinknameStd
+
+	// WeakDef indicates that this definition of a dupok symbol is to be
+	// used only if no other object defines the symbol without it. The
+	// compiler marks the type descriptor of a noalg type this way: it
+	// describes the same type as the descriptor emitted by a package that
+	// does need the type's hash and equality algorithms, but it leaves
+	// those out, so the other one has to win. See reflectdata.writeType.
+	AttrWeakDef
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -592,6 +600,7 @@ func (a *Attribute) UsedInIface() bool
 func (a *Attribute) ContentAddressable() bool
 func (a *Attribute) ABIWrapper() bool
 func (a *Attribute) IsPcdata() bool
+func (a *Attribute) WeakDef() bool
 func (a *Attribute) IsPkgInit() bool
 func (a *Attribute) IsLinkname() bool
 func (a *Attribute) IsLinknameStd() bool

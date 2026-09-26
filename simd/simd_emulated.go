@@ -86,6 +86,9 @@ func (x Int8s) Not() Int8s
 // Or returns the bitwise OR of x and y.
 func (x Int8s) Or(y Int8s) Int8s
 
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Int8s) ReduceSum() int8
+
 // Store stores the vector elements into the slice s.
 func (x Int8s) Store(s []int8)
 
@@ -191,6 +194,9 @@ func (x Int16s) RotateAllLeft(dist uint64) Int16s
 // RotateAllRight rotates all elements right by dist bits.
 func (x Int16s) RotateAllRight(dist uint64) Int16s
 
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Int16s) ReduceSum() int16
+
 // Store stores the vector elements into the slice s.
 func (x Int16s) Store(s []int16)
 
@@ -295,6 +301,9 @@ func (x Int32s) RotateAllLeft(dist uint64) Int32s
 
 // RotateAllRight rotates all elements right by dist bits.
 func (x Int32s) RotateAllRight(dist uint64) Int32s
+
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Int32s) ReduceSum() int32
 
 // Store stores the vector elements into the slice s.
 func (x Int32s) Store(s []int32)
@@ -455,6 +464,9 @@ func (x Uint8s) Not() Uint8s
 // Or returns the bitwise OR of x and y.
 func (x Uint8s) Or(y Uint8s) Uint8s
 
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Uint8s) ReduceSum() uint8
+
 // Store stores the vector elements into the slice s.
 func (x Uint8s) Store(s []uint8)
 
@@ -563,6 +575,9 @@ func (x Uint16s) RotateAllLeft(dist uint64) Uint16s
 // RotateAllRight rotates all elements right by dist bits.
 func (x Uint16s) RotateAllRight(dist uint64) Uint16s
 
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Uint16s) ReduceSum() uint16
+
 // Store stores the vector elements into the slice s.
 func (x Uint16s) Store(s []uint16)
 
@@ -664,6 +679,9 @@ func (x Uint32s) RotateAllLeft(dist uint64) Uint32s
 
 // RotateAllRight rotates all elements right by dist bits.
 func (x Uint32s) RotateAllRight(dist uint64) Uint32s
+
+// ReduceSum returns the scalar sum of the elements of x.
+func (x Uint32s) ReduceSum() uint32
 
 // Store stores the vector elements into the slice s.
 func (x Uint32s) Store(s []uint32)
@@ -836,7 +854,7 @@ func (x Float32s) Max(y Float32s) Float32s
 // IfElse returns a new vector with elements from x where mask is true, and y where mask is false.
 func (x Float32s) IfElse(mask Mask32s, y Float32s) Float32s
 
-// Min returns the element-wise minimum of x and y.
+// Min returns the element-wise maximum of x and y.
 func (x Float32s) Min(y Float32s) Float32s
 
 // Mul returns the element-wise product of x and y.
