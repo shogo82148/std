@@ -5,6 +5,7 @@
 package ir
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/stats"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
@@ -148,6 +149,9 @@ type Func struct {
 	// WasmExport is used by the //go:wasmexport directive to store info about
 	// a WebAssembly function export.
 	WasmExport *WasmExport
+
+	// Stats holds compiler statistics for this function.
+	Stats *stats.Stats
 }
 
 // WasmImport stores metadata associated with the //go:wasmimport pragma.

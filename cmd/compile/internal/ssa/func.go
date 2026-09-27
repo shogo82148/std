@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/block"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
+	"github.com/shogo82148/std/cmd/compile/internal/stats"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
@@ -107,6 +108,8 @@ func IsMergeCandidate(n *ir.Name) bool
 // NewFunc returns a new, empty function object.
 // Caller must reset cache before calling NewFunc.
 func (c *Config) NewFunc(fe Frontend, cache *Cache) *Func
+
+func (f *Func) NewStats(prefix string) *stats.PrefixStats
 
 // NumBlocks returns an integer larger than the id of any Block in the Func.
 func (f *Func) NumBlocks() int
