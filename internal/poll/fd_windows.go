@@ -33,6 +33,9 @@ type FD struct {
 	// I/O poller.
 	pd pollDesc
 
+	// Coordination of I/O cancellation.
+	ioCancel ioCancelState
+
 	// lazyInit is set by Init before the FD is made available to callers.
 	// initOnce serializes first use; initMu protects initialization against
 	// Close and DisassociateIOCP. Close cancels I/O before waiting for initMu,
