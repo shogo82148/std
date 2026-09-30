@@ -2567,6 +2567,1966 @@ func (x Uint64x8) Add(y Uint64x8) (z Uint64x8)
 //	z[i] = x[i] + y[i]
 func (x Uint64s) Add(y Uint64s) (z Uint64s)
 
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float32x4) Sub(y Float32x4) (z Float32x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float32x8) Sub(y Float32x8) (z Float32x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float32x16) Sub(y Float32x16) (z Float32x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float32s) Sub(y Float32s) (z Float32s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float64x2) Sub(y Float64x2) (z Float64x2)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float64x4) Sub(y Float64x4) (z Float64x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float64x8) Sub(y Float64x8) (z Float64x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Float64s) Sub(y Float64s) (z Float64s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int8x16) Sub(y Int8x16) (z Int8x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int8x32) Sub(y Int8x32) (z Int8x32)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int8x64) Sub(y Int8x64) (z Int8x64)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int8s) Sub(y Int8s) (z Int8s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int16x8) Sub(y Int16x8) (z Int16x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int16x16) Sub(y Int16x16) (z Int16x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int16x32) Sub(y Int16x32) (z Int16x32)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int16s) Sub(y Int16s) (z Int16s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int32x4) Sub(y Int32x4) (z Int32x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int32x8) Sub(y Int32x8) (z Int32x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int32x16) Sub(y Int32x16) (z Int32x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int32s) Sub(y Int32s) (z Int32s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int64x2) Sub(y Int64x2) (z Int64x2)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int64x4) Sub(y Int64x4) (z Int64x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int64x8) Sub(y Int64x8) (z Int64x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Int64s) Sub(y Int64s) (z Int64s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint8x16) Sub(y Uint8x16) (z Uint8x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint8x32) Sub(y Uint8x32) (z Uint8x32)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint8x64) Sub(y Uint8x64) (z Uint8x64)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint8s) Sub(y Uint8s) (z Uint8s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint16x8) Sub(y Uint16x8) (z Uint16x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint16x16) Sub(y Uint16x16) (z Uint16x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint16x32) Sub(y Uint16x32) (z Uint16x32)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint16s) Sub(y Uint16s) (z Uint16s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint32x4) Sub(y Uint32x4) (z Uint32x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint32x8) Sub(y Uint32x8) (z Uint32x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint32x16) Sub(y Uint32x16) (z Uint32x16)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint32s) Sub(y Uint32s) (z Uint32s)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint64x2) Sub(y Uint64x2) (z Uint64x2)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint64x4) Sub(y Uint64x4) (z Uint64x4)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint64x8) Sub(y Uint64x8) (z Uint64x8)
+
+// Sub subtracts corresponding elements of two vectors.
+//
+//	z[i] = x[i] - y[i]
+func (x Uint64s) Sub(y Uint64s) (z Uint64s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int8x16) AddSaturated(y Int8x16) (z Int8x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int8x32) AddSaturated(y Int8x32) (z Int8x32)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int8x64) AddSaturated(y Int8x64) (z Int8x64)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int8s) AddSaturated(y Int8s) (z Int8s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int16x8) AddSaturated(y Int16x8) (z Int16x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int16x16) AddSaturated(y Int16x16) (z Int16x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int16x32) AddSaturated(y Int16x32) (z Int16x32)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int16s) AddSaturated(y Int16s) (z Int16s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int32x4) AddSaturated(y Int32x4) (z Int32x4)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int32x8) AddSaturated(y Int32x8) (z Int32x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int32x16) AddSaturated(y Int32x16) (z Int32x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int32s) AddSaturated(y Int32s) (z Int32s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int64x2) AddSaturated(y Int64x2) (z Int64x2)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int64x4) AddSaturated(y Int64x4) (z Int64x4)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int64x8) AddSaturated(y Int64x8) (z Int64x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Int64s) AddSaturated(y Int64s) (z Int64s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint8x16) AddSaturated(y Uint8x16) (z Uint8x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint8x32) AddSaturated(y Uint8x32) (z Uint8x32)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint8x64) AddSaturated(y Uint8x64) (z Uint8x64)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint8s) AddSaturated(y Uint8s) (z Uint8s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint16x8) AddSaturated(y Uint16x8) (z Uint16x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint16x16) AddSaturated(y Uint16x16) (z Uint16x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint16x32) AddSaturated(y Uint16x32) (z Uint16x32)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint16s) AddSaturated(y Uint16s) (z Uint16s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint32x4) AddSaturated(y Uint32x4) (z Uint32x4)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint32x8) AddSaturated(y Uint32x8) (z Uint32x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint32x16) AddSaturated(y Uint32x16) (z Uint32x16)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint32s) AddSaturated(y Uint32s) (z Uint32s)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint64x2) AddSaturated(y Uint64x2) (z Uint64x2)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint64x4) AddSaturated(y Uint64x4) (z Uint64x4)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint64x8) AddSaturated(y Uint64x8) (z Uint64x8)
+
+// AddSaturated adds corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] + y[i])
+func (x Uint64s) AddSaturated(y Uint64s) (z Uint64s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int8x16) SubSaturated(y Int8x16) (z Int8x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int8x32) SubSaturated(y Int8x32) (z Int8x32)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int8x64) SubSaturated(y Int8x64) (z Int8x64)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int8s) SubSaturated(y Int8s) (z Int8s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int16x8) SubSaturated(y Int16x8) (z Int16x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int16x16) SubSaturated(y Int16x16) (z Int16x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int16x32) SubSaturated(y Int16x32) (z Int16x32)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int16s) SubSaturated(y Int16s) (z Int16s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int32x4) SubSaturated(y Int32x4) (z Int32x4)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int32x8) SubSaturated(y Int32x8) (z Int32x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int32x16) SubSaturated(y Int32x16) (z Int32x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int32s) SubSaturated(y Int32s) (z Int32s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int64x2) SubSaturated(y Int64x2) (z Int64x2)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int64x4) SubSaturated(y Int64x4) (z Int64x4)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int64x8) SubSaturated(y Int64x8) (z Int64x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Int64s) SubSaturated(y Int64s) (z Int64s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint8x16) SubSaturated(y Uint8x16) (z Uint8x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint8x32) SubSaturated(y Uint8x32) (z Uint8x32)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint8x64) SubSaturated(y Uint8x64) (z Uint8x64)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint8s) SubSaturated(y Uint8s) (z Uint8s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint16x8) SubSaturated(y Uint16x8) (z Uint16x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint16x16) SubSaturated(y Uint16x16) (z Uint16x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint16x32) SubSaturated(y Uint16x32) (z Uint16x32)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint16s) SubSaturated(y Uint16s) (z Uint16s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint32x4) SubSaturated(y Uint32x4) (z Uint32x4)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint32x8) SubSaturated(y Uint32x8) (z Uint32x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint32x16) SubSaturated(y Uint32x16) (z Uint32x16)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint32s) SubSaturated(y Uint32s) (z Uint32s)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint64x2) SubSaturated(y Uint64x2) (z Uint64x2)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint64x4) SubSaturated(y Uint64x4) (z Uint64x4)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint64x8) SubSaturated(y Uint64x8) (z Uint64x8)
+
+// SubSaturated subtracts corresponding elements of two vectors with saturation.
+//
+//	z[i] = saturated(x[i] - y[i])
+func (x Uint64s) SubSaturated(y Uint64s) (z Uint64s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float32x4) ConcatAddPairs(y Float32x4) (z Float32x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float32x8) ConcatAddPairs(y Float32x8) (z Float32x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float32x16) ConcatAddPairs(y Float32x16) (z Float32x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float32s) ConcatAddPairs(y Float32s) (z Float32s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], y[0]+y[1]}
+func (x Float64x2) ConcatAddPairs(y Float64x2) (z Float64x2)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float64x4) ConcatAddPairs(y Float64x4) (z Float64x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float64x8) ConcatAddPairs(y Float64x8) (z Float64x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Float64s) ConcatAddPairs(y Float64s) (z Float64s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x16) ConcatAddPairs(y Int8x16) (z Int8x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x32) ConcatAddPairs(y Int8x32) (z Int8x32)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x64) ConcatAddPairs(y Int8x64) (z Int8x64)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8s) ConcatAddPairs(y Int8s) (z Int8s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x8) ConcatAddPairs(y Int16x8) (z Int16x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x16) ConcatAddPairs(y Int16x16) (z Int16x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x32) ConcatAddPairs(y Int16x32) (z Int16x32)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16s) ConcatAddPairs(y Int16s) (z Int16s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x4) ConcatAddPairs(y Int32x4) (z Int32x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x8) ConcatAddPairs(y Int32x8) (z Int32x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x16) ConcatAddPairs(y Int32x16) (z Int32x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32s) ConcatAddPairs(y Int32s) (z Int32s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], y[0]+y[1]}
+func (x Int64x2) ConcatAddPairs(y Int64x2) (z Int64x2)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64x4) ConcatAddPairs(y Int64x4) (z Int64x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64x8) ConcatAddPairs(y Int64x8) (z Int64x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64s) ConcatAddPairs(y Int64s) (z Int64s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x16) ConcatAddPairs(y Uint8x16) (z Uint8x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x32) ConcatAddPairs(y Uint8x32) (z Uint8x32)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x64) ConcatAddPairs(y Uint8x64) (z Uint8x64)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8s) ConcatAddPairs(y Uint8s) (z Uint8s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x8) ConcatAddPairs(y Uint16x8) (z Uint16x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x16) ConcatAddPairs(y Uint16x16) (z Uint16x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x32) ConcatAddPairs(y Uint16x32) (z Uint16x32)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16s) ConcatAddPairs(y Uint16s) (z Uint16s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x4) ConcatAddPairs(y Uint32x4) (z Uint32x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x8) ConcatAddPairs(y Uint32x8) (z Uint32x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x16) ConcatAddPairs(y Uint32x16) (z Uint32x16)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32s) ConcatAddPairs(y Uint32s) (z Uint32s)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], y[0]+y[1]}
+func (x Uint64x2) ConcatAddPairs(y Uint64x2) (z Uint64x2)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64x4) ConcatAddPairs(y Uint64x4) (z Uint64x4)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64x8) ConcatAddPairs(y Uint64x8) (z Uint64x8)
+
+// ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
+// returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64s) ConcatAddPairs(y Uint64s) (z Uint64s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float32x4) ConcatSubPairs(y Float32x4) (z Float32x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float32x8) ConcatSubPairs(y Float32x8) (z Float32x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float32x16) ConcatSubPairs(y Float32x16) (z Float32x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float32s) ConcatSubPairs(y Float32s) (z Float32s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], y[0]-y[1]}
+func (x Float64x2) ConcatSubPairs(y Float64x2) (z Float64x2)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float64x4) ConcatSubPairs(y Float64x4) (z Float64x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float64x8) ConcatSubPairs(y Float64x8) (z Float64x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Float64s) ConcatSubPairs(y Float64s) (z Float64s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x16) ConcatSubPairs(y Int8x16) (z Int8x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x32) ConcatSubPairs(y Int8x32) (z Int8x32)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x64) ConcatSubPairs(y Int8x64) (z Int8x64)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8s) ConcatSubPairs(y Int8s) (z Int8s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x8) ConcatSubPairs(y Int16x8) (z Int16x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x16) ConcatSubPairs(y Int16x16) (z Int16x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x32) ConcatSubPairs(y Int16x32) (z Int16x32)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16s) ConcatSubPairs(y Int16s) (z Int16s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x4) ConcatSubPairs(y Int32x4) (z Int32x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x8) ConcatSubPairs(y Int32x8) (z Int32x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x16) ConcatSubPairs(y Int32x16) (z Int32x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32s) ConcatSubPairs(y Int32s) (z Int32s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], y[0]-y[1]}
+func (x Int64x2) ConcatSubPairs(y Int64x2) (z Int64x2)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64x4) ConcatSubPairs(y Int64x4) (z Int64x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64x8) ConcatSubPairs(y Int64x8) (z Int64x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64s) ConcatSubPairs(y Int64s) (z Int64s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x16) ConcatSubPairs(y Uint8x16) (z Uint8x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x32) ConcatSubPairs(y Uint8x32) (z Uint8x32)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x64) ConcatSubPairs(y Uint8x64) (z Uint8x64)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8s) ConcatSubPairs(y Uint8s) (z Uint8s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x8) ConcatSubPairs(y Uint16x8) (z Uint16x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x16) ConcatSubPairs(y Uint16x16) (z Uint16x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x32) ConcatSubPairs(y Uint16x32) (z Uint16x32)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16s) ConcatSubPairs(y Uint16s) (z Uint16s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x4) ConcatSubPairs(y Uint32x4) (z Uint32x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x8) ConcatSubPairs(y Uint32x8) (z Uint32x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x16) ConcatSubPairs(y Uint32x16) (z Uint32x16)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32s) ConcatSubPairs(y Uint32s) (z Uint32s)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], y[0]-y[1]}
+func (x Uint64x2) ConcatSubPairs(y Uint64x2) (z Uint64x2)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64x4) ConcatSubPairs(y Uint64x4) (z Uint64x4)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64x8) ConcatSubPairs(y Uint64x8) (z Uint64x8)
+
+// ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
+// and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64s) ConcatSubPairs(y Uint64s) (z Uint64s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x16) ConcatAddPairsSaturated(y Int8x16) (z Int8x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x32) ConcatAddPairsSaturated(y Int8x32) (z Int8x32)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8x64) ConcatAddPairsSaturated(y Int8x64) (z Int8x64)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int8s) ConcatAddPairsSaturated(y Int8s) (z Int8s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x8) ConcatAddPairsSaturated(y Int16x8) (z Int16x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x16) ConcatAddPairsSaturated(y Int16x16) (z Int16x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16x32) ConcatAddPairsSaturated(y Int16x32) (z Int16x32)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int16s) ConcatAddPairsSaturated(y Int16s) (z Int16s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x4) ConcatAddPairsSaturated(y Int32x4) (z Int32x4)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x8) ConcatAddPairsSaturated(y Int32x8) (z Int32x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32x16) ConcatAddPairsSaturated(y Int32x16) (z Int32x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int32s) ConcatAddPairsSaturated(y Int32s) (z Int32s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], y[0]+y[1]}
+func (x Int64x2) ConcatAddPairsSaturated(y Int64x2) (z Int64x2)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64x4) ConcatAddPairsSaturated(y Int64x4) (z Int64x4)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64x8) ConcatAddPairsSaturated(y Int64x8) (z Int64x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Int64s) ConcatAddPairsSaturated(y Int64s) (z Int64s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x16) ConcatAddPairsSaturated(y Uint8x16) (z Uint8x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x32) ConcatAddPairsSaturated(y Uint8x32) (z Uint8x32)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8x64) ConcatAddPairsSaturated(y Uint8x64) (z Uint8x64)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint8s) ConcatAddPairsSaturated(y Uint8s) (z Uint8s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x8) ConcatAddPairsSaturated(y Uint16x8) (z Uint16x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x16) ConcatAddPairsSaturated(y Uint16x16) (z Uint16x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16x32) ConcatAddPairsSaturated(y Uint16x32) (z Uint16x32)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint16s) ConcatAddPairsSaturated(y Uint16s) (z Uint16s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x4) ConcatAddPairsSaturated(y Uint32x4) (z Uint32x4)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x8) ConcatAddPairsSaturated(y Uint32x8) (z Uint32x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32x16) ConcatAddPairsSaturated(y Uint32x16) (z Uint32x16)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint32s) ConcatAddPairsSaturated(y Uint32s) (z Uint32s)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], y[0]+y[1]}
+func (x Uint64x2) ConcatAddPairsSaturated(y Uint64x2) (z Uint64x2)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64x4) ConcatAddPairsSaturated(y Uint64x4) (z Uint64x4)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64x8) ConcatAddPairsSaturated(y Uint64x8) (z Uint64x8)
+
+// ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
+// y with saturation and returns the concatenated result.
+//
+// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+func (x Uint64s) ConcatAddPairsSaturated(y Uint64s) (z Uint64s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x16) ConcatSubPairsSaturated(y Int8x16) (z Int8x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x32) ConcatSubPairsSaturated(y Int8x32) (z Int8x32)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8x64) ConcatSubPairsSaturated(y Int8x64) (z Int8x64)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int8s) ConcatSubPairsSaturated(y Int8s) (z Int8s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x8) ConcatSubPairsSaturated(y Int16x8) (z Int16x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x16) ConcatSubPairsSaturated(y Int16x16) (z Int16x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16x32) ConcatSubPairsSaturated(y Int16x32) (z Int16x32)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int16s) ConcatSubPairsSaturated(y Int16s) (z Int16s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x4) ConcatSubPairsSaturated(y Int32x4) (z Int32x4)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x8) ConcatSubPairsSaturated(y Int32x8) (z Int32x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32x16) ConcatSubPairsSaturated(y Int32x16) (z Int32x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int32s) ConcatSubPairsSaturated(y Int32s) (z Int32s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], y[0]-y[1]}
+func (x Int64x2) ConcatSubPairsSaturated(y Int64x2) (z Int64x2)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64x4) ConcatSubPairsSaturated(y Int64x4) (z Int64x4)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64x8) ConcatSubPairsSaturated(y Int64x8) (z Int64x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Int64s) ConcatSubPairsSaturated(y Int64s) (z Int64s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x16) ConcatSubPairsSaturated(y Uint8x16) (z Uint8x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x32) ConcatSubPairsSaturated(y Uint8x32) (z Uint8x32)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8x64) ConcatSubPairsSaturated(y Uint8x64) (z Uint8x64)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint8s) ConcatSubPairsSaturated(y Uint8s) (z Uint8s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x8) ConcatSubPairsSaturated(y Uint16x8) (z Uint16x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x16) ConcatSubPairsSaturated(y Uint16x16) (z Uint16x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16x32) ConcatSubPairsSaturated(y Uint16x32) (z Uint16x32)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint16s) ConcatSubPairsSaturated(y Uint16s) (z Uint16s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x4) ConcatSubPairsSaturated(y Uint32x4) (z Uint32x4)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x8) ConcatSubPairsSaturated(y Uint32x8) (z Uint32x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32x16) ConcatSubPairsSaturated(y Uint32x16) (z Uint32x16)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint32s) ConcatSubPairsSaturated(y Uint32s) (z Uint32s)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], y[0]-y[1]}
+func (x Uint64x2) ConcatSubPairsSaturated(y Uint64x2) (z Uint64x2)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64x4) ConcatSubPairsSaturated(y Uint64x4) (z Uint64x4)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64x8) ConcatSubPairsSaturated(y Uint64x8) (z Uint64x8)
+
+// ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
+// x and y with saturation and returns the concatenated result.
+//
+// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+func (x Uint64s) ConcatSubPairsSaturated(y Uint64s) (z Uint64s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float32x4) ConcatAddPairsGrouped(y Float32x4) (z Float32x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float32x8) ConcatAddPairsGrouped(y Float32x8) (z Float32x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float32x16) ConcatAddPairsGrouped(y Float32x16) (z Float32x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float32s) ConcatAddPairsGrouped(y Float32s) (z Float32s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float64x2) ConcatAddPairsGrouped(y Float64x2) (z Float64x2)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float64x4) ConcatAddPairsGrouped(y Float64x4) (z Float64x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float64x8) ConcatAddPairsGrouped(y Float64x8) (z Float64x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Float64s) ConcatAddPairsGrouped(y Float64s) (z Float64s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int8x16) ConcatAddPairsGrouped(y Int8x16) (z Int8x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int8x32) ConcatAddPairsGrouped(y Int8x32) (z Int8x32)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int8x64) ConcatAddPairsGrouped(y Int8x64) (z Int8x64)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int8s) ConcatAddPairsGrouped(y Int8s) (z Int8s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int16x8) ConcatAddPairsGrouped(y Int16x8) (z Int16x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int16x16) ConcatAddPairsGrouped(y Int16x16) (z Int16x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int16x32) ConcatAddPairsGrouped(y Int16x32) (z Int16x32)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int16s) ConcatAddPairsGrouped(y Int16s) (z Int16s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int32x4) ConcatAddPairsGrouped(y Int32x4) (z Int32x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int32x8) ConcatAddPairsGrouped(y Int32x8) (z Int32x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int32x16) ConcatAddPairsGrouped(y Int32x16) (z Int32x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int32s) ConcatAddPairsGrouped(y Int32s) (z Int32s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int64x2) ConcatAddPairsGrouped(y Int64x2) (z Int64x2)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int64x4) ConcatAddPairsGrouped(y Int64x4) (z Int64x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int64x8) ConcatAddPairsGrouped(y Int64x8) (z Int64x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Int64s) ConcatAddPairsGrouped(y Int64s) (z Int64s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint8x16) ConcatAddPairsGrouped(y Uint8x16) (z Uint8x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint8x32) ConcatAddPairsGrouped(y Uint8x32) (z Uint8x32)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint8x64) ConcatAddPairsGrouped(y Uint8x64) (z Uint8x64)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint8s) ConcatAddPairsGrouped(y Uint8s) (z Uint8s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint16x8) ConcatAddPairsGrouped(y Uint16x8) (z Uint16x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint16x16) ConcatAddPairsGrouped(y Uint16x16) (z Uint16x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint16x32) ConcatAddPairsGrouped(y Uint16x32) (z Uint16x32)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint16s) ConcatAddPairsGrouped(y Uint16s) (z Uint16s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint32x4) ConcatAddPairsGrouped(y Uint32x4) (z Uint32x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint32x8) ConcatAddPairsGrouped(y Uint32x8) (z Uint32x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint32x16) ConcatAddPairsGrouped(y Uint32x16) (z Uint32x16)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint32s) ConcatAddPairsGrouped(y Uint32s) (z Uint32s)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint64x2) ConcatAddPairsGrouped(y Uint64x2) (z Uint64x2)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint64x4) ConcatAddPairsGrouped(y Uint64x4) (z Uint64x4)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint64x8) ConcatAddPairsGrouped(y Uint64x8) (z Uint64x8)
+
+// ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatAddPairs] on each group.
+func (x Uint64s) ConcatAddPairsGrouped(y Uint64s) (z Uint64s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float32x4) ConcatSubPairsGrouped(y Float32x4) (z Float32x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float32x8) ConcatSubPairsGrouped(y Float32x8) (z Float32x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float32x16) ConcatSubPairsGrouped(y Float32x16) (z Float32x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float32s) ConcatSubPairsGrouped(y Float32s) (z Float32s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float64x2) ConcatSubPairsGrouped(y Float64x2) (z Float64x2)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float64x4) ConcatSubPairsGrouped(y Float64x4) (z Float64x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float64x8) ConcatSubPairsGrouped(y Float64x8) (z Float64x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Float64s) ConcatSubPairsGrouped(y Float64s) (z Float64s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int8x16) ConcatSubPairsGrouped(y Int8x16) (z Int8x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int8x32) ConcatSubPairsGrouped(y Int8x32) (z Int8x32)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int8x64) ConcatSubPairsGrouped(y Int8x64) (z Int8x64)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int8s) ConcatSubPairsGrouped(y Int8s) (z Int8s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int16x8) ConcatSubPairsGrouped(y Int16x8) (z Int16x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int16x16) ConcatSubPairsGrouped(y Int16x16) (z Int16x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int16x32) ConcatSubPairsGrouped(y Int16x32) (z Int16x32)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int16s) ConcatSubPairsGrouped(y Int16s) (z Int16s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int32x4) ConcatSubPairsGrouped(y Int32x4) (z Int32x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int32x8) ConcatSubPairsGrouped(y Int32x8) (z Int32x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int32x16) ConcatSubPairsGrouped(y Int32x16) (z Int32x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int32s) ConcatSubPairsGrouped(y Int32s) (z Int32s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int64x2) ConcatSubPairsGrouped(y Int64x2) (z Int64x2)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int64x4) ConcatSubPairsGrouped(y Int64x4) (z Int64x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int64x8) ConcatSubPairsGrouped(y Int64x8) (z Int64x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Int64s) ConcatSubPairsGrouped(y Int64s) (z Int64s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint8x16) ConcatSubPairsGrouped(y Uint8x16) (z Uint8x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint8x32) ConcatSubPairsGrouped(y Uint8x32) (z Uint8x32)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint8x64) ConcatSubPairsGrouped(y Uint8x64) (z Uint8x64)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint8s) ConcatSubPairsGrouped(y Uint8s) (z Uint8s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint16x8) ConcatSubPairsGrouped(y Uint16x8) (z Uint16x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint16x16) ConcatSubPairsGrouped(y Uint16x16) (z Uint16x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint16x32) ConcatSubPairsGrouped(y Uint16x32) (z Uint16x32)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint16s) ConcatSubPairsGrouped(y Uint16s) (z Uint16s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint32x4) ConcatSubPairsGrouped(y Uint32x4) (z Uint32x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint32x8) ConcatSubPairsGrouped(y Uint32x8) (z Uint32x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint32x16) ConcatSubPairsGrouped(y Uint32x16) (z Uint32x16)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint32s) ConcatSubPairsGrouped(y Uint32s) (z Uint32s)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint64x2) ConcatSubPairsGrouped(y Uint64x2) (z Uint64x2)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint64x4) ConcatSubPairsGrouped(y Uint64x4) (z Uint64x4)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint64x8) ConcatSubPairsGrouped(y Uint64x8) (z Uint64x8)
+
+// ConcatSubPairsGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSubPairs] on each group.
+func (x Uint64s) ConcatSubPairsGrouped(y Uint64s) (z Uint64s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int8x16) ConcatAddPairsSaturatedGrouped(y Int8x16) (z Int8x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int8x32) ConcatAddPairsSaturatedGrouped(y Int8x32) (z Int8x32)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int8x64) ConcatAddPairsSaturatedGrouped(y Int8x64) (z Int8x64)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int8s) ConcatAddPairsSaturatedGrouped(y Int8s) (z Int8s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int16x8) ConcatAddPairsSaturatedGrouped(y Int16x8) (z Int16x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int16x16) ConcatAddPairsSaturatedGrouped(y Int16x16) (z Int16x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int16x32) ConcatAddPairsSaturatedGrouped(y Int16x32) (z Int16x32)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int16s) ConcatAddPairsSaturatedGrouped(y Int16s) (z Int16s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int32x4) ConcatAddPairsSaturatedGrouped(y Int32x4) (z Int32x4)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int32x8) ConcatAddPairsSaturatedGrouped(y Int32x8) (z Int32x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int32x16) ConcatAddPairsSaturatedGrouped(y Int32x16) (z Int32x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int32s) ConcatAddPairsSaturatedGrouped(y Int32s) (z Int32s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int64x2) ConcatAddPairsSaturatedGrouped(y Int64x2) (z Int64x2)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int64x4) ConcatAddPairsSaturatedGrouped(y Int64x4) (z Int64x4)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int64x8) ConcatAddPairsSaturatedGrouped(y Int64x8) (z Int64x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Int64s) ConcatAddPairsSaturatedGrouped(y Int64s) (z Int64s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint8x16) ConcatAddPairsSaturatedGrouped(y Uint8x16) (z Uint8x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint8x32) ConcatAddPairsSaturatedGrouped(y Uint8x32) (z Uint8x32)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint8x64) ConcatAddPairsSaturatedGrouped(y Uint8x64) (z Uint8x64)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint8s) ConcatAddPairsSaturatedGrouped(y Uint8s) (z Uint8s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint16x8) ConcatAddPairsSaturatedGrouped(y Uint16x8) (z Uint16x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint16x16) ConcatAddPairsSaturatedGrouped(y Uint16x16) (z Uint16x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint16x32) ConcatAddPairsSaturatedGrouped(y Uint16x32) (z Uint16x32)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint16s) ConcatAddPairsSaturatedGrouped(y Uint16s) (z Uint16s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint32x4) ConcatAddPairsSaturatedGrouped(y Uint32x4) (z Uint32x4)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint32x8) ConcatAddPairsSaturatedGrouped(y Uint32x8) (z Uint32x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint32x16) ConcatAddPairsSaturatedGrouped(y Uint32x16) (z Uint32x16)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint32s) ConcatAddPairsSaturatedGrouped(y Uint32s) (z Uint32s)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint64x2) ConcatAddPairsSaturatedGrouped(y Uint64x2) (z Uint64x2)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint64x4) ConcatAddPairsSaturatedGrouped(y Uint64x4) (z Uint64x4)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint64x8) ConcatAddPairsSaturatedGrouped(y Uint64x8) (z Uint64x8)
+
+// ConcatAddPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatAddPairsSaturated] on each group.
+func (x Uint64s) ConcatAddPairsSaturatedGrouped(y Uint64s) (z Uint64s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int8x16) ConcatSubPairsSaturatedGrouped(y Int8x16) (z Int8x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int8x32) ConcatSubPairsSaturatedGrouped(y Int8x32) (z Int8x32)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int8x64) ConcatSubPairsSaturatedGrouped(y Int8x64) (z Int8x64)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int8s) ConcatSubPairsSaturatedGrouped(y Int8s) (z Int8s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int16x8) ConcatSubPairsSaturatedGrouped(y Int16x8) (z Int16x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int16x16) ConcatSubPairsSaturatedGrouped(y Int16x16) (z Int16x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int16x32) ConcatSubPairsSaturatedGrouped(y Int16x32) (z Int16x32)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int16s) ConcatSubPairsSaturatedGrouped(y Int16s) (z Int16s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int32x4) ConcatSubPairsSaturatedGrouped(y Int32x4) (z Int32x4)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int32x8) ConcatSubPairsSaturatedGrouped(y Int32x8) (z Int32x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int32x16) ConcatSubPairsSaturatedGrouped(y Int32x16) (z Int32x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int32s) ConcatSubPairsSaturatedGrouped(y Int32s) (z Int32s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int64x2) ConcatSubPairsSaturatedGrouped(y Int64x2) (z Int64x2)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int64x4) ConcatSubPairsSaturatedGrouped(y Int64x4) (z Int64x4)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int64x8) ConcatSubPairsSaturatedGrouped(y Int64x8) (z Int64x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Int64s) ConcatSubPairsSaturatedGrouped(y Int64s) (z Int64s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint8x16) ConcatSubPairsSaturatedGrouped(y Uint8x16) (z Uint8x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint8x32) ConcatSubPairsSaturatedGrouped(y Uint8x32) (z Uint8x32)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint8x64) ConcatSubPairsSaturatedGrouped(y Uint8x64) (z Uint8x64)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint8s) ConcatSubPairsSaturatedGrouped(y Uint8s) (z Uint8s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint16x8) ConcatSubPairsSaturatedGrouped(y Uint16x8) (z Uint16x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint16x16) ConcatSubPairsSaturatedGrouped(y Uint16x16) (z Uint16x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint16x32) ConcatSubPairsSaturatedGrouped(y Uint16x32) (z Uint16x32)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint16s) ConcatSubPairsSaturatedGrouped(y Uint16s) (z Uint16s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint32x4) ConcatSubPairsSaturatedGrouped(y Uint32x4) (z Uint32x4)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint32x8) ConcatSubPairsSaturatedGrouped(y Uint32x8) (z Uint32x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint32x16) ConcatSubPairsSaturatedGrouped(y Uint32x16) (z Uint32x16)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint32s) ConcatSubPairsSaturatedGrouped(y Uint32s) (z Uint32s)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint64x2) ConcatSubPairsSaturatedGrouped(y Uint64x2) (z Uint64x2)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint64x4) ConcatSubPairsSaturatedGrouped(y Uint64x4) (z Uint64x4)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint64x8) ConcatSubPairsSaturatedGrouped(y Uint64x8) (z Uint64x8)
+
+// ConcatSubPairsSaturatedGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSubPairsSaturated] on each group.
+func (x Uint64s) ConcatSubPairsSaturatedGrouped(y Uint64s) (z Uint64s)
+
 // DotProductPairs multiplies corresponding elements of x and y, and sums
 // adjacent pairs, yielding a vector of half as many elements with twice the
 // input element size.

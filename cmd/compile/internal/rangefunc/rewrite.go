@@ -525,6 +525,36 @@ backend and will cause the backend to compile the defer using
 deferprocat instead of an ordinary deferproc.
 
 TODO: Could call runtime.deferrangefuncend after f.
+
+# Recover
+
+A call to recover has the same problem. In
+
+	for range f {
+		recover()
+	}
+
+the call is in the body of the loop, so it runs in the frame of the func
+literal the body is rewritten into, called from the iterator, rather than
+in the frame of the function containing the loop. The runtime decides
+whether a recover takes effect by looking at the frame it was called in,
+so left alone the recover would never take effect, even though in the
+source it sits directly in a function that a panicking caller deferred.
+
+Whether such a recover takes effect depends only on the frame the loop is
+in, so the runtime can decide that part on entry to the function, while
+that frame is the current one, and hand back the panic the body would
+recover:
+
+	var #recover = runtime.recoverrangefunc()
+	f(func() {
+		runtime.gorecoverat(#recover)
+	})
+
+The token is the panic itself, or nil if a recover in the body would not
+take effect. Unlike the frame it stands for, it does not move when the
+stack grows, so the body can hold onto it. gorecoverat recovers that panic
+if it is still the one being processed.
 */
 package rangefunc
 
