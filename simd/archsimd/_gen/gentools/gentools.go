@@ -73,7 +73,8 @@ type Files struct {
 	// If nil, the globally registered options from RegisterFlags are used automatically.
 	Options *Options
 
-	files []*fileInfo
+	files          []*fileInfo
+	postProcessors []PostProcessor
 
 	// tmpDir is a temporary directory used for communicating with subprocess
 	// gentools.
@@ -90,6 +91,18 @@ func (f *Files) NewGoFile(relPath string) *bytes.Buffer
 // (relative to GOROOT/src). It returns a *bytes.Buffer for the generator to
 // populate. During Flush(), content is written directly without go/format.
 func (f *Files) NewRawFile(relPath string) *bytes.Buffer
+
+// PostProcessor is a function that inspects or transforms file content before
+// it is written, diffed, or packed into a txtar archive.
+//
+// relPath is the file path relative to GOROOT/src. isGo indicates whether the
+// file was registered as a Go file (via NewGoFile).
+type PostProcessor func(relPath string, isGo bool, content []byte) ([]byte, error)
+
+// AddPostProcessor registers a post-processing hook to be run on generated
+// files during Flush before writing or diffing. Post-processors are called in
+// registration order.
+func (f *Files) AddPostProcessor(fn PostProcessor)
 
 // ExecFlags returns a sequence of flags that can be passed to a gentools
 // subprocess. This allows several gentools to be tied together by a larger

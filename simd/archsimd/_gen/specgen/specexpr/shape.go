@@ -75,3 +75,9 @@ var MakeSlice = MakeFunc1("Slice", func(elem Type) (any, error) {
 })
 
 func (t Slice) String() string
+
+// ParseTypeName parses a Go type identifier into a [Type]. It recognizes basic
+// types (e.g. "int", "uint32", "float64", "bool") and SIMD vector types (e.g.
+// "Int32x4", "Float64s", "Mask8x16"). It does not parse composite type
+// expressions such as pointers, slices, or arrays.
+func ParseTypeName(name string) (Type, error)

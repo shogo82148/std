@@ -5111,6 +5111,1030 @@ func (x Uint64s) ReshapeToUint16s() (z Uint16s)
 // significant bit of element 0 is bit 0
 func (x Uint64s) ReshapeToUint32s() (z Uint32s)
 
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int8x16) ScaleSaturated(scale Int8x16) (z Int8x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int8x32) ScaleSaturated(scale Int8x32) (z Int8x32)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int8x64) ScaleSaturated(scale Int8x64) (z Int8x64)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int8s) ScaleSaturated(scale Int8s) (z Int8s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int16x8) ScaleSaturated(scale Int16x8) (z Int16x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int16x16) ScaleSaturated(scale Int16x16) (z Int16x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int16x32) ScaleSaturated(scale Int16x32) (z Int16x32)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int16s) ScaleSaturated(scale Int16s) (z Int16s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int32x4) ScaleSaturated(scale Int32x4) (z Int32x4)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int32x8) ScaleSaturated(scale Int32x8) (z Int32x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int32x16) ScaleSaturated(scale Int32x16) (z Int32x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int32s) ScaleSaturated(scale Int32s) (z Int32s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int64x2) ScaleSaturated(scale Int64x2) (z Int64x2)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int64x4) ScaleSaturated(scale Int64x4) (z Int64x4)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int64x8) ScaleSaturated(scale Int64x8) (z Int64x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Int64s) ScaleSaturated(scale Int64s) (z Int64s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint8x16) ScaleSaturated(scale Int8x16) (z Uint8x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint8x32) ScaleSaturated(scale Int8x32) (z Uint8x32)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint8x64) ScaleSaturated(scale Int8x64) (z Uint8x64)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint8s) ScaleSaturated(scale Int8s) (z Uint8s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint16x8) ScaleSaturated(scale Int16x8) (z Uint16x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint16x16) ScaleSaturated(scale Int16x16) (z Uint16x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint16x32) ScaleSaturated(scale Int16x32) (z Uint16x32)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint16s) ScaleSaturated(scale Int16s) (z Uint16s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint32x4) ScaleSaturated(scale Int32x4) (z Uint32x4)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint32x8) ScaleSaturated(scale Int32x8) (z Uint32x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint32x16) ScaleSaturated(scale Int32x16) (z Uint32x16)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint32s) ScaleSaturated(scale Int32s) (z Uint32s)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint64x2) ScaleSaturated(scale Int64x2) (z Uint64x2)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint64x4) ScaleSaturated(scale Int64x4) (z Uint64x4)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint64x8) ScaleSaturated(scale Int64x8) (z Uint64x8)
+
+// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+//
+// Positive exponents scale up (shift left with saturation); negative exponents
+// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+//
+//	z[i] = saturated(x[i] * 2^scale[i])
+func (x Uint64s) ScaleSaturated(scale Int64s) (z Uint64s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int8x16) ShiftAllRight(shift uint64) (z Int8x16)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int8x32) ShiftAllRight(shift uint64) (z Int8x32)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int8x64) ShiftAllRight(shift uint64) (z Int8x64)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int8s) ShiftAllRight(shift uint64) (z Int8s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int16x8) ShiftAllRight(shift uint64) (z Int16x8)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int16x16) ShiftAllRight(shift uint64) (z Int16x16)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int16x32) ShiftAllRight(shift uint64) (z Int16x32)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int16s) ShiftAllRight(shift uint64) (z Int16s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int32x4) ShiftAllRight(shift uint64) (z Int32x4)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int32x8) ShiftAllRight(shift uint64) (z Int32x8)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int32x16) ShiftAllRight(shift uint64) (z Int32x16)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int32s) ShiftAllRight(shift uint64) (z Int32s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int64x2) ShiftAllRight(shift uint64) (z Int64x2)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int64x4) ShiftAllRight(shift uint64) (z Int64x4)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int64x8) ShiftAllRight(shift uint64) (z Int64x8)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint8x16) ShiftAllRight(shift uint64) (z Uint8x16)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint8x32) ShiftAllRight(shift uint64) (z Uint8x32)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint8x64) ShiftAllRight(shift uint64) (z Uint8x64)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint8s) ShiftAllRight(shift uint64) (z Uint8s)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint16x8) ShiftAllRight(shift uint64) (z Uint16x8)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint16x16) ShiftAllRight(shift uint64) (z Uint16x16)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint16x32) ShiftAllRight(shift uint64) (z Uint16x32)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint16s) ShiftAllRight(shift uint64) (z Uint16s)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint32x4) ShiftAllRight(shift uint64) (z Uint32x4)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint32x8) ShiftAllRight(shift uint64) (z Uint32x8)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint32x16) ShiftAllRight(shift uint64) (z Uint32x16)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint32s) ShiftAllRight(shift uint64) (z Uint32s)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint64x2) ShiftAllRight(shift uint64) (z Uint64x2)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint64x4) ShiftAllRight(shift uint64) (z Uint64x4)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint64x8) ShiftAllRight(shift uint64) (z Uint64x8)
+
+// ShiftAllRight logically shifts each element of x right by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift
+func (x Uint64s) ShiftAllRight(shift uint64) (z Uint64s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int8x16) ShiftAllLeft(shift uint64) (z Int8x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int8x32) ShiftAllLeft(shift uint64) (z Int8x32)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int8x64) ShiftAllLeft(shift uint64) (z Int8x64)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int8s) ShiftAllLeft(shift uint64) (z Int8s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int16x8) ShiftAllLeft(shift uint64) (z Int16x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int16x16) ShiftAllLeft(shift uint64) (z Int16x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int16x32) ShiftAllLeft(shift uint64) (z Int16x32)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int16s) ShiftAllLeft(shift uint64) (z Int16s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int32x4) ShiftAllLeft(shift uint64) (z Int32x4)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int32x8) ShiftAllLeft(shift uint64) (z Int32x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int32x16) ShiftAllLeft(shift uint64) (z Int32x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int32s) ShiftAllLeft(shift uint64) (z Int32s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int64x2) ShiftAllLeft(shift uint64) (z Int64x2)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int64x4) ShiftAllLeft(shift uint64) (z Int64x4)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int64x8) ShiftAllLeft(shift uint64) (z Int64x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint8x16) ShiftAllLeft(shift uint64) (z Uint8x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint8x32) ShiftAllLeft(shift uint64) (z Uint8x32)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint8x64) ShiftAllLeft(shift uint64) (z Uint8x64)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint8s) ShiftAllLeft(shift uint64) (z Uint8s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint16x8) ShiftAllLeft(shift uint64) (z Uint16x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint16x16) ShiftAllLeft(shift uint64) (z Uint16x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint16x32) ShiftAllLeft(shift uint64) (z Uint16x32)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint16s) ShiftAllLeft(shift uint64) (z Uint16s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint32x4) ShiftAllLeft(shift uint64) (z Uint32x4)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint32x8) ShiftAllLeft(shift uint64) (z Uint32x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint32x16) ShiftAllLeft(shift uint64) (z Uint32x16)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint32s) ShiftAllLeft(shift uint64) (z Uint32s)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint64x2) ShiftAllLeft(shift uint64) (z Uint64x2)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint64x4) ShiftAllLeft(shift uint64) (z Uint64x4)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint64x8) ShiftAllLeft(shift uint64) (z Uint64x8)
+
+// ShiftAllLeft shifts each element of x left by y bits.
+// If shift is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift
+func (x Uint64s) ShiftAllLeft(shift uint64) (z Uint64s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int8x16) ShiftRight(shift Uint8x16) (z Int8x16)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int8x32) ShiftRight(shift Uint8x32) (z Int8x32)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int8x64) ShiftRight(shift Uint8x64) (z Int8x64)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int8s) ShiftRight(shift Uint8s) (z Int8s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int16x8) ShiftRight(shift Uint16x8) (z Int16x8)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int16x16) ShiftRight(shift Uint16x16) (z Int16x16)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int16x32) ShiftRight(shift Uint16x32) (z Int16x32)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int16s) ShiftRight(shift Uint16s) (z Int16s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int32x4) ShiftRight(shift Uint32x4) (z Int32x4)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int32x8) ShiftRight(shift Uint32x8) (z Int32x8)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int32x16) ShiftRight(shift Uint32x16) (z Int32x16)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int32s) ShiftRight(shift Uint32s) (z Int32s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int64x2) ShiftRight(shift Uint64x2) (z Int64x2)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int64x4) ShiftRight(shift Uint64x4) (z Int64x4)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int64x8) ShiftRight(shift Uint64x8) (z Int64x8)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Int64s) ShiftRight(shift Uint64s) (z Int64s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint8x16) ShiftRight(shift Uint8x16) (z Uint8x16)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint8x32) ShiftRight(shift Uint8x32) (z Uint8x32)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint8x64) ShiftRight(shift Uint8x64) (z Uint8x64)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint8s) ShiftRight(shift Uint8s) (z Uint8s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint16x8) ShiftRight(shift Uint16x8) (z Uint16x8)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint16x16) ShiftRight(shift Uint16x16) (z Uint16x16)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint16x32) ShiftRight(shift Uint16x32) (z Uint16x32)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint16s) ShiftRight(shift Uint16s) (z Uint16s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint32x4) ShiftRight(shift Uint32x4) (z Uint32x4)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint32x8) ShiftRight(shift Uint32x8) (z Uint32x8)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint32x16) ShiftRight(shift Uint32x16) (z Uint32x16)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint32s) ShiftRight(shift Uint32s) (z Uint32s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint64x2) ShiftRight(shift Uint64x2) (z Uint64x2)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint64x4) ShiftRight(shift Uint64x4) (z Uint64x4)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint64x8) ShiftRight(shift Uint64x8) (z Uint64x8)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+func (x Uint64s) ShiftRight(shift Uint64s) (z Uint64s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int8x16) ShiftLeft(shift Uint8x16) (z Int8x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int8x32) ShiftLeft(shift Uint8x32) (z Int8x32)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int8x64) ShiftLeft(shift Uint8x64) (z Int8x64)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int8s) ShiftLeft(shift Uint8s) (z Int8s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int16x8) ShiftLeft(shift Uint16x8) (z Int16x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int16x16) ShiftLeft(shift Uint16x16) (z Int16x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int16x32) ShiftLeft(shift Uint16x32) (z Int16x32)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int16s) ShiftLeft(shift Uint16s) (z Int16s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int32x4) ShiftLeft(shift Uint32x4) (z Int32x4)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int32x8) ShiftLeft(shift Uint32x8) (z Int32x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int32x16) ShiftLeft(shift Uint32x16) (z Int32x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int32s) ShiftLeft(shift Uint32s) (z Int32s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int64x2) ShiftLeft(shift Uint64x2) (z Int64x2)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int64x4) ShiftLeft(shift Uint64x4) (z Int64x4)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int64x8) ShiftLeft(shift Uint64x8) (z Int64x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Int64s) ShiftLeft(shift Uint64s) (z Int64s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint8x16) ShiftLeft(shift Uint8x16) (z Uint8x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint8x32) ShiftLeft(shift Uint8x32) (z Uint8x32)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint8x64) ShiftLeft(shift Uint8x64) (z Uint8x64)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint8s) ShiftLeft(shift Uint8s) (z Uint8s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint16x8) ShiftLeft(shift Uint16x8) (z Uint16x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint16x16) ShiftLeft(shift Uint16x16) (z Uint16x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint16x32) ShiftLeft(shift Uint16x32) (z Uint16x32)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint16s) ShiftLeft(shift Uint16s) (z Uint16s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint32x4) ShiftLeft(shift Uint32x4) (z Uint32x4)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint32x8) ShiftLeft(shift Uint32x8) (z Uint32x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint32x16) ShiftLeft(shift Uint32x16) (z Uint32x16)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint32s) ShiftLeft(shift Uint32s) (z Uint32s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint64x2) ShiftLeft(shift Uint64x2) (z Uint64x2)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint64x4) ShiftLeft(shift Uint64x4) (z Uint64x4)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint64x8) ShiftLeft(shift Uint64x8) (z Uint64x8)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// If shift[i] is greater than the element width, the result is 0.
+//
+//	z[i] = x[i] << shift[i]
+func (x Uint64s) ShiftLeft(shift Uint64s) (z Uint64s)
+
 // Permute permutes x.
 //
 //	z[i] = x[indices[i] % len(x)]

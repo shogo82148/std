@@ -14,8 +14,8 @@ import (
 type Func struct {
 	Name string
 
-	// Doc is the function documentation, without any leading comment markers
-	Doc string
+	// Doc is the function documentation, split into classified paragraphs.
+	Doc []Paragraph
 
 	// Commutative indicates that this operation produces the same result
 	// regardless of the order of its arguments in Recv and In.
