@@ -96,6 +96,36 @@ func (x Uint8x32) Mul(y Uint8x32) Uint8x32
 // Emulated, CPU Feature: AVX512
 func (x Uint8x64) Mul(y Uint8x64) Uint8x64
 
+// OnesCount counts the number of set bits in each element.
+//
+// Emulated, CPU Feature: AVX
+func (x Int8x16) OnesCount() Int8x16
+
+// OnesCount counts the number of set bits in each element.
+//
+// Emulated, CPU Feature: AVX
+func (x Uint8x16) OnesCount() Uint8x16
+
+// OnesCount counts the number of set bits in each element.
+//
+// Emulated, CPU Feature: AVX2
+func (x Int8x32) OnesCount() Int8x32
+
+// OnesCount counts the number of set bits in each element.
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint8x32) OnesCount() Uint8x32
+
+// OnesCount counts the number of set bits in each element.
+//
+// Asm: VPOPCNTB, CPU Feature: AVX512BITALG
+func (x Int8x64) OnesCount() Int8x64
+
+// OnesCount counts the number of set bits in each element.
+//
+// Asm: VPOPCNTB, CPU Feature: AVX512BITALG
+func (x Uint8x64) OnesCount() Uint8x64
+
 // ReduceSum returns the sum of all elements in x.
 //
 // Emulated, CPU Feature: AVX

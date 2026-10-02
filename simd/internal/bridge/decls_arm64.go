@@ -254,6 +254,10 @@ func (x Int8x16) NotEqual(y Int8x16) Mask8x16
 
 func (x Int8x16nclm) NotEqual(y Int8x16nclm) Mask8x16nclm
 
+func (x Int8x16) OnesCount() Int8x16
+
+func (x Int8x16nclm) OnesCount() Int8x16nclm
+
 func (x Int8x16) Or(y Int8x16) Int8x16
 
 func (x Int8x16nclm) Or(y Int8x16nclm) Int8x16nclm
@@ -729,6 +733,10 @@ func (x Uint8x16nclm) Not() Uint8x16nclm
 func (x Uint8x16) NotEqual(y Uint8x16) Mask8x16
 
 func (x Uint8x16nclm) NotEqual(y Uint8x16nclm) Mask8x16nclm
+
+func (x Uint8x16) OnesCount() Uint8x16
+
+func (x Uint8x16nclm) OnesCount() Uint8x16nclm
 
 func (x Uint8x16) Or(y Uint8x16) Uint8x16
 
@@ -1362,9 +1370,21 @@ func (x Float64x2) ToBits() Uint64x2
 
 func (x Float64x2nclm) ToBits() Uint64x2nclm
 
+func (x Mask8x16) All() bool
+
+func (x Mask8x16nclm) All() bool
+
 func (x Mask8x16) And(y Mask8x16) Mask8x16
 
 func (x Mask8x16nclm) And(y Mask8x16nclm) Mask8x16nclm
+
+func (x Mask8x16) Any() bool
+
+func (x Mask8x16nclm) Any() bool
+
+func (x Mask8x16) None() bool
+
+func (x Mask8x16nclm) None() bool
 
 func (x Mask8x16) Or(y Mask8x16) Mask8x16
 
@@ -1378,9 +1398,25 @@ func (x Mask8x16) ToInt8s() Int8x16
 
 func (x Mask8x16nclm) ToInt8s() Int8x16nclm
 
+func (x Mask8x16) TrailingZeros() int
+
+func (x Mask8x16nclm) TrailingZeros() int
+
+func (x Mask16x8) All() bool
+
+func (x Mask16x8nclm) All() bool
+
 func (x Mask16x8) And(y Mask16x8) Mask16x8
 
 func (x Mask16x8nclm) And(y Mask16x8nclm) Mask16x8nclm
+
+func (x Mask16x8) Any() bool
+
+func (x Mask16x8nclm) Any() bool
+
+func (x Mask16x8) None() bool
+
+func (x Mask16x8nclm) None() bool
 
 func (x Mask16x8) Or(y Mask16x8) Mask16x8
 
@@ -1394,9 +1430,25 @@ func (x Mask16x8) ToInt16s() Int16x8
 
 func (x Mask16x8nclm) ToInt16s() Int16x8nclm
 
+func (x Mask16x8) TrailingZeros() int
+
+func (x Mask16x8nclm) TrailingZeros() int
+
+func (x Mask32x4) All() bool
+
+func (x Mask32x4nclm) All() bool
+
 func (x Mask32x4) And(y Mask32x4) Mask32x4
 
 func (x Mask32x4nclm) And(y Mask32x4nclm) Mask32x4nclm
+
+func (x Mask32x4) Any() bool
+
+func (x Mask32x4nclm) Any() bool
+
+func (x Mask32x4) None() bool
+
+func (x Mask32x4nclm) None() bool
 
 func (x Mask32x4) Or(y Mask32x4) Mask32x4
 
@@ -1410,9 +1462,25 @@ func (x Mask32x4) ToInt32s() Int32x4
 
 func (x Mask32x4nclm) ToInt32s() Int32x4nclm
 
+func (x Mask32x4) TrailingZeros() int
+
+func (x Mask32x4nclm) TrailingZeros() int
+
+func (x Mask64x2) All() bool
+
+func (x Mask64x2nclm) All() bool
+
 func (x Mask64x2) And(y Mask64x2) Mask64x2
 
 func (x Mask64x2nclm) And(y Mask64x2nclm) Mask64x2nclm
+
+func (x Mask64x2) Any() bool
+
+func (x Mask64x2nclm) Any() bool
+
+func (x Mask64x2) None() bool
+
+func (x Mask64x2nclm) None() bool
 
 func (x Mask64x2) Or(y Mask64x2) Mask64x2
 
@@ -1425,3 +1493,7 @@ func (x Mask64x2nclm) String() string
 func (x Mask64x2) ToInt64s() Int64x2
 
 func (x Mask64x2nclm) ToInt64s() Int64x2nclm
+
+func (x Mask64x2) TrailingZeros() int
+
+func (x Mask64x2nclm) TrailingZeros() int

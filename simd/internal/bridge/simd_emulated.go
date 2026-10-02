@@ -1046,6 +1046,10 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) Uint64s
 // polynomial terms, but coefficients "add" with XOR.)
 func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) Uint64s
 
+func (v Int8s) OnesCount() Int8s
+
+func (v Uint8s) OnesCount() Uint8s
+
 // BroadcastInt8s fills the elements of a slice with its argument value.
 func BroadcastInt8s(x int8) Int8s
 
@@ -1075,3 +1079,39 @@ func BroadcastFloat32s(x float32) Float32s
 
 // BroadcastFloat64s fills the elements of a slice with its argument value.
 func BroadcastFloat64s(x float64) Float64s
+
+func (x Mask8s) All() bool
+
+func (x Mask8s) Any() bool
+
+func (x Mask8s) None() bool
+
+func (x Mask16s) All() bool
+
+func (x Mask16s) Any() bool
+
+func (x Mask16s) None() bool
+
+func (x Mask32s) All() bool
+
+func (x Mask32s) Any() bool
+
+func (x Mask32s) None() bool
+
+func (x Mask64s) All() bool
+
+func (x Mask64s) Any() bool
+
+func (x Mask64s) None() bool
+
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+func (m Mask8s) TrailingZeros() int
+
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+func (m Mask16s) TrailingZeros() int
+
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+func (m Mask32s) TrailingZeros() int
+
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+func (m Mask64s) TrailingZeros() int

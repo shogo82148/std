@@ -4723,6 +4723,17 @@ const (
 	OpARM64PSTRstore
 	OpARM64PPFALSEB
 	OpARM64ZDUPBconst
+	OpARM64ZDUPHconst
+	OpARM64ZDUPSconst
+	OpARM64ZDUPDconst
+	OpARM64ZDUPB
+	OpARM64ZDUPH
+	OpARM64ZDUPS
+	OpARM64ZDUPD
+	OpARM64ZDUPIB
+	OpARM64ZDUPIH
+	OpARM64ZDUPIS
+	OpARM64ZDUPID
 	OpARM64RDVL
 	OpARM64PWHILELTB
 	OpARM64PWHILELTH
@@ -7175,6 +7186,16 @@ const (
 	OpF32AsI32
 	OpI64AsF64
 	OpF64AsI64
+	OpBroadcastInt8s
+	OpBroadcastUint8s
+	OpBroadcastInt16s
+	OpBroadcastUint16s
+	OpBroadcastInt32s
+	OpBroadcastUint32s
+	OpBroadcastFloat32s
+	OpBroadcastInt64s
+	OpBroadcastUint64s
+	OpBroadcastFloat64s
 	OpAESDecryptLastRoundUint8x16
 	OpAESDecryptLastRoundUint8x32
 	OpAESDecryptLastRoundUint8x64
@@ -8179,8 +8200,6 @@ const (
 	OpOnesCountInt64x4
 	OpOnesCountInt64x8
 	OpOnesCountInt8x16
-	OpOnesCountInt8x32
-	OpOnesCountInt8x64
 	OpOnesCountUint16x16
 	OpOnesCountUint16x32
 	OpOnesCountUint16x8
@@ -8191,8 +8210,6 @@ const (
 	OpOnesCountUint64x4
 	OpOnesCountUint64x8
 	OpOnesCountUint8x16
-	OpOnesCountUint8x32
-	OpOnesCountUint8x64
 	OpOrInt16s
 	OpOrInt16x16
 	OpOrInt16x32
@@ -8850,6 +8867,12 @@ const (
 	OpconcatSelectedConstantInt64x2
 	OpconcatSelectedConstantUint32x4
 	OpconcatSelectedConstantUint64x2
+	OponesCountInt8x16
+	OponesCountInt8x32
+	OponesCountInt8x64
+	OponesCountUint8x16
+	OponesCountUint8x32
+	OponesCountUint8x64
 	OppermuteScalarsGroupedInt32x16
 	OppermuteScalarsGroupedInt32x8
 	OppermuteScalarsGroupedUint32x16
@@ -26972,10 +26995,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPD128",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPD128",
+		ArgLen: 2,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -26987,10 +27009,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPD256",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPD256",
+		ArgLen: 2,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27002,10 +27023,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPD512",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPD512",
+		ArgLen: 2,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
@@ -27017,10 +27037,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPDMasked128",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPDMasked128",
+		ArgLen: 3,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27033,10 +27052,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPDMasked256",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPDMasked256",
+		ArgLen: 3,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27049,10 +27067,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPDMasked512",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPD,
+		Name:   "VMAXPDMasked512",
+		ArgLen: 3,
+		asm:    x86.AVMAXPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27065,10 +27082,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPS128",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPS128",
+		ArgLen: 2,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27080,10 +27096,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPS256",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPS256",
+		ArgLen: 2,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27095,10 +27110,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPS512",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPS512",
+		ArgLen: 2,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
@@ -27110,10 +27124,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPSMasked128",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPSMasked128",
+		ArgLen: 3,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27126,10 +27139,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPSMasked256",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPSMasked256",
+		ArgLen: 3,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27142,10 +27154,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMAXPSMasked512",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMAXPS,
+		Name:   "VMAXPSMasked512",
+		ArgLen: 3,
+		asm:    x86.AVMAXPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27158,10 +27169,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPD128",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPD128",
+		ArgLen: 2,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27173,10 +27183,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPD256",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPD256",
+		ArgLen: 2,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27188,10 +27197,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPD512",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPD512",
+		ArgLen: 2,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
@@ -27203,10 +27211,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPDMasked128",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPDMasked128",
+		ArgLen: 3,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27219,10 +27226,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPDMasked256",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPDMasked256",
+		ArgLen: 3,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27235,10 +27241,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPDMasked512",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPD,
+		Name:   "VMINPDMasked512",
+		ArgLen: 3,
+		asm:    x86.AVMINPD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27251,10 +27256,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPS128",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPS128",
+		ArgLen: 2,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27266,10 +27270,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPS256",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPS256",
+		ArgLen: 2,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -27281,10 +27284,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPS512",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPS512",
+		ArgLen: 2,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
@@ -27296,10 +27298,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPSMasked128",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPSMasked128",
+		ArgLen: 3,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27312,10 +27313,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPSMasked256",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPSMasked256",
+		ArgLen: 3,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -27328,10 +27328,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VMINPSMasked512",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         x86.AVMINPS,
+		Name:   "VMINPSMasked512",
+		ArgLen: 3,
+		asm:    x86.AVMINPS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -81509,6 +81508,147 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "ZDUPHconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  0,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPSconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  0,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPDconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  0,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZDUPB",
+		ArgLen: 1,
+		asm:    arm64.AZDUPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZDUPH",
+		ArgLen: 1,
+		asm:    arm64.AZDUPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZDUPS",
+		ArgLen: 1,
+		asm:    arm64.AZDUPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZDUPD",
+		ArgLen: 1,
+		asm:    arm64.AZDUP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPIB",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPIH",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPIS",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPID",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "RDVL",
 		AuxType: AuxTypeInt64,
 		ArgLen:  0,
@@ -82630,10 +82770,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VFMAX2D",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         arm64.AVFMAX,
+		Name:   "VFMAX2D",
+		ArgLen: 2,
+		asm:    arm64.AVFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -82645,10 +82784,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VFMAX4S",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         arm64.AVFMAX,
+		Name:   "VFMAX4S",
+		ArgLen: 2,
+		asm:    arm64.AVFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -82673,10 +82811,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VFMIN2D",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         arm64.AVFMIN,
+		Name:   "VFMIN2D",
+		ArgLen: 2,
+		asm:    arm64.AVFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -82688,10 +82825,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "VFMIN4S",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         arm64.AVFMIN,
+		Name:   "VFMIN4S",
+		ArgLen: 2,
+		asm:    arm64.AVFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -86161,10 +86297,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZADDMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZADD,
+		Name:         "ZADDMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86177,10 +86313,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZADDMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZADD,
+		Name:         "ZADDMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86193,10 +86329,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZADDMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZADD,
+		Name:         "ZADDMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86277,10 +86413,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZADDMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZADD,
+		Name:         "ZADDMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86323,10 +86459,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZANDMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZAND,
+		Name:         "ZANDMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86339,10 +86475,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZANDMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZAND,
+		Name:         "ZANDMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86355,10 +86491,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZANDMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZAND,
+		Name:         "ZANDMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86439,10 +86575,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZANDMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZAND,
+		Name:         "ZANDMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86916,10 +87052,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZEORMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZEOR,
+		Name:         "ZEORMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86932,10 +87068,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZEORMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZEOR,
+		Name:         "ZEORMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -86948,10 +87084,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZEORMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZEOR,
+		Name:         "ZEORMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87032,10 +87168,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZEORMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZEOR,
+		Name:         "ZEORMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87123,10 +87259,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZFADDMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZFADD,
+		Name:         "ZFADDMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87173,10 +87309,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZFADDMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZFADD,
+		Name:         "ZFADDMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87343,10 +87479,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZFMULMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZFMUL,
+		Name:         "ZFMULMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87393,10 +87529,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZFMULMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZFMUL,
+		Name:         "ZFMULMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87761,10 +87897,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZMULMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZMUL,
+		Name:         "ZMULMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87777,10 +87913,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZMULMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZMUL,
+		Name:         "ZMULMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87793,10 +87929,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZMULMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZMUL,
+		Name:         "ZMULMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -87877,10 +88013,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZMULMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZMUL,
+		Name:         "ZMULMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88043,10 +88179,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZORRMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZORR,
+		Name:         "ZORRMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88059,10 +88195,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZORRMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZORR,
+		Name:         "ZORRMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88075,10 +88211,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZORRMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZORR,
+		Name:         "ZORRMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88159,10 +88295,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZORRMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZORR,
+		Name:         "ZORRMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88220,10 +88356,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSMULHMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSMULH,
+		Name:         "ZSMULHMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88236,10 +88372,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSMULHMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSMULH,
+		Name:         "ZSMULHMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88252,10 +88388,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSMULHMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSMULH,
+		Name:         "ZSMULHMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88336,10 +88472,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSMULHMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSMULH,
+		Name:         "ZSMULHMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88412,10 +88548,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSQADDMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSQADD,
+		Name:         "ZSQADDMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88428,10 +88564,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSQADDMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSQADD,
+		Name:         "ZSQADDMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88444,10 +88580,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSQADDMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSQADD,
+		Name:         "ZSQADDMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88528,10 +88664,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZSQADDMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZSQADD,
+		Name:         "ZSQADDMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88844,10 +88980,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUMULHMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUMULH,
+		Name:         "ZUMULHMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88860,10 +88996,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUMULHMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUMULH,
+		Name:         "ZUMULHMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88876,10 +89012,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUMULHMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUMULH,
+		Name:         "ZUMULHMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -88960,10 +89096,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUMULHMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUMULH,
+		Name:         "ZUMULHMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -89036,10 +89172,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUQADDMergingB",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUQADD,
+		Name:         "ZUQADDMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -89052,10 +89188,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUQADDMergingD",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUQADD,
+		Name:         "ZUQADDMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -89068,10 +89204,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUQADDMergingH",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUQADD,
+		Name:         "ZUQADDMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -89152,10 +89288,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "ZUQADDMergingS",
-		ArgLen:      3,
-		Commutative: true,
-		asm:         arm64.AZUQADD,
+		Name:         "ZUQADDMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -109133,10 +109269,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "F32x4Max",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AF32x4Max,
+		Name:   "F32x4Max",
+		ArgLen: 2,
+		asm:    wasm.AF32x4Max,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -109148,10 +109283,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "F64x2Max",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AF64x2Max,
+		Name:   "F64x2Max",
+		ArgLen: 2,
+		asm:    wasm.AF64x2Max,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -109253,10 +109387,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "F32x4Min",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AF32x4Min,
+		Name:   "F32x4Min",
+		ArgLen: 2,
+		asm:    wasm.AF32x4Min,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -109268,10 +109401,9 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:        "F64x2Min",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AF64x2Min,
+		Name:   "F64x2Min",
+		ArgLen: 2,
+		asm:    wasm.AF64x2Min,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -112996,6 +113128,56 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "F64AsI64",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastInt8s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastUint8s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastInt16s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastUint16s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastInt32s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastUint32s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastFloat32s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastInt64s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastUint64s",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "BroadcastFloat64s",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -117130,40 +117312,34 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:        "MaxFloat32x16",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat32x16",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MaxFloat32x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat32x4",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MaxFloat32x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat32x8",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MaxFloat64x2",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat64x2",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MaxFloat64x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat64x4",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MaxFloat64x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MaxFloat64x8",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
 		Name:        "MaxInt16x16",
@@ -117310,40 +117486,34 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
-		Name:        "MinFloat32x16",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat32x16",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MinFloat32x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat32x4",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MinFloat32x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat32x8",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MinFloat64x2",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat64x2",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MinFloat64x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat64x4",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
-		Name:        "MinFloat64x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
+		Name:    "MinFloat64x8",
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
 		Name:        "MinInt16x16",
@@ -118378,16 +118548,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "OnesCountInt8x32",
-		ArgLen:  1,
-		Generic: true,
-	},
-	{
-		Name:    "OnesCountInt8x64",
-		ArgLen:  1,
-		Generic: true,
-	},
-	{
 		Name:    "OnesCountUint16x16",
 		ArgLen:  1,
 		Generic: true,
@@ -118434,16 +118594,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "OnesCountUint8x16",
-		ArgLen:  1,
-		Generic: true,
-	},
-	{
-		Name:    "OnesCountUint8x32",
-		ArgLen:  1,
-		Generic: true,
-	},
-	{
-		Name:    "OnesCountUint8x64",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -121887,6 +122037,36 @@ var OpcodeTable = [...]OpInfo{
 		Name:    "concatSelectedConstantUint64x2",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountInt8x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountInt8x32",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountInt8x64",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountUint8x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountUint8x32",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "onesCountUint8x64",
+		ArgLen:  1,
 		Generic: true,
 	},
 	{
