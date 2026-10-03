@@ -35,6 +35,9 @@ import (
 	"github.com/shogo82148/std/cmd/internal/sys"
 )
 
+// SIMDSVEVectorLengthScaled marks a VL-scaled displacement ("#imm, mul vl").
+const SIMDSVEVectorLengthScaled int16 = -32768
+
 var Linkarm64 = obj.LinkArch{
 	Arch:           sys.ArchARM64,
 	Init:           buildop,
