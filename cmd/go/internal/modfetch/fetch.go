@@ -5,27 +5,45 @@
 package modfetch
 
 import (
+	"github.com/shogo82148/std/cmd/go/internal/base"
+	"github.com/shogo82148/std/cmd/internal/par"
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
 
-	"github.com/shogo82148/std/cmd/go/internal/base"
-	"github.com/shogo82148/std/cmd/internal/par"
-
 	"golang.org/x/mod/module"
 )
 
-var ErrToolchain = errors.New("internal error: invalid operation on toolchain module")
+var (
+	ErrToolchain = errors.New("internal error: invalid operation on toolchain module")
+	ErrFIPS140   = errors.New("golang.org/fips140 is bundled with the Go distribution and cannot be downloaded")
+)
 
 // Download downloads the specific module version to the
 // local download cache and returns the name of the directory
 // corresponding to the root of the module's file tree.
 func (f *Fetcher) Download(ctx context.Context, mod module.Version) (dir string, err error)
 
-// Unzip is like Download but is given the explicit zip file to use,
-// rather than downloading it. This is used for the GOFIPS140 zip files,
-// which ship in the Go distribution itself.
-func (f *Fetcher) Unzip(ctx context.Context, mod module.Version, zipfile string) (dir string, err error)
+// Unzip is like Download but for GOFIPS140 zip files which ship with
+// the Go distribution itself.
+//
+// Unzip performs a check like the go.sum check for downloaded modules:
+// A cached copy of mod is used only if the module cache records ziphash
+// as its module zip hash. As with go.sum, this rejects a cached copy
+// that was populated from some other source; it does not detect
+// modifications made to the module cache directory itself.
+//
+// Otherwise, any existing copy is discarded, zipfile is unpacked
+// again, and ziphash is stamped upon success.
+//
+// If verify is non-nil, it is called before zipfile is unpacked.
+// Unzip does not call verify when it returns a cached copy.
+//
+// If verify returns an error, the module cache is left untouched and
+// Unzip returns that error.
+//
+// ziphash must be non-empty.
+func (f *Fetcher) Unzip(ctx context.Context, mod module.Version, zipfile, ziphash string, verify func() error) (dir string, err error)
 
 // DownloadZip downloads the specific module version to the
 // local zip cache and returns the name of the zip file.
