@@ -4722,6 +4722,12 @@ const (
 	OpARM64PLDRload
 	OpARM64PSTRstore
 	OpARM64PPFALSEB
+	OpARM64PPNEXTB
+	OpARM64PPNEXTH
+	OpARM64PPNEXTS
+	OpARM64PPNEXTD
+	OpARM64PBICSB
+	OpARM64PPTEST
 	OpARM64ZDUPBconst
 	OpARM64ZDUPHconst
 	OpARM64ZDUPSconst
@@ -5137,6 +5143,10 @@ const (
 	OpARM64ZFCMGTS
 	OpARM64ZFCMNED
 	OpARM64ZFCMNES
+	OpARM64ZFDIVD
+	OpARM64ZFDIVMergingD
+	OpARM64ZFDIVMergingS
+	OpARM64ZFDIVS
 	OpARM64ZFMAXD
 	OpARM64ZFMAXMergingD
 	OpARM64ZFMAXMergingS
@@ -5145,6 +5155,10 @@ const (
 	OpARM64ZFMINMergingD
 	OpARM64ZFMINMergingS
 	OpARM64ZFMINS
+	OpARM64ZFMLAD
+	OpARM64ZFMLAMergingD
+	OpARM64ZFMLAMergingS
+	OpARM64ZFMLAS
 	OpARM64ZFMULD
 	OpARM64ZFMULMergingD
 	OpARM64ZFMULMergingPrefixedD
@@ -5171,6 +5185,14 @@ const (
 	OpARM64ZFSUBMergingD
 	OpARM64ZFSUBMergingS
 	OpARM64ZFSUBS
+	OpARM64ZMLAB
+	OpARM64ZMLAD
+	OpARM64ZMLAH
+	OpARM64ZMLAMergingB
+	OpARM64ZMLAMergingD
+	OpARM64ZMLAMergingH
+	OpARM64ZMLAMergingS
+	OpARM64ZMLAS
 	OpARM64ZMULB
 	OpARM64ZMULD
 	OpARM64ZMULH
@@ -5200,6 +5222,10 @@ const (
 	OpARM64ZORRMergingPrefixedH
 	OpARM64ZORRMergingPrefixedS
 	OpARM64ZORRMergingS
+	OpARM64ZSDIVD
+	OpARM64ZSDIVMergingD
+	OpARM64ZSDIVMergingS
+	OpARM64ZSDIVS
 	OpARM64ZSMAXB
 	OpARM64ZSMAXD
 	OpARM64ZSMAXH
@@ -5264,6 +5290,10 @@ const (
 	OpARM64ZSUBMergingH
 	OpARM64ZSUBMergingS
 	OpARM64ZSUBS
+	OpARM64ZUDIVD
+	OpARM64ZUDIVMergingD
+	OpARM64ZUDIVMergingS
+	OpARM64ZUDIVS
 	OpARM64ZUMAXB
 	OpARM64ZUMAXD
 	OpARM64ZUMAXH
@@ -7252,6 +7282,30 @@ const (
 	OpBroadcastInt64s
 	OpBroadcastUint64s
 	OpBroadcastFloat64s
+	OpMask8sAllTrue
+	OpMask16sAllTrue
+	OpMask32sAllTrue
+	OpMask64sAllTrue
+	OpMask8sFirst
+	OpMask16sFirst
+	OpMask32sFirst
+	OpMask64sFirst
+	OpMask8sNext
+	OpMask16sNext
+	OpMask32sNext
+	OpMask64sNext
+	OpMask8sAll
+	OpMask16sAll
+	OpMask32sAll
+	OpMask64sAll
+	OpMask8sNone
+	OpMask16sNone
+	OpMask32sNone
+	OpMask64sNone
+	OpMask8sAny
+	OpMask16sAny
+	OpMask32sAny
+	OpMask64sAny
 	OpAESDecryptLastRoundUint8x16
 	OpAESDecryptLastRoundUint8x32
 	OpAESDecryptLastRoundUint8x64
@@ -7639,12 +7693,18 @@ const (
 	OpConvertToUint64Float64x2
 	OpConvertToUint64Float64x4
 	OpConvertToUint64Float64x8
+	OpDivFloat32s
 	OpDivFloat32x16
 	OpDivFloat32x4
 	OpDivFloat32x8
+	OpDivFloat64s
 	OpDivFloat64x2
 	OpDivFloat64x4
 	OpDivFloat64x8
+	OpDivInt32s
+	OpDivInt64s
+	OpDivUint32s
+	OpDivUint64s
 	OpDotProductPairsInt16x16
 	OpDotProductPairsInt16x32
 	OpDotProductPairsInt16x8
@@ -8124,14 +8184,20 @@ const (
 	OpMulAddEvenSubOddFloat64x2
 	OpMulAddEvenSubOddFloat64x4
 	OpMulAddEvenSubOddFloat64x8
+	OpMulAddFloat32s
 	OpMulAddFloat32x16
 	OpMulAddFloat32x4
 	OpMulAddFloat32x8
+	OpMulAddFloat64s
 	OpMulAddFloat64x2
 	OpMulAddFloat64x4
 	OpMulAddFloat64x8
+	OpMulAddInt16s
 	OpMulAddInt16x8
+	OpMulAddInt32s
 	OpMulAddInt32x4
+	OpMulAddInt64s
+	OpMulAddInt8s
 	OpMulAddInt8x16
 	OpMulAddOddSubEvenFloat32x16
 	OpMulAddOddSubEvenFloat32x4
@@ -8139,8 +8205,12 @@ const (
 	OpMulAddOddSubEvenFloat64x2
 	OpMulAddOddSubEvenFloat64x4
 	OpMulAddOddSubEvenFloat64x8
+	OpMulAddUint16s
 	OpMulAddUint16x8
+	OpMulAddUint32s
 	OpMulAddUint32x4
+	OpMulAddUint64s
+	OpMulAddUint8s
 	OpMulAddUint8x16
 	OpMulFloat32s
 	OpMulFloat32x16
@@ -81573,6 +81643,96 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:         "PPNEXTB",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		asm:          arm64.APPNEXT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:         "PPNEXTH",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		asm:          arm64.APPNEXT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:         "PPNEXTS",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		asm:          arm64.APPNEXT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:         "PPNEXTD",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		asm:          arm64.APPNEXT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "PBICSB",
+		ArgLen: 3,
+		asm:    arm64.APBICS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "PPTEST",
+		ArgLen: 2,
+		asm:    arm64.APPTEST,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
 		Name:    "ZDUPBconst",
 		AuxType: AuxTypeInt8,
 		ArgLen:  0,
@@ -87540,6 +87700,70 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:         "ZFDIVD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFDIVMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFDIVMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFDIVS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZFDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:         "ZFMAXD",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -87661,6 +87885,74 @@ var OpcodeTable = [...]OpInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFMLAD",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZFMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFMLAMergingD",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZFMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFMLAMergingS",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZFMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZFMLAS",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZFMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -88049,6 +88341,142 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAB",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAD",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAH",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAMergingB",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAMergingD",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAMergingH",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAMergingS",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZMLAS",
+		ArgLen:       4,
+		ResultInArg0: true,
+		asm:          arm64.AZMLA,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+				{2, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -88503,6 +88931,70 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          arm64.AZORR,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZSDIVD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZSDIVMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZSDIVMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZSDIVS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZSDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
@@ -89522,6 +90014,70 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZUDIVD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZUDIVMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZUDIVMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZUDIVS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZUDIV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -114170,6 +114726,126 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "Mask8sAllTrue",
+		ArgLen:  0,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sAllTrue",
+		ArgLen:  0,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sAllTrue",
+		ArgLen:  0,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sAllTrue",
+		ArgLen:  0,
+		Generic: true,
+	},
+	{
+		Name:    "Mask8sFirst",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sFirst",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sFirst",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sFirst",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask8sNext",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sNext",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sNext",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sNext",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask8sAll",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sAll",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sAll",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sAll",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask8sNone",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sNone",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sNone",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sNone",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask8sAny",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask16sAny",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask32sAny",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "Mask64sAny",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
 		Name:    "AESDecryptLastRoundUint8x16",
 		ArgLen:  2,
 		Generic: true,
@@ -116237,6 +116913,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "DivFloat32s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "DivFloat32x16",
 		ArgLen:  2,
 		Generic: true,
@@ -116252,6 +116933,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "DivFloat64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "DivFloat64x2",
 		ArgLen:  2,
 		Generic: true,
@@ -116263,6 +116949,26 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "DivFloat64x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "DivInt32s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "DivInt64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "DivUint32s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "DivUint64s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -118794,6 +119500,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "MulAddFloat32s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "MulAddFloat32x16",
 		ArgLen:  3,
 		Generic: true,
@@ -118805,6 +119516,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "MulAddFloat32x8",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "MulAddFloat64s",
 		ArgLen:  3,
 		Generic: true,
 	},
@@ -118824,12 +119540,32 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "MulAddInt16s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "MulAddInt16x8",
 		ArgLen:  3,
 		Generic: true,
 	},
 	{
+		Name:    "MulAddInt32s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "MulAddInt32x4",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "MulAddInt64s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "MulAddInt8s",
 		ArgLen:  3,
 		Generic: true,
 	},
@@ -118869,12 +119605,32 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "MulAddUint16s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "MulAddUint16x8",
 		ArgLen:  3,
 		Generic: true,
 	},
 	{
+		Name:    "MulAddUint32s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "MulAddUint32x4",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "MulAddUint64s",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "MulAddUint8s",
 		ArgLen:  3,
 		Generic: true,
 	},

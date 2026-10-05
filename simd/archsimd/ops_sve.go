@@ -214,6 +214,44 @@ func (x Float32s) Ceil() Float32s
 // Asm: ZFRINTP, CPU Feature: SVE
 func (x Float64s) Ceil() Float64s
 
+// Div divides elements of two vectors. Division by zero follows IEEE 754 and does not panic.
+//
+// Asm: ZFDIV, CPU Feature: SVE
+func (x Float32s) Div(y Float32s) Float32s
+
+// Div divides elements of two vectors. Division by zero follows IEEE 754 and does not panic.
+//
+// Asm: ZFDIV, CPU Feature: SVE
+func (x Float64s) Div(y Float64s) Float64s
+
+// Div divides corresponding elements of two vectors, truncating toward
+// zero. Division by zero yields zero rather than panicking, and dividing
+// the minimum signed value by -1 yields the minimum signed value.
+//
+// Asm: ZSDIV, CPU Feature: SVE
+func (x Int32s) Div(y Int32s) Int32s
+
+// Div divides corresponding elements of two vectors, truncating toward
+// zero. Division by zero yields zero rather than panicking, and dividing
+// the minimum signed value by -1 yields the minimum signed value.
+//
+// Asm: ZSDIV, CPU Feature: SVE
+func (x Int64s) Div(y Int64s) Int64s
+
+// Div divides corresponding elements of two vectors, truncating toward
+// zero. Division by zero yields zero rather than panicking, and dividing
+// the minimum signed value by -1 yields the minimum signed value.
+//
+// Asm: ZUDIV, CPU Feature: SVE
+func (x Uint32s) Div(y Uint32s) Uint32s
+
+// Div divides corresponding elements of two vectors, truncating toward
+// zero. Division by zero yields zero rather than panicking, and dividing
+// the minimum signed value by -1 yields the minimum signed value.
+//
+// Asm: ZUDIV, CPU Feature: SVE
+func (x Uint64s) Div(y Uint64s) Uint64s
+
 // Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: ZFCMEQ, CPU Feature: SVE
@@ -523,6 +561,56 @@ func (x Uint32s) Mul(y Uint32s) Uint32s
 //
 // Asm: ZMUL, CPU Feature: SVE
 func (x Uint64s) Mul(y Uint64s) Uint64s
+
+// MulAdd performs a fused (x * y) + z.
+//
+// Asm: ZFMLA, CPU Feature: SVE
+func (x Float32s) MulAdd(y Float32s, z Float32s) Float32s
+
+// MulAdd performs a fused (x * y) + z.
+//
+// Asm: ZFMLA, CPU Feature: SVE
+func (x Float64s) MulAdd(y Float64s, z Float64s) Float64s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Int8s) MulAdd(y Int8s, z Int8s) Int8s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Int16s) MulAdd(y Int16s, z Int16s) Int16s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Int32s) MulAdd(y Int32s, z Int32s) Int32s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Int64s) MulAdd(y Int64s, z Int64s) Int64s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Uint8s) MulAdd(y Uint8s, z Uint8s) Uint8s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Uint16s) MulAdd(y Uint16s, z Uint16s) Uint16s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Uint32s) MulAdd(y Uint32s, z Uint32s) Uint32s
+
+// MulAdd computes (x * y) + z.
+//
+// Asm: ZMLA, CPU Feature: SVE
+func (x Uint64s) MulAdd(y Uint64s, z Uint64s) Uint64s
 
 // MulHigh multiplies elements and stores the high part of the result.
 //
