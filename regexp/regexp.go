@@ -62,6 +62,7 @@ package regexp
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/regexp/syntax"
 )
 
@@ -297,6 +298,42 @@ func (re *Regexp) FindStringSubmatchIndex(s string) []int
 // FindReaderSubmatchIndex may read arbitrarily far from r,
 // including reading beyond the returned match.
 func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
+
+// All returns all the matches for re in b.
+func (re *Regexp) All(b []byte) iter.Seq[[]byte]
+
+// AllString returns all the matches for re in s.
+func (re *Regexp) AllString(s string) iter.Seq[string]
+
+// AllIndex returns the locations of all matches for re in b.
+func (re *Regexp) AllIndex(b []byte) iter.Seq[[]int]
+
+// AllStringIndex returns the locations of all matches for re in s.
+func (re *Regexp) AllStringIndex(s string) iter.Seq[[]int]
+
+// AllSubmatch returns the locations of all matches for re in b,
+// including submatch locations.
+// In each returned match m, the overall match is m[0],
+// the first submatch is m[1], and so on.
+func (re *Regexp) AllSubmatch(b []byte) iter.Seq[[][]byte]
+
+// AllStringSubmatch returns the locations of all matches for re in s,
+// including submatch locations.
+// In each returned match m, m[0] is the overall match,
+// m[1] is the first submatch, and so on.
+func (re *Regexp) AllStringSubmatch(s string) iter.Seq[[]string]
+
+// AllSubmatchIndex returns the locations of all matches for re in b,
+// including submatch locations.
+// In each returned match m, the overall match is b[m[0]:m[1]],
+// the first submatch is b[m[2]:m[3]], and so on.
+func (re *Regexp) AllSubmatchIndex(b []byte) iter.Seq[[]int]
+
+// AllStringSubmatchIndex returns the locations of all matches for re in s,
+// including submatch locations.
+// In each returned match m, the overall match is s[m[0]:m[1]],
+// the first submatch is s[m[2]:m[3]], and so on.
+func (re *Regexp) AllStringSubmatchIndex(s string) iter.Seq[[]int]
 
 // FindAll returns all the matches for re in b.
 // If n >= 0, FindAll returns no more than n matches.

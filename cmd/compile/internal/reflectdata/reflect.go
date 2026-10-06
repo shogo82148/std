@@ -54,6 +54,12 @@ func InterfaceMethodOffset(ityp *types.Type, i int64) int64
 // NeedRuntimeType ensures that a runtime type descriptor is emitted for t.
 func NeedRuntimeType(t *types.Type)
 
+// ForEachRuntimeType calls fn for each type for which a runtime type descriptor
+// has been requested. This is used by the code that indexes symbols early, so
+// we can recursively index the symbols WriteRuntimeTypes numbers using the
+// recursive writeType function.
+func ForEachRuntimeType(fn func(*types.Type))
+
 func WriteRuntimeTypes()
 
 func WriteGCSymbols()
@@ -71,6 +77,10 @@ func GCSym(t *types.Type, onDemandAllowed bool) (lsym *obj.LSym, ptrdata int64)
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.
 func ZeroAddr(size int64) ir.Node
+
+// TypeCanBeDupok reports whether the type descriptor can be defined in multiple packages:
+// that is, unnamed types, instantiated types and shape types.
+func TypeCanBeDupok(t *types.Type) bool
 
 // NeedEmit reports whether typ is a type that we need to emit code
 // for (e.g., runtime type descriptors, method wrappers).

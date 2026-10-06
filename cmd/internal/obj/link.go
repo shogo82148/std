@@ -580,6 +580,10 @@ const (
 	// does need the type's hash and equality algorithms, but it leaves
 	// those out, so the other one has to win. See reflectdata.writeType.
 	AttrWeakDef
+
+	// Unnumbered indicates the symbol was not numbered when writing
+	// export data. It's used to check that it wouldn't be numbered later.
+	AttrUnnumbered
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -725,6 +729,9 @@ type Link struct {
 	// symbol reference in the object file.
 	pkgIdx map[string]int32
 
+	// By the time we do symbol numbering we should have saved each symbol in either predefs or unnumbered.
+	predefs      []*LSym
+	unnumbered   []*LSym
 	defs         []*LSym
 	hashed64defs []*LSym
 	hasheddefs   []*LSym

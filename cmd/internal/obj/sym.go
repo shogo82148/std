@@ -72,10 +72,20 @@ func (ctxt *Link) Int128Sym(hi, lo int64) *LSym
 // GCLocalsSym generates a content-addressable sym containing data.
 func (ctxt *Link) GCLocalsSym(data []byte) *LSym
 
-// Assign index to symbols.
+// NumberSymEarly preassigns an index to a symbol that will appear
+// in export data so that export data can be written early.
+func (ctxt *Link) NumberSymEarly(s *LSym)
+
+func (ctxt *Link) NoteUnnumberedExport(s *LSym)
+
+// NumberSyms assigns indices to symbols not handled by NumberSymEarly.
 // asm is set to true if this is called by the assembler (i.e. not the compiler),
 // in which case all the symbols are non-package (for now).
 func (ctxt *Link) NumberSyms()
+
+// Returns whether s is a non-package symbol, which needs to be referenced
+// by name instead of by index.
+func (ctxt *Link) IsNonPkgSym(s *LSym) bool
 
 // StaticNamePrefix is the prefix the front end applies to static temporary
 // variables. When turned into LSyms, these can be tagged as static so

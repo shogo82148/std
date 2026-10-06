@@ -4822,9 +4822,13 @@ const (
 	OpARM64VFDIV4S
 	OpARM64VFMAX2D
 	OpARM64VFMAX4S
+	OpARM64VFMAXP2D
+	OpARM64VFMAXP4S
 	OpARM64VFMAXV4S
 	OpARM64VFMIN2D
 	OpARM64VFMIN4S
+	OpARM64VFMINP2D
+	OpARM64VFMINP4S
 	OpARM64VFMINV4S
 	OpARM64VFMLA2D
 	OpARM64VFMLA4S
@@ -4864,12 +4868,18 @@ const (
 	OpARM64VSMAX4S
 	OpARM64VSMAX8H
 	OpARM64VSMAX16B
+	OpARM64VSMAXP4S
+	OpARM64VSMAXP8H
+	OpARM64VSMAXP16B
 	OpARM64VSMAXV4S
 	OpARM64VSMAXV8H
 	OpARM64VSMAXV16B
 	OpARM64VSMIN4S
 	OpARM64VSMIN8H
 	OpARM64VSMIN16B
+	OpARM64VSMINP4S
+	OpARM64VSMINP8H
+	OpARM64VSMINP16B
 	OpARM64VSMINV4S
 	OpARM64VSMINV8H
 	OpARM64VSMINV16B
@@ -4935,12 +4945,18 @@ const (
 	OpARM64VUMAX4S
 	OpARM64VUMAX8H
 	OpARM64VUMAX16B
+	OpARM64VUMAXP4S
+	OpARM64VUMAXP8H
+	OpARM64VUMAXP16B
 	OpARM64VUMAXV4S
 	OpARM64VUMAXV8H
 	OpARM64VUMAXV16B
 	OpARM64VUMIN4S
 	OpARM64VUMIN8H
 	OpARM64VUMIN16B
+	OpARM64VUMINP4S
+	OpARM64VUMINP8H
+	OpARM64VUMINP16B
 	OpARM64VUMINV4S
 	OpARM64VUMINV8H
 	OpARM64VUMINV16B
@@ -6239,6 +6255,11 @@ const (
 	OpRISCV64FLED
 	OpRISCV64LoweredFMIND
 	OpRISCV64LoweredFMAXD
+	OpRISCV64LoweredRoundToEvenD
+	OpRISCV64LoweredRoundD
+	OpRISCV64LoweredFloorD
+	OpRISCV64LoweredCeilD
+	OpRISCV64LoweredTruncD
 	OpRISCV64FCLASSS
 	OpRISCV64FCLASSD
 	OpRISCV64CZEROEQZ
@@ -7570,6 +7591,22 @@ const (
 	OpConcatEvenUint32x4
 	OpConcatEvenUint64x2
 	OpConcatEvenUint8x16
+	OpConcatMaxPairsFloat32x4
+	OpConcatMaxPairsFloat64x2
+	OpConcatMaxPairsInt16x8
+	OpConcatMaxPairsInt32x4
+	OpConcatMaxPairsInt8x16
+	OpConcatMaxPairsUint16x8
+	OpConcatMaxPairsUint32x4
+	OpConcatMaxPairsUint8x16
+	OpConcatMinPairsFloat32x4
+	OpConcatMinPairsFloat64x2
+	OpConcatMinPairsInt16x8
+	OpConcatMinPairsInt32x4
+	OpConcatMinPairsInt8x16
+	OpConcatMinPairsUint16x8
+	OpConcatMinPairsUint32x4
+	OpConcatMinPairsUint8x16
 	OpConcatOddInt16x8
 	OpConcatOddInt32x4
 	OpConcatOddInt64x2
@@ -83034,6 +83071,34 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "VFMAXP2D",
+		ArgLen: 2,
+		asm:    arm64.AVFMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VFMAXP4S",
+		ArgLen: 2,
+		asm:    arm64.AVFMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VFMAXV4S",
 		ArgLen: 1,
 		asm:    arm64.AVFMAXV,
@@ -83064,6 +83129,34 @@ var OpcodeTable = [...]OpInfo{
 		Name:   "VFMIN4S",
 		ArgLen: 2,
 		asm:    arm64.AVFMIN,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VFMINP2D",
+		ArgLen: 2,
+		asm:    arm64.AVFMINP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VFMINP4S",
+		ArgLen: 2,
+		asm:    arm64.AVFMINP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -83622,6 +83715,48 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "VSMAXP4S",
+		ArgLen: 2,
+		asm:    arm64.AVSMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VSMAXP8H",
+		ArgLen: 2,
+		asm:    arm64.AVSMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VSMAXP16B",
+		ArgLen: 2,
+		asm:    arm64.AVSMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VSMAXV4S",
 		ArgLen: 1,
 		asm:    arm64.AVSMAXV,
@@ -83695,6 +83830,48 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:      2,
 		Commutative: true,
 		asm:         arm64.AVSMIN,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VSMINP4S",
+		ArgLen: 2,
+		asm:    arm64.AVSMINP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VSMINP8H",
+		ArgLen: 2,
+		asm:    arm64.AVSMINP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VSMINP16B",
+		ArgLen: 2,
+		asm:    arm64.AVSMINP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -84623,6 +84800,48 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "VUMAXP4S",
+		ArgLen: 2,
+		asm:    arm64.AVUMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VUMAXP8H",
+		ArgLen: 2,
+		asm:    arm64.AVUMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VUMAXP16B",
+		ArgLen: 2,
+		asm:    arm64.AVUMAXP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VUMAXV4S",
 		ArgLen: 1,
 		asm:    arm64.AVUMAXV,
@@ -84696,6 +84915,48 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:      2,
 		Commutative: true,
 		asm:         arm64.AVUMIN,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VUMINP4S",
+		ArgLen: 2,
+		asm:    arm64.AVUMINP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VUMINP8H",
+		ArgLen: 2,
+		asm:    arm64.AVUMINP,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VUMINP16B",
+		ArgLen: 2,
+		asm:    arm64.AVUMINP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -98570,9 +98831,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:   "DIVD",
-		ArgLen: 2,
-		asm:    ppc64.ADIVD,
+		Name:         "DIVD",
+		ArgLen:       2,
+		ClobberFlags: true,
+		asm:          ppc64.ADIVD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1073733630, V2: 0}},
@@ -98584,9 +98846,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:   "DIVW",
-		ArgLen: 2,
-		asm:    ppc64.ADIVW,
+		Name:         "DIVW",
+		ArgLen:       2,
+		ClobberFlags: true,
+		asm:          ppc64.ADIVW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1073733630, V2: 0}},
@@ -103668,6 +103931,71 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredRoundToEvenD",
+		ArgLen:          1,
+		ResultNotInArgs: true,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredRoundD",
+		ArgLen:          1,
+		ResultNotInArgs: true,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredFloorD",
+		ArgLen:          1,
+		ResultNotInArgs: true,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredCeilD",
+		ArgLen:          1,
+		ResultNotInArgs: true,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredTruncD",
+		ArgLen:          1,
+		ResultNotInArgs: true,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -116281,6 +116609,86 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ConcatEvenUint8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsFloat32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsFloat64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsInt32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsInt8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsUint32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMaxPairsUint8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsFloat32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsFloat64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsInt32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsInt8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsUint32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatMinPairsUint8x16",
 		ArgLen:  2,
 		Generic: true,
 	},
