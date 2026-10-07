@@ -65,6 +65,10 @@ func (o *Options) OutputPath(relPath string) string
 // WritingToInput returns true if Flush will write to the input tree.
 func (o *Options) WritingToInput() bool
 
+// OverlayDir returns the root directory containing overlay files if an overlay
+// is active (i.e. -outdir is set and different from -goroot), or "" otherwise.
+func (o *Options) OverlayDir() string
+
 // Files manages a collection of generated files for a single generator run.
 // The zero value of Files is ready for immediate use and automatically honors
 // the command-line flags registered via RegisterFlags.

@@ -24,6 +24,6 @@ func Implicit(n ImplicitNode) ImplicitNode
 // appropriate for typ.
 func FixValue(typ *types.Type, val constant.Value) constant.Value
 
-func Addr(pos src.XPos, x ir.Node) *ir.AddrExpr
+func Addr(curfunc *ir.Func, pos src.XPos, x ir.Node) *ir.AddrExpr
 
 func Deref(pos src.XPos, typ *types.Type, x ir.Node) *ir.StarExpr

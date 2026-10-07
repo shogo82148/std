@@ -38,6 +38,7 @@ type Config struct {
 	Fp32RegMask    ssaop.RegMask
 	Fp64RegMask    ssaop.RegMask
 	SimdRegMask    ssaop.RegMask
+	PredRegMask    ssaop.RegMask
 	SpecialRegMask ssaop.RegMask
 	IntParamRegs   []int8
 	FloatParamRegs []int8

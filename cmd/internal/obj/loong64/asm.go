@@ -22,12 +22,8 @@ type Optab struct {
 	type_ int8
 	size  int8
 	param int16
-	flag  uint8
+	flag  uint16
 }
-
-const (
-	NOTUSETMP = 1 << iota
-)
 
 func IsAtomicInst(as obj.As) bool
 

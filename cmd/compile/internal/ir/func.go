@@ -266,12 +266,9 @@ func LinkFuncName(f *Func) string
 // to the package path and local symbol name.
 func ParseLinkFuncName(name string) (pkg, sym string, err error)
 
-var CurFunc *Func
-
-// WithFunc invokes do with CurFunc and base.Pos set to curfn and
-// curfn.Pos(), respectively, and then restores their previous values
-// before returning.
-func WithFunc(curfn *Func, do func())
+// WithPos invokes do with base.Pos set to curfn.Pos(), and then
+// restores its previous value before returning.
+func WithPos(curfn *Func, do func())
 
 func FuncSymName(s *types.Sym) string
 

@@ -17,7 +17,7 @@ import (
 
 // StaticCall devirtualizes the given call if possible when the concrete callee
 // is available statically.
-func StaticCall(s *State, call *ir.CallExpr)
+func StaticCall(curfunc *ir.Func, s *State, call *ir.CallExpr)
 
 // State holds precomputed state for use in [StaticCall].
 type State struct {

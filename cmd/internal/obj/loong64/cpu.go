@@ -246,10 +246,13 @@ const (
 
 const (
 	// mark flags
-	LABEL  = 1 << 0
-	LEAF   = 1 << 1
-	SYNC   = 1 << 2
-	BRANCH = 1 << 3
+	LABEL = 1 << iota
+	LEAF
+	SYNC
+	BRANCH
+
+	// p expands to multiple instructions and uses REGTMP.
+	USES_REG_TMP
 )
 
 // Arrangement for Loong64 SIMD instructions

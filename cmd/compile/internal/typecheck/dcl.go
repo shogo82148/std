@@ -12,16 +12,7 @@ import (
 
 // DeclFunc declares the parameters for fn and adds it to
 // Target.Funcs.
-//
-// Before returning, it sets CurFunc to fn. When the caller is done
-// constructing fn, it must call FinishFuncBody to restore CurFunc.
 func DeclFunc(fn *ir.Func)
-
-// FinishFuncBody restores ir.CurFunc to its state before the last
-// call to DeclFunc.
-func FinishFuncBody()
-
-func CheckFuncStack()
 
 // TempAt makes a new Node off the books.
 //

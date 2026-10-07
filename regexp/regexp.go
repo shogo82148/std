@@ -411,6 +411,9 @@ func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) [
 // code control over allocation.
 func (re *Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
 
+// SplitSeq returns an iterator over substrings of s separated by the expression.
+func (re *Regexp) SplitSeq(s string) iter.Seq[string]
+
 // Split slices s into substrings separated by the expression and returns a slice of
 // the substrings between those expression matches.
 //

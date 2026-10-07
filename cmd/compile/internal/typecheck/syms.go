@@ -21,7 +21,7 @@ func LookupRuntime(name string, types_ ...*types.Type) *ir.Name
 // to help with debugging.
 // It should begin with "." to avoid conflicts with
 // user labels.
-func AutoLabel(prefix string) *types.Sym
+func AutoLabel(curfunc *ir.Func, prefix string) *types.Sym
 
 func Lookup(name string) *types.Sym
 
