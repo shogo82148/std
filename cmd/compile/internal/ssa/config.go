@@ -38,7 +38,10 @@ type Config struct {
 	Fp32RegMask    ssaop.RegMask
 	Fp64RegMask    ssaop.RegMask
 	SimdRegMask    ssaop.RegMask
-	PredRegMask    ssaop.RegMask
+	SimdMaskReg    ssaop.RegMask
+	// SpecialRegMask is the set of registers that are allocatable only where
+	// an operation's register mask names them explicitly. The register allocator
+	// must not place a value in one of these merely because of its type.
 	SpecialRegMask ssaop.RegMask
 	IntParamRegs   []int8
 	FloatParamRegs []int8

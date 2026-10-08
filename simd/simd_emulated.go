@@ -27,7 +27,7 @@ func LoadInt8s(s []int8) Int8s
 func LoadInt8sPart(s []int8) (Int8s, int)
 
 // Abs returns the element-wise absolute value of x.
-func (x Int8s) Abs() Int8s
+func (x Int8s) Abs() Uint8s
 
 // Add returns the element-wise sum of x and y.
 func (x Int8s) Add(y Int8s) Int8s
@@ -123,7 +123,7 @@ func LoadInt16s(s []int16) Int16s
 func LoadInt16sPart(s []int16) (Int16s, int)
 
 // Abs returns the element-wise absolute value of x.
-func (x Int16s) Abs() Int16s
+func (x Int16s) Abs() Uint16s
 
 // Add returns the element-wise sum of x and y.
 func (x Int16s) Add(y Int16s) Int16s
@@ -188,12 +188,6 @@ func (x Int16s) ShiftAllLeft(y uint64) Int16s
 // ShiftAllRight shifts all elements right by y bits.
 func (x Int16s) ShiftAllRight(y uint64) Int16s
 
-// RotateAllLeft rotates all elements left by dist bits.
-func (x Int16s) RotateAllLeft(dist uint64) Int16s
-
-// RotateAllRight rotates all elements right by dist bits.
-func (x Int16s) RotateAllRight(dist uint64) Int16s
-
 // ReduceSum returns the scalar sum of the elements of x.
 func (x Int16s) ReduceSum() int16
 
@@ -231,7 +225,7 @@ func LoadInt32s(s []int32) Int32s
 func LoadInt32sPart(s []int32) (Int32s, int)
 
 // Abs returns the element-wise absolute value of x.
-func (x Int32s) Abs() Int32s
+func (x Int32s) Abs() Uint32s
 
 // Add returns the element-wise sum of x and y.
 func (x Int32s) Add(y Int32s) Int32s
@@ -295,12 +289,6 @@ func (x Int32s) ShiftAllLeft(y uint64) Int32s
 
 // ShiftAllRight shifts all elements right by y bits.
 func (x Int32s) ShiftAllRight(y uint64) Int32s
-
-// RotateAllLeft rotates all elements left by dist bits.
-func (x Int32s) RotateAllLeft(dist uint64) Int32s
-
-// RotateAllRight rotates all elements right by dist bits.
-func (x Int32s) RotateAllRight(dist uint64) Int32s
 
 // ReduceSum returns the scalar sum of the elements of x.
 func (x Int32s) ReduceSum() int32
@@ -382,12 +370,6 @@ func (x Int64s) Or(y Int64s) Int64s
 
 // ShiftAllLeft shifts all elements left by y bits.
 func (x Int64s) ShiftAllLeft(y uint64) Int64s
-
-// RotateAllLeft rotates all elements left by dist bits.
-func (x Int64s) RotateAllLeft(dist uint64) Int64s
-
-// RotateAllRight rotates all elements right by dist bits.
-func (x Int64s) RotateAllRight(dist uint64) Int64s
 
 // Store stores the vector elements into the slice s.
 func (x Int64s) Store(s []int64)

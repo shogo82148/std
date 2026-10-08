@@ -174,9 +174,9 @@ func LoadUint64x2nclmPart(s []uint64) (Uint64x2nclm, int)
 
 func BroadcastUint64x2nclm(x uint64) Uint64x2nclm
 
-func (x Int8x16) Abs() Int8x16
+func (x Int8x16) Abs() Uint8x16
 
-func (x Int8x16nclm) Abs() Int8x16nclm
+func (x Int8x16nclm) Abs() Uint8x16nclm
 
 func (x Int8x16) Add(y Int8x16) Int8x16
 
@@ -298,9 +298,9 @@ func (x Int8x16) Xor(y Int8x16) Int8x16
 
 func (x Int8x16nclm) Xor(y Int8x16nclm) Int8x16nclm
 
-func (x Int16x8) Abs() Int16x8
+func (x Int16x8) Abs() Uint16x8
 
-func (x Int16x8nclm) Abs() Int16x8nclm
+func (x Int16x8nclm) Abs() Uint16x8nclm
 
 func (x Int16x8) Add(y Int16x8) Int16x8
 
@@ -386,14 +386,6 @@ func (x Int16x8) ReduceSum() int16
 
 func (x Int16x8nclm) ReduceSum() int16
 
-func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
-
-func (x Int16x8nclm) RotateAllLeft(dist uint64) Int16x8nclm
-
-func (x Int16x8) RotateAllRight(dist uint64) Int16x8
-
-func (x Int16x8nclm) RotateAllRight(dist uint64) Int16x8nclm
-
 func (x Int16x8) ShiftAllLeft(y uint64) Int16x8
 
 func (x Int16x8nclm) ShiftAllLeft(y uint64) Int16x8nclm
@@ -434,9 +426,9 @@ func (x Int16x8) Xor(y Int16x8) Int16x8
 
 func (x Int16x8nclm) Xor(y Int16x8nclm) Int16x8nclm
 
-func (x Int32x4) Abs() Int32x4
+func (x Int32x4) Abs() Uint32x4
 
-func (x Int32x4nclm) Abs() Int32x4nclm
+func (x Int32x4nclm) Abs() Uint32x4nclm
 
 func (x Int32x4) Add(y Int32x4) Int32x4
 
@@ -521,14 +513,6 @@ func (x Int32x4nclm) Or(y Int32x4nclm) Int32x4nclm
 func (x Int32x4) ReduceSum() int32
 
 func (x Int32x4nclm) ReduceSum() int32
-
-func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
-
-func (x Int32x4nclm) RotateAllLeft(dist uint64) Int32x4nclm
-
-func (x Int32x4) RotateAllRight(dist uint64) Int32x4
-
-func (x Int32x4nclm) RotateAllRight(dist uint64) Int32x4nclm
 
 func (x Int32x4) ShiftAllLeft(y uint64) Int32x4
 
@@ -629,14 +613,6 @@ func (x Int64x2nclm) NotEqual(y Int64x2nclm) Mask64x2nclm
 func (x Int64x2) Or(y Int64x2) Int64x2
 
 func (x Int64x2nclm) Or(y Int64x2nclm) Int64x2nclm
-
-func (x Int64x2) RotateAllLeft(dist uint64) Int64x2
-
-func (x Int64x2nclm) RotateAllLeft(dist uint64) Int64x2nclm
-
-func (x Int64x2) RotateAllRight(dist uint64) Int64x2
-
-func (x Int64x2nclm) RotateAllRight(dist uint64) Int64x2nclm
 
 func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
 

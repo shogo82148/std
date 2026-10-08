@@ -258,11 +258,11 @@ func LoadUint64x8Part(s []uint64) (Uint64x8, int)
 
 func BroadcastUint64x8(x uint64) Uint64x8
 
-func (x Int8x16) Abs() Int8x16
+func (x Int8x16) Abs() Uint8x16
 
-func (x Int8x32) Abs() Int8x32
+func (x Int8x32) Abs() Uint8x32
 
-func (x Int8x64) Abs() Int8x64
+func (x Int8x64) Abs() Uint8x64
 
 func (x Int8x16) Add(y Int8x16) Int8x16
 
@@ -444,11 +444,11 @@ func (x Int8x32) Xor(y Int8x32) Int8x32
 
 func (x Int8x64) Xor(y Int8x64) Int8x64
 
-func (x Int16x8) Abs() Int16x8
+func (x Int16x8) Abs() Uint16x8
 
-func (x Int16x16) Abs() Int16x16
+func (x Int16x16) Abs() Uint16x16
 
-func (x Int16x32) Abs() Int16x32
+func (x Int16x32) Abs() Uint16x32
 
 func (x Int16x8) Add(y Int16x8) Int16x8
 
@@ -576,18 +576,6 @@ func (x Int16x16) ReduceSum() int16
 
 func (x Int16x32) ReduceSum() int16
 
-func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
-
-func (x Int16x16) RotateAllLeft(dist uint64) Int16x16
-
-func (x Int16x32) RotateAllLeft(dist uint64) Int16x32
-
-func (x Int16x8) RotateAllRight(dist uint64) Int16x8
-
-func (x Int16x16) RotateAllRight(dist uint64) Int16x16
-
-func (x Int16x32) RotateAllRight(dist uint64) Int16x32
-
 func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
 func (x Int16x16) ShiftAllLeft(shift uint64) Int16x16
@@ -648,11 +636,11 @@ func (x Int16x16) Xor(y Int16x16) Int16x16
 
 func (x Int16x32) Xor(y Int16x32) Int16x32
 
-func (x Int32x4) Abs() Int32x4
+func (x Int32x4) Abs() Uint32x4
 
-func (x Int32x8) Abs() Int32x8
+func (x Int32x8) Abs() Uint32x8
 
-func (x Int32x16) Abs() Int32x16
+func (x Int32x16) Abs() Uint32x16
 
 func (x Int32x4) Add(y Int32x4) Int32x4
 
@@ -779,18 +767,6 @@ func (x Int32x4) ReduceSum() int32
 func (x Int32x8) ReduceSum() int32
 
 func (x Int32x16) ReduceSum() int32
-
-func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
-
-func (x Int32x8) RotateAllLeft(dist uint64) Int32x8
-
-func (x Int32x16) RotateAllLeft(dist uint64) Int32x16
-
-func (x Int32x4) RotateAllRight(dist uint64) Int32x4
-
-func (x Int32x8) RotateAllRight(dist uint64) Int32x8
-
-func (x Int32x16) RotateAllRight(dist uint64) Int32x16
 
 func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
@@ -941,18 +917,6 @@ func (x Int64x2) Or(y Int64x2) Int64x2
 func (x Int64x4) Or(y Int64x4) Int64x4
 
 func (x Int64x8) Or(y Int64x8) Int64x8
-
-func (x Int64x2) RotateAllLeft(dist uint64) Int64x2
-
-func (x Int64x4) RotateAllLeft(dist uint64) Int64x4
-
-func (x Int64x8) RotateAllLeft(dist uint64) Int64x8
-
-func (x Int64x2) RotateAllRight(dist uint64) Int64x2
-
-func (x Int64x4) RotateAllRight(dist uint64) Int64x4
-
-func (x Int64x8) RotateAllRight(dist uint64) Int64x8
 
 func (x Int64x2) ShiftAllLeft(shift uint64) Int64x2
 

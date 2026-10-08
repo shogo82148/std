@@ -129,46 +129,6 @@ func (from Int64x2) ToMask() (to Mask64x2)
 // RotateAllLeft rotates all elements left by the specified amount
 //
 // Emulated
-func (x Int8x16) RotateAllLeft(dist uint64) Int8x16
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Int8x16) RotateAllRight(dist uint64) Int8x16
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Int16x8) RotateAllRight(dist uint64) Int16x8
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Int32x4) RotateAllRight(dist uint64) Int32x4
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Int64x2) RotateAllLeft(dist uint64) Int64x2
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Int64x2) RotateAllRight(dist uint64) Int64x2
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
 func (x Uint8x16) RotateAllLeft(dist uint64) Uint8x16
 
 // RotateAllRight rotates all elements right by the specified amount
