@@ -196,9 +196,9 @@ func (x Int16x8) Or(y Int16x8) Int16x8
 
 func (x Int16x8) ReduceSum() int16
 
-func (x Int16x8) ShiftAllLeft(y uint64) Int16x8
+func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
-func (x Int16x8) ShiftAllRight(y uint64) Int16x8
+func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
 
 func (x Int16x8) Store(s []int16)
 
@@ -260,9 +260,9 @@ func (x Int32x4) Or(y Int32x4) Int32x4
 
 func (x Int32x4) ReduceSum() int32
 
-func (x Int32x4) ShiftAllLeft(y uint64) Int32x4
+func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
-func (x Int32x4) ShiftAllRight(y uint64) Int32x4
+func (x Int32x4) ShiftAllRight(shift uint64) Int32x4
 
 func (x Int32x4) Store(s []int32)
 
@@ -310,7 +310,7 @@ func (x Int64x2) NotEqual(y Int64x2) Mask64x2
 
 func (x Int64x2) Or(y Int64x2) Int64x2
 
-func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
+func (x Int64x2) ShiftAllLeft(shift uint64) Int64x2
 
 func (x Int64x2) Store(s []int64)
 
@@ -436,9 +436,9 @@ func (x Uint16x8) RotateAllLeft(shift uint64) Uint16x8
 
 func (x Uint16x8) RotateAllRight(shift uint64) Uint16x8
 
-func (x Uint16x8) ShiftAllLeft(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
-func (x Uint16x8) ShiftAllRight(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
 
 func (x Uint16x8) Store(s []uint16)
 
@@ -504,9 +504,9 @@ func (x Uint32x4) RotateAllLeft(shift uint64) Uint32x4
 
 func (x Uint32x4) RotateAllRight(shift uint64) Uint32x4
 
-func (x Uint32x4) ShiftAllLeft(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
-func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllRight(shift uint64) Uint32x4
 
 func (x Uint32x4) Store(s []uint32)
 
@@ -566,9 +566,9 @@ func (x Uint64x2) RotateAllLeft(shift uint64) Uint64x2
 
 func (x Uint64x2) RotateAllRight(shift uint64) Uint64x2
 
-func (x Uint64x2) ShiftAllLeft(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllLeft(shift uint64) Uint64x2
 
-func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllRight(shift uint64) Uint64x2
 
 func (x Uint64x2) Store(s []uint64)
 

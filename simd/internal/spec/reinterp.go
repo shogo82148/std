@@ -18,8 +18,12 @@ func ToBits[xE Ints, xW Width, zE Uints](x Vec[xE, xW]) (z Vec[zE, xW])
 //specgen:require xN=zN
 func ToBitsFloat[xE float32 | float64, xW Width, zE Uints](x Vec[xE, xW]) (z Vec[zE, xW])
 
-// ReshapeToUints reinterprets the bits of x as a {{.z}} vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUints reinterprets the bits of x as a {{.z}} vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+// {{reshapeDiagram .x .z}}
 //
 //specgen:name ReshapeToUint{{.zN}}s
 //specgen:require xN!=zN

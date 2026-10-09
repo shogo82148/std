@@ -53,7 +53,7 @@ type ClientConn struct {
 
 	mu               sync.Mutex
 	cond             *sync.Cond
-	flow             outflow
+	flow             connOutflow
 	inflow           inflow
 	doNotReuse       bool
 	closing          bool
@@ -77,7 +77,6 @@ type ClientConn struct {
 	maxConcurrentStreams        uint32
 	peerMaxHeaderListSize       uint64
 	peerMaxHeaderTableSize      uint32
-	initialWindowSize           uint32
 	initialStreamRecvWindowSize int32
 	readIdleTimeout             time.Duration
 	pingTimeout                 time.Duration

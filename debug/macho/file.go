@@ -31,6 +31,7 @@ type File struct {
 	Symtab   *Symtab
 	Dysymtab *Dysymtab
 
+	name   string
 	closer io.Closer
 }
 

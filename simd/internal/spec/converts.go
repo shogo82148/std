@@ -6,7 +6,20 @@
 
 package spec
 
-// ConvertToZ converts element values to {{.zE}}.
+// ConvertToZ converts each element of x to {{.zE}}.
+//
+// {{/* float -> int/uint rounding */}}
+// {{ if and (eq .xB "float") (or (eq .zB "int") (eq .zB "uint")) }}
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
+// {{ end }}
+//
+// {{/* float -> float rounding */}}
+// {{ if and (eq .xB "float") (eq .zB "float") (lt .zN .xN) }}
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
+// {{ end }}
 //
 // {{if lt .xL .zL}}
 // The low {{.xL}} elements of the result are set. The rest are zero.
@@ -16,7 +29,8 @@ package spec
 //specgen:require z={zB}{zN}x{xL} zE!=xE
 func ConvertToZ[xE Nums, xW Width, zE Nums, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
 
-// ExtendLoLToZ extends the lowest {{.zL}} vector elements to {{.zE}}.
+// ExtendLoLToZ {{if eq .xB "int"}}sign-{{else}}zero-{{end}}extends
+// the lowest {{.zL}} vector elements to {{.zE}}.
 //
 //specgen:name ExtendLo{{.zL}}To{{.zE | title}}
 //specgen:require zB=xB zN>xN

@@ -38,7 +38,7 @@ import (
 // Flags used by the linker. The exported flags are used by the architecture-specific packages.
 var (
 	FlagC = flag.Bool("c", false, "dump call graph")
-	FlagD = flag.Bool("d", false, "disable dynamic executable")
+	FlagD = flag.Bool("d", false, "disable dynamic executable (ELF only)")
 
 	FlagS = flag.Bool("s", false, "disable symbol table")
 
@@ -50,6 +50,8 @@ var (
 	FlagTextAddr   = flag.Int64("T", -1, "set the start address of text symbols")
 	FlagDataAddr   = flag.Int64("D", -1, "set the start address of data symbols")
 	FlagFuncAlign  = flag.Int("funcalign", 0, "set function align to `N` bytes")
+
+	FlagSplitDWARF = flag.Bool("splitdwarf", false, "emit DWARF in a separate file (darwin only)")
 
 	FlagW = new(bool)
 )

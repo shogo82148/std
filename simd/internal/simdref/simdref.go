@@ -63,909 +63,1154 @@ type (
 	Uint8x64   struct{ v []uint8 }
 )
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Float32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Float32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Float32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Float32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32s) ConvertToInt32() (z Int32s)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float32s) ConvertToUint32() (z Uint32s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x2) ConvertToInt64() (z Int64x2)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Float64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x2) ConvertToUint64() (z Uint64x2)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
 func (x Float64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Float64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
 func (x Float64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Float64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Float64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64s) ConvertToInt64() (z Int64s)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
 func (x Float64s) ConvertToUint64() (z Uint64s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int8x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Int8x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Int8x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int8x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int8x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int8x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Int8x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int8x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int8x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int8x64) ConvertToUint8() (z Uint8x64)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int8s) ConvertToUint8() (z Uint8s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int16x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int16x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Int16x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Int16x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int16x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int16x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int16x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int16x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int16x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Int16x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Int16x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int16x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int16x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int16x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Int16x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int16x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int16x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int16s) ConvertToUint16() (z Uint16s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int32x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Int32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int32x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int32x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Int32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Int32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int32x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Int32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Int32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Int32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int32x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int32s) ConvertToFloat32() (z Float32s)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int32s) ConvertToUint32() (z Uint32s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Int64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int64x2) ConvertToUint64() (z Uint64x2)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int64x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Int64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Int64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int64x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Int64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Int64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Int64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Int64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Int64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Int64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int64x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Int64s) ConvertToFloat64() (z Float64s)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Int64s) ConvertToUint64() (z Uint64s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint8x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint8x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint8x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint8x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Uint8x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Uint8x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint8x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint8x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Uint8x32) ConvertToUint16() (z Uint16x32)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint8x64) ConvertToInt8() (z Int8x64)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint8s) ConvertToInt8() (z Int8s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint16x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint16x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint16x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint16x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint16x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint16x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Uint16x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Uint16x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint16x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint16x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint16x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint16x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Uint16x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Uint16x16) ConvertToUint32() (z Uint32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint16x32) ConvertToInt8() (z Int8x32)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint16x32) ConvertToInt16() (z Int16x32)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Uint16x32) ConvertToUint8() (z Uint8x32)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint16s) ConvertToInt16() (z Int16s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint32x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint32x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint32x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Uint32x4) ConvertToUint64() (z Uint64x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint32x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint32x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint32x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint32x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint32x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Uint32x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint64 converts element values to uint64.
+// ConvertToUint64 converts each element of x to uint64.
 func (x Uint32x8) ConvertToUint64() (z Uint64x8)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 func (x Uint32x16) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint32x16) ConvertToInt16() (z Int16x16)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint32x16) ConvertToInt32() (z Int32x16)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 func (x Uint32x16) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Uint32x16) ConvertToUint16() (z Uint16x16)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint32s) ConvertToFloat32() (z Float32s)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint32s) ConvertToInt32() (z Int32s)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint64x2) ConvertToInt64() (z Int64x2)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 //
 // The low 2 elements of the result are set. The rest are zero.
 func (x Uint64x2) ConvertToUint32() (z Uint32x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint64x4) ConvertToFloat32() (z Float32x4)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint64x4) ConvertToInt32() (z Int32x4)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint64x4) ConvertToInt64() (z Int64x4)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 //
 // The low 4 elements of the result are set. The rest are zero.
 func (x Uint64x4) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Uint64x4) ConvertToUint32() (z Uint32x4)
 
-// ConvertToFloat32 converts element values to float32.
+// ConvertToFloat32 converts each element of x to float32.
 func (x Uint64x8) ConvertToFloat32() (z Float32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts element values to int8.
+// ConvertToInt8 converts each element of x to int8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint64x8) ConvertToInt8() (z Int8x16)
 
-// ConvertToInt16 converts element values to int16.
+// ConvertToInt16 converts each element of x to int16.
 func (x Uint64x8) ConvertToInt16() (z Int16x8)
 
-// ConvertToInt32 converts element values to int32.
+// ConvertToInt32 converts each element of x to int32.
 func (x Uint64x8) ConvertToInt32() (z Int32x8)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint64x8) ConvertToInt64() (z Int64x8)
 
-// ConvertToUint8 converts element values to uint8.
+// ConvertToUint8 converts each element of x to uint8.
 //
 // The low 8 elements of the result are set. The rest are zero.
 func (x Uint64x8) ConvertToUint8() (z Uint8x16)
 
-// ConvertToUint16 converts element values to uint16.
+// ConvertToUint16 converts each element of x to uint16.
 func (x Uint64x8) ConvertToUint16() (z Uint16x8)
 
-// ConvertToUint32 converts element values to uint32.
+// ConvertToUint32 converts each element of x to uint32.
 func (x Uint64x8) ConvertToUint32() (z Uint32x8)
 
-// ConvertToFloat64 converts element values to float64.
+// ConvertToFloat64 converts each element of x to float64.
 func (x Uint64s) ConvertToFloat64() (z Float64s)
 
-// ConvertToInt64 converts element values to int64.
+// ConvertToInt64 converts each element of x to int64.
 func (x Uint64s) ConvertToInt64() (z Int64s)
 
-// ExtendLo8ToInt16 extends the lowest 8 vector elements to int16.
+// ExtendLo8ToInt16 sign-extends
+// the lowest 8 vector elements to int16.
 func (x Int8x16) ExtendLo8ToInt16() (z Int16x8)
 
-// ExtendLo4ToInt32 extends the lowest 4 vector elements to int32.
+// ExtendLo4ToInt32 sign-extends
+// the lowest 4 vector elements to int32.
 func (x Int8x16) ExtendLo4ToInt32() (z Int32x4)
 
-// ExtendLo2ToInt64 extends the lowest 2 vector elements to int64.
+// ExtendLo2ToInt64 sign-extends
+// the lowest 2 vector elements to int64.
 func (x Int8x16) ExtendLo2ToInt64() (z Int64x2)
 
-// ExtendLo16ToInt16 extends the lowest 16 vector elements to int16.
+// ExtendLo16ToInt16 sign-extends
+// the lowest 16 vector elements to int16.
 func (x Int8x32) ExtendLo16ToInt16() (z Int16x16)
 
-// ExtendLo8ToInt32 extends the lowest 8 vector elements to int32.
+// ExtendLo8ToInt32 sign-extends
+// the lowest 8 vector elements to int32.
 func (x Int8x32) ExtendLo8ToInt32() (z Int32x8)
 
-// ExtendLo4ToInt64 extends the lowest 4 vector elements to int64.
+// ExtendLo4ToInt64 sign-extends
+// the lowest 4 vector elements to int64.
 func (x Int8x32) ExtendLo4ToInt64() (z Int64x4)
 
-// ExtendLo32ToInt16 extends the lowest 32 vector elements to int16.
+// ExtendLo32ToInt16 sign-extends
+// the lowest 32 vector elements to int16.
 func (x Int8x64) ExtendLo32ToInt16() (z Int16x32)
 
-// ExtendLo16ToInt32 extends the lowest 16 vector elements to int32.
+// ExtendLo16ToInt32 sign-extends
+// the lowest 16 vector elements to int32.
 func (x Int8x64) ExtendLo16ToInt32() (z Int32x16)
 
-// ExtendLo8ToInt64 extends the lowest 8 vector elements to int64.
+// ExtendLo8ToInt64 sign-extends
+// the lowest 8 vector elements to int64.
 func (x Int8x64) ExtendLo8ToInt64() (z Int64x8)
 
-// ExtendLo4ToInt32 extends the lowest 4 vector elements to int32.
+// ExtendLo4ToInt32 sign-extends
+// the lowest 4 vector elements to int32.
 func (x Int16x8) ExtendLo4ToInt32() (z Int32x4)
 
-// ExtendLo2ToInt64 extends the lowest 2 vector elements to int64.
+// ExtendLo2ToInt64 sign-extends
+// the lowest 2 vector elements to int64.
 func (x Int16x8) ExtendLo2ToInt64() (z Int64x2)
 
-// ExtendLo8ToInt32 extends the lowest 8 vector elements to int32.
+// ExtendLo8ToInt32 sign-extends
+// the lowest 8 vector elements to int32.
 func (x Int16x16) ExtendLo8ToInt32() (z Int32x8)
 
-// ExtendLo4ToInt64 extends the lowest 4 vector elements to int64.
+// ExtendLo4ToInt64 sign-extends
+// the lowest 4 vector elements to int64.
 func (x Int16x16) ExtendLo4ToInt64() (z Int64x4)
 
-// ExtendLo16ToInt32 extends the lowest 16 vector elements to int32.
+// ExtendLo16ToInt32 sign-extends
+// the lowest 16 vector elements to int32.
 func (x Int16x32) ExtendLo16ToInt32() (z Int32x16)
 
-// ExtendLo8ToInt64 extends the lowest 8 vector elements to int64.
+// ExtendLo8ToInt64 sign-extends
+// the lowest 8 vector elements to int64.
 func (x Int16x32) ExtendLo8ToInt64() (z Int64x8)
 
-// ExtendLo2ToInt64 extends the lowest 2 vector elements to int64.
+// ExtendLo2ToInt64 sign-extends
+// the lowest 2 vector elements to int64.
 func (x Int32x4) ExtendLo2ToInt64() (z Int64x2)
 
-// ExtendLo4ToInt64 extends the lowest 4 vector elements to int64.
+// ExtendLo4ToInt64 sign-extends
+// the lowest 4 vector elements to int64.
 func (x Int32x8) ExtendLo4ToInt64() (z Int64x4)
 
-// ExtendLo8ToInt64 extends the lowest 8 vector elements to int64.
+// ExtendLo8ToInt64 sign-extends
+// the lowest 8 vector elements to int64.
 func (x Int32x16) ExtendLo8ToInt64() (z Int64x8)
 
-// ExtendLo8ToUint16 extends the lowest 8 vector elements to uint16.
+// ExtendLo8ToUint16 zero-extends
+// the lowest 8 vector elements to uint16.
 func (x Uint8x16) ExtendLo8ToUint16() (z Uint16x8)
 
-// ExtendLo4ToUint32 extends the lowest 4 vector elements to uint32.
+// ExtendLo4ToUint32 zero-extends
+// the lowest 4 vector elements to uint32.
 func (x Uint8x16) ExtendLo4ToUint32() (z Uint32x4)
 
-// ExtendLo2ToUint64 extends the lowest 2 vector elements to uint64.
+// ExtendLo2ToUint64 zero-extends
+// the lowest 2 vector elements to uint64.
 func (x Uint8x16) ExtendLo2ToUint64() (z Uint64x2)
 
-// ExtendLo16ToUint16 extends the lowest 16 vector elements to uint16.
+// ExtendLo16ToUint16 zero-extends
+// the lowest 16 vector elements to uint16.
 func (x Uint8x32) ExtendLo16ToUint16() (z Uint16x16)
 
-// ExtendLo8ToUint32 extends the lowest 8 vector elements to uint32.
+// ExtendLo8ToUint32 zero-extends
+// the lowest 8 vector elements to uint32.
 func (x Uint8x32) ExtendLo8ToUint32() (z Uint32x8)
 
-// ExtendLo4ToUint64 extends the lowest 4 vector elements to uint64.
+// ExtendLo4ToUint64 zero-extends
+// the lowest 4 vector elements to uint64.
 func (x Uint8x32) ExtendLo4ToUint64() (z Uint64x4)
 
-// ExtendLo32ToUint16 extends the lowest 32 vector elements to uint16.
+// ExtendLo32ToUint16 zero-extends
+// the lowest 32 vector elements to uint16.
 func (x Uint8x64) ExtendLo32ToUint16() (z Uint16x32)
 
-// ExtendLo16ToUint32 extends the lowest 16 vector elements to uint32.
+// ExtendLo16ToUint32 zero-extends
+// the lowest 16 vector elements to uint32.
 func (x Uint8x64) ExtendLo16ToUint32() (z Uint32x16)
 
-// ExtendLo8ToUint64 extends the lowest 8 vector elements to uint64.
+// ExtendLo8ToUint64 zero-extends
+// the lowest 8 vector elements to uint64.
 func (x Uint8x64) ExtendLo8ToUint64() (z Uint64x8)
 
-// ExtendLo4ToUint32 extends the lowest 4 vector elements to uint32.
+// ExtendLo4ToUint32 zero-extends
+// the lowest 4 vector elements to uint32.
 func (x Uint16x8) ExtendLo4ToUint32() (z Uint32x4)
 
-// ExtendLo2ToUint64 extends the lowest 2 vector elements to uint64.
+// ExtendLo2ToUint64 zero-extends
+// the lowest 2 vector elements to uint64.
 func (x Uint16x8) ExtendLo2ToUint64() (z Uint64x2)
 
-// ExtendLo8ToUint32 extends the lowest 8 vector elements to uint32.
+// ExtendLo8ToUint32 zero-extends
+// the lowest 8 vector elements to uint32.
 func (x Uint16x16) ExtendLo8ToUint32() (z Uint32x8)
 
-// ExtendLo4ToUint64 extends the lowest 4 vector elements to uint64.
+// ExtendLo4ToUint64 zero-extends
+// the lowest 4 vector elements to uint64.
 func (x Uint16x16) ExtendLo4ToUint64() (z Uint64x4)
 
-// ExtendLo16ToUint32 extends the lowest 16 vector elements to uint32.
+// ExtendLo16ToUint32 zero-extends
+// the lowest 16 vector elements to uint32.
 func (x Uint16x32) ExtendLo16ToUint32() (z Uint32x16)
 
-// ExtendLo8ToUint64 extends the lowest 8 vector elements to uint64.
+// ExtendLo8ToUint64 zero-extends
+// the lowest 8 vector elements to uint64.
 func (x Uint16x32) ExtendLo8ToUint64() (z Uint64x8)
 
-// ExtendLo2ToUint64 extends the lowest 2 vector elements to uint64.
+// ExtendLo2ToUint64 zero-extends
+// the lowest 2 vector elements to uint64.
 func (x Uint32x4) ExtendLo2ToUint64() (z Uint64x2)
 
-// ExtendLo4ToUint64 extends the lowest 4 vector elements to uint64.
+// ExtendLo4ToUint64 zero-extends
+// the lowest 4 vector elements to uint64.
 func (x Uint32x8) ExtendLo4ToUint64() (z Uint64x4)
 
-// ExtendLo8ToUint64 extends the lowest 8 vector elements to uint64.
+// ExtendLo8ToUint64 zero-extends
+// the lowest 8 vector elements to uint64.
 func (x Uint32x16) ExtendLo8ToUint64() (z Uint64x8)
 
 // ConvertLo2ToFloat64 converts the low-indexed 2 elements of x to float64.
@@ -1227,164 +1472,124 @@ func BroadcastUint64x8(x uint64) (z Uint64x8)
 // result.
 func BroadcastUint64s(x uint64) (z Uint64s)
 
-// LoadFloat32x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat32x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadFloat32x4(s []float32) (z Float32x4)
 
-// LoadFloat32x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat32x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadFloat32x8(s []float32) (z Float32x8)
 
-// LoadFloat32x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat32x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadFloat32x16(s []float32) (z Float32x16)
 
-// LoadFloat32s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat32s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadFloat32s(s []float32) (z Float32s)
 
-// LoadFloat64x2 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat64x2 loads a slice into a vector. If len(s) < 2, it panics.
 func LoadFloat64x2(s []float64) (z Float64x2)
 
-// LoadFloat64x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat64x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadFloat64x4(s []float64) (z Float64x4)
 
-// LoadFloat64x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat64x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadFloat64x8(s []float64) (z Float64x8)
 
-// LoadFloat64s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadFloat64s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadFloat64s(s []float64) (z Float64s)
 
-// LoadInt8x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt8x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadInt8x16(s []int8) (z Int8x16)
 
-// LoadInt8x32 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt8x32 loads a slice into a vector. If len(s) < 32, it panics.
 func LoadInt8x32(s []int8) (z Int8x32)
 
-// LoadInt8x64 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt8x64 loads a slice into a vector. If len(s) < 64, it panics.
 func LoadInt8x64(s []int8) (z Int8x64)
 
-// LoadInt8s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt8s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadInt8s(s []int8) (z Int8s)
 
-// LoadInt16x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt16x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadInt16x8(s []int16) (z Int16x8)
 
-// LoadInt16x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt16x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadInt16x16(s []int16) (z Int16x16)
 
-// LoadInt16x32 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt16x32 loads a slice into a vector. If len(s) < 32, it panics.
 func LoadInt16x32(s []int16) (z Int16x32)
 
-// LoadInt16s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt16s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadInt16s(s []int16) (z Int16s)
 
-// LoadInt32x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt32x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadInt32x4(s []int32) (z Int32x4)
 
-// LoadInt32x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt32x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadInt32x8(s []int32) (z Int32x8)
 
-// LoadInt32x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt32x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadInt32x16(s []int32) (z Int32x16)
 
-// LoadInt32s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt32s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadInt32s(s []int32) (z Int32s)
 
-// LoadInt64x2 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt64x2 loads a slice into a vector. If len(s) < 2, it panics.
 func LoadInt64x2(s []int64) (z Int64x2)
 
-// LoadInt64x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt64x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadInt64x4(s []int64) (z Int64x4)
 
-// LoadInt64x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt64x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadInt64x8(s []int64) (z Int64x8)
 
-// LoadInt64s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadInt64s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadInt64s(s []int64) (z Int64s)
 
-// LoadUint8x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint8x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadUint8x16(s []uint8) (z Uint8x16)
 
-// LoadUint8x32 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint8x32 loads a slice into a vector. If len(s) < 32, it panics.
 func LoadUint8x32(s []uint8) (z Uint8x32)
 
-// LoadUint8x64 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint8x64 loads a slice into a vector. If len(s) < 64, it panics.
 func LoadUint8x64(s []uint8) (z Uint8x64)
 
-// LoadUint8s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint8s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadUint8s(s []uint8) (z Uint8s)
 
-// LoadUint16x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint16x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadUint16x8(s []uint16) (z Uint16x8)
 
-// LoadUint16x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint16x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadUint16x16(s []uint16) (z Uint16x16)
 
-// LoadUint16x32 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint16x32 loads a slice into a vector. If len(s) < 32, it panics.
 func LoadUint16x32(s []uint16) (z Uint16x32)
 
-// LoadUint16s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint16s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadUint16s(s []uint16) (z Uint16s)
 
-// LoadUint32x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint32x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadUint32x4(s []uint32) (z Uint32x4)
 
-// LoadUint32x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint32x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadUint32x8(s []uint32) (z Uint32x8)
 
-// LoadUint32x16 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint32x16 loads a slice into a vector. If len(s) < 16, it panics.
 func LoadUint32x16(s []uint32) (z Uint32x16)
 
-// LoadUint32s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint32s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadUint32s(s []uint32) (z Uint32s)
 
-// LoadUint64x2 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint64x2 loads a slice into a vector. If len(s) < 2, it panics.
 func LoadUint64x2(s []uint64) (z Uint64x2)
 
-// LoadUint64x4 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint64x4 loads a slice into a vector. If len(s) < 4, it panics.
 func LoadUint64x4(s []uint64) (z Uint64x4)
 
-// LoadUint64x8 loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint64x8 loads a slice into a vector. If len(s) < 8, it panics.
 func LoadUint64x8(s []uint64) (z Uint64x8)
 
-// LoadUint64s loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadUint64s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadUint64s(s []uint64) (z Uint64s)
 
 // LoadFloat32x4Array loads an array into a vector.
@@ -1477,364 +1682,324 @@ func LoadUint64x4Array(x *[4]uint64) (z Uint64x4)
 // LoadUint64x8Array loads an array into a vector.
 func LoadUint64x8Array(x *[8]uint64) (z Uint64x8)
 
-// LoadFloat32x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat32x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadFloat32x4Part(s []float32) (z Float32x4, n int)
 
-// LoadFloat32x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat32x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadFloat32x8Part(s []float32) (z Float32x8, n int)
 
-// LoadFloat32x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat32x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadFloat32x16Part(s []float32) (z Float32x16, n int)
 
-// LoadFloat32sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat32sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadFloat32sPart(s []float32) (z Float32s, n int)
 
-// LoadFloat64x2Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat64x2Part loads n=min(len(s), 2) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 2, the
+// remaining vector elements will be zero.
 func LoadFloat64x2Part(s []float64) (z Float64x2, n int)
 
-// LoadFloat64x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat64x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadFloat64x4Part(s []float64) (z Float64x4, n int)
 
-// LoadFloat64x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat64x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadFloat64x8Part(s []float64) (z Float64x8, n int)
 
-// LoadFloat64sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadFloat64sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadFloat64sPart(s []float64) (z Float64s, n int)
 
-// LoadInt8x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt8x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadInt8x16Part(s []int8) (z Int8x16, n int)
 
-// LoadInt8x32Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt8x32Part loads n=min(len(s), 32) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 32, the
+// remaining vector elements will be zero.
 func LoadInt8x32Part(s []int8) (z Int8x32, n int)
 
-// LoadInt8x64Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt8x64Part loads n=min(len(s), 64) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 64, the
+// remaining vector elements will be zero.
 func LoadInt8x64Part(s []int8) (z Int8x64, n int)
 
-// LoadInt8sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt8sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadInt8sPart(s []int8) (z Int8s, n int)
 
-// LoadInt16x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt16x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadInt16x8Part(s []int16) (z Int16x8, n int)
 
-// LoadInt16x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt16x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadInt16x16Part(s []int16) (z Int16x16, n int)
 
-// LoadInt16x32Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt16x32Part loads n=min(len(s), 32) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 32, the
+// remaining vector elements will be zero.
 func LoadInt16x32Part(s []int16) (z Int16x32, n int)
 
-// LoadInt16sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt16sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadInt16sPart(s []int16) (z Int16s, n int)
 
-// LoadInt32x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt32x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadInt32x4Part(s []int32) (z Int32x4, n int)
 
-// LoadInt32x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt32x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadInt32x8Part(s []int32) (z Int32x8, n int)
 
-// LoadInt32x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt32x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadInt32x16Part(s []int32) (z Int32x16, n int)
 
-// LoadInt32sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt32sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadInt32sPart(s []int32) (z Int32s, n int)
 
-// LoadInt64x2Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt64x2Part loads n=min(len(s), 2) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 2, the
+// remaining vector elements will be zero.
 func LoadInt64x2Part(s []int64) (z Int64x2, n int)
 
-// LoadInt64x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt64x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadInt64x4Part(s []int64) (z Int64x4, n int)
 
-// LoadInt64x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt64x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadInt64x8Part(s []int64) (z Int64x8, n int)
 
-// LoadInt64sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadInt64sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadInt64sPart(s []int64) (z Int64s, n int)
 
-// LoadUint8x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint8x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadUint8x16Part(s []uint8) (z Uint8x16, n int)
 
-// LoadUint8x32Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint8x32Part loads n=min(len(s), 32) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 32, the
+// remaining vector elements will be zero.
 func LoadUint8x32Part(s []uint8) (z Uint8x32, n int)
 
-// LoadUint8x64Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint8x64Part loads n=min(len(s), 64) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 64, the
+// remaining vector elements will be zero.
 func LoadUint8x64Part(s []uint8) (z Uint8x64, n int)
 
-// LoadUint8sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint8sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadUint8sPart(s []uint8) (z Uint8s, n int)
 
-// LoadUint16x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint16x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadUint16x8Part(s []uint16) (z Uint16x8, n int)
 
-// LoadUint16x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint16x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadUint16x16Part(s []uint16) (z Uint16x16, n int)
 
-// LoadUint16x32Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint16x32Part loads n=min(len(s), 32) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 32, the
+// remaining vector elements will be zero.
 func LoadUint16x32Part(s []uint16) (z Uint16x32, n int)
 
-// LoadUint16sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint16sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadUint16sPart(s []uint16) (z Uint16s, n int)
 
-// LoadUint32x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint32x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadUint32x4Part(s []uint32) (z Uint32x4, n int)
 
-// LoadUint32x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint32x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadUint32x8Part(s []uint32) (z Uint32x8, n int)
 
-// LoadUint32x16Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint32x16Part loads n=min(len(s), 16) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 16, the
+// remaining vector elements will be zero.
 func LoadUint32x16Part(s []uint32) (z Uint32x16, n int)
 
-// LoadUint32sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint32sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadUint32sPart(s []uint32) (z Uint32s, n int)
 
-// LoadUint64x2Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint64x2Part loads n=min(len(s), 2) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 2, the
+// remaining vector elements will be zero.
 func LoadUint64x2Part(s []uint64) (z Uint64x2, n int)
 
-// LoadUint64x4Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint64x4Part loads n=min(len(s), 4) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 4, the
+// remaining vector elements will be zero.
 func LoadUint64x4Part(s []uint64) (z Uint64x4, n int)
 
-// LoadUint64x8Part loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint64x8Part loads n=min(len(s), 8) elements from slice s as a
+// vector and returns the vector and n. If len(s) < 8, the
+// remaining vector elements will be zero.
 func LoadUint64x8Part(s []uint64) (z Uint64x8, n int)
 
-// LoadUint64sPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadUint64sPart loads n=min(len(s), z.Len()) elements from slice s as a
+// vector and returns the vector and n. If len(s) < z.Len(), the
+// remaining vector elements will be zero.
 func LoadUint64sPart(s []uint64) (z Uint64s, n int)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Float32x4) Store(s []float32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Float32x8) Store(s []float32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Float32x16) Store(s []float32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Float32s) Store(s []float32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 2, it panics.
 func (x Float64x2) Store(s []float64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Float64x4) Store(s []float64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Float64x8) Store(s []float64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Float64s) Store(s []float64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Int8x16) Store(s []int8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 32, it panics.
 func (x Int8x32) Store(s []int8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 64, it panics.
 func (x Int8x64) Store(s []int8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Int8s) Store(s []int8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Int16x8) Store(s []int16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Int16x16) Store(s []int16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 32, it panics.
 func (x Int16x32) Store(s []int16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Int16s) Store(s []int16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Int32x4) Store(s []int32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Int32x8) Store(s []int32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Int32x16) Store(s []int32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Int32s) Store(s []int32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 2, it panics.
 func (x Int64x2) Store(s []int64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Int64x4) Store(s []int64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Int64x8) Store(s []int64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Int64s) Store(s []int64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Uint8x16) Store(s []uint8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 32, it panics.
 func (x Uint8x32) Store(s []uint8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 64, it panics.
 func (x Uint8x64) Store(s []uint8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Uint8s) Store(s []uint8)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Uint16x8) Store(s []uint16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Uint16x16) Store(s []uint16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 32, it panics.
 func (x Uint16x32) Store(s []uint16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Uint16s) Store(s []uint16)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Uint32x4) Store(s []uint32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Uint32x8) Store(s []uint32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 16, it panics.
 func (x Uint32x16) Store(s []uint32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Uint32s) Store(s []uint32)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 2, it panics.
 func (x Uint64x2) Store(s []uint64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 4, it panics.
 func (x Uint64x4) Store(s []uint64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < 8, it panics.
 func (x Uint64x8) Store(s []uint64)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Uint64s) Store(s []uint64)
 
 // StoreArray stores the elements of x to an array.
@@ -2047,1908 +2212,1868 @@ func (x Uint64x4) StoreArrayMasked(y *[4]uint64, mask Mask64x4)
 // modify elements of y that are false in the mask.
 func (x Uint64x8) StoreArrayMasked(y *[8]uint64, mask Mask64x8)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float32x4) StorePart(s []float32) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Float32x4) StorePart(s []float32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float32x8) StorePart(s []float32) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Float32x8) StorePart(s []float32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float32x16) StorePart(s []float32) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Float32x16) StorePart(s []float32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float32s) StorePart(s []float32) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Float32s) StorePart(s []float32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float64x2) StorePart(s []float64) int
+// StorePart stores n=min(len(s), 2) elements of x into s and returns n.
+func (x Float64x2) StorePart(s []float64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float64x4) StorePart(s []float64) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Float64x4) StorePart(s []float64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float64x8) StorePart(s []float64) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Float64x8) StorePart(s []float64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Float64s) StorePart(s []float64) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Float64s) StorePart(s []float64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int8x16) StorePart(s []int8) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Int8x16) StorePart(s []int8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int8x32) StorePart(s []int8) int
+// StorePart stores n=min(len(s), 32) elements of x into s and returns n.
+func (x Int8x32) StorePart(s []int8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int8x64) StorePart(s []int8) int
+// StorePart stores n=min(len(s), 64) elements of x into s and returns n.
+func (x Int8x64) StorePart(s []int8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int8s) StorePart(s []int8) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Int8s) StorePart(s []int8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int16x8) StorePart(s []int16) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Int16x8) StorePart(s []int16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int16x16) StorePart(s []int16) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Int16x16) StorePart(s []int16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int16x32) StorePart(s []int16) int
+// StorePart stores n=min(len(s), 32) elements of x into s and returns n.
+func (x Int16x32) StorePart(s []int16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int16s) StorePart(s []int16) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Int16s) StorePart(s []int16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int32x4) StorePart(s []int32) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Int32x4) StorePart(s []int32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int32x8) StorePart(s []int32) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Int32x8) StorePart(s []int32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int32x16) StorePart(s []int32) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Int32x16) StorePart(s []int32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int32s) StorePart(s []int32) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Int32s) StorePart(s []int32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int64x2) StorePart(s []int64) int
+// StorePart stores n=min(len(s), 2) elements of x into s and returns n.
+func (x Int64x2) StorePart(s []int64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int64x4) StorePart(s []int64) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Int64x4) StorePart(s []int64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int64x8) StorePart(s []int64) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Int64x8) StorePart(s []int64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Int64s) StorePart(s []int64) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Int64s) StorePart(s []int64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint8x16) StorePart(s []uint8) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Uint8x16) StorePart(s []uint8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint8x32) StorePart(s []uint8) int
+// StorePart stores n=min(len(s), 32) elements of x into s and returns n.
+func (x Uint8x32) StorePart(s []uint8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint8x64) StorePart(s []uint8) int
+// StorePart stores n=min(len(s), 64) elements of x into s and returns n.
+func (x Uint8x64) StorePart(s []uint8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint8s) StorePart(s []uint8) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Uint8s) StorePart(s []uint8) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint16x8) StorePart(s []uint16) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Uint16x8) StorePart(s []uint16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint16x16) StorePart(s []uint16) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Uint16x16) StorePart(s []uint16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint16x32) StorePart(s []uint16) int
+// StorePart stores n=min(len(s), 32) elements of x into s and returns n.
+func (x Uint16x32) StorePart(s []uint16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint16s) StorePart(s []uint16) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Uint16s) StorePart(s []uint16) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint32x4) StorePart(s []uint32) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Uint32x4) StorePart(s []uint32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint32x8) StorePart(s []uint32) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Uint32x8) StorePart(s []uint32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint32x16) StorePart(s []uint32) int
+// StorePart stores n=min(len(s), 16) elements of x into s and returns n.
+func (x Uint32x16) StorePart(s []uint32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint32s) StorePart(s []uint32) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Uint32s) StorePart(s []uint32) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint64x2) StorePart(s []uint64) int
+// StorePart stores n=min(len(s), 2) elements of x into s and returns n.
+func (x Uint64x2) StorePart(s []uint64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint64x4) StorePart(s []uint64) int
+// StorePart stores n=min(len(s), 4) elements of x into s and returns n.
+func (x Uint64x4) StorePart(s []uint64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint64x8) StorePart(s []uint64) int
+// StorePart stores n=min(len(s), 8) elements of x into s and returns n.
+func (x Uint64x8) StorePart(s []uint64) (n int)
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func (x Uint64s) StorePart(s []uint64) int
+// StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
+func (x Uint64s) StorePart(s []uint64) (n int)
 
-// Mask8x16FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask8x16FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask8x16FromBits(x uint16) (z Mask8x16)
 
-// Mask8x32FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask8x32FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask8x32FromBits(x uint32) (z Mask8x32)
 
-// Mask8x64FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask8x64FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask8x64FromBits(x uint64) (z Mask8x64)
 
-// Mask16x8FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask16x8FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask16x8FromBits(x uint8) (z Mask16x8)
 
-// Mask16x16FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask16x16FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask16x16FromBits(x uint16) (z Mask16x16)
 
-// Mask16x32FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask16x32FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask16x32FromBits(x uint32) (z Mask16x32)
 
-// Mask32x4FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask32x4FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask32x4FromBits(x uint8) (z Mask32x4)
 
-// Mask32x8FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask32x8FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask32x8FromBits(x uint8) (z Mask32x8)
 
-// Mask32x16FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask32x16FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask32x16FromBits(x uint16) (z Mask32x16)
 
-// Mask64x2FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask64x2FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask64x2FromBits(x uint8) (z Mask64x2)
 
-// Mask64x4FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask64x4FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask64x4FromBits(x uint8) (z Mask64x4)
 
-// Mask64x8FromBits constructs a mask from a bitmap value. If bit i of y is set,
-// then mask element i of the result is set.
+// Mask64x8FromBits returns bitmap x as a mask. If bit i of x is set, then mask
+// element i of the result is true.
 func Mask64x8FromBits(x uint8) (z Mask64x8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask8x16) ToBits() (z uint16)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask8x32) ToBits() (z uint32)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask8x64) ToBits() (z uint64)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask16x8) ToBits() (z uint8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask16x16) ToBits() (z uint16)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask16x32) ToBits() (z uint32)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask32x4) ToBits() (z uint8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask32x8) ToBits() (z uint8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask32x16) ToBits() (z uint16)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask64x2) ToBits() (z uint8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask64x4) ToBits() (z uint8)
 
-// ToBits constructs a bitmap from mask x, where bit i is set if mask
-// element i is set.
+// ToBits returns x as a bitmap, where bit i is set if mask element i is
+// true.
 func (x Mask64x8) ToBits() (z uint8)
 
 // ToInt8x16 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask8x16) ToInt8x16() (z Int8x16)
 
 // ToInt8x32 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask8x32) ToInt8x32() (z Int8x32)
 
 // ToInt8x64 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask8x64) ToInt8x64() (z Int8x64)
 
 // ToInt8s converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask8s) ToInt8s() (z Int8s)
 
 // ToInt16x8 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask16x8) ToInt16x8() (z Int16x8)
 
 // ToInt16x16 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask16x16) ToInt16x16() (z Int16x16)
 
 // ToInt16x32 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask16x32) ToInt16x32() (z Int16x32)
 
 // ToInt16s converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask16s) ToInt16s() (z Int16s)
 
 // ToInt32x4 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask32x4) ToInt32x4() (z Int32x4)
 
 // ToInt32x8 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask32x8) ToInt32x8() (z Int32x8)
 
 // ToInt32x16 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask32x16) ToInt32x16() (z Int32x16)
 
 // ToInt32s converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask32s) ToInt32s() (z Int32s)
 
 // ToInt64x2 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask64x2) ToInt64x2() (z Int64x2)
 
 // ToInt64x4 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask64x4) ToInt64x4() (z Int64x4)
 
 // ToInt64x8 converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask64x8) ToInt64x8() (z Int64x8)
 
 // ToInt64s converts the mask to a vector, where element i is set to ^0 (all bits
-// set, e.g., -1) if mask element i is "true".
+// set, e.g., -1) if mask element i is "true", and 0 otherwise.
 func (x Mask64s) ToInt64s() (z Int64s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float32x4) Add(y Float32x4) (z Float32x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float32x8) Add(y Float32x8) (z Float32x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float32x16) Add(y Float32x16) (z Float32x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float32s) Add(y Float32s) (z Float32s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float64x2) Add(y Float64x2) (z Float64x2)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float64x4) Add(y Float64x4) (z Float64x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float64x8) Add(y Float64x8) (z Float64x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Float64s) Add(y Float64s) (z Float64s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int8x16) Add(y Int8x16) (z Int8x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int8x32) Add(y Int8x32) (z Int8x32)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int8x64) Add(y Int8x64) (z Int8x64)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int8s) Add(y Int8s) (z Int8s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int16x8) Add(y Int16x8) (z Int16x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int16x16) Add(y Int16x16) (z Int16x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int16x32) Add(y Int16x32) (z Int16x32)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int16s) Add(y Int16s) (z Int16s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int32x4) Add(y Int32x4) (z Int32x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int32x8) Add(y Int32x8) (z Int32x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int32x16) Add(y Int32x16) (z Int32x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int32s) Add(y Int32s) (z Int32s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int64x2) Add(y Int64x2) (z Int64x2)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int64x4) Add(y Int64x4) (z Int64x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int64x8) Add(y Int64x8) (z Int64x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Int64s) Add(y Int64s) (z Int64s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint8x16) Add(y Uint8x16) (z Uint8x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint8x32) Add(y Uint8x32) (z Uint8x32)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint8x64) Add(y Uint8x64) (z Uint8x64)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint8s) Add(y Uint8s) (z Uint8s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint16x8) Add(y Uint16x8) (z Uint16x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint16x16) Add(y Uint16x16) (z Uint16x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint16x32) Add(y Uint16x32) (z Uint16x32)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint16s) Add(y Uint16s) (z Uint16s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint32x4) Add(y Uint32x4) (z Uint32x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint32x8) Add(y Uint32x8) (z Uint32x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint32x16) Add(y Uint32x16) (z Uint32x16)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint32s) Add(y Uint32s) (z Uint32s)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint64x2) Add(y Uint64x2) (z Uint64x2)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint64x4) Add(y Uint64x4) (z Uint64x4)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint64x8) Add(y Uint64x8) (z Uint64x8)
 
-// Add adds corresponding elements of two vectors.
+// Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
 func (x Uint64s) Add(y Uint64s) (z Uint64s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float32x4) Sub(y Float32x4) (z Float32x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float32x8) Sub(y Float32x8) (z Float32x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float32x16) Sub(y Float32x16) (z Float32x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float32s) Sub(y Float32s) (z Float32s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float64x2) Sub(y Float64x2) (z Float64x2)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float64x4) Sub(y Float64x4) (z Float64x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float64x8) Sub(y Float64x8) (z Float64x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Float64s) Sub(y Float64s) (z Float64s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int8x16) Sub(y Int8x16) (z Int8x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int8x32) Sub(y Int8x32) (z Int8x32)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int8x64) Sub(y Int8x64) (z Int8x64)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int8s) Sub(y Int8s) (z Int8s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int16x8) Sub(y Int16x8) (z Int16x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int16x16) Sub(y Int16x16) (z Int16x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int16x32) Sub(y Int16x32) (z Int16x32)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int16s) Sub(y Int16s) (z Int16s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int32x4) Sub(y Int32x4) (z Int32x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int32x8) Sub(y Int32x8) (z Int32x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int32x16) Sub(y Int32x16) (z Int32x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int32s) Sub(y Int32s) (z Int32s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int64x2) Sub(y Int64x2) (z Int64x2)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int64x4) Sub(y Int64x4) (z Int64x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int64x8) Sub(y Int64x8) (z Int64x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Int64s) Sub(y Int64s) (z Int64s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint8x16) Sub(y Uint8x16) (z Uint8x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint8x32) Sub(y Uint8x32) (z Uint8x32)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint8x64) Sub(y Uint8x64) (z Uint8x64)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint8s) Sub(y Uint8s) (z Uint8s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint16x8) Sub(y Uint16x8) (z Uint16x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint16x16) Sub(y Uint16x16) (z Uint16x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint16x32) Sub(y Uint16x32) (z Uint16x32)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint16s) Sub(y Uint16s) (z Uint16s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint32x4) Sub(y Uint32x4) (z Uint32x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint32x8) Sub(y Uint32x8) (z Uint32x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint32x16) Sub(y Uint32x16) (z Uint32x16)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint32s) Sub(y Uint32s) (z Uint32s)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint64x2) Sub(y Uint64x2) (z Uint64x2)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint64x4) Sub(y Uint64x4) (z Uint64x4)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint64x8) Sub(y Uint64x8) (z Uint64x8)
 
-// Sub subtracts corresponding elements of two vectors.
+// Sub subtracts y from x elementwise.
 //
 //	z[i] = x[i] - y[i]
 func (x Uint64s) Sub(y Uint64s) (z Uint64s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int8x16) AddSaturated(y Int8x16) (z Int8x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int8x32) AddSaturated(y Int8x32) (z Int8x32)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int8x64) AddSaturated(y Int8x64) (z Int8x64)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int8s) AddSaturated(y Int8s) (z Int8s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int16x8) AddSaturated(y Int16x8) (z Int16x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int16x16) AddSaturated(y Int16x16) (z Int16x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int16x32) AddSaturated(y Int16x32) (z Int16x32)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int16s) AddSaturated(y Int16s) (z Int16s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int32x4) AddSaturated(y Int32x4) (z Int32x4)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int32x8) AddSaturated(y Int32x8) (z Int32x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int32x16) AddSaturated(y Int32x16) (z Int32x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int32s) AddSaturated(y Int32s) (z Int32s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int64x2) AddSaturated(y Int64x2) (z Int64x2)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int64x4) AddSaturated(y Int64x4) (z Int64x4)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int64x8) AddSaturated(y Int64x8) (z Int64x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Int64s) AddSaturated(y Int64s) (z Int64s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint8x16) AddSaturated(y Uint8x16) (z Uint8x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint8x32) AddSaturated(y Uint8x32) (z Uint8x32)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint8x64) AddSaturated(y Uint8x64) (z Uint8x64)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint8s) AddSaturated(y Uint8s) (z Uint8s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint16x8) AddSaturated(y Uint16x8) (z Uint16x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint16x16) AddSaturated(y Uint16x16) (z Uint16x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint16x32) AddSaturated(y Uint16x32) (z Uint16x32)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint16s) AddSaturated(y Uint16s) (z Uint16s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint32x4) AddSaturated(y Uint32x4) (z Uint32x4)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint32x8) AddSaturated(y Uint32x8) (z Uint32x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint32x16) AddSaturated(y Uint32x16) (z Uint32x16)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint32s) AddSaturated(y Uint32s) (z Uint32s)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint64x2) AddSaturated(y Uint64x2) (z Uint64x2)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint64x4) AddSaturated(y Uint64x4) (z Uint64x4)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint64x8) AddSaturated(y Uint64x8) (z Uint64x8)
 
-// AddSaturated adds corresponding elements of two vectors with saturation.
+// AddSaturated adds x and y elementwise with saturation.
 //
-//	z[i] = saturated(x[i] + y[i])
+//	z[i] = sat(x[i] + y[i])
 func (x Uint64s) AddSaturated(y Uint64s) (z Uint64s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int8x16) SubSaturated(y Int8x16) (z Int8x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int8x32) SubSaturated(y Int8x32) (z Int8x32)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int8x64) SubSaturated(y Int8x64) (z Int8x64)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int8s) SubSaturated(y Int8s) (z Int8s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int16x8) SubSaturated(y Int16x8) (z Int16x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int16x16) SubSaturated(y Int16x16) (z Int16x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int16x32) SubSaturated(y Int16x32) (z Int16x32)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int16s) SubSaturated(y Int16s) (z Int16s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int32x4) SubSaturated(y Int32x4) (z Int32x4)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int32x8) SubSaturated(y Int32x8) (z Int32x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int32x16) SubSaturated(y Int32x16) (z Int32x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int32s) SubSaturated(y Int32s) (z Int32s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int64x2) SubSaturated(y Int64x2) (z Int64x2)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int64x4) SubSaturated(y Int64x4) (z Int64x4)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int64x8) SubSaturated(y Int64x8) (z Int64x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Int64s) SubSaturated(y Int64s) (z Int64s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint8x16) SubSaturated(y Uint8x16) (z Uint8x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint8x32) SubSaturated(y Uint8x32) (z Uint8x32)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint8x64) SubSaturated(y Uint8x64) (z Uint8x64)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint8s) SubSaturated(y Uint8s) (z Uint8s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint16x8) SubSaturated(y Uint16x8) (z Uint16x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint16x16) SubSaturated(y Uint16x16) (z Uint16x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint16x32) SubSaturated(y Uint16x32) (z Uint16x32)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint16s) SubSaturated(y Uint16s) (z Uint16s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint32x4) SubSaturated(y Uint32x4) (z Uint32x4)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint32x8) SubSaturated(y Uint32x8) (z Uint32x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint32x16) SubSaturated(y Uint32x16) (z Uint32x16)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint32s) SubSaturated(y Uint32s) (z Uint32s)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint64x2) SubSaturated(y Uint64x2) (z Uint64x2)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint64x4) SubSaturated(y Uint64x4) (z Uint64x4)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint64x8) SubSaturated(y Uint64x8) (z Uint64x8)
 
-// SubSaturated subtracts corresponding elements of two vectors with saturation.
+// SubSaturated subtracts y from x elementwise with saturation.
 //
-//	z[i] = saturated(x[i] - y[i])
+//	z[i] = sat(x[i] - y[i])
 func (x Uint64s) SubSaturated(y Uint64s) (z Uint64s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Float32x4) ConcatAddPairs(y Float32x4) (z Float32x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Float32x8) ConcatAddPairs(y Float32x8) (z Float32x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Float32x16) ConcatAddPairs(y Float32x16) (z Float32x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Float32s) ConcatAddPairs(y Float32s) (z Float32s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], y[0]+y[1]}
+//	z = {x[0]+x[1], y[0]+y[1]}
 func (x Float64x2) ConcatAddPairs(y Float64x2) (z Float64x2)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Float64x4) ConcatAddPairs(y Float64x4) (z Float64x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Float64x8) ConcatAddPairs(y Float64x8) (z Float64x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Float64s) ConcatAddPairs(y Float64s) (z Float64s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int8x16) ConcatAddPairs(y Int8x16) (z Int8x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int8x32) ConcatAddPairs(y Int8x32) (z Int8x32)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int8x64) ConcatAddPairs(y Int8x64) (z Int8x64)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int8s) ConcatAddPairs(y Int8s) (z Int8s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int16x8) ConcatAddPairs(y Int16x8) (z Int16x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int16x16) ConcatAddPairs(y Int16x16) (z Int16x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int16x32) ConcatAddPairs(y Int16x32) (z Int16x32)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int16s) ConcatAddPairs(y Int16s) (z Int16s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Int32x4) ConcatAddPairs(y Int32x4) (z Int32x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int32x8) ConcatAddPairs(y Int32x8) (z Int32x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int32x16) ConcatAddPairs(y Int32x16) (z Int32x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int32s) ConcatAddPairs(y Int32s) (z Int32s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], y[0]+y[1]}
+//	z = {x[0]+x[1], y[0]+y[1]}
 func (x Int64x2) ConcatAddPairs(y Int64x2) (z Int64x2)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Int64x4) ConcatAddPairs(y Int64x4) (z Int64x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int64x8) ConcatAddPairs(y Int64x8) (z Int64x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Int64s) ConcatAddPairs(y Int64s) (z Int64s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint8x16) ConcatAddPairs(y Uint8x16) (z Uint8x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint8x32) ConcatAddPairs(y Uint8x32) (z Uint8x32)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint8x64) ConcatAddPairs(y Uint8x64) (z Uint8x64)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint8s) ConcatAddPairs(y Uint8s) (z Uint8s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint16x8) ConcatAddPairs(y Uint16x8) (z Uint16x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint16x16) ConcatAddPairs(y Uint16x16) (z Uint16x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint16x32) ConcatAddPairs(y Uint16x32) (z Uint16x32)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint16s) ConcatAddPairs(y Uint16s) (z Uint16s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Uint32x4) ConcatAddPairs(y Uint32x4) (z Uint32x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint32x8) ConcatAddPairs(y Uint32x8) (z Uint32x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint32x16) ConcatAddPairs(y Uint32x16) (z Uint32x16)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint32s) ConcatAddPairs(y Uint32s) (z Uint32s)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], y[0]+y[1]}
+//	z = {x[0]+x[1], y[0]+y[1]}
 func (x Uint64x2) ConcatAddPairs(y Uint64x2) (z Uint64x2)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], y[0]+y[1], y[2]+y[3]}
 func (x Uint64x4) ConcatAddPairs(y Uint64x4) (z Uint64x4)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint64x8) ConcatAddPairs(y Uint64x8) (z Uint64x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
 func (x Uint64s) ConcatAddPairs(y Uint64s) (z Uint64s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Float32x4) ConcatSubPairs(y Float32x4) (z Float32x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Float32x8) ConcatSubPairs(y Float32x8) (z Float32x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Float32x16) ConcatSubPairs(y Float32x16) (z Float32x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Float32s) ConcatSubPairs(y Float32s) (z Float32s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], y[0]-y[1]}
+//	z = {x[0]-x[1], y[0]-y[1]}
 func (x Float64x2) ConcatSubPairs(y Float64x2) (z Float64x2)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Float64x4) ConcatSubPairs(y Float64x4) (z Float64x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Float64x8) ConcatSubPairs(y Float64x8) (z Float64x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Float64s) ConcatSubPairs(y Float64s) (z Float64s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x16) ConcatSubPairs(y Int8x16) (z Int8x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x32) ConcatSubPairs(y Int8x32) (z Int8x32)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x64) ConcatSubPairs(y Int8x64) (z Int8x64)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8s) ConcatSubPairs(y Int8s) (z Int8s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x8) ConcatSubPairs(y Int16x8) (z Int16x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x16) ConcatSubPairs(y Int16x16) (z Int16x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x32) ConcatSubPairs(y Int16x32) (z Int16x32)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16s) ConcatSubPairs(y Int16s) (z Int16s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Int32x4) ConcatSubPairs(y Int32x4) (z Int32x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32x8) ConcatSubPairs(y Int32x8) (z Int32x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32x16) ConcatSubPairs(y Int32x16) (z Int32x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32s) ConcatSubPairs(y Int32s) (z Int32s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], y[0]-y[1]}
+//	z = {x[0]-x[1], y[0]-y[1]}
 func (x Int64x2) ConcatSubPairs(y Int64x2) (z Int64x2)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Int64x4) ConcatSubPairs(y Int64x4) (z Int64x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int64x8) ConcatSubPairs(y Int64x8) (z Int64x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int64s) ConcatSubPairs(y Int64s) (z Int64s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x16) ConcatSubPairs(y Uint8x16) (z Uint8x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x32) ConcatSubPairs(y Uint8x32) (z Uint8x32)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x64) ConcatSubPairs(y Uint8x64) (z Uint8x64)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8s) ConcatSubPairs(y Uint8s) (z Uint8s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x8) ConcatSubPairs(y Uint16x8) (z Uint16x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x16) ConcatSubPairs(y Uint16x16) (z Uint16x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x32) ConcatSubPairs(y Uint16x32) (z Uint16x32)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16s) ConcatSubPairs(y Uint16s) (z Uint16s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Uint32x4) ConcatSubPairs(y Uint32x4) (z Uint32x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32x8) ConcatSubPairs(y Uint32x8) (z Uint32x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32x16) ConcatSubPairs(y Uint32x16) (z Uint32x16)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32s) ConcatSubPairs(y Uint32s) (z Uint32s)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], y[0]-y[1]}
+//	z = {x[0]-x[1], y[0]-y[1]}
 func (x Uint64x2) ConcatSubPairs(y Uint64x2) (z Uint64x2)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], y[0]-y[1], y[2]-y[3]}
 func (x Uint64x4) ConcatSubPairs(y Uint64x4) (z Uint64x4)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint64x8) ConcatSubPairs(y Uint64x8) (z Uint64x8)
 
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint64s) ConcatSubPairs(y Uint64s) (z Uint64s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int8x16) ConcatAddPairsSaturated(y Int8x16) (z Int8x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int8x32) ConcatAddPairsSaturated(y Int8x32) (z Int8x32)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int8x64) ConcatAddPairsSaturated(y Int8x64) (z Int8x64)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int8s) ConcatAddPairsSaturated(y Int8s) (z Int8s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int16x8) ConcatAddPairsSaturated(y Int16x8) (z Int16x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int16x16) ConcatAddPairsSaturated(y Int16x16) (z Int16x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int16x32) ConcatAddPairsSaturated(y Int16x32) (z Int16x32)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int16s) ConcatAddPairsSaturated(y Int16s) (z Int16s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), sat(y[0]+y[1]), sat(y[2]+y[3])}
 func (x Int32x4) ConcatAddPairsSaturated(y Int32x4) (z Int32x4)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int32x8) ConcatAddPairsSaturated(y Int32x8) (z Int32x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int32x16) ConcatAddPairsSaturated(y Int32x16) (z Int32x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int32s) ConcatAddPairsSaturated(y Int32s) (z Int32s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], y[0]+y[1]}
+//	z = {sat(x[0]+x[1]), sat(y[0]+y[1])}
 func (x Int64x2) ConcatAddPairsSaturated(y Int64x2) (z Int64x2)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), sat(y[0]+y[1]), sat(y[2]+y[3])}
 func (x Int64x4) ConcatAddPairsSaturated(y Int64x4) (z Int64x4)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int64x8) ConcatAddPairsSaturated(y Int64x8) (z Int64x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Int64s) ConcatAddPairsSaturated(y Int64s) (z Int64s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint8x16) ConcatAddPairsSaturated(y Uint8x16) (z Uint8x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint8x32) ConcatAddPairsSaturated(y Uint8x32) (z Uint8x32)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint8x64) ConcatAddPairsSaturated(y Uint8x64) (z Uint8x64)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint8s) ConcatAddPairsSaturated(y Uint8s) (z Uint8s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint16x8) ConcatAddPairsSaturated(y Uint16x8) (z Uint16x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint16x16) ConcatAddPairsSaturated(y Uint16x16) (z Uint16x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint16x32) ConcatAddPairsSaturated(y Uint16x32) (z Uint16x32)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint16s) ConcatAddPairsSaturated(y Uint16s) (z Uint16s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), sat(y[0]+y[1]), sat(y[2]+y[3])}
 func (x Uint32x4) ConcatAddPairsSaturated(y Uint32x4) (z Uint32x4)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint32x8) ConcatAddPairsSaturated(y Uint32x8) (z Uint32x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint32x16) ConcatAddPairsSaturated(y Uint32x16) (z Uint32x16)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint32s) ConcatAddPairsSaturated(y Uint32s) (z Uint32s)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], y[0]+y[1]}
+//	z = {sat(x[0]+x[1]), sat(y[0]+y[1])}
 func (x Uint64x2) ConcatAddPairsSaturated(y Uint64x2) (z Uint64x2)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), sat(y[0]+y[1]), sat(y[2]+y[3])}
 func (x Uint64x4) ConcatAddPairsSaturated(y Uint64x4) (z Uint64x4)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint64x8) ConcatAddPairsSaturated(y Uint64x8) (z Uint64x8)
 
 // ConcatAddPairsSaturated horizontally adds adjacent pairs of elements in x and
 // y with saturation and returns the concatenated result.
 //
-// z = {x[0]+x[1], x[2]+x[3], ..., y[0]+y[1], y[2]+y[3], ...}
+//	z = {sat(x[0]+x[1]), sat(x[2]+x[3]), ..., sat(y[0]+y[1]), sat(y[2]+y[3]), ...}
 func (x Uint64s) ConcatAddPairsSaturated(y Uint64s) (z Uint64s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x16) ConcatSubPairsSaturated(y Int8x16) (z Int8x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x32) ConcatSubPairsSaturated(y Int8x32) (z Int8x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8x64) ConcatSubPairsSaturated(y Int8x64) (z Int8x64)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int8s) ConcatSubPairsSaturated(y Int8s) (z Int8s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x8) ConcatSubPairsSaturated(y Int16x8) (z Int16x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x16) ConcatSubPairsSaturated(y Int16x16) (z Int16x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16x32) ConcatSubPairsSaturated(y Int16x32) (z Int16x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int16s) ConcatSubPairsSaturated(y Int16s) (z Int16s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), sat(y[0]-y[1]), sat(y[2]-y[3])}
 func (x Int32x4) ConcatSubPairsSaturated(y Int32x4) (z Int32x4)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32x8) ConcatSubPairsSaturated(y Int32x8) (z Int32x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32x16) ConcatSubPairsSaturated(y Int32x16) (z Int32x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int32s) ConcatSubPairsSaturated(y Int32s) (z Int32s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], y[0]-y[1]}
+//	z = {x[0]-x[1], y[0]-y[1]}
 func (x Int64x2) ConcatSubPairsSaturated(y Int64x2) (z Int64x2)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), sat(y[0]-y[1]), sat(y[2]-y[3])}
 func (x Int64x4) ConcatSubPairsSaturated(y Int64x4) (z Int64x4)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int64x8) ConcatSubPairsSaturated(y Int64x8) (z Int64x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Int64s) ConcatSubPairsSaturated(y Int64s) (z Int64s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x16) ConcatSubPairsSaturated(y Uint8x16) (z Uint8x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x32) ConcatSubPairsSaturated(y Uint8x32) (z Uint8x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8x64) ConcatSubPairsSaturated(y Uint8x64) (z Uint8x64)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint8s) ConcatSubPairsSaturated(y Uint8s) (z Uint8s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x8) ConcatSubPairsSaturated(y Uint16x8) (z Uint16x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x16) ConcatSubPairsSaturated(y Uint16x16) (z Uint16x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16x32) ConcatSubPairsSaturated(y Uint16x32) (z Uint16x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint16s) ConcatSubPairsSaturated(y Uint16s) (z Uint16s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), sat(y[0]-y[1]), sat(y[2]-y[3])}
 func (x Uint32x4) ConcatSubPairsSaturated(y Uint32x4) (z Uint32x4)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32x8) ConcatSubPairsSaturated(y Uint32x8) (z Uint32x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32x16) ConcatSubPairsSaturated(y Uint32x16) (z Uint32x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint32s) ConcatSubPairsSaturated(y Uint32s) (z Uint32s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], y[0]-y[1]}
+//	z = {x[0]-x[1], y[0]-y[1]}
 func (x Uint64x2) ConcatSubPairsSaturated(y Uint64x2) (z Uint64x2)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), sat(y[0]-y[1]), sat(y[2]-y[3])}
 func (x Uint64x4) ConcatSubPairsSaturated(y Uint64x4) (z Uint64x4)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint64x8) ConcatSubPairsSaturated(y Uint64x8) (z Uint64x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-// z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
 func (x Uint64s) ConcatSubPairsSaturated(y Uint64s) (z Uint64s)
 
 // ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and
@@ -4528,323 +4653,323 @@ func (x Uint64x8) ConcatSubPairsSaturatedGrouped(y Uint64x8) (z Uint64x8)
 func (x Uint64s) ConcatSubPairsSaturatedGrouped(y Uint64s) (z Uint64s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Float32x4) DotProductPairs(y Float32x4) (z Float64x2)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Float32x8) DotProductPairs(y Float32x8) (z Float64x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Float32x16) DotProductPairs(y Float32x16) (z Float64x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Float32s) DotProductPairs(y Float32s) (z Float64s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int8x16) DotProductPairs(y Int8x16) (z Int16x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int8x32) DotProductPairs(y Int8x32) (z Int16x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int8x64) DotProductPairs(y Int8x64) (z Int16x32)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int8s) DotProductPairs(y Int8s) (z Int16s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int16x8) DotProductPairs(y Int16x8) (z Int32x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int16x16) DotProductPairs(y Int16x16) (z Int32x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int16x32) DotProductPairs(y Int16x32) (z Int32x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int16s) DotProductPairs(y Int16s) (z Int32s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int32x4) DotProductPairs(y Int32x4) (z Int64x2)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int32x8) DotProductPairs(y Int32x8) (z Int64x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int32x16) DotProductPairs(y Int32x16) (z Int64x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Int32s) DotProductPairs(y Int32s) (z Int64s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint8x16) DotProductPairs(y Uint8x16) (z Uint16x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint8x32) DotProductPairs(y Uint8x32) (z Uint16x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint8x64) DotProductPairs(y Uint8x64) (z Uint16x32)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint8s) DotProductPairs(y Uint8s) (z Uint16s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint16x8) DotProductPairs(y Uint16x8) (z Uint32x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint16x16) DotProductPairs(y Uint16x16) (z Uint32x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint16x32) DotProductPairs(y Uint16x32) (z Uint32x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint16s) DotProductPairs(y Uint16s) (z Uint32s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint32x4) DotProductPairs(y Uint32x4) (z Uint64x2)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint32x8) DotProductPairs(y Uint32x8) (z Uint64x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint32x16) DotProductPairs(y Uint32x16) (z Uint64x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, yielding a vector of half as many elements with twice the
-// input element size.
+// adjacent pairs, returning a vector of half as many elements, each with twice
+// the input element size.
 //
 //	w[i] = x[i] * y[i]        // Double width
-//	z[i] = w[2*i] + w[2*i+1]
+//	z[j] = w[2*j] + w[2*j+1]
 func (x Uint32s) DotProductPairs(y Uint32s) (z Uint64s)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint8x16) DotProductPairsSaturated(y Int8x16) (z Int16x8)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint8x32) DotProductPairsSaturated(y Int8x32) (z Int16x16)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint8x64) DotProductPairsSaturated(y Int8x64) (z Int16x32)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint8s) DotProductPairsSaturated(y Int8s) (z Int16s)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint16x8) DotProductPairsSaturated(y Int16x8) (z Int32x4)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint16x16) DotProductPairsSaturated(y Int16x16) (z Int32x8)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint16x32) DotProductPairsSaturated(y Int16x32) (z Int32x16)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint16s) DotProductPairsSaturated(y Int16s) (z Int32s)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint32x4) DotProductPairsSaturated(y Int32x4) (z Int64x2)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint32x8) DotProductPairsSaturated(y Int32x8) (z Int64x4)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint32x16) DotProductPairsSaturated(y Int32x16) (z Int64x8)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
-// sums adjacent pairs, all with saturation. It yields a vector of half as many
-// elements with twice the input element size.
+// sums adjacent pairs, all with saturation. It returns a vector of half as many
+// elements, each with twice the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width, saturated
-//	z[i] = w[2*i] + w[2*i+1]  // Saturated
+//	w[i] = sat(x[i] * y[i])        // Double width
+//	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint32s) DotProductPairsSaturated(y Int32s) (z Int64s)
 
 // ToBits reinterprets the bits of each element of x as type uint8.
@@ -4919,452 +5044,788 @@ func (x Float64x8) ToBits() (z Uint64x8)
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float64s) ToBits() (z Uint64s)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	         z[7]         ⋯          z[0]
 func (x Uint8x16) ReshapeToUint16s() (z Uint16x8)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]     x[13]     x[12]    ⋯     x[3]      x[2]      x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	                   z[3]                   ⋯                    z[0]
 func (x Uint8x16) ReshapeToUint32s() (z Uint32x4)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]    ⋯     x[9]      x[8]      x[7]      x[6]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 63                 ....                 0 | 63                 ....                 0 |
+//	                     z[1]                                        z[0]
 func (x Uint8x16) ReshapeToUint64s() (z Uint64x2)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[31]     x[30]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	        z[15]         ⋯          z[0]
 func (x Uint8x32) ReshapeToUint16s() (z Uint16x16)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[31]     x[30]     x[29]     x[28]    ⋯     x[3]      x[2]      x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	                   z[7]                   ⋯                    z[0]
 func (x Uint8x32) ReshapeToUint32s() (z Uint32x8)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[31]     x[30]    ⋯    x[25]     x[24]    ⋯     x[7]      x[6]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
+//	                     z[3]                     ⋯                      z[0]
 func (x Uint8x32) ReshapeToUint64s() (z Uint64x4)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[63]     x[62]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	        z[31]         ⋯          z[0]
 func (x Uint8x64) ReshapeToUint16s() (z Uint16x32)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[63]     x[62]     x[61]     x[60]    ⋯     x[3]      x[2]      x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	                  z[15]                   ⋯                    z[0]
 func (x Uint8x64) ReshapeToUint32s() (z Uint32x16)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[63]     x[62]    ⋯    x[57]     x[56]    ⋯     x[7]      x[6]    ⋯     x[1]      x[0]
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
+//	                     z[7]                     ⋯                      z[0]
 func (x Uint8x64) ReshapeToUint64s() (z Uint64x8)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯     x[3]      x[2]      x[1]      x[0]
+//	⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	⋯ | 15     ....     0 | 15     ....     0 |
+//	⋯          z[1]                z[0]
 func (x Uint8s) ReshapeToUint16s() (z Uint16s)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯     x[7]      x[6]      x[5]      x[4]      x[3]      x[2]      x[1]      x[0]
+//	⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	⋯ | 31               ....               0 | 31               ....               0 |
+//	⋯                    z[1]                                    z[0]
 func (x Uint8s) ReshapeToUint32s() (z Uint32s)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯    x[15]     x[14]    ⋯     x[9]      x[8]      x[7]      x[6]    ⋯     x[1]      x[0]
+//	⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	⋯ | 63                 ....                 0 | 63                 ....                 0 |
+//	⋯                      z[1]                                        z[0]
 func (x Uint8s) ReshapeToUint64s() (z Uint64s)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[7]         ⋯          x[0]
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[15]     z[14]    ⋯     z[1]      z[0]
 func (x Uint16x8) ReshapeToUint8s() (z Uint8x16)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	    x[7]      x[6]    ⋯     x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	         z[3]         ⋯          z[0]
 func (x Uint16x8) ReshapeToUint32s() (z Uint32x4)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	    x[7]      x[6]      x[5]      x[4]      x[3]      x[2]      x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	| 63               ....               0 | 63               ....               0 |
+//	                   z[1]                                    z[0]
 func (x Uint16x8) ReshapeToUint64s() (z Uint64x2)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	        x[15]         ⋯          x[0]
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[31]     z[30]    ⋯     z[1]      z[0]
 func (x Uint16x16) ReshapeToUint8s() (z Uint8x32)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]    ⋯     x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	         z[7]         ⋯          z[0]
 func (x Uint16x16) ReshapeToUint32s() (z Uint32x8)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]     x[13]     x[12]    ⋯     x[3]      x[2]      x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	| 63               ....               0 | ⋯ | 63               ....               0 |
+//	                   z[3]                   ⋯                    z[0]
 func (x Uint16x16) ReshapeToUint64s() (z Uint64x4)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	        x[31]         ⋯          x[0]
+//	| 15     ....     0 | ⋯ | 15     ....     0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[63]     z[62]    ⋯     z[1]      z[0]
 func (x Uint16x32) ReshapeToUint8s() (z Uint8x64)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[31]     x[30]    ⋯     x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	        z[15]         ⋯          z[0]
 func (x Uint16x32) ReshapeToUint32s() (z Uint32x16)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[31]     x[30]     x[29]     x[28]    ⋯     x[3]      x[2]      x[1]      x[0]
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	| 63               ....               0 | ⋯ | 63               ....               0 |
+//	                   z[7]                   ⋯                    z[0]
 func (x Uint16x32) ReshapeToUint64s() (z Uint64x8)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯          x[1]                x[0]
+//	⋯ | 15     ....     0 | 15     ....     0 |
+//	⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint16s) ReshapeToUint8s() (z Uint8s)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯     x[3]      x[2]      x[1]      x[0]
+//	⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	⋯ | 31     ....     0 | 31     ....     0 |
+//	⋯          z[1]                z[0]
 func (x Uint16s) ReshapeToUint32s() (z Uint32s)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯     x[7]      x[6]      x[5]      x[4]      x[3]      x[2]      x[1]      x[0]
+//	⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	⋯ | 63               ....               0 | 63               ....               0 |
+//	⋯                    z[1]                                    z[0]
 func (x Uint16s) ReshapeToUint64s() (z Uint64s)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                   x[3]                   ⋯                    x[0]
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	   z[15]     z[14]     z[13]     z[12]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x4) ReshapeToUint8s() (z Uint8x16)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[3]         ⋯          x[0]
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	    z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint32x4) ReshapeToUint16s() (z Uint16x8)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	    x[3]      x[2]      x[1]      x[0]
+//	| 31 .. 0 | 31 .. 0 | 31 .. 0 | 31 .. 0 |
+//	| 63     ....     0 | 63     ....     0 |
+//	         z[1]                z[0]
 func (x Uint32x4) ReshapeToUint64s() (z Uint64x2)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                   x[7]                   ⋯                    x[0]
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	   z[31]     z[30]     z[29]     z[28]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x8) ReshapeToUint8s() (z Uint8x32)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[7]         ⋯          x[0]
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	   z[15]     z[14]    ⋯     z[1]      z[0]
 func (x Uint32x8) ReshapeToUint16s() (z Uint16x16)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	    x[7]      x[6]    ⋯     x[1]      x[0]
+//	| 31 .. 0 | 31 .. 0 | ⋯ | 31 .. 0 | 31 .. 0 |
+//	| 63     ....     0 | ⋯ | 63     ....     0 |
+//	         z[3]         ⋯          z[0]
 func (x Uint32x8) ReshapeToUint64s() (z Uint64x4)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                  x[15]                   ⋯                    x[0]
+//	| 31               ....               0 | ⋯ | 31               ....               0 |
+//	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	   z[63]     z[62]     z[61]     z[60]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x16) ReshapeToUint8s() (z Uint8x64)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	        x[15]         ⋯          x[0]
+//	| 31     ....     0 | ⋯ | 31     ....     0 |
+//	| 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 |
+//	   z[31]     z[30]    ⋯     z[1]      z[0]
 func (x Uint32x16) ReshapeToUint16s() (z Uint16x32)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	   x[15]     x[14]    ⋯     x[1]      x[0]
+//	| 31 .. 0 | 31 .. 0 | ⋯ | 31 .. 0 | 31 .. 0 |
+//	| 63     ....     0 | ⋯ | 63     ....     0 |
+//	         z[7]         ⋯          z[0]
 func (x Uint32x16) ReshapeToUint64s() (z Uint64x8)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯                    x[1]                                    x[0]
+//	⋯ | 31               ....               0 | 31               ....               0 |
+//	⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
+//	⋯     z[7]      z[6]      z[5]      z[4]      z[3]      z[2]      z[1]      z[0]
 func (x Uint32s) ReshapeToUint8s() (z Uint8s)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯          x[1]                x[0]
+//	⋯ | 31     ....     0 | 31     ....     0 |
+//	⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32s) ReshapeToUint16s() (z Uint16s)
 
-// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint64s reinterprets the bits of x as a Uint64s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯     x[3]      x[2]      x[1]      x[0]
+//	⋯ | 31 .. 0 | 31 .. 0 | 31 .. 0 | 31 .. 0 |
+//	⋯ | 63     ....     0 | 63     ....     0 |
+//	⋯          z[1]                z[0]
 func (x Uint32s) ReshapeToUint64s() (z Uint64s)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                     x[1]                                        x[0]
+//	| 63                 ....                 0 | 63                 ....                 0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[15]     z[14]    ⋯     z[9]      z[8]      z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x2) ReshapeToUint8s() (z Uint8x16)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                   x[1]                                    x[0]
+//	| 63               ....               0 | 63               ....               0 |
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	    z[7]      z[6]      z[5]      z[4]      z[3]      z[2]      z[1]      z[0]
 func (x Uint64x2) ReshapeToUint16s() (z Uint16x8)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[1]                x[0]
+//	| 63     ....     0 | 63     ....     0 |
+//	| 31 .. 0 | 31 .. 0 | 31 .. 0 | 31 .. 0 |
+//	    z[3]      z[2]      z[1]      z[0]
 func (x Uint64x2) ReshapeToUint32s() (z Uint32x4)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                     x[3]                     ⋯                      x[0]
+//	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[31]     z[30]    ⋯    z[25]     z[24]    ⋯     z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x4) ReshapeToUint8s() (z Uint8x32)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                   x[3]                   ⋯                    x[0]
+//	| 63               ....               0 | ⋯ | 63               ....               0 |
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	   z[15]     z[14]     z[13]     z[12]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64x4) ReshapeToUint16s() (z Uint16x16)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[3]         ⋯          x[0]
+//	| 63     ....     0 | ⋯ | 63     ....     0 |
+//	| 31 .. 0 | 31 .. 0 | ⋯ | 31 .. 0 | 31 .. 0 |
+//	    z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x4) ReshapeToUint32s() (z Uint32x8)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                     x[7]                     ⋯                      x[0]
+//	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
+//	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	   z[63]     z[62]    ⋯    z[57]     z[56]    ⋯     z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x8) ReshapeToUint8s() (z Uint8x64)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	                   x[7]                   ⋯                    x[0]
+//	| 63               ....               0 | ⋯ | 63               ....               0 |
+//	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	   z[31]     z[30]     z[29]     z[28]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64x8) ReshapeToUint16s() (z Uint16x32)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	         x[7]         ⋯          x[0]
+//	| 63     ....     0 | ⋯ | 63     ....     0 |
+//	| 31 .. 0 | 31 .. 0 | ⋯ | 31 .. 0 | 31 .. 0 |
+//	   z[15]     z[14]    ⋯     z[1]      z[0]
 func (x Uint64x8) ReshapeToUint32s() (z Uint32x16)
 
-// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint8s reinterprets the bits of x as a Uint8s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯                      x[1]                                        x[0]
+//	⋯ | 63                 ....                 0 | 63                 ....                 0 |
+//	⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
+//	⋯    z[15]     z[14]    ⋯     z[9]      z[8]      z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64s) ReshapeToUint8s() (z Uint8s)
 
-// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint16s reinterprets the bits of x as a Uint16s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯                    x[1]                                    x[0]
+//	⋯ | 63               ....               0 | 63               ....               0 |
+//	⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
+//	⋯     z[7]      z[6]      z[5]      z[4]      z[3]      z[2]      z[1]      z[0]
 func (x Uint64s) ReshapeToUint16s() (z Uint16s)
 
-// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector. The least
-// significant bit of element 0 is bit 0
+// ReshapeToUint32s reinterprets the bits of x as a Uint32s vector.
+//
+// Both the vector elements and the bits of each element are interpreted in
+// little endian order.
+//
+//	⋯          x[1]                x[0]
+//	⋯ | 63     ....     0 | 63     ....     0 |
+//	⋯ | 31 .. 0 | 31 .. 0 | 31 .. 0 | 31 .. 0 |
+//	⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64s) ReshapeToUint32s() (z Uint32s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x16) ScaleSaturated(scale Int8x16) (z Int8x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x32) ScaleSaturated(scale Int8x32) (z Int8x32)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x64) ScaleSaturated(scale Int8x64) (z Int8x64)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8s) ScaleSaturated(scale Int8s) (z Int8s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int16x8) ScaleSaturated(scale Int16x8) (z Int16x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int16x16) ScaleSaturated(scale Int16x16) (z Int16x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int16x32) ScaleSaturated(scale Int16x32) (z Int16x32)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int16s) ScaleSaturated(scale Int16s) (z Int16s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int32x4) ScaleSaturated(scale Int32x4) (z Int32x4)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int32x8) ScaleSaturated(scale Int32x8) (z Int32x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int32x16) ScaleSaturated(scale Int32x16) (z Int32x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int32s) ScaleSaturated(scale Int32s) (z Int32s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int64x2) ScaleSaturated(scale Int64x2) (z Int64x2)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int64x4) ScaleSaturated(scale Int64x4) (z Int64x4)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int64x8) ScaleSaturated(scale Int64x8) (z Int64x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (arithmetic shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Int64s) ScaleSaturated(scale Int64s) (z Int64s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x16) ScaleSaturated(scale Int8x16) (z Uint8x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x32) ScaleSaturated(scale Int8x32) (z Uint8x32)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x64) ScaleSaturated(scale Int8x64) (z Uint8x64)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8s) ScaleSaturated(scale Int8s) (z Uint8s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint16x8) ScaleSaturated(scale Int16x8) (z Uint16x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint16x16) ScaleSaturated(scale Int16x16) (z Uint16x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint16x32) ScaleSaturated(scale Int16x32) (z Uint16x32)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint16s) ScaleSaturated(scale Int16s) (z Uint16s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint32x4) ScaleSaturated(scale Int32x4) (z Uint32x4)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint32x8) ScaleSaturated(scale Int32x8) (z Uint32x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint32x16) ScaleSaturated(scale Int32x16) (z Uint32x16)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint32s) ScaleSaturated(scale Int32s) (z Uint32s)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint64x2) ScaleSaturated(scale Int64x2) (z Uint64x2)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint64x4) ScaleSaturated(scale Int64x4) (z Uint64x4)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint64x8) ScaleSaturated(scale Int64x8) (z Uint64x8)
 
 // ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
 //
-// Positive exponents scale up (shift left with saturation); negative exponents
-// scale down (shift right; arithmetic for signed types, logical for unsigned types).
+// Positive exponents scale up (shift left with saturation). Negative exponents
+// scale down (logical shift right).
 //
-//	z[i] = saturated(x[i] * 2^scale[i])
+//	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint64s) ScaleSaturated(scale Int64s) (z Uint64s)
 
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
@@ -5463,289 +5924,289 @@ func (x Int64x8) ShiftAllRight(shift uint64) (z Int64x8)
 //	z[i] = x[i] >> shift
 func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint8x16) ShiftAllRight(shift uint64) (z Uint8x16)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint8x32) ShiftAllRight(shift uint64) (z Uint8x32)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint8x64) ShiftAllRight(shift uint64) (z Uint8x64)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint8s) ShiftAllRight(shift uint64) (z Uint8s)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint16x8) ShiftAllRight(shift uint64) (z Uint16x8)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint16x16) ShiftAllRight(shift uint64) (z Uint16x16)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint16x32) ShiftAllRight(shift uint64) (z Uint16x32)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint16s) ShiftAllRight(shift uint64) (z Uint16s)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint32x4) ShiftAllRight(shift uint64) (z Uint32x4)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint32x8) ShiftAllRight(shift uint64) (z Uint32x8)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint32x16) ShiftAllRight(shift uint64) (z Uint32x16)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint32s) ShiftAllRight(shift uint64) (z Uint32s)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint64x2) ShiftAllRight(shift uint64) (z Uint64x2)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint64x4) ShiftAllRight(shift uint64) (z Uint64x4)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint64x8) ShiftAllRight(shift uint64) (z Uint64x8)
 
-// ShiftAllRight logically shifts each element of x right by y bits.
+// ShiftAllRight logically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint64s) ShiftAllRight(shift uint64) (z Uint64s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int8x16) ShiftAllLeft(shift uint64) (z Int8x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int8x32) ShiftAllLeft(shift uint64) (z Int8x32)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int8x64) ShiftAllLeft(shift uint64) (z Int8x64)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int8s) ShiftAllLeft(shift uint64) (z Int8s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int16x8) ShiftAllLeft(shift uint64) (z Int16x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int16x16) ShiftAllLeft(shift uint64) (z Int16x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int16x32) ShiftAllLeft(shift uint64) (z Int16x32)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int16s) ShiftAllLeft(shift uint64) (z Int16s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int32x4) ShiftAllLeft(shift uint64) (z Int32x4)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int32x8) ShiftAllLeft(shift uint64) (z Int32x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int32x16) ShiftAllLeft(shift uint64) (z Int32x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int32s) ShiftAllLeft(shift uint64) (z Int32s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int64x2) ShiftAllLeft(shift uint64) (z Int64x2)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int64x4) ShiftAllLeft(shift uint64) (z Int64x4)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int64x8) ShiftAllLeft(shift uint64) (z Int64x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint8x16) ShiftAllLeft(shift uint64) (z Uint8x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint8x32) ShiftAllLeft(shift uint64) (z Uint8x32)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint8x64) ShiftAllLeft(shift uint64) (z Uint8x64)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint8s) ShiftAllLeft(shift uint64) (z Uint8s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint16x8) ShiftAllLeft(shift uint64) (z Uint16x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint16x16) ShiftAllLeft(shift uint64) (z Uint16x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint16x32) ShiftAllLeft(shift uint64) (z Uint16x32)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint16s) ShiftAllLeft(shift uint64) (z Uint16s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint32x4) ShiftAllLeft(shift uint64) (z Uint32x4)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint32x8) ShiftAllLeft(shift uint64) (z Uint32x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint32x16) ShiftAllLeft(shift uint64) (z Uint32x16)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint32s) ShiftAllLeft(shift uint64) (z Uint32s)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint64x2) ShiftAllLeft(shift uint64) (z Uint64x2)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint64x4) ShiftAllLeft(shift uint64) (z Uint64x4)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint64x8) ShiftAllLeft(shift uint64) (z Uint64x8)
 
-// ShiftAllLeft shifts each element of x left by y bits.
+// ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.
 //
 //	z[i] = x[i] << shift

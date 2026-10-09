@@ -13,12 +13,12 @@ type Float32x4 struct {
 // Len returns the number of elements in a Float32x4.
 func (x Float32x4) Len() int
 
-// LoadFloat32x4Array loads a Float32x4 from an array.
+// LoadFloat32x4Array loads an array into a vector.
 //
 //go:noescape
-func LoadFloat32x4Array(y *[4]float32) Float32x4
+func LoadFloat32x4Array(x *[4]float32) (z Float32x4)
 
-// StoreArray stores a Float32x4 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Float32x4) StoreArray(y *[4]float32)
@@ -32,12 +32,12 @@ type Float64x2 struct {
 // Len returns the number of elements in a Float64x2.
 func (x Float64x2) Len() int
 
-// LoadFloat64x2Array loads a Float64x2 from an array.
+// LoadFloat64x2Array loads an array into a vector.
 //
 //go:noescape
-func LoadFloat64x2Array(y *[2]float64) Float64x2
+func LoadFloat64x2Array(x *[2]float64) (z Float64x2)
 
-// StoreArray stores a Float64x2 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Float64x2) StoreArray(y *[2]float64)
@@ -51,12 +51,12 @@ type Int8x16 struct {
 // Len returns the number of elements in an Int8x16.
 func (x Int8x16) Len() int
 
-// LoadInt8x16Array loads an Int8x16 from an array.
+// LoadInt8x16Array loads an array into a vector.
 //
 //go:noescape
-func LoadInt8x16Array(y *[16]int8) Int8x16
+func LoadInt8x16Array(x *[16]int8) (z Int8x16)
 
-// StoreArray stores an Int8x16 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Int8x16) StoreArray(y *[16]int8)
@@ -70,12 +70,12 @@ type Int16x8 struct {
 // Len returns the number of elements in an Int16x8.
 func (x Int16x8) Len() int
 
-// LoadInt16x8Array loads an Int16x8 from an array.
+// LoadInt16x8Array loads an array into a vector.
 //
 //go:noescape
-func LoadInt16x8Array(y *[8]int16) Int16x8
+func LoadInt16x8Array(x *[8]int16) (z Int16x8)
 
-// StoreArray stores an Int16x8 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Int16x8) StoreArray(y *[8]int16)
@@ -89,12 +89,12 @@ type Int32x4 struct {
 // Len returns the number of elements in an Int32x4.
 func (x Int32x4) Len() int
 
-// LoadInt32x4Array loads an Int32x4 from an array.
+// LoadInt32x4Array loads an array into a vector.
 //
 //go:noescape
-func LoadInt32x4Array(y *[4]int32) Int32x4
+func LoadInt32x4Array(x *[4]int32) (z Int32x4)
 
-// StoreArray stores an Int32x4 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Int32x4) StoreArray(y *[4]int32)
@@ -108,12 +108,12 @@ type Int64x2 struct {
 // Len returns the number of elements in an Int64x2.
 func (x Int64x2) Len() int
 
-// LoadInt64x2Array loads an Int64x2 from an array.
+// LoadInt64x2Array loads an array into a vector.
 //
 //go:noescape
-func LoadInt64x2Array(y *[2]int64) Int64x2
+func LoadInt64x2Array(x *[2]int64) (z Int64x2)
 
-// StoreArray stores an Int64x2 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Int64x2) StoreArray(y *[2]int64)
@@ -127,12 +127,12 @@ type Uint8x16 struct {
 // Len returns the number of elements in a Uint8x16.
 func (x Uint8x16) Len() int
 
-// LoadUint8x16Array loads a Uint8x16 from an array.
+// LoadUint8x16Array loads an array into a vector.
 //
 //go:noescape
-func LoadUint8x16Array(y *[16]uint8) Uint8x16
+func LoadUint8x16Array(x *[16]uint8) (z Uint8x16)
 
-// StoreArray stores a Uint8x16 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Uint8x16) StoreArray(y *[16]uint8)
@@ -146,12 +146,12 @@ type Uint16x8 struct {
 // Len returns the number of elements in a Uint16x8.
 func (x Uint16x8) Len() int
 
-// LoadUint16x8Array loads a Uint16x8 from an array.
+// LoadUint16x8Array loads an array into a vector.
 //
 //go:noescape
-func LoadUint16x8Array(y *[8]uint16) Uint16x8
+func LoadUint16x8Array(x *[8]uint16) (z Uint16x8)
 
-// StoreArray stores a Uint16x8 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Uint16x8) StoreArray(y *[8]uint16)
@@ -165,12 +165,12 @@ type Uint32x4 struct {
 // Len returns the number of elements in a Uint32x4.
 func (x Uint32x4) Len() int
 
-// LoadUint32x4Array loads a Uint32x4 from an array.
+// LoadUint32x4Array loads an array into a vector.
 //
 //go:noescape
-func LoadUint32x4Array(y *[4]uint32) Uint32x4
+func LoadUint32x4Array(x *[4]uint32) (z Uint32x4)
 
-// StoreArray stores a Uint32x4 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Uint32x4) StoreArray(y *[4]uint32)
@@ -184,12 +184,12 @@ type Uint64x2 struct {
 // Len returns the number of elements in a Uint64x2.
 func (x Uint64x2) Len() int
 
-// LoadUint64x2Array loads a Uint64x2 from an array.
+// LoadUint64x2Array loads an array into a vector.
 //
 //go:noescape
-func LoadUint64x2Array(y *[2]uint64) Uint64x2
+func LoadUint64x2Array(x *[2]uint64) (z Uint64x2)
 
-// StoreArray stores a Uint64x2 to an array.
+// StoreArray stores the elements of x to an array.
 //
 //go:noescape
 func (x Uint64x2) StoreArray(y *[2]uint64)

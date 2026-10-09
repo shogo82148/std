@@ -4,45 +4,45 @@
 
 package archsimd
 
-// BroadcastInt8x16 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastInt8x16(x int8) Int8x16
+// BroadcastInt8x16 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastInt8x16(x int8) (z Int8x16)
 
-// BroadcastInt16x8 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastInt16x8(x int16) Int16x8
+// BroadcastInt16x8 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastInt16x8(x int16) (z Int16x8)
 
-// BroadcastInt32x4 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastInt32x4(x int32) Int32x4
+// BroadcastInt32x4 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastInt32x4(x int32) (z Int32x4)
 
-// BroadcastInt64x2 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastInt64x2(x int64) Int64x2
+// BroadcastInt64x2 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastInt64x2(x int64) (z Int64x2)
 
-// BroadcastUint8x16 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastUint8x16(x uint8) Uint8x16
+// BroadcastUint8x16 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastUint8x16(x uint8) (z Uint8x16)
 
-// BroadcastUint16x8 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastUint16x8(x uint16) Uint16x8
+// BroadcastUint16x8 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastUint16x8(x uint16) (z Uint16x8)
 
-// BroadcastUint32x4 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastUint32x4(x uint32) Uint32x4
+// BroadcastUint32x4 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastUint32x4(x uint32) (z Uint32x4)
 
-// BroadcastUint64x2 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastUint64x2(x uint64) Uint64x2
+// BroadcastUint64x2 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastUint64x2(x uint64) (z Uint64x2)
 
-// BroadcastFloat32x4 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastFloat32x4(x float32) Float32x4
+// BroadcastFloat32x4 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastFloat32x4(x float32) (z Float32x4)
 
-// BroadcastFloat64x2 returns a vector with the input
-// x assigned to all elements of the output.
-func BroadcastFloat64x2(x float64) Float64x2
+// BroadcastFloat64x2 returns a vector with the input x assigned to all elements of the
+// result.
+func BroadcastFloat64x2(x float64) (z Float64x2)
 
 // String returns a string representation of SIMD vector x.
 func (x Int8x16) String() string

@@ -386,13 +386,13 @@ func (x Int16x8) ReduceSum() int16
 
 func (x Int16x8nclm) ReduceSum() int16
 
-func (x Int16x8) ShiftAllLeft(y uint64) Int16x8
+func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
-func (x Int16x8nclm) ShiftAllLeft(y uint64) Int16x8nclm
+func (x Int16x8nclm) ShiftAllLeft(shift uint64) Int16x8nclm
 
-func (x Int16x8) ShiftAllRight(y uint64) Int16x8
+func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
 
-func (x Int16x8nclm) ShiftAllRight(y uint64) Int16x8nclm
+func (x Int16x8nclm) ShiftAllRight(shift uint64) Int16x8nclm
 
 func (x Int16x8) Store(s []int16)
 
@@ -514,13 +514,13 @@ func (x Int32x4) ReduceSum() int32
 
 func (x Int32x4nclm) ReduceSum() int32
 
-func (x Int32x4) ShiftAllLeft(y uint64) Int32x4
+func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
-func (x Int32x4nclm) ShiftAllLeft(y uint64) Int32x4nclm
+func (x Int32x4nclm) ShiftAllLeft(shift uint64) Int32x4nclm
 
-func (x Int32x4) ShiftAllRight(y uint64) Int32x4
+func (x Int32x4) ShiftAllRight(shift uint64) Int32x4
 
-func (x Int32x4nclm) ShiftAllRight(y uint64) Int32x4nclm
+func (x Int32x4nclm) ShiftAllRight(shift uint64) Int32x4nclm
 
 func (x Int32x4) Store(s []int32)
 
@@ -614,9 +614,9 @@ func (x Int64x2) Or(y Int64x2) Int64x2
 
 func (x Int64x2nclm) Or(y Int64x2nclm) Int64x2nclm
 
-func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
+func (x Int64x2) ShiftAllLeft(shift uint64) Int64x2
 
-func (x Int64x2nclm) ShiftAllLeft(y uint64) Int64x2nclm
+func (x Int64x2nclm) ShiftAllLeft(shift uint64) Int64x2nclm
 
 func (x Int64x2) Store(s []int64)
 
@@ -866,13 +866,13 @@ func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
 
 func (x Uint16x8nclm) RotateAllRight(dist uint64) Uint16x8nclm
 
-func (x Uint16x8) ShiftAllLeft(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
-func (x Uint16x8nclm) ShiftAllLeft(y uint64) Uint16x8nclm
+func (x Uint16x8nclm) ShiftAllLeft(shift uint64) Uint16x8nclm
 
-func (x Uint16x8) ShiftAllRight(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
 
-func (x Uint16x8nclm) ShiftAllRight(y uint64) Uint16x8nclm
+func (x Uint16x8nclm) ShiftAllRight(shift uint64) Uint16x8nclm
 
 func (x Uint16x8) Store(s []uint16)
 
@@ -1002,13 +1002,13 @@ func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
 
 func (x Uint32x4nclm) RotateAllRight(dist uint64) Uint32x4nclm
 
-func (x Uint32x4) ShiftAllLeft(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
-func (x Uint32x4nclm) ShiftAllLeft(y uint64) Uint32x4nclm
+func (x Uint32x4nclm) ShiftAllLeft(shift uint64) Uint32x4nclm
 
-func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllRight(shift uint64) Uint32x4
 
-func (x Uint32x4nclm) ShiftAllRight(y uint64) Uint32x4nclm
+func (x Uint32x4nclm) ShiftAllRight(shift uint64) Uint32x4nclm
 
 func (x Uint32x4) Store(s []uint32)
 
@@ -1122,13 +1122,13 @@ func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
 
 func (x Uint64x2nclm) RotateAllRight(dist uint64) Uint64x2nclm
 
-func (x Uint64x2) ShiftAllLeft(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllLeft(shift uint64) Uint64x2
 
-func (x Uint64x2nclm) ShiftAllLeft(y uint64) Uint64x2nclm
+func (x Uint64x2nclm) ShiftAllLeft(shift uint64) Uint64x2nclm
 
-func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllRight(shift uint64) Uint64x2
 
-func (x Uint64x2nclm) ShiftAllRight(y uint64) Uint64x2nclm
+func (x Uint64x2nclm) ShiftAllRight(shift uint64) Uint64x2nclm
 
 func (x Uint64x2) Store(s []uint64)
 

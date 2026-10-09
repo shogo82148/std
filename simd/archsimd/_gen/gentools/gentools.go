@@ -80,6 +80,8 @@ type Files struct {
 	files          []*fileInfo
 	postProcessors []PostProcessor
 
+	fileSet map[string]*fileInfo
+
 	// tmpDir is a temporary directory used for communicating with subprocess
 	// gentools.
 	tmpDirOnce sync.Once

@@ -61,8 +61,9 @@ type Link struct {
 	ErrorReporter
 	ArchSyms
 
-	outSem chan int
-	Out    *OutBuf
+	outSem   chan int
+	Out      *OutBuf
+	OutDWARF *OutBuf
 
 	version int
 

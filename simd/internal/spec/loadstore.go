@@ -12,8 +12,7 @@ package spec
 //specgen:name Broadcast{{.z}}
 func BroadcastZ[E Elt, W Width](x E) (z Vec[E, W])
 
-// LoadZ loads a slice into a vector. If len(s) is less than the number of
-// elements in the vector, it panics.
+// LoadZ loads a slice into a vector. If len(s) < {{lanes .z "z"}}, it panics.
 //
 //specgen:name Load{{.z}}
 func LoadZ[E Elt, W Width](s []E) (z Vec[E, W])
@@ -23,15 +22,14 @@ func LoadZ[E Elt, W Width](s []E) (z Vec[E, W])
 //specgen:name Load{{.z}}Array
 func LoadZArray[E Elt, W FixedWidth](x *Array[E, W]) (z Vec[E, W])
 
-// LoadZPart loads a slice into a vector and returns the vector and the number
-// of elements loaded from s. If len(s) is less than the number of elements in
-// the vector, the remaining vector elements will be zero-filled.
+// LoadZPart loads n=min(len(s), {{lanes .z "z"}}) elements from slice s as a
+// vector and returns the vector and n. If len(s) < {{lanes .z "z"}}, the
+// remaining vector elements will be zero.
 //
 //specgen:name Load{{.z}}Part
 func LoadZPart[E Elt, W Width](s []E) (z Vec[E, W], n int)
 
-// Store stores the elements of x into a slice. If len(s) is less than x.Len(),
-// it panics.
+// Store stores the elements of x into a slice. If len(s) < {{lanes .x "x"}}, it panics.
 func Store[E Elt, W Width](x Vec[E, W], s []E)
 
 // StoreArray stores the elements of x to an array.
@@ -43,6 +41,5 @@ func StoreArray[E Elt, W FixedWidth](x Vec[E, W], y *Array[E, W])
 //specgen:require maskN=xN
 func StoreArrayMasked[E Elt, W FixedWidth, mE MaskElt](x Vec[E, W], y *Array[E, W], mask Vec[mE, W])
 
-// StorePart stores at most len(s) elements of x into s and returns the number
-// of elements stored.
-func StorePart[E Elt, W Width](x Vec[E, W], s []E) int
+// StorePart stores n=min(len(s), {{lanes .x "x"}}) elements of x into s and returns n.
+func StorePart[E Elt, W Width](x Vec[E, W], s []E) (n int)

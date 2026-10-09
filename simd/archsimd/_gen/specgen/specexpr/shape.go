@@ -45,6 +45,8 @@ func (t Vector) String() string
 
 func (t Vector) Scalable() bool
 
+func (t Vector) Elems() Num
+
 type Pointer struct {
 	Elem Type
 }

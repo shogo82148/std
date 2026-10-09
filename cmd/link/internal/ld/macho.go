@@ -109,6 +109,7 @@ const (
 
 	MH_OBJECT  = 0x1
 	MH_EXECUTE = 0x2
+	MH_DSYM    = 0xa
 
 	MH_NOUNDEFS = 0x1
 	MH_DYLDLINK = 0x4
