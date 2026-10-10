@@ -114,87 +114,123 @@ func (x Float32x4) HiToLo() Float32x4
 // 64 bits replaced with the upper 64 bits of x.
 func (x Float64x2) HiToLo() Float64x2
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int8x16) ToMask() (to Mask8x16)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int8x16) ToMask() (z Mask8x16)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int16x8) ToMask() (to Mask16x8)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int16x8) ToMask() (z Mask16x8)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int32x4) ToMask() (to Mask32x4)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int32x4) ToMask() (z Mask32x4)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int64x2) ToMask() (to Mask64x2)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int64x2) ToMask() (z Mask64x2)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Uint8x16) RotateAllLeft(dist uint64) Uint8x16
+func (x Uint8x16) RotateAllLeft(shift uint64) (z Uint8x16)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Uint8x16) RotateAllRight(dist uint64) Uint8x16
+func (x Uint8x16) RotateAllRight(shift uint64) (z Uint8x16)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
+func (x Uint16x8) RotateAllLeft(shift uint64) (z Uint16x8)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
+func (x Uint16x8) RotateAllRight(shift uint64) (z Uint16x8)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Uint32x4) RotateAllLeft(dist uint64) Uint32x4
+func (x Uint32x4) RotateAllLeft(shift uint64) (z Uint32x4)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
+func (x Uint32x4) RotateAllRight(shift uint64) (z Uint32x4)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Uint64x2) RotateAllLeft(dist uint64) Uint64x2
+func (x Uint64x2) RotateAllLeft(shift uint64) (z Uint64x2)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
+func (x Uint64x2) RotateAllRight(shift uint64) (z Uint64x2)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Int8x16) ReduceSum() int8
+func (x Int8x16) ReduceSum() (z int8)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Int16x8) ReduceSum() int16
+func (x Int16x8) ReduceSum() (z int16)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Int32x4) ReduceSum() int32
+func (x Int32x4) ReduceSum() (z int32)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Uint8x16) ReduceSum() uint8
+func (x Uint8x16) ReduceSum() (z uint8)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Uint16x8) ReduceSum() uint16
+func (x Uint16x8) ReduceSum() (z uint16)
 
-// ReduceSum reduces x by summing all elements.
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
 //
 // Emulated, CPU Feature: NEON
-func (x Uint32x4) ReduceSum() uint32
+func (x Uint32x4) ReduceSum() (z uint32)
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //

@@ -18,6 +18,18 @@ func ToBits[xE Ints, xW Width, zE Uints](x Vec[xE, xW]) (z Vec[zE, xW])
 //specgen:require xN=zN
 func ToBitsFloat[xE float32 | float64, xW Width, zE Uints](x Vec[xE, xW]) (z Vec[zE, xW])
 
+// BitsTo reinterprets the bits of each element of x as type {{.zE}}.
+//
+//specgen:name BitsTo{{.zE | title}}
+//specgen:require xN=zN
+func BitsTo[xE Uints, xW Width, zE Ints](x Vec[xE, xW]) (z Vec[zE, xW])
+
+// BitsToFloat reinterprets the bits of each element of x as type {{.zE}}.
+//
+//specgen:name BitsTo{{.zE | title}}
+//specgen:require xN=zN
+func BitsToFloat[xE Uints, xW Width, zE Floats](x Vec[xE, xW]) (z Vec[zE, xW])
+
 // ReshapeToUints reinterprets the bits of x as a {{.z}} vector.
 //
 // Both the vector elements and the bits of each element are interpreted in

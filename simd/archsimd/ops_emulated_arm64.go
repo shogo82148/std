@@ -9,9 +9,9 @@ package archsimd
 // ReduceSum returns the sum of all elements in x.
 //
 // Emulated, CPU Feature: NEON
-func (x Float32x4) ReduceSum() float32
+func (x Float32x4) ReduceSum() (z float32)
 
 // ReduceSum returns the sum of all elements in x.
 //
 // Emulated, CPU Feature: NEON
-func (x Float64x2) ReduceSum() float64
+func (x Float64x2) ReduceSum() (z float64)

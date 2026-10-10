@@ -45,7 +45,8 @@ func (t *Interface) MarkImplicit()
 func (t *Interface) NumExplicitMethods() int
 
 // ExplicitMethod returns the i'th explicitly declared method of interface t for 0 <= i < t.NumExplicitMethods().
-// The methods are ordered by their unique [Id].
+// The methods are ordered with exported methods first, then by name
+// and, for non-exported methods with the same name, by package path.
 func (t *Interface) ExplicitMethod(i int) *Func
 
 // NumEmbeddeds returns the number of embedded types in interface t.
@@ -64,7 +65,8 @@ func (t *Interface) EmbeddedType(i int) Type
 func (t *Interface) NumMethods() int
 
 // Method returns the i'th method of interface t for 0 <= i < t.NumMethods().
-// The methods are ordered by their unique Id.
+// The methods are ordered with exported methods first, then by name
+// and, for non-exported methods with the same name, by package path.
 func (t *Interface) Method(i int) *Func
 
 // Empty reports whether t is the empty interface.

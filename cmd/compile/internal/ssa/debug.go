@@ -95,7 +95,7 @@ type LocListEntry struct {
 }
 
 // RegisterSet is a bitmap of registers, indexed by Register.num.
-type RegisterSet uint64
+type RegisterSet = ssaop.RegMask
 
 type SlotID int32
 

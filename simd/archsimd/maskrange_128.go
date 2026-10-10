@@ -66,22 +66,22 @@ func (x Mask64x2) Any() bool
 // Emulated
 func (x Mask64x2) None() bool
 
-// TrailingZeros returns the number of low-order false (zero) elements in mask m.
+// TrailingZeros returns the number of low-order false (zero) elements in mask x
 //
 // Emulated
-func (m Mask8x16) TrailingZeros() int
+func (x Mask8x16) TrailingZeros() int
 
-// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask x
 //
 // Emulated
-func (m Mask16x8) TrailingZeros() int
+func (x Mask16x8) TrailingZeros() int
 
-// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask x
 //
 // Emulated
-func (m Mask32x4) TrailingZeros() int
+func (x Mask32x4) TrailingZeros() int
 
-// TrailingZeros returns the number of trailing (low-order) zeroes in mask m
+// TrailingZeros returns the number of trailing (low-order) zeroes in mask x
 //
 // Emulated
-func (m Mask64x2) TrailingZeros() int
+func (x Mask64x2) TrailingZeros() int

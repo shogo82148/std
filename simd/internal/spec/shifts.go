@@ -53,3 +53,23 @@ func ShiftRight[E Ints | Uints, W Width, yE Uints](x Vec[E, W], shift Vec[yE, W]
 //
 //specgen:require shift=Uint{xN}x{xL}
 func ShiftLeft[E Ints | Uints, W Width, yE Uints](x Vec[E, W], shift Vec[yE, W]) (z Vec[E, W])
+
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
+func RotateAllLeft[E Uints, W Width](x Vec[E, W], shift uint64) (z Vec[E, W])
+
+// RotateLeft rotates x left by shift bits, elementwise.
+//
+//	z[i] = rotateLeft(x[i], shift[i])
+func RotateLeft[E Uints, W Width](x, shift Vec[E, W]) (z Vec[E, W])
+
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
+func RotateAllRight[E Uints, W Width](x Vec[E, W], shift uint64) (z Vec[E, W])
+
+// RotateRight rotates x right by shift bits, elementwise.
+//
+//	z[i] = rotateRight(x[i], shift[i])
+func RotateRight[E Uints, W Width](x, shift Vec[E, W]) (z Vec[E, W])

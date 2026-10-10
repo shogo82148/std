@@ -75,9 +75,26 @@ type Width256 struct{}
 
 type Width512 struct{}
 
+// ScalableWidth returns the current bit width used for scalable vectors when
+// executing the spec, or panics if it has not been set via [SetScalableWidth].
+func ScalableWidth() int
+
+// SetScalableWidth sets the bit width to use for scalable vectors when
+// executing the spec (for example, to match the runtime vector length of a
+// target hardware architecture during conformance testing).
+//
+// bits must be a positive multiple of 128 and at most 2048 bits.
+//
+// SetScalableWidth returns a restore function that clears the scalable width.
+//
+// Since the scalable width is global state, this panics if there are
+// overlapping attempts to set the width.
+func SetScalableWidth(bits int) (restore func())
+
 // WidthScalable is the width representing scalable vectors. At a spec level,
 // the actual width this represents is completely symbolic, but when executing
-// the spec, we concretely interpret this as [scalableWidth] bits.
+// the spec, we concretely interpret this as [ScalableWidth] bits (which must be
+// configured via [SetScalableWidth]).
 //
 // This type is known to specgen.
 type WidthScalable struct{}

@@ -858,13 +858,13 @@ func (x Uint16x8) ReshapeToUint8s() Uint8x16
 
 func (x Uint16x8nclm) ReshapeToUint8s() Uint8x16nclm
 
-func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
+func (x Uint16x8) RotateAllLeft(shift uint64) Uint16x8
 
-func (x Uint16x8nclm) RotateAllLeft(dist uint64) Uint16x8nclm
+func (x Uint16x8nclm) RotateAllLeft(shift uint64) Uint16x8nclm
 
-func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
+func (x Uint16x8) RotateAllRight(shift uint64) Uint16x8
 
-func (x Uint16x8nclm) RotateAllRight(dist uint64) Uint16x8nclm
+func (x Uint16x8nclm) RotateAllRight(shift uint64) Uint16x8nclm
 
 func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
@@ -994,13 +994,13 @@ func (x Uint32x4) ReshapeToUint8s() Uint8x16
 
 func (x Uint32x4nclm) ReshapeToUint8s() Uint8x16nclm
 
-func (x Uint32x4) RotateAllLeft(dist uint64) Uint32x4
+func (x Uint32x4) RotateAllLeft(shift uint64) Uint32x4
 
-func (x Uint32x4nclm) RotateAllLeft(dist uint64) Uint32x4nclm
+func (x Uint32x4nclm) RotateAllLeft(shift uint64) Uint32x4nclm
 
-func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
+func (x Uint32x4) RotateAllRight(shift uint64) Uint32x4
 
-func (x Uint32x4nclm) RotateAllRight(dist uint64) Uint32x4nclm
+func (x Uint32x4nclm) RotateAllRight(shift uint64) Uint32x4nclm
 
 func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
@@ -1114,13 +1114,13 @@ func (x Uint64x2) ReshapeToUint8s() Uint8x16
 
 func (x Uint64x2nclm) ReshapeToUint8s() Uint8x16nclm
 
-func (x Uint64x2) RotateAllLeft(dist uint64) Uint64x2
+func (x Uint64x2) RotateAllLeft(shift uint64) Uint64x2
 
-func (x Uint64x2nclm) RotateAllLeft(dist uint64) Uint64x2nclm
+func (x Uint64x2nclm) RotateAllLeft(shift uint64) Uint64x2nclm
 
-func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
+func (x Uint64x2) RotateAllRight(shift uint64) Uint64x2
 
-func (x Uint64x2nclm) RotateAllRight(dist uint64) Uint64x2nclm
+func (x Uint64x2nclm) RotateAllRight(shift uint64) Uint64x2nclm
 
 func (x Uint64x2) ShiftAllLeft(shift uint64) Uint64x2
 

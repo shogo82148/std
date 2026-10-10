@@ -6,6 +6,17 @@
 
 package spec
 
+// AbsFloat returns the elementwise absolute value of x.
+//
+//specgen:name Abs
+func AbsFloat[E Floats, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// AbsInt returns the elementwise absolute value of x.
+//
+//specgen:name Abs
+//specgen:require z=Uint{xN}x{xL}
+func AbsInt[E Ints, W Width, zE Uints](x Vec[E, W]) (z Vec[zE, W])
+
 // Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
@@ -118,6 +129,32 @@ func ConcatAddPairsSaturatedGrouped[E Ints | Uints, W Width](x, y Vec[E, W]) (z 
 // and performs [ConcatSubPairsSaturated] on each group.
 func ConcatSubPairsSaturatedGrouped[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
+// Average returns the elementwise average of x and y, rounded toward +∞.
+//
+//	z[i] = (x[i] + y[i] + 1) / 2
+func Average[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// {{if eq .xB "float"}}
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+//
+// {{else}}
+//
+// The result is rounded toward zero (truncated division), just like Go's /
+// operator.{{if eq .xB "int"}} Also like Go's / operator, dividing Min{{title .xE}}
+// by -1 results in Min{{title .xE}}, since the true result is unrepresentable.{{end}}
+// Unlike Go's / operator, division by zero does not panic and instead produces
+// a zero result for that element.
+//
+// {{end}}
+func Div[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
 // DotProductPairs multiplies corresponding elements of x and y, and sums
 // adjacent pairs, returning a vector of half as many elements, each with twice
 // the input element size.
@@ -139,3 +176,40 @@ func DotProductPairs[E Nums, W Width, zE Nums](x, y Vec[E, W]) (z Vec[zE, W])
 //specgen:commutative
 //specgen:require y=Int{xN}x{xL} z=Int{xN*2}x{xL/2}
 func DotProductPairsSaturated[xE Uints, xW Width, yE Ints, zE Ints](x Vec[xE, xW], y Vec[yE, xW]) (z Vec[zE, xW])
+
+// Max returns the elementwise maximum of x and y.
+//
+//	z[i] = max(x[i], y[i])
+func Max[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+func Min[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// Mul returns the elementwise product of x and y.
+//
+//	z[i] = x[i] * y[i]
+//
+//specgen:commutative
+func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+func MulAdd[E Elt, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
+func Neg[E Ints | Floats, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+func ReduceSum[E Elt, W Width](x Vec[E, W]) (z E)
+
+// Sqrt returns the elementwise square root of x.
+//
+//	z[i] = sqrt(x[i])
+func Sqrt[E Floats, W Width](x Vec[E, W]) (z Vec[E, W])

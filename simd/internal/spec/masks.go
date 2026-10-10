@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//simdgen:category Mask
+//simdgen:category Masks
 
 package spec
 
@@ -37,3 +37,12 @@ func MaskToBits[E MaskElt, W FixedWidth](x Vec[E, W]) (z UintN)
 //specgen:name To{{.z}}
 //specgen:require z=Int{xN}x{xL}
 func MaskToZ[E MaskElt, W Width, zE Ints](x Vec[E, W]) (z Vec[zE, W])
+
+// All returns true when all positions in mask x are true.
+func All[E MaskElt, W Width](x Vec[E, W]) bool
+
+// Any returns true when any position in mask x is true.
+func Any[E MaskElt, W Width](x Vec[E, W]) bool
+
+// None returns true when no positions in mask x are set.
+func None[E MaskElt, W Width](x Vec[E, W]) bool

@@ -186,20 +186,20 @@ func (x Mask64x8) Any() bool
 // Emulated, CPU Feature AVX512
 func (x Mask64x8) None() bool
 
-// TrailingZeros returns the number of low-order false (zero) elements in mask m.
+// TrailingZeros returns the number of low-order false (zero) elements in mask x.
 //
 // Emulated, CPU Feature AVX
-func (m Mask8x16) TrailingZeros() int
+func (x Mask8x16) TrailingZeros() int
 
-// TrailingZeros returns the number of low-order false (zero) elements in mask m.
+// TrailingZeros returns the number of low-order false (zero) elements in mask x.
 //
 // Emulated, CPU Feature AVX
-func (m Mask8x32) TrailingZeros() int
+func (x Mask8x32) TrailingZeros() int
 
-// TrailingZeros returns the number of low-order false (zero) elements in mask m.
+// TrailingZeros returns the number of low-order false (zero) elements in mask x.
 //
 // Emulated, CPU Feature AVX
-func (m Mask8x64) TrailingZeros() int
+func (x Mask8x64) TrailingZeros() int
 
 // TrailingZeros returns the number of low-order false (zero) elements in mask m.
 //
