@@ -6,31 +6,31 @@
 
 package sync
 
-// Map is like a Go map[any]any but is safe for concurrent use
-// by multiple goroutines without additional locking or coordination.
-// Loads, stores, and deletes run in amortized constant time.
+// Mapは、Goのmap[any]anyと似ていますが、追加のロックや調整なしに
+// 複数のゴルーチンから並行して使用しても安全です。
+// 読み込み、格納、削除は償却定数時間で実行されます。
 //
-// The Map type is specialized. Most code should use a plain Go map instead,
-// with separate locking or coordination, for better type safety and to make it
-// easier to maintain other invariants along with the map content.
+// Map型は特殊化されています。ほとんどのコードは、型安全性を高め、
+// マップの内容とともに他の不変条件を維持しやすくするために、
+// 代わりに通常のGoのマップを個別のロックや調整とともに使用するべきです。
 //
-// The Map type is optimized for two common use cases: (1) when the entry for a given
-// key is only ever written once but read many times, as in caches that only grow,
-// or (2) when multiple goroutines read, write, and overwrite entries for disjoint
-// sets of keys. In these two cases, use of a Map may significantly reduce lock
-// contention compared to a Go map paired with a separate [Mutex] or [RWMutex].
+// Map型は2つの一般的なユースケースに最適化されています: (1) 特定のキーのエントリが
+// 一度だけ書き込まれ、何度も読み取られる場合（例えば、増加するだけのキャッシュ）、
+// または (2) 複数のゴルーチンが互いに素なキーの集合のエントリを読み取り、書き込み、
+// 上書きする場合です。これら2つのケースでは、Mapを使用すると、個別の [Mutex] や [RWMutex] と
+// 組み合わせたGoのマップと比べて、ロックの競合を大幅に減らすことができます。
 //
-// The zero Map is empty and ready for use. A Map must not be copied after first use.
+// ゼロ値のMapは空で、すぐに使用できます。Mapは最初の使用後にコピーしてはいけません。
 //
-// In the terminology of [the Go memory model], Map arranges that a write operation
-// “synchronizes before” any read operation that observes the effect of the write, where
-// read and write operations are defined as follows.
-// [Map.Load], [Map.LoadAndDelete], [Map.LoadOrStore], [Map.Swap], [Map.CompareAndSwap],
-// and [Map.CompareAndDelete] are read operations;
-// [Map.Delete], [Map.LoadAndDelete], [Map.Store], and [Map.Swap] are write operations;
-// [Map.LoadOrStore] is a write operation when it returns loaded set to false;
-// [Map.CompareAndSwap] is a write operation when it returns swapped set to true;
-// and [Map.CompareAndDelete] is a write operation when it returns deleted set to true.
+// [the Go memory model]の用語では、Mapは、書き込み操作が、その書き込みの効果を観測する
+// 任意の読み取り操作よりも「前に同期する」ように調整します。ここで、読み取り操作と
+// 書き込み操作は次のように定義されます。
+// [Map.Load]、[Map.LoadAndDelete]、[Map.LoadOrStore]、[Map.Swap]、[Map.CompareAndSwap]、
+// [Map.CompareAndDelete] は読み取り操作です。
+// [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap] は書き込み操作です。
+// [Map.LoadOrStore] は、loadedがfalseに設定されて返される場合に書き込み操作です。
+// [Map.CompareAndSwap] は、swappedがtrueに設定されて返される場合に書き込み操作です。
+// [Map.CompareAndDelete] は、deletedがtrueに設定されて返される場合に書き込み操作です。
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type Map struct {
@@ -39,55 +39,54 @@ type Map struct {
 	m isync.HashTrieMap[any, any]
 }
 
-// Load returns the value stored in the map for a key, or nil if no
-// value is present.
-// The ok result indicates whether value was found in the map.
+// Loadは、キーに対してマップに格納されている値を返します。値が存在しない場合はnilを返します。
+// 結果のokは、値がマップ内で見つかったかどうかを示します。
 func (m *Map) Load(key any) (value any, ok bool)
 
-// Store sets the value for a key.
+// Storeはキーに対する値を設定します。
 func (m *Map) Store(key, value any)
 
-// Clear deletes all the entries, resulting in an empty Map.
+// Clearはすべてのエントリを削除し、空のMapにします。
 func (m *Map) Clear()
 
-// LoadOrStore returns the existing value for the key if present.
-// Otherwise, it stores and returns the given value.
-// The loaded result is true if the value was loaded, false if stored.
+// LoadOrStoreは、キーが存在する場合はその既存の値を返します。
+// そうでない場合は、指定された値を格納して返します。
+// 結果のloadedは、値が読み込まれた場合はtrue、格納された場合はfalseです。
 func (m *Map) LoadOrStore(key, value any) (actual any, loaded bool)
 
-// LoadAndDelete deletes the value for a key, returning the previous value if any.
-// The loaded result reports whether the key was present.
+// LoadAndDeleteはキーに対する値を削除し、以前の値があればそれを返します。
+// 結果のloadedは、キーが存在したかどうかを報告します。
 func (m *Map) LoadAndDelete(key any) (value any, loaded bool)
 
-// Delete deletes the value for a key.
-// If the key is not in the map, Delete does nothing.
+// Deleteはキーに対する値を削除します。
+// キーがマップに存在しない場合、Deleteは何もしません。
 func (m *Map) Delete(key any)
 
-// Swap swaps the value for a key and returns the previous value if any.
-// The loaded result reports whether the key was present.
+// Swapはキーに対する値を交換し、以前の値があればそれを返します。
+// 結果のloadedは、キーが存在したかどうかを報告します。
 func (m *Map) Swap(key, value any) (previous any, loaded bool)
 
-// CompareAndSwap swaps the old and new values for key
-// if the value stored in the map is equal to old.
-// The old value must be of a comparable type.
+// CompareAndSwapは、マップに格納されている値がoldと等しい場合に、
+// keyの古い値と新しい値を交換します。
+// 古い値は比較可能な型でなければなりません。
 func (m *Map) CompareAndSwap(key, old, new any) (swapped bool)
 
-// CompareAndDelete deletes the entry for key if its value is equal to old.
-// The old value must be of a comparable type.
+// CompareAndDeleteは、keyの値がoldと等しい場合にそのエントリを削除します。
+// 古い値は比較可能な型でなければなりません。
 //
-// If there is no current value for key in the map, CompareAndDelete
-// returns false (even if the old value is the nil interface value).
+// マップにkeyの現在の値がない場合、CompareAndDeleteは
+// （古い値がnilインターフェース値であっても）falseを返します。
 func (m *Map) CompareAndDelete(key, old any) (deleted bool)
 
-// Range calls f sequentially for each key and value present in the map.
-// If f returns false, range stops the iteration.
+// Rangeは、マップに存在する各キーと値に対して順番にfを呼び出します。
+// fがfalseを返すと、rangeは反復を停止します。
 //
-// Range does not necessarily correspond to any consistent snapshot of the Map's
-// contents: no key will be visited more than once, but if the value for any key
-// is stored or deleted concurrently (including by f), Range may reflect any
-// mapping for that key from any point during the Range call. Range does not
-// block other methods on the receiver; even f itself may call any method on m.
+// Rangeは、必ずしもMapの内容の一貫したスナップショットに対応するわけではありません。
+// どのキーも2回以上訪問されることはありませんが、いずれかのキーの値が
+// （fによるものも含めて）並行して格納または削除された場合、Rangeは
+// Rangeの呼び出し中の任意の時点のそのキーのマッピングを反映する可能性があります。
+// Rangeはレシーバの他のメソッドをブロックしません。f自体がmの任意のメソッドを呼び出すこともできます。
 //
-// Range may be O(N) with the number of elements in the map even if f returns
-// false after a constant number of calls.
+// fが一定回数の呼び出し後にfalseを返したとしても、Rangeはマップ内の要素数に対して
+// O(N)になる可能性があります。
 func (m *Map) Range(f func(key, value any) bool)

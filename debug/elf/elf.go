@@ -2078,7 +2078,7 @@ type Sym64 struct {
 
 const Sym64Size = 24
 
-// Dynamic version flags.
+// 動的バージョンフラグ。
 type DynamicVersionFlag uint16
 
 const (

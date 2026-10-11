@@ -9,7 +9,7 @@ const (
 	ENOTDIR Errno = ERROR_PATH_NOT_FOUND
 )
 
-// Windows reserves errors >= 1<<29 for application use.
+// Windowsは1<<29以上のエラーをアプリケーション用に予約しています。
 const APPLICATION_ERROR = 1 << 29
 
 // Invented values to support what package os and others expects.

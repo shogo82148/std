@@ -2,7 +2,7 @@
 
 package unicode
 
-// Version is the Unicode edition from which the tables are derived.
+// Versionは、テーブルの元になったUnicodeのバージョンです。
 const Version = "17.0.0"
 
 // CategoriesはUnicodeのカテゴリーテーブルの集合です。

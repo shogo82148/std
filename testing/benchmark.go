@@ -123,7 +123,7 @@ func (b *B) ReportMetric(n float64, unit string)
 // 一方、b.Nベースのベンチマークはベンチマーク関数（および関連するセットアップ・クリーンアップ）を複数回実行する必要があります。
 func (b *B) Loop() bool
 
-// BenchmarkResult contains the results of a benchmark run.
+// BenchmarkResultはベンチマークの実行結果を含みます。
 type BenchmarkResult struct {
 	N         int
 	T         time.Duration

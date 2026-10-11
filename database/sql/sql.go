@@ -243,7 +243,7 @@ func (n *Null[T]) Scan(value any) error
 
 func (n Null[T]) Value() (driver.Value, error)
 
-// Scanner is an interface used by [Rows.Scan].
+// Scannerは [Rows.Scan] で使用されるインターフェースです。
 type Scanner interface {
 	Scan(src any) error
 }
@@ -678,7 +678,7 @@ func (tx *Tx) ExecContext(ctx context.Context, query string, args ...any) (Resul
 // Execは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.ExecContext] を使用してください。
 func (tx *Tx) Exec(query string, args ...any) (Result, error)
 
-// QueryContext executes a query that returns rows, typically a SELECT.
+// QueryContextは、通常SELECTのような行を返すクエリを実行します。
 func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Queryは、通常はSELECTで返される行を返すクエリを実行します。

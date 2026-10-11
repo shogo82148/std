@@ -36,11 +36,11 @@ func SetLogLoggerLevel(level Level) (oldLevel Level)
 // Defaultは、デフォルトの [Logger] を返します。
 func Default() *Logger
 
-// SetDefault makes l the default [Logger], which is used by
-// the top-level functions [Info], [Debug] and so on.
-// After this call, output from the log package's default Logger
-// (as with [log.Print], etc.) will be logged using l's Handler,
-// at a level controlled by [SetLogLoggerLevel].
+// SetDefaultは、lをデフォルトの [Logger] にします。これはトップレベルの関数
+// [Info]、[Debug] などで使用されます。
+// この呼び出しの後、logパッケージのデフォルトのLoggerからの出力
+// （[log.Print] などによるもの）は、[SetLogLoggerLevel] で制御されるレベルで、
+// lのHandlerを使用してログに記録されます。
 func SetDefault(l *Logger)
 
 // Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、

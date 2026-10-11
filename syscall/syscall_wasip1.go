@@ -22,21 +22,21 @@ const (
 )
 
 type Dirent struct {
-	// The offset of the next directory entry stored in this directory.
+	// このディレクトリに格納されている次のディレクトリエントリのオフセット。
 	Next Dircookie
-	// The serial number of the file referred to by this directory entry.
+	// このディレクトリエントリが参照するファイルのシリアル番号。
 	Ino uint64
-	// The length of the name of the directory entry.
+	// ディレクトリエントリの名前の長さ。
 	Namlen uint32
-	// The type of the file referred to by this directory entry.
+	// このディレクトリエントリが参照するファイルの種類。
 	Type Filetype
-	// Name of the directory entry.
+	// ディレクトリエントリの名前。
 	Name *byte
 }
 
-// An Errno is an unsigned number describing an error condition.
-// It implements the error interface. The zero Errno is by convention
-// a non-error, so code to convert from Errno to error should use:
+// Errnoは、エラー状態を記述する符号なしの数値です。
+// これはerrorインターフェースを実装します。ゼロのErrnoは慣例により
+// エラーではないため、Errnoからerrorに変換するコードは次のようにするべきです:
 //
 //	var err = nil
 //	if errno != 0 {
@@ -52,8 +52,8 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
-// A Signal is a number describing a process signal.
-// It implements the [os.Signal] interface.
+// Signalは、プロセスシグナルを記述する数値です。
+// これは [os.Signal] インターフェースを実装します。
 type Signal uint8
 
 const (
@@ -196,19 +196,19 @@ func (w WaitStatus) Continued() bool
 func (w WaitStatus) StopSignal() Signal
 func (w WaitStatus) TrapCause() int
 
-// Rusage is a placeholder to allow compilation of the [os/exec] package
-// because we need Go programs to be portable across platforms. WASI does
-// not have a mechanism to spawn processes so there is no reason for an
-// application to take a dependency on this type.
+// Rusageは、Goプログラムをプラットフォーム間で移植可能にする必要があるため、
+// [os/exec] パッケージのコンパイルを可能にするためのプレースホルダーです。
+// WASIにはプロセスを生成する仕組みがないため、アプリケーションが
+// この型に依存する理由はありません。
 type Rusage struct {
 	Utime Timeval
 	Stime Timeval
 }
 
-// ProcAttr is a placeholder to allow compilation of the [os/exec] package
-// because we need Go programs to be portable across platforms. WASI does
-// not have a mechanism to spawn processes so there is no reason for an
-// application to take a dependency on this type.
+// ProcAttrは、Goプログラムをプラットフォーム間で移植可能にする必要があるため、
+// [os/exec] パッケージのコンパイルを可能にするためのプレースホルダーです。
+// WASIにはプロセスを生成する仕組みがないため、アプリケーションが
+// この型に依存する理由はありません。
 type ProcAttr struct {
 	Dir   string
 	Env   []string

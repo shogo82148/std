@@ -4,9 +4,9 @@
 
 package rand
 
-// Text returns a cryptographically random string using the standard RFC 4648 base32 alphabet
-// for use when a secret string, token, password, or other text is needed.
-// The result contains at least 128 bits of randomness, enough to prevent brute force
-// guessing attacks and to make the likelihood of collisions vanishingly small.
-// A future version may return longer texts as needed to maintain those properties.
+// Textは、標準のRFC 4648 base32アルファベットを使用した暗号論的にランダムな文字列を返します。
+// これは、秘密の文字列、トークン、パスワード、その他のテキストが必要な場合に使用するためのものです。
+// 結果には少なくとも128ビットのランダム性が含まれており、総当たりによる推測攻撃を防ぎ、
+// 衝突の可能性を限りなく小さくするのに十分です。
+// 将来のバージョンでは、これらの特性を維持するために必要に応じてより長いテキストを返す可能性があります。
 func Text() string

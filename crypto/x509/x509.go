@@ -207,93 +207,83 @@ type Certificate struct {
 	// CRL配布ポイント
 	CRLDistributionPoints []string
 
-	// PolicyIdentifiers contains asn1.ObjectIdentifiers, the components
-	// of which are limited to int32. If a certificate contains a policy which
-	// cannot be represented by asn1.ObjectIdentifier, it will not be included in
-	// PolicyIdentifiers, but will be present in Policies, which contains all parsed
-	// policy OIDs.
-	// See CreateCertificate for context about how this field and the Policies field
-	// interact.
+	// PolicyIdentifiersにはasn1.ObjectIdentifiersが含まれ、その構成要素は
+	// int32に制限されます。証明書にasn1.ObjectIdentifierで表現できないポリシーが
+	// 含まれている場合、それはPolicyIdentifiersには含まれませんが、
+	// パースされたすべてのポリシーOIDを含むPoliciesには含まれます。
+	// このフィールドとPoliciesフィールドの相互作用については、
+	// CreateCertificateを参照してください。
 	PolicyIdentifiers []asn1.ObjectIdentifier
 
-	// Policies contains all policy identifiers included in the certificate.
-	// See CreateCertificate for context about how this field and the PolicyIdentifiers field
-	// interact.
-	// In Go 1.22, encoding/gob cannot handle and ignores this field.
+	// Policiesには、証明書に含まれるすべてのポリシー識別子が含まれます。
+	// このフィールドとPolicyIdentifiersフィールドの相互作用については、
+	// CreateCertificateを参照してください。
+	// Go 1.22では、encoding/gobはこのフィールドを扱えず、無視します。
 	Policies []OID
 
-	// InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
-	// of the inhibitAnyPolicy extension.
+	// InhibitAnyPolicyとInhibitAnyPolicyZeroは、inhibitAnyPolicy拡張の存在と値を示します。
 	//
-	// The value of InhibitAnyPolicy indicates the number of additional
-	// certificates in the path after this certificate that may use the
-	// anyPolicy policy OID to indicate a match with any other policy.
+	// InhibitAnyPolicyの値は、この証明書の後のパス内で、anyPolicyポリシーOIDを使用して
+	// 他の任意のポリシーとの一致を示すことができる追加の証明書の数を示します。
 	//
-	// When parsing a certificate, a positive non-zero InhibitAnyPolicy means
-	// that the field was specified, -1 means it was unset, and
-	// InhibitAnyPolicyZero being true mean that the field was explicitly set to
-	// zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
-	// should be treated equivalent to -1 (unset).
+	// 証明書をパースする際、正の非ゼロのInhibitAnyPolicyはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、InhibitAnyPolicyZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// InhibitAnyPolicy==0かつInhibitAnyPolicyZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	InhibitAnyPolicy int
-	// InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// InhibitAnyPolicyZeroは、InhibitAnyPolicy==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// InhibitAnyPolicyが設定されていないものと解釈されます。
 	InhibitAnyPolicyZero bool
 
-	// InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
-	// and value of the inhibitPolicyMapping field of the policyConstraints
-	// extension.
+	// InhibitPolicyMappingとInhibitPolicyMappingZeroは、policyConstraints拡張の
+	// inhibitPolicyMappingフィールドの存在と値を示します。
 	//
-	// The value of InhibitPolicyMapping indicates the number of additional
-	// certificates in the path after this certificate that may use policy
-	// mapping.
+	// InhibitPolicyMappingの値は、この証明書の後のパス内で、ポリシーマッピングを
+	// 使用できる追加の証明書の数を示します。
 	//
-	// When parsing a certificate, a positive non-zero InhibitPolicyMapping
-	// means that the field was specified, -1 means it was unset, and
-	// InhibitPolicyMappingZero being true mean that the field was explicitly
-	// set to zero. The case of InhibitPolicyMapping==0 with
-	// InhibitPolicyMappingZero==false should be treated equivalent to -1
-	// (unset).
+	// 証明書をパースする際、正の非ゼロのInhibitPolicyMappingはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、InhibitPolicyMappingZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// InhibitPolicyMapping==0かつInhibitPolicyMappingZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	InhibitPolicyMapping int
-	// InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// InhibitPolicyMappingZeroは、InhibitPolicyMapping==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// InhibitPolicyMappingが設定されていないものと解釈されます。
 	InhibitPolicyMappingZero bool
 
-	// RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
-	// and value of the requireExplicitPolicy field of the policyConstraints
-	// extension.
+	// RequireExplicitPolicyとRequireExplicitPolicyZeroは、policyConstraints拡張の
+	// requireExplicitPolicyフィールドの存在と値を示します。
 	//
-	// The value of RequireExplicitPolicy indicates the number of additional
-	// certificates in the path after this certificate before an explicit policy
-	// is required for the rest of the path. When an explicit policy is required,
-	// each subsequent certificate in the path must contain a required policy OID,
-	// or a policy OID which has been declared as equivalent through the policy
-	// mapping extension.
+	// RequireExplicitPolicyの値は、パスの残りの部分で明示的なポリシーが必要になるまでの、
+	// この証明書の後のパス内の追加の証明書の数を示します。明示的なポリシーが必要な場合、
+	// パス内の後続の各証明書は、必要なポリシーOID、またはポリシーマッピング拡張によって
+	// 同等と宣言されたポリシーOIDを含まなければなりません。
 	//
-	// When parsing a certificate, a positive non-zero RequireExplicitPolicy
-	// means that the field was specified, -1 means it was unset, and
-	// RequireExplicitPolicyZero being true mean that the field was explicitly
-	// set to zero. The case of RequireExplicitPolicy==0 with
-	// RequireExplicitPolicyZero==false should be treated equivalent to -1
-	// (unset).
+	// 証明書をパースする際、正の非ゼロのRequireExplicitPolicyはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、RequireExplicitPolicyZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// RequireExplicitPolicy==0かつRequireExplicitPolicyZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	RequireExplicitPolicy int
-	// RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// RequireExplicitPolicyZeroは、RequireExplicitPolicy==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// RequireExplicitPolicyが設定されていないものと解釈されます。
 	RequireExplicitPolicyZero bool
 
-	// PolicyMappings contains a list of policy mappings included in the certificate.
+	// PolicyMappingsには、証明書に含まれるポリシーマッピングのリストが含まれます。
 	PolicyMappings []PolicyMapping
 }
 
-// PolicyMapping represents a policy mapping entry in the policyMappings extension.
+// PolicyMappingは、policyMappings拡張のポリシーマッピングエントリを表します。
 type PolicyMapping struct {
-	// IssuerDomainPolicy contains a policy OID the issuing certificate considers
-	// equivalent to SubjectDomainPolicy in the subject certificate.
+	// IssuerDomainPolicyには、発行者の証明書がサブジェクト証明書の
+	// SubjectDomainPolicyと同等とみなすポリシーOIDが含まれます。
 	IssuerDomainPolicy OID
-	// SubjectDomainPolicy contains a OID the issuing certificate considers
-	// equivalent to IssuerDomainPolicy in the subject certificate.
+	// SubjectDomainPolicyには、発行者の証明書がサブジェクト証明書の
+	// IssuerDomainPolicyと同等とみなすOIDが含まれます。
 	SubjectDomainPolicy OID
 }
 
@@ -523,8 +513,8 @@ type RevocationList struct {
 	RawTBSRevocationList []byte
 	// RawIssuerにはDERエンコードされた発行者が含まれています。
 	RawIssuer []byte
-	// RawSignatureAlgorithm contains the DER encoded signature algorithm as a
-	// PKIX AlgorithmIdentifier.
+	// RawSignatureAlgorithmには、PKIX AlgorithmIdentifierとしてDERエンコードされた
+	// 署名アルゴリズムが含まれます。
 	RawSignatureAlgorithm []byte
 
 	// Issuerには発行証明書のDNが含まれています。

@@ -26,7 +26,7 @@ const (
 
 const (
 	F_DUPFD_CLOEXEC = 0
-	// AF_LOCAL doesn't exist on AIX
+	// AF_LOCALはAIXには存在しません
 	AF_LOCAL = AF_UNIX
 )
 

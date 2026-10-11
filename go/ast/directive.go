@@ -8,64 +8,61 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// A Directive is a comment of this form:
+// Directiveは次の形式のコメントです:
 //
 //	//tool:name args
 //
-// For example, this directive:
+// 例えば、次のディレクティブ:
 //
 //	//go:generate stringer -type Op -trimprefix Op
 //
-// would have Tool "go", Name "generate", and Args "stringer -type Op
-// -trimprefix Op".
+// はTool "go"、Name "generate"、Args "stringer -type Op -trimprefix Op"を持ちます。
 //
-// While Args does not have a strict syntax, by convention it is a
-// space-separated sequence of unquoted words, '"'-quoted Go strings, or
-// '`'-quoted raw strings.
+// Argsには厳密な構文はありませんが、慣例として、引用符で囲まれていない単語、
+// '"'で囲まれたGo文字列、または'`'で囲まれた生文字列をスペースで区切った並びです。
 //
-// See https://go.dev/doc/comment#directives for specification.
+// 仕様については https://go.dev/doc/comment#directives を参照してください。
 type Directive struct {
 	Tool string
 	Name string
 	Args string
 
-	// Slash is the position of the "//" at the beginning of the directive.
+	// Slashは、ディレクティブの先頭にある"//"の位置です。
 	Slash token.Pos
 
-	// ArgsPos is the position where Args begins, based on the position passed
-	// to ParseDirective.
+	// ArgsPosは、ParseDirectiveに渡された位置に基づく、Argsが始まる位置です。
 	ArgsPos token.Pos
 }
 
-// ParseDirective parses a single comment line for a directive comment.
+// ParseDirectiveは、ディレクティブコメントの単一のコメント行をパースします。
 //
-// If the line is not a directive comment, it returns false.
+// 行がディレクティブコメントでない場合、falseを返します。
 //
-// The provided text must be a single line and should include the leading "//".
-// If the text does not start with "//", it returns false.
+// 指定されるテキストは1行でなければならず、先頭の"//"を含む必要があります。
+// テキストが"//"で始まらない場合、falseを返します。
 //
-// The caller may provide a file position of the start of c. This will be used
-// to track the position of the arguments. This may be [Comment.Slash],
-// synthesized by the caller, or simply 0. If the caller passes 0, then the
-// positions are effectively byte offsets into the string c.
+// 呼び出し元はcの先頭のファイル位置を指定できます。これは引数の位置を
+// 追跡するために使用されます。これは [Comment.Slash]、呼び出し元が合成した値、
+// または単に0にすることができます。呼び出し元が0を渡した場合、位置は実質的に
+// 文字列cへのバイトオフセットになります。
 func ParseDirective(pos token.Pos, c string) (Directive, bool)
 
 func (d *Directive) Pos() token.Pos
 func (d *Directive) End() token.Pos
 
-// A DirectiveArg is an argument to a directive comment.
+// DirectiveArgは、ディレクティブコメントの引数です。
 type DirectiveArg struct {
-	// Arg is the parsed argument string. If the argument was a quoted string,
-	// this is its unquoted form.
+	// Argはパースされた引数文字列です。引数が引用符で囲まれた文字列だった場合、
+	// これは引用符を外した形式です。
 	Arg string
-	// Pos is the position of the first character in this argument.
+	// Posは、この引数の最初の文字の位置です。
 	Pos token.Pos
 }
 
-// ParseArgs parses a [Directive]'s arguments using the standard convention,
-// which is a sequence of tokens, where each token may be a bare word, or a
-// double quoted Go string, or a back quoted raw Go string. Each token must be
-// separated by one or more Unicode spaces.
+// ParseArgsは、標準の慣例を使用して [Directive] の引数をパースします。
+// 標準の慣例とはトークンの並びであり、各トークンは裸の単語、
+// ダブルクォートで囲まれたGo文字列、またはバッククォートで囲まれたGoの生文字列です。
+// 各トークンは1つ以上のUnicodeスペースで区切られていなければなりません。
 //
-// If the arguments do not conform to this syntax, it returns an error.
+// 引数がこの構文に従っていない場合、エラーを返します。
 func (d *Directive) ParseArgs() ([]DirectiveArg, error)

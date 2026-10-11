@@ -9,7 +9,7 @@ package syscall
 // TODO: Auto-generate some day. (Hard-coded in binaries so not likely to change.)
 const (
 	// native_client/src/trusted/service_runtime/include/sys/errno.h
-	// The errors are mainly copied from Linux.
+	// エラーは主にLinuxからコピーされています。
 	EPERM           Errno = 1
 	ENOENT          Errno = 2
 	ESRCH           Errno = 3

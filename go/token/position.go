@@ -85,10 +85,10 @@ func (f *File) Base() int
 // SizeはAddFileで登録されたファイルfのサイズを返します。
 func (f *File) Size() int
 
-// End returns the end position of file f as registered with AddFile.
+// Endは、AddFileで登録されたファイルfの終了位置を返します。
 func (f *File) End() Pos
 
-// LineCount returns the number of lines in file f.
+// LineCountは、ファイルfの行数を返します。
 func (f *File) LineCount() int
 
 // AddLineは新しい行の行オフセットを追加します。

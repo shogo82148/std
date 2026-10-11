@@ -17,25 +17,25 @@ type Timer struct {
 	initTimer bool
 }
 
-// Stop prevents the [Timer] from firing.
-// It returns true if the call stops the timer, false if the timer has already
-// expired or been stopped.
+// Stopは [Timer] の発火を防ぎます。
+// 呼び出しがタイマーを停止した場合はtrueを返し、タイマーがすでに期限切れまたは
+// 停止されていた場合はfalseを返します。
 //
-// For a func-based timer created with [AfterFunc](d, f),
-// if t.Stop returns false, then the timer has already expired
-// and the function f has been started in its own goroutine;
-// Stop does not wait for f to complete before returning.
-// If the caller needs to know whether f is completed,
-// it must coordinate with f explicitly.
+// [AfterFunc](d, f)で作成された関数ベースのタイマーの場合、
+// t.Stopがfalseを返したならば、タイマーはすでに期限切れになっており、
+// 関数fは独自のゴルーチンで開始されています。
+// Stopは戻る前にfの完了を待ちません。
+// 呼び出し元がfが完了したかどうかを知る必要がある場合は、
+// fと明示的に連携する必要があります。
 //
-// For a chan-based timer created with NewTimer(d), as of Go 1.23,
-// any receive from t.C after Stop has returned is guaranteed to block
-// rather than receive a stale time value from before the Stop;
-// if the program has not received from t.C already and the timer is
-// running, Stop is guaranteed to return true.
-// Before Go 1.23, the only safe way to use Stop was insert an extra
-// <-t.C if Stop returned false to drain a potential stale value.
-// See the [NewTimer] documentation for more details.
+// NewTimer(d)で作成されたチャネルベースのタイマーの場合、Go 1.23以降、
+// Stopが戻った後のt.Cからの受信は、Stop以前の古い時刻値を受信するのではなく
+// ブロックすることが保証されます。
+// プログラムがまだt.Cから受信しておらず、タイマーが実行中の場合、
+// Stopはtrueを返すことが保証されます。
+// Go 1.23より前では、Stopを安全に使用する唯一の方法は、Stopがfalseを返した場合に
+// 余分な<-t.Cを挿入して潜在的な古い値を排出することでした。
+// 詳細については [NewTimer] のドキュメントを参照してください。
 func (t *Timer) Stop() bool
 
 // NewTimerは、少なくともdの期間経過後に、
@@ -80,16 +80,15 @@ func NewTimer(d Duration) *Timer
 // See the [NewTimer] documentation for more details.
 func (t *Timer) Reset(d Duration) bool
 
-// After waits for the duration to elapse and then sends the current time
-// on the returned channel.
-// It is equivalent to [NewTimer](d).C.
+// Afterは期間が経過するのを待ち、返されたチャネルに現在時刻を送信します。
+// これは [NewTimer](d).Cと同等です。
 //
-// Before Go 1.23, this documentation warned that the underlying
-// [Timer] would not be recovered by the garbage collector until the
-// timer fired, and that if efficiency was a concern, code should use
-// NewTimer instead and call [Timer.Stop] if the timer is no longer needed.
-// As of Go 1.23, the garbage collector can recover unreferenced,
-// unstopped timers. There is no reason to prefer NewTimer when After will do.
+// Go 1.23より前では、このドキュメントは、基礎となる [Timer] はタイマーが発火するまで
+// ガベージコレクタによって回収されないこと、そして効率が問題になる場合は
+// コードは代わりにNewTimerを使用し、タイマーが不要になったら [Timer.Stop] を
+// 呼び出すべきであることを警告していました。
+// Go 1.23以降、ガベージコレクタは参照されていない停止されていないタイマーを回収できます。
+// Afterで十分な場合にNewTimerを優先する理由はありません。
 func After(d Duration) <-chan Time
 
 // AfterFuncは、指定した時間が経過した後、fを自身のゴルーチンで呼び出します。

@@ -32,9 +32,9 @@ type BlockMode interface {
 	CryptBlocks(dst, src []byte)
 }
 
-// AEAD is a cipher mode providing authenticated encryption with associated
-// data. For a description of the methodology, see
-// https://en.wikipedia.org/wiki/Authenticated_encryption.
+// AEADは関連データ付き認証付き暗号を提供する暗号モードです。
+// 手法の説明については、
+// https://en.wikipedia.org/wiki/Authenticated_encryption を参照してください。
 type AEAD interface {
 	NonceSize() int
 

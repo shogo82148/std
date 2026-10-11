@@ -451,12 +451,12 @@ type SliceHeader struct {
 	Cap  int
 }
 
-// Grow increases the slice's capacity, if necessary, to guarantee space for
-// another n elements. After Grow(n), at least n elements can be appended
-// to the slice without another allocation.
+// Growは、必要に応じてスライスの容量を増やし、さらにn個の要素のための
+// 領域を保証します。Grow(n)の後、少なくともn個の要素を追加の割り当てなしに
+// スライスに追加できます。
 //
-// It panics if v's Kind is not a [Slice], or if n is negative or too large to
-// allocate the memory, or if [Value.CanSet] returns false.
+// vのKindが [Slice] でない場合、nが負であるかメモリを割り当てるには大きすぎる場合、
+// または [Value.CanSet] がfalseを返す場合はパニックします。
 func (v Value) Grow(n int)
 
 // Clearメソッドは、マップの内容をクリアするか、スライスの内容をゼロにします。

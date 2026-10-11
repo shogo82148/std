@@ -9,10 +9,10 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A ClientConn is a client connection to an HTTP server.
+// ClientConnはHTTPサーバーへのクライアント接続です。
 //
-// Unlike a [Transport], a ClientConn represents a single connection.
-// Most users should use a Transport rather than creating client connections directly.
+// [Transport] とは異なり、ClientConnは単一の接続を表します。
+// ほとんどのユーザーは、クライアント接続を直接作成するのではなくTransportを使用するべきです。
 type ClientConn struct {
 	cc genericClientConn
 
@@ -24,86 +24,83 @@ type ClientConn struct {
 	lastClosed       bool
 }
 
-// NewClientConn creates a new client connection to the given address.
+// NewClientConnは、指定されたアドレスへの新しいクライアント接続を作成します。
 //
-// If scheme is "http", the connection is unencrypted.
-// If scheme is "https", the connection uses TLS.
+// schemeが"http"の場合、接続は暗号化されません。
+// schemeが"https"の場合、接続はTLSを使用します。
 //
-// The protocol used for the new connection is determined by the scheme,
-// Transport.Protocols configuration field, and protocols supported by the
-// server. See Transport.Protocols for more details.
+// 新しい接続で使用されるプロトコルは、scheme、Transport.Protocols設定フィールド、
+// およびサーバーがサポートするプロトコルによって決定されます。
+// 詳細はTransport.Protocolsを参照してください。
 //
-// If Transport.Proxy is set and indicates that a request sent to the given
-// address should use a proxy, the new connection uses that proxy.
+// Transport.Proxyが設定されていて、指定されたアドレスに送信されるリクエストが
+// プロキシを使用するべきであることを示している場合、新しい接続はそのプロキシを使用します。
 //
-// NewClientConn always creates a new connection,
-// even if the Transport has an existing cached connection to the given host.
+// NewClientConnは、Transportが指定されたホストへのキャッシュされた接続を
+// すでに持っている場合でも、常に新しい接続を作成します。
 //
-// The new connection is not added to the Transport's connection cache,
-// and will not be used by [Transport.RoundTrip].
-// It does not count against the MaxIdleConns and MaxConnsPerHost limits.
+// 新しい接続はTransportの接続キャッシュには追加されず、
+// [Transport.RoundTrip] によって使用されることはありません。
+// MaxIdleConnsおよびMaxConnsPerHostの制限にはカウントされません。
 //
-// The caller is responsible for closing the new connection.
+// 新しい接続を閉じるのは呼び出し元の責任です。
 func (t *Transport) NewClientConn(ctx context.Context, scheme, address string) (*ClientConn, error)
 
-// Close closes the connection.
-// Outstanding RoundTrip calls are interrupted.
+// Closeは接続を閉じます。
+// 未完了のRoundTrip呼び出しは中断されます。
 func (cc *ClientConn) Close() error
 
-// Err reports any fatal connection errors.
-// It returns nil if the connection is usable.
-// If it returns non-nil, the connection can no longer be used.
+// Errは致命的な接続エラーを報告します。
+// 接続が使用可能な場合はnilを返します。
+// nil以外を返した場合、その接続はもう使用できません。
 func (cc *ClientConn) Err() error
 
-// RoundTrip implements the [RoundTripper] interface.
+// RoundTripは [RoundTripper] インターフェースを実装します。
 //
-// The request is sent on the client connection,
-// regardless of the URL being requested or any proxy settings.
+// リクエストは、要求されたURLやプロキシ設定に関係なく、
+// クライアント接続上で送信されます。
 //
-// If the connection is at its concurrency limit,
-// RoundTrip waits for the connection to become available
-// before sending the request.
+// 接続が同時実行数の上限に達している場合、RoundTripは
+// リクエストを送信する前に接続が利用可能になるまで待機します。
 func (cc *ClientConn) RoundTrip(req *Request) (*Response, error)
 
-// Available reports the number of requests that may be sent
-// to the connection without blocking.
-// It returns 0 if the connection is closed.
+// Availableは、ブロックせずに接続に送信できるリクエストの数を報告します。
+// 接続が閉じられている場合は0を返します。
 func (cc *ClientConn) Available() int
 
-// InFlight reports the number of requests in flight,
-// including reserved requests.
-// It returns 0 if the connection is closed.
+// InFlightは、予約されたリクエストを含む、処理中のリクエストの数を報告します。
+// 接続が閉じられている場合は0を返します。
 func (cc *ClientConn) InFlight() int
 
-// Reserve reserves a concurrency slot on the connection.
-// If Reserve returns nil, one additional RoundTrip call may be made
-// without waiting for an existing request to complete.
+// Reserveは接続上の同時実行スロットを予約します。
+// Reserveがnilを返した場合、既存のリクエストの完了を待たずに
+// RoundTripをもう1回呼び出すことができます。
 //
-// The reserved concurrency slot is accounted as an in-flight request.
-// A successful call to RoundTrip will decrement the Available count
-// and increment the InFlight count.
+// 予約された同時実行スロットは処理中のリクエストとしてカウントされます。
+// RoundTripの呼び出しが成功すると、Availableのカウントが減少し、
+// InFlightのカウントが増加します。
 //
-// Each successful call to Reserve should be followed by exactly one call
-// to RoundTrip or Release, which will consume or release the reservation.
+// Reserveの呼び出しが成功するたびに、その後にRoundTripまたはReleaseを
+// ちょうど1回呼び出して、予約を消費または解放するべきです。
 //
-// If the connection is closed or at its concurrency limit,
-// Reserve returns an error.
+// 接続が閉じられているか同時実行数の上限に達している場合、
+// Reserveはエラーを返します。
 func (cc *ClientConn) Reserve() error
 
-// Release releases an unused concurrency slot reserved by Reserve.
-// If there are no reserved concurrency slots, it has no effect.
+// Releaseは、Reserveによって予約された未使用の同時実行スロットを解放します。
+// 予約された同時実行スロットがない場合は何もしません。
 func (cc *ClientConn) Release()
 
-// SetStateHook arranges for f to be called when the state of the connection changes.
-// At most one call to f is made at a time.
-// If the connection's state has changed since it was created,
-// f is called immediately in a separate goroutine.
-// f may be called synchronously from RoundTrip or Response.Body.Close.
+// SetStateHookは、接続の状態が変化したときにfが呼び出されるようにします。
+// fは同時に最大1回まで呼び出されます。
+// 接続の作成後に接続の状態が変化している場合、
+// fは別のゴルーチンで即座に呼び出されます。
+// fはRoundTripまたはResponse.Body.Closeから同期的に呼び出される場合があります。
 //
-// If SetStateHook is called multiple times, the new hook replaces the old one.
-// If f is nil, no further calls will be made to f after SetStateHook returns.
+// SetStateHookが複数回呼び出された場合、新しいフックが古いフックを置き換えます。
+// fがnilの場合、SetStateHookが戻った後にfが呼び出されることはありません。
 //
-// f is called when Available increases (more requests may be sent on the connection),
-// InFlight decreases (existing requests complete), or Err begins returning non-nil
-// (the connection is no longer usable).
+// fは、Availableが増加したとき（接続でさらにリクエストを送信できる）、
+// InFlightが減少したとき（既存のリクエストが完了した）、またはErrがnil以外を
+// 返し始めたとき（接続がもう使用できない）に呼び出されます。
 func (cc *ClientConn) SetStateHook(f func(*ClientConn))

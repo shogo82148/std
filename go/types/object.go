@@ -176,7 +176,7 @@ type Func struct {
 // NewFuncは与えられたシグネチャを持つ新しい関数を返します。これは関数の型を表します。
 func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 
-// Signature returns the signature (type) of the function or method.
+// Signatureは、関数またはメソッドのシグネチャ（型）を返します。
 func (obj *Func) Signature() *Signature
 
 // FullNameは関数またはメソッドobjのパッケージ名またはレシーバー型名で修飾された名前を返します。

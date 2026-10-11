@@ -218,7 +218,7 @@ func (tag StructTag) Lookup(key string) (value string, ok bool)
 // もしiがnilのインターフェース値である場合、TypeOfはnilを返します。
 func TypeOf(i any) Type
 
-// TypeFor returns the [Type] that represents the type argument T.
+// TypeForは、型引数Tを表す [Type] を返します。
 func TypeFor[T any]() Type
 
 // PtrToは要素tを持つポインタ型を返します。

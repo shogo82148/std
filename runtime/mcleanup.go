@@ -4,68 +4,67 @@
 
 package runtime
 
-// AddCleanup attaches a cleanup function to ptr. Some time after ptr is no longer
-// reachable, the runtime will call cleanup(arg) in a separate goroutine.
+// AddCleanupは、ptrにクリーンアップ関数を付加します。ptrが到達不能になった後のある時点で、
+// ランタイムは別のゴルーチンでcleanup(arg)を呼び出します。
 //
-// A typical use is that ptr is an object wrapping an underlying resource (e.g.,
-// a File object wrapping an OS file descriptor), arg is the underlying resource
-// (e.g., the OS file descriptor), and the cleanup function releases the underlying
-// resource (e.g., by calling the close system call).
+// 典型的な使用法は、ptrが基礎となるリソースをラップするオブジェクト
+// （例えば、OSのファイルディスクリプタをラップするFileオブジェクト）であり、
+// argが基礎となるリソース（例えば、OSのファイルディスクリプタ）であり、
+// クリーンアップ関数が基礎となるリソースを解放する（例えば、closeシステムコールを呼び出す）
+// というものです。
 //
-// There are few constraints on ptr. In particular, multiple cleanups may be
-// attached to the same pointer, or to different pointers within the same
-// allocation.
+// ptrに対する制約はほとんどありません。特に、同じポインタ、または同じ割り当て内の
+// 異なるポインタに複数のクリーンアップを付加できます。
 //
-// If ptr is reachable from cleanup or arg, ptr will never be collected
-// and the cleanup will never run. As a protection against simple cases of this,
-// AddCleanup panics if arg is equal to ptr.
+// ptrがcleanupまたはargから到達可能な場合、ptrは決して回収されず、
+// クリーンアップは決して実行されません。この単純なケースに対する保護として、
+// argがptrと等しい場合、AddCleanupはパニックします。
 //
-// There is no specified order in which cleanups will run.
-// In particular, if several objects point to each other and all become
-// unreachable at the same time, their cleanups all become eligible to run
-// and can run in any order. This is true even if the objects form a cycle.
+// クリーンアップが実行される順序は規定されていません。
+// 特に、複数のオブジェクトが互いを指し合っていて、すべてが同時に到達不能になった場合、
+// それらのクリーンアップはすべて実行可能になり、任意の順序で実行される可能性があります。
+// これはオブジェクトが循環を形成している場合でも同様です。
 //
-// Cleanups run concurrently with any user-created goroutines.
-// Cleanups may also run concurrently with one another (unlike finalizers).
-// If a cleanup function must run for a long time, it should create a new goroutine
-// to avoid blocking the execution of other cleanups.
+// クリーンアップは、ユーザーが作成したゴルーチンと並行して実行されます。
+// クリーンアップは（ファイナライザとは異なり）互いに並行して実行される場合もあります。
+// クリーンアップ関数が長時間実行する必要がある場合は、他のクリーンアップの実行を
+// ブロックしないように新しいゴルーチンを作成するべきです。
 //
-// If ptr has both a cleanup and a finalizer, the cleanup will only run once
-// it has been finalized and becomes unreachable without an associated finalizer.
+// ptrがクリーンアップとファイナライザの両方を持つ場合、クリーンアップは
+// ファイナライズされ、関連するファイナライザなしで到達不能になった後にのみ実行されます。
 //
-// The cleanup(arg) call is not always guaranteed to run; in particular it is not
-// guaranteed to run before program exit.
+// cleanup(arg)の呼び出しは常に実行されることが保証されているわけではありません。
+// 特に、プログラムの終了前に実行されることは保証されていません。
 //
-// Cleanups are not guaranteed to run if the size of T is zero bytes, because
-// it may share same address with other zero-size objects in memory. See
-// https://go.dev/ref/spec#Size_and_alignment_guarantees.
+// Tのサイズがゼロバイトの場合、メモリ内の他のサイズゼロのオブジェクトと同じアドレスを
+// 共有する可能性があるため、クリーンアップの実行は保証されません。
+// https://go.dev/ref/spec#Size_and_alignment_guarantees を参照してください。
 //
-// It is not guaranteed that a cleanup will run for objects allocated
-// in initializers for package-level variables. Such objects may be
-// linker-allocated, not heap-allocated.
+// パッケージレベル変数の初期化子で割り当てられたオブジェクトに対して
+// クリーンアップが実行されることは保証されていません。そのようなオブジェクトは
+// ヒープではなくリンカによって割り当てられる場合があります。
 //
-// Note that because cleanups may execute arbitrarily far into the future
-// after an object is no longer referenced, the runtime is allowed to perform
-// a space-saving optimization that batches objects together in a single
-// allocation slot. The cleanup for an unreferenced object in such an
-// allocation may never run if it always exists in the same batch as a
-// referenced object. Typically, this batching only happens for tiny
-// (on the order of 16 bytes or less) and pointer-free objects.
+// オブジェクトが参照されなくなってから任意に遠い将来にクリーンアップが実行される可能性があるため、
+// ランタイムは、複数のオブジェクトを1つの割り当てスロットにまとめる
+// 省スペースの最適化を実行することが許可されていることに注意してください。
+// そのような割り当て内の参照されていないオブジェクトのクリーンアップは、
+// それが常に参照されているオブジェクトと同じバッチ内に存在する場合、決して実行されない
+// 可能性があります。通常、このバッチ処理は非常に小さい（16バイト以下程度の）
+// ポインタを含まないオブジェクトに対してのみ行われます。
 //
-// A cleanup may run as soon as an object becomes unreachable.
-// In order to use cleanups correctly, the program must ensure that
-// the object is reachable until it is safe to run its cleanup.
-// Objects stored in global variables, or that can be found by tracing
-// pointers from a global variable, are reachable. A function argument or
-// receiver may become unreachable at the last point where the function
-// mentions it. To ensure a cleanup does not get called prematurely,
-// pass the object to the [KeepAlive] function after the last point
-// where the object must remain reachable.
+// クリーンアップは、オブジェクトが到達不能になるとすぐに実行される可能性があります。
+// クリーンアップを正しく使用するには、プログラムはクリーンアップを実行しても
+// 安全になるまでオブジェクトが到達可能であることを保証しなければなりません。
+// グローバル変数に格納されたオブジェクト、またはグローバル変数からポインタをたどって
+// 見つけられるオブジェクトは到達可能です。関数の引数やレシーバは、関数がそれに
+// 最後に言及した時点で到達不能になる可能性があります。クリーンアップが早期に
+// 呼び出されないようにするには、オブジェクトが到達可能であり続けなければならない
+// 最後の時点の後で、そのオブジェクトを [KeepAlive] 関数に渡してください。
 //
 //go:nocheckptr
 func AddCleanup[T, S any](ptr *T, cleanup func(S), arg S) Cleanup
 
-// Cleanup is a handle to a cleanup call for a specific object.
+// Cleanupは、特定のオブジェクトに対するクリーンアップ呼び出しへのハンドルです。
 type Cleanup struct {
 	// id is the unique identifier for the cleanup within the arena.
 	id uint64
@@ -73,8 +72,8 @@ type Cleanup struct {
 	ptr uintptr
 }
 
-// Stop cancels the cleanup call. Stop will have no effect if the cleanup call
-// has already been queued for execution (because ptr became unreachable).
-// To guarantee that Stop removes the cleanup function, the caller must ensure
-// that the pointer that was passed to AddCleanup is reachable across the call to Stop.
+// Stopはクリーンアップ呼び出しをキャンセルします。クリーンアップ呼び出しが
+// （ptrが到達不能になったために）すでに実行のためにキューに入れられている場合、Stopは何もしません。
+// Stopがクリーンアップ関数を確実に削除するようにするには、呼び出し元は
+// AddCleanupに渡されたポインタがStopの呼び出しの間到達可能であることを保証しなければなりません。
 func (c Cleanup) Stop()

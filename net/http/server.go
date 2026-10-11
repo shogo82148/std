@@ -456,29 +456,28 @@ type Server struct {
 	// 提供されたctxはBaseContextから派生し、ServerContextKeyの値を持ちます。
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
-	// HTTP2 configures HTTP/2 connections.
+	// HTTP2はHTTP/2接続を設定します。
 	HTTP2 *HTTP2Config
 
-	// Protocols is the set of protocols accepted by the server.
+	// Protocolsは、サーバーが受け入れるプロトコルのセットです。
 	//
-	// If Protocols includes UnencryptedHTTP2, the server will accept
-	// unencrypted HTTP/2 connections. The server can serve both
-	// HTTP/1 and unencrypted HTTP/2 on the same address and port.
+	// ProtocolsがUnencryptedHTTP2を含む場合、サーバーは暗号化されていない
+	// HTTP/2接続を受け入れます。サーバーは同じアドレスとポートで
+	// HTTP/1と暗号化されていないHTTP/2の両方を提供できます。
 	//
-	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
-	// If TLSNextProto is non-nil and does not contain an "h2" entry,
-	// the default is HTTP/1 only.
+	// Protocolsがnilの場合、デフォルトは通常HTTP/1とHTTP/2です。
+	// TLSNextProtoがnilでなく、"h2"エントリを含まない場合、
+	// デフォルトはHTTP/1のみです。
 	Protocols *Protocols
 
-	// DisableClientPriority specifies whether client-specified priority, as
-	// specified in RFC 9218, should be respected or not.
+	// DisableClientPriorityは、RFC 9218で規定されているクライアント指定の優先度を
+	// 尊重するかどうかを指定します。
 	//
-	// This field only takes effect if using HTTP/2, and if no custom write
-	// scheduler is defined for the HTTP/2 server. Otherwise, this field is a
-	// no-op.
+	// このフィールドは、HTTP/2を使用していて、HTTP/2サーバーにカスタムの
+	// 書き込みスケジューラが定義されていない場合にのみ有効です。それ以外の場合、
+	// このフィールドは何もしません。
 	//
-	// If set to true, requests will be served in a round-robin manner, without
-	// prioritization.
+	// trueに設定すると、リクエストは優先順位付けなしにラウンドロビン方式で処理されます。
 	DisableClientPriority bool
 
 	inShutdown atomic.Bool
@@ -652,8 +651,8 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // [Hijacker] または [Flusher] インターフェースはサポートしません。
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
-// ErrHandlerTimeout is returned on [ResponseWriter] Write calls
-// in handlers which have timed out.
+// ErrHandlerTimeoutは、タイムアウトしたハンドラ内での [ResponseWriter] の
+// Write呼び出しで返されます。
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
 var _ Pusher = (*timeoutWriter)(nil)

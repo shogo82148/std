@@ -73,67 +73,65 @@ type Pusher interface {
 	Push(target string, opts *PushOptions) error
 }
 
-// HTTP2Config defines HTTP/2 configuration parameters common to
-// both [Transport] and [Server].
+// HTTP2Configは、[Transport] と [Server] の両方に共通する
+// HTTP/2の設定パラメータを定義します。
 type HTTP2Config struct {
-	// MaxConcurrentStreams optionally specifies the number of
-	// concurrent streams that a peer may have open at a time.
-	// If zero, MaxConcurrentStreams defaults to at least 100.
+	// MaxConcurrentStreamsは、ピアが同時に開くことができる
+	// 同時ストリームの数をオプションで指定します。
+	// ゼロの場合、MaxConcurrentStreamsのデフォルトは少なくとも100です。
 	MaxConcurrentStreams int
 
-	// MaxDecoderHeaderTableSize optionally specifies an upper limit for the
-	// size of the header compression table used for decoding headers sent
-	// by the peer.
-	// A valid value is less than 4MiB.
-	// If zero or invalid, a default value is used.
+	// MaxDecoderHeaderTableSizeは、ピアから送信されたヘッダーのデコードに使用される
+	// ヘッダー圧縮テーブルのサイズの上限をオプションで指定します。
+	// 有効な値は4MiB未満です。
+	// ゼロまたは無効な場合は、デフォルト値が使用されます。
 	MaxDecoderHeaderTableSize int
 
-	// MaxEncoderHeaderTableSize optionally specifies an upper limit for the
-	// header compression table used for sending headers to the peer.
-	// A valid value is less than 4MiB.
-	// If zero or invalid, a default value is used.
+	// MaxEncoderHeaderTableSizeは、ピアへのヘッダーの送信に使用される
+	// ヘッダー圧縮テーブルの上限をオプションで指定します。
+	// 有効な値は4MiB未満です。
+	// ゼロまたは無効な場合は、デフォルト値が使用されます。
 	MaxEncoderHeaderTableSize int
 
-	// MaxReadFrameSize optionally specifies the largest frame
-	// this endpoint is willing to read.
-	// A valid value is between 16KiB and 16MiB, inclusive.
-	// If zero or invalid, a default value is used.
+	// MaxReadFrameSizeは、このエンドポイントが読み取る
+	// 最大のフレームサイズをオプションで指定します。
+	// 有効な値は16KiBから16MiBまで（両端を含む）です。
+	// ゼロまたは無効な場合は、デフォルト値が使用されます。
 	MaxReadFrameSize int
 
-	// MaxReceiveBufferPerConnection is the maximum size of the
-	// flow control window for data received on a connection.
-	// A valid value is at least 64KiB and less than 4MiB.
-	// If invalid, a default value is used.
+	// MaxReceiveBufferPerConnectionは、接続で受信するデータの
+	// フロー制御ウィンドウの最大サイズです。
+	// 有効な値は64KiB以上4MiB未満です。
+	// 無効な場合は、デフォルト値が使用されます。
 	MaxReceiveBufferPerConnection int
 
-	// MaxReceiveBufferPerStream is the maximum size of
-	// the flow control window for data received on a stream (request).
-	// A valid value is less than 4MiB.
-	// If zero or invalid, a default value is used.
+	// MaxReceiveBufferPerStreamは、ストリーム（リクエスト）で受信するデータの
+	// フロー制御ウィンドウの最大サイズです。
+	// 有効な値は4MiB未満です。
+	// ゼロまたは無効な場合は、デフォルト値が使用されます。
 	MaxReceiveBufferPerStream int
 
-	// SendPingTimeout is the timeout after which a health check using a ping
-	// frame will be carried out if no frame is received on a connection.
-	// If zero, no health check is performed.
+	// SendPingTimeoutは、接続でフレームが受信されない場合に、
+	// pingフレームを使用したヘルスチェックが実行されるまでのタイムアウトです。
+	// ゼロの場合、ヘルスチェックは実行されません。
 	SendPingTimeout time.Duration
 
-	// PingTimeout is the timeout after which a connection will be closed
-	// if a response to a ping is not received.
-	// If zero, a default of 15 seconds is used.
+	// PingTimeoutは、pingへの応答が受信されない場合に
+	// 接続が閉じられるまでのタイムアウトです。
+	// ゼロの場合、デフォルトの15秒が使用されます。
 	PingTimeout time.Duration
 
-	// WriteByteTimeout is the timeout after which a connection will be
-	// closed if no data can be written to it. The timeout begins when data is
-	// available to write, and is extended whenever any bytes are written.
+	// WriteByteTimeoutは、データを書き込めない場合に接続が閉じられるまでの
+	// タイムアウトです。タイムアウトは書き込むデータが利用可能になったときに開始し、
+	// バイトが書き込まれるたびに延長されます。
 	WriteByteTimeout time.Duration
 
-	// PermitProhibitedCipherSuites, if true, permits the use of
-	// cipher suites prohibited by the HTTP/2 spec.
+	// PermitProhibitedCipherSuitesがtrueの場合、HTTP/2仕様で
+	// 禁止されている暗号スイートの使用を許可します。
 	PermitProhibitedCipherSuites bool
 
-	// CountError, if non-nil, is called on HTTP/2 errors.
-	// It is intended to increment a metric for monitoring.
-	// The errType contains only lowercase letters, digits, and underscores
-	// (a-z, 0-9, _).
+	// CountErrorがnilでない場合、HTTP/2エラー時に呼び出されます。
+	// これは監視用のメトリクスをインクリメントすることを目的としています。
+	// errTypeには小文字、数字、アンダースコア（a-z、0-9、_）のみが含まれます。
 	CountError func(errType string)
 }

@@ -119,8 +119,7 @@ type UnknownLineError struct {
 
 func (e *UnknownLineError) Error() string
 
-// DecodingError represents an error during the decoding of
-// the symbol table.
+// DecodingErrorは、シンボルテーブルのデコード中のエラーを表します。
 type DecodingError struct {
 	off int
 	msg string

@@ -254,13 +254,12 @@ type DNSError struct {
 	IsTimeout   bool
 	IsTemporary bool
 
-	// IsNotFound is set to true when the requested name does not
-	// contain any records of the requested type (data not found),
-	// or the name itself was not found (NXDOMAIN).
+	// IsNotFoundは、要求された名前に要求された型のレコードが含まれていない場合（データが見つからない）、
+	// または名前自体が見つからなかった場合（NXDOMAIN）にtrueに設定されます。
 	IsNotFound bool
 }
 
-// Unwrap returns e.UnwrapErr.
+// Unwrapはe.UnwrapErrを返します。
 func (e *DNSError) Unwrap() error
 
 func (e *DNSError) Error() string

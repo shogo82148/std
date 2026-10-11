@@ -4,52 +4,52 @@
 
 //go:build js && wasm
 
-// Package js gives access to the WebAssembly host environment when using the js/wasm architecture.
-// Its API is based on JavaScript semantics.
+// jsパッケージは、js/wasmアーキテクチャを使用する場合にWebAssemblyのホスト環境へのアクセスを提供します。
+// そのAPIはJavaScriptのセマンティクスに基づいています。
 //
-// This package is EXPERIMENTAL. Its current scope is only to allow tests to run, but not yet to provide a
-// comprehensive API for users. It is exempt from the Go compatibility promise.
+// このパッケージは実験的なものです。現在の範囲はテストを実行できるようにすることだけであり、
+// ユーザー向けの包括的なAPIを提供するものではまだありません。Goの互換性の約束の対象外です。
 package js
 
-// Value represents a JavaScript value. The zero value is the JavaScript value "undefined".
-// Values can be checked for equality with the Equal method.
+// Valueは、JavaScriptの値を表します。ゼロ値はJavaScriptの値"undefined"です。
+// 値はEqualメソッドで等価性を確認できます。
 type Value struct {
 	_     [0]func()
 	ref   ref
 	gcPtr *ref
 }
 
-// Error wraps a JavaScript error.
+// Errorは、JavaScriptのエラーをラップします。
 type Error struct {
-	// Value is the underlying JavaScript error value.
+	// Valueは、基礎となるJavaScriptのエラー値です。
 	Value
 }
 
-// Error implements the error interface.
+// Errorはerrorインターフェースを実装します。
 func (e Error) Error() string
 
-// Equal reports whether v and w are equal according to JavaScript's === operator.
+// Equalは、JavaScriptの===演算子に従ってvとwが等しいかどうかを報告します。
 func (v Value) Equal(w Value) bool
 
-// Undefined returns the JavaScript value "undefined".
+// Undefinedは、JavaScriptの値"undefined"を返します。
 func Undefined() Value
 
-// IsUndefined reports whether v is the JavaScript value "undefined".
+// IsUndefinedは、vがJavaScriptの値"undefined"であるかどうかを報告します。
 func (v Value) IsUndefined() bool
 
-// Null returns the JavaScript value "null".
+// Nullは、JavaScriptの値"null"を返します。
 func Null() Value
 
-// IsNull reports whether v is the JavaScript value "null".
+// IsNullは、vがJavaScriptの値"null"であるかどうかを報告します。
 func (v Value) IsNull() bool
 
-// IsNaN reports whether v is the JavaScript value "NaN".
+// IsNaNは、vがJavaScriptの値"NaN"であるかどうかを報告します。
 func (v Value) IsNaN() bool
 
-// Global returns the JavaScript global object, usually "window" or "global".
+// Globalは、JavaScriptのグローバルオブジェクト（通常は"window"または"global"）を返します。
 func Global() Value
 
-// ValueOf returns x as a JavaScript value:
+// ValueOfは、xをJavaScriptの値として返します:
 //
 //	| Go                     | JavaScript             |
 //	| ---------------------- | ---------------------- |
@@ -62,10 +62,10 @@ func Global() Value
 //	| []interface{}          | new array              |
 //	| map[string]interface{} | new object             |
 //
-// Panics if x is not one of the expected types.
+// xが期待される型のいずれでもない場合はパニックします。
 func ValueOf(x any) Value
 
-// Type represents the JavaScript type of a Value.
+// Typeは、ValueのJavaScriptの型を表します。
 type Type int
 
 const (
@@ -81,78 +81,77 @@ const (
 
 func (t Type) String() string
 
-// Type returns the JavaScript type of the value v. It is similar to JavaScript's typeof operator,
-// except that it returns TypeNull instead of TypeObject for null.
+// Typeは、値vのJavaScriptの型を返します。JavaScriptのtypeof演算子と似ていますが、
+// nullに対してTypeObjectではなくTypeNullを返す点が異なります。
 func (v Value) Type() Type
 
-// Get returns the JavaScript property p of value v.
-// It panics if v is not a JavaScript object.
+// Getは、値vのJavaScriptのプロパティpを返します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Get(p string) Value
 
-// Set sets the JavaScript property p of value v to ValueOf(x).
-// It panics if v is not a JavaScript object.
+// Setは、値vのJavaScriptのプロパティpをValueOf(x)に設定します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Set(p string, x any)
 
-// Delete deletes the JavaScript property p of value v.
-// It panics if v is not a JavaScript object.
+// Deleteは、値vのJavaScriptのプロパティpを削除します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Delete(p string)
 
-// Index returns JavaScript index i of value v.
-// It panics if v is not a JavaScript object.
+// Indexは、値vのJavaScriptのインデックスiを返します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Index(i int) Value
 
-// SetIndex sets the JavaScript index i of value v to ValueOf(x).
-// It panics if v is not a JavaScript object.
+// SetIndexは、値vのJavaScriptのインデックスiをValueOf(x)に設定します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) SetIndex(i int, x any)
 
-// Length returns the JavaScript property "length" of v.
-// It panics if v is not a JavaScript object.
+// Lengthは、vのJavaScriptのプロパティ"length"を返します。
+// vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Length() int
 
-// Call does a JavaScript call to the method m of value v with the given arguments.
-// It panics if v has no method m.
-// The arguments get mapped to JavaScript values according to the ValueOf function.
+// Callは、指定された引数で値vのメソッドmをJavaScriptで呼び出します。
+// vがメソッドmを持たない場合はパニックします。
+// 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) Call(m string, args ...any) Value
 
-// Invoke does a JavaScript call of the value v with the given arguments.
-// It panics if v is not a JavaScript function.
-// The arguments get mapped to JavaScript values according to the ValueOf function.
+// Invokeは、指定された引数で値vをJavaScriptで呼び出します。
+// vがJavaScriptの関数でない場合はパニックします。
+// 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) Invoke(args ...any) Value
 
-// New uses JavaScript's "new" operator with value v as constructor and the given arguments.
-// It panics if v is not a JavaScript function.
-// The arguments get mapped to JavaScript values according to the ValueOf function.
+// Newは、値vをコンストラクタとし、指定された引数でJavaScriptの"new"演算子を使用します。
+// vがJavaScriptの関数でない場合はパニックします。
+// 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) New(args ...any) Value
 
-// Float returns the value v as a float64.
-// It panics if v is not a JavaScript number.
+// Floatは、値vをfloat64として返します。
+// vがJavaScriptの数値でない場合はパニックします。
 func (v Value) Float() float64
 
-// Int returns the value v truncated to an int.
-// It panics if v is not a JavaScript number.
+// Intは、値vをintに切り捨てて返します。
+// vがJavaScriptの数値でない場合はパニックします。
 func (v Value) Int() int
 
-// Bool returns the value v as a bool.
-// It panics if v is not a JavaScript boolean.
+// Boolは、値vをboolとして返します。
+// vがJavaScriptの真偽値でない場合はパニックします。
 func (v Value) Bool() bool
 
-// Truthy returns the JavaScript "truthiness" of the value v. In JavaScript,
-// false, 0, "", null, undefined, and NaN are "falsy", and everything else is
-// "truthy". See https://developer.mozilla.org/en-US/docs/Glossary/Truthy.
+// Truthyは、値vのJavaScriptの「truthiness」を返します。JavaScriptでは、
+// false、0、""、null、undefined、NaNは「falsy」であり、それ以外はすべて
+// 「truthy」です。https://developer.mozilla.org/en-US/docs/Glossary/Truthy を参照してください。
 func (v Value) Truthy() bool
 
-// String returns the value v as a string.
-// String is a special case because of Go's String method convention. Unlike the other getters,
-// it does not panic if v's Type is not TypeString. Instead, it returns a string of the form "<T>"
-// or "<T: V>" where T is v's type and V is a string representation of v's value.
+// Stringは、値vを文字列として返します。
+// GoのStringメソッドの慣例のため、Stringは特別なケースです。他のゲッターとは異なり、
+// vのTypeがTypeStringでない場合でもパニックしません。代わりに、"<T>"または
+// "<T: V>"の形式の文字列を返します。ここでTはvの型、Vはvの値の文字列表現です。
 func (v Value) String() string
 
-// InstanceOf reports whether v is an instance of type t according to JavaScript's instanceof operator.
+// InstanceOfは、JavaScriptのinstanceof演算子に従ってvが型tのインスタンスであるかどうかを報告します。
 func (v Value) InstanceOf(t Value) bool
 
-// A ValueError occurs when a Value method is invoked on
-// a Value that does not support it. Such cases are documented
-// in the description of each method.
+// ValueErrorは、ValueメソッドがそれをサポートしていないValueに対して
+// 呼び出された場合に発生します。そのようなケースは各メソッドの説明に記載されています。
 type ValueError struct {
 	Method string
 	Type   Type
@@ -160,12 +159,12 @@ type ValueError struct {
 
 func (e *ValueError) Error() string
 
-// CopyBytesToGo copies bytes from src to dst.
-// It panics if src is not a Uint8Array or Uint8ClampedArray.
-// It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
+// CopyBytesToGoは、srcからdstにバイトをコピーします。
+// srcがUint8ArrayまたはUint8ClampedArrayでない場合はパニックします。
+// コピーされたバイト数を返します。これはsrcとdstの長さの最小値になります。
 func CopyBytesToGo(dst []byte, src Value) int
 
-// CopyBytesToJS copies bytes from src to dst.
-// It panics if dst is not a Uint8Array or Uint8ClampedArray.
-// It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
+// CopyBytesToJSは、srcからdstにバイトをコピーします。
+// dstがUint8ArrayまたはUint8ClampedArrayでない場合はパニックします。
+// コピーされたバイト数を返します。これはsrcとdstの長さの最小値になります。
 func CopyBytesToJS(dst Value, src []byte) int

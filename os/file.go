@@ -323,11 +323,11 @@ var _ fs.ReadFileFS = dirFS("")
 var _ fs.ReadDirFS = dirFS("")
 var _ fs.ReadLinkFS = dirFS("")
 
-// ReadFile reads the named file and returns the contents.
-// A successful call returns err == nil, not err == EOF.
-// Because ReadFile reads the whole file, it does not treat an EOF from Read
-// as an error to be reported.
-// If there is an error, it will be of type [*PathError].
+// ReadFileは指定されたファイルを読み取り、その内容を返します。
+// 呼び出しが成功した場合はerr == nilを返し、err == EOFは返しません。
+// ReadFileはファイル全体を読み取るため、ReadからのEOFを
+// 報告すべきエラーとして扱いません。
+// エラーがある場合、それは [*PathError] 型になります。
 func ReadFile(name string) ([]byte, error)
 
 // WriteFileはデータを指定されたファイルに書き込みます。必要に応じて新規作成されます。

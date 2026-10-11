@@ -268,9 +268,9 @@ func MustParseAddrPort(s string) AddrPort
 // ゼロを含むすべてのポートが有効です。
 func (p AddrPort) IsValid() bool
 
-// Compare returns an integer comparing two AddrPorts.
-// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
-// AddrPorts sort first by IP address, then port.
+// Compareは2つのAddrPortを比較した整数を返します。
+// p == p2の場合は0、p < p2の場合は-1、p > p2の場合は+1になります。
+// AddrPortはまずIPアドレスでソートされ、次にポートでソートされます。
 func (p AddrPort) Compare(p2 AddrPort) int
 
 func (p AddrPort) String() string

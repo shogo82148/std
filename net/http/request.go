@@ -232,8 +232,8 @@ type Request struct {
 	// Responseは、このリクエストが作成されたクライアントリダイレクト中にのみ設定されるリダイレクトレスポンスです。
 	Response *Response
 
-	// Pattern is the [ServeMux] pattern that matched the request.
-	// It is empty if the request was not matched against a pattern.
+	// Patternは、リクエストに一致した [ServeMux] のパターンです。
+	// リクエストがパターンと照合されなかった場合は空です。
 	Pattern string
 
 	// ctx is either the client or server context. It should only

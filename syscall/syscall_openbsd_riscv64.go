@@ -12,9 +12,9 @@ func (msghdr *Msghdr) SetControllen(length int)
 
 func (cmsg *Cmsghdr) SetLen(length int)
 
-// RTM_LOCK only exists in OpenBSD 6.3 and earlier.
+// RTM_LOCKはOpenBSD 6.3以前にのみ存在します。
 const RTM_LOCK = 0x8
 
-// SYS___SYSCTL only exists in OpenBSD 5.8 and earlier, when it was
-// was renamed to SYS_SYSCTL.
+// SYS___SYSCTLはOpenBSD 5.8以前にのみ存在し、その後SYS_SYSCTLに
+// 名前が変更されました。
 const SYS___SYSCTL = SYS_SYSCTL

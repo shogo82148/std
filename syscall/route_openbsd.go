@@ -4,10 +4,10 @@
 
 package syscall
 
-// InterfaceAnnounceMessage represents a routing message containing
-// network interface arrival and departure information.
+// InterfaceAnnounceMessageは、ネットワークインターフェースの到着と離脱の情報を含む
+// ルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type InterfaceAnnounceMessage struct {
 	Header IfAnnounceMsghdr
 }

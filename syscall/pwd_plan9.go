@@ -11,12 +11,11 @@
 
 package syscall
 
-// Ensure current working directory seen by this goroutine matches
-// the most recent [Chdir] called in any goroutine. It's called internally
-// before executing any syscall which uses a relative pathname. Must
-// be called with the goroutine locked to the OS thread, to prevent
-// rescheduling on a different thread (potentially with a different
-// working directory) before the syscall is executed.
+// このゴルーチンから見えるカレントワーキングディレクトリが、いずれかのゴルーチンで
+// 最後に呼び出された [Chdir] と一致することを保証します。これは、相対パス名を使用する
+// システムコールを実行する前に内部的に呼び出されます。システムコールが実行される前に
+// （異なるワーキングディレクトリを持つ可能性のある）別のスレッドに再スケジュールされるのを
+// 防ぐため、ゴルーチンをOSスレッドにロックした状態で呼び出す必要があります。
 func Fixwd()
 
 func Getwd() (wd string, err error)

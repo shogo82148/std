@@ -4,14 +4,14 @@
 
 //go:build boringcrypto
 
-// Package boring exposes functions that are only available when building with
-// Go+BoringCrypto. This package is available on all targets as long as the
-// Go+BoringCrypto toolchain is used. Use the Enabled function to determine
-// whether the BoringCrypto core is actually in use.
+// boringパッケージは、Go+BoringCryptoでビルドする場合にのみ利用可能な関数を公開します。
+// このパッケージは、Go+BoringCryptoツールチェーンが使用されている限り、
+// すべてのターゲットで利用可能です。BoringCryptoコアが実際に使用されているかどうかを
+// 判断するにはEnabled関数を使用してください。
 //
-// Any time the Go+BoringCrypto toolchain is used, the "boringcrypto" build tag
-// is satisfied, so that applications can tag files that use this package.
+// Go+BoringCryptoツールチェーンが使用される場合は常に"boringcrypto"ビルドタグが
+// 満たされるため、アプリケーションはこのパッケージを使用するファイルにタグを付けることができます。
 package boring
 
-// Enabled reports whether BoringCrypto handles supported crypto operations.
+// Enabledは、サポートされている暗号操作をBoringCryptoが処理するかどうかを報告します。
 func Enabled() bool

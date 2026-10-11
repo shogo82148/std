@@ -6,7 +6,7 @@
 
 package syscall
 
-// F_DUP2FD_CLOEXEC has different values on Solaris and Illumos.
+// F_DUP2FD_CLOEXECは、SolarisとIllumosで異なる値を持ちます。
 const F_DUP2FD_CLOEXEC = 0x24
 
 func Flock(fd int, how int) error

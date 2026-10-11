@@ -132,12 +132,12 @@ type Symbol struct {
 	Name        string
 	Info, Other byte
 
-	// HasVersion reports whether the symbol has any version information.
-	// This will only be true for the dynamic symbol table.
+	// HasVersionは、シンボルが何らかのバージョン情報を持っているかどうかを報告します。
+	// これは動的シンボルテーブルに対してのみtrueになります。
 	HasVersion bool
-	// VersionIndex is the symbol's version index.
-	// Use the methods of the [VersionIndex] type to access it.
-	// This field is only meaningful if HasVersion is true.
+	// VersionIndexは、シンボルのバージョンインデックスです。
+	// アクセスするには [VersionIndex] 型のメソッドを使用してください。
+	// このフィールドはHasVersionがtrueの場合にのみ意味を持ちます。
 	VersionIndex VersionIndex
 
 	Section     SectionIndex

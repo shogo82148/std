@@ -4,12 +4,11 @@
 
 //go:build goexperiment.runtimesecret
 
-// Package secret contains helper functions for zeroing out memory
-// that is otherwise invisible to a user program in the service of
-// forward secrecy. See https://en.wikipedia.org/wiki/Forward_secrecy for
-// more information.
+// secretパッケージは、前方秘匿性のために、ユーザープログラムからは見えないメモリを
+// ゼロクリアするためのヘルパー関数を含みます。詳細については
+// https://en.wikipedia.org/wiki/Forward_secrecy を参照してください。
 //
-// This package (runtime/secret) is experimental,
-// and not subject to the Go 1 compatibility promise.
-// It only exists when building with the GOEXPERIMENT=runtimesecret environment variable set.
+// このパッケージ（runtime/secret）は実験的なものであり、
+// Go 1の互換性の約束の対象ではありません。
+// GOEXPERIMENT=runtimesecret環境変数を設定してビルドした場合にのみ存在します。
 package secret

@@ -104,9 +104,9 @@ type FileHeader struct {
 	// UncompressedSize64は、ファイルの非圧縮サイズ（バイト単位）です。
 	UncompressedSize64 uint64
 
-	// Extra are the extensible data fields. The writer automatically includes
-	// the appropriate Zip64 field if necessary, and [Writer.Close] appends the
-	// Central Directory version of the Zip64 field to Extra.
+	// Extraは拡張可能なデータフィールドです。ライターは必要に応じて
+	// 適切なZip64フィールドを自動的に含め、[Writer.Close] はZip64フィールドの
+	// セントラルディレクトリ版をExtraに追加します。
 	Extra []byte
 
 	ExternalAttrs uint32

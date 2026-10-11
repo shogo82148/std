@@ -32,40 +32,39 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Arena represents a collection of Go values allocated and freed together.
-// Arenas are useful for improving efficiency as they may be freed back to
-// the runtime manually, though any memory obtained from freed arenas must
-// not be accessed once that happens. An Arena is automatically freed once
-// it is no longer referenced, so it must be kept alive (see runtime.KeepAlive)
-// until any memory allocated from it is no longer needed.
+// Arenaは、まとめて割り当てられ、まとめて解放されるGoの値のコレクションを表します。
+// Arenaは手動でランタイムに解放できるため、効率の向上に役立ちますが、
+// 解放されたArenaから取得したメモリには、解放後にアクセスしてはいけません。
+// Arenaは参照されなくなると自動的に解放されるため、そこから割り当てられたメモリが
+// 不要になるまで生存させておく必要があります（runtime.KeepAliveを参照）。
 //
-// An Arena must never be used concurrently by multiple goroutines.
+// Arenaを複数のゴルーチンから並行して使用してはいけません。
 type Arena struct {
 	a unsafe.Pointer
 }
 
-// NewArena allocates a new arena.
+// NewArenaは新しいArenaを割り当てます。
 func NewArena() *Arena
 
-// Free frees the arena (and all objects allocated from the arena) so that
-// memory backing the arena can be reused fairly quickly without garbage
-// collection overhead. Applications must not call any method on this
-// arena after it has been freed.
+// FreeはArena（およびArenaから割り当てられたすべてのオブジェクト）を解放し、
+// Arenaを支えるメモリをガベージコレクションのオーバーヘッドなしにかなり速やかに
+// 再利用できるようにします。アプリケーションは、解放後にこのArenaのメソッドを
+// 呼び出してはいけません。
 func (a *Arena) Free()
 
-// New creates a new *T in the provided arena. The *T must not be used after
-// the arena is freed. Accessing the value after free may result in a fault,
-// but this fault is also not guaranteed.
+// Newは、指定されたArenaに新しい*Tを作成します。*TはArenaが解放された後に
+// 使用してはいけません。解放後に値にアクセスするとフォールトが発生する可能性がありますが、
+// このフォールトも保証されていません。
 func New[T any](a *Arena) *T
 
-// MakeSlice creates a new []T with the provided capacity and length. The []T must
-// not be used after the arena is freed. Accessing the underlying storage of the
-// slice after free may result in a fault, but this fault is also not guaranteed.
+// MakeSliceは、指定された容量と長さを持つ新しい[]Tを作成します。[]TはArenaが
+// 解放された後に使用してはいけません。解放後にスライスの基礎となるストレージに
+// アクセスするとフォールトが発生する可能性がありますが、このフォールトも保証されていません。
 func MakeSlice[T any](a *Arena, len, cap int) []T
 
-// Clone makes a shallow copy of the input value that is no longer bound to any
-// arena it may have been allocated from, returning the copy. If it was not
-// allocated from an arena, it is returned untouched. This function is useful
-// to more easily let an arena-allocated value out-live its arena.
-// T must be a pointer, a slice, or a string, otherwise this function will panic.
+// Cloneは、入力値の浅いコピーを作成し、そのコピーを返します。コピーは、
+// 元の値が割り当てられたArenaにはもはや束縛されません。元の値がArenaから
+// 割り当てられていない場合は、そのまま返されます。この関数は、Arenaで割り当てられた値を
+// そのArenaよりも長く生存させるのに役立ちます。
+// Tはポインタ、スライス、文字列のいずれかでなければならず、そうでない場合この関数はパニックします。
 func Clone[T any](s T) T

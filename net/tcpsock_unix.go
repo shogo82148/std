@@ -6,5 +6,5 @@
 
 package net
 
-// SetKeepAliveConfig configures keep-alive messages sent by the operating system.
+// SetKeepAliveConfigは、オペレーティングシステムによって送信されるキープアライブメッセージを設定します。
 func (c *TCPConn) SetKeepAliveConfig(config KeepAliveConfig) error

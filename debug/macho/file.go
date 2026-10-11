@@ -139,7 +139,7 @@ type Symtab struct {
 	Syms []Symbol
 }
 
-// A Dysymtab represents a Mach-O dynamic symbol table command.
+// Dysymtabは、Mach-Oの動的シンボルテーブルコマンドを表します。
 type Dysymtab struct {
 	LoadBytes
 	DysymtabCmd

@@ -40,12 +40,12 @@ const (
 	CLONE_NEWTIME = 0x00000080
 )
 
-// SysProcIDMap holds Container ID to Host ID mappings used for User Namespaces in Linux.
-// See user_namespaces(7).
+// SysProcIDMapは、Linuxのユーザー名前空間で使用される、コンテナIDからホストIDへの
+// マッピングを保持します。user_namespaces(7)を参照してください。
 //
-// Note that User Namespaces are not available on a number of popular Linux
-// versions (due to security issues), or are available but subject to AppArmor
-// restrictions like in Ubuntu 24.04.
+// ユーザー名前空間は、多くの一般的なLinuxのバージョンでは（セキュリティ上の問題により）
+// 利用できないか、利用可能であってもUbuntu 24.04のようにAppArmorの制限を受けることに
+// 注意してください。
 type SysProcIDMap struct {
 	ContainerID int
 	HostID      int
@@ -55,47 +55,47 @@ type SysProcIDMap struct {
 type SysProcAttr struct {
 	Chroot     string
 	Credential *Credential
-	// Ptrace tells the child to call ptrace(PTRACE_TRACEME).
-	// Call runtime.LockOSThread before starting a process with this set,
-	// and don't call UnlockOSThread until done with PtraceSyscall calls.
+	// Ptraceは、子にptrace(PTRACE_TRACEME)を呼び出すよう指示します。
+	// これを設定してプロセスを開始する前にruntime.LockOSThreadを呼び出し、
+	// PtraceSyscallの呼び出しが完了するまでUnlockOSThreadを呼び出さないでください。
 	Ptrace bool
 	Setsid bool
-	// Setpgid sets the process group ID of the child to Pgid,
-	// or, if Pgid == 0, to the new child's process ID.
+	// Setpgidは、子のプロセスグループIDをPgidに設定します。
+	// Pgid == 0の場合は、新しい子のプロセスIDに設定します。
 	Setpgid bool
-	// Setctty sets the controlling terminal of the child to
-	// file descriptor Ctty. Ctty must be a descriptor number
-	// in the child process: an index into ProcAttr.Files.
-	// This is only meaningful if Setsid is true.
+	// Setcttyは、子の制御端末をファイルディスクリプタCttyに設定します。
+	// Cttyは子プロセス内のディスクリプタ番号、つまりProcAttr.Filesへの
+	// インデックスでなければなりません。
+	// これはSetsidがtrueの場合にのみ意味を持ちます。
 	Setctty bool
 	Noctty  bool
 	Ctty    int
-	// Foreground places the child process group in the foreground.
-	// This implies Setpgid. The Ctty field must be set to
-	// the descriptor of the controlling TTY.
-	// Unlike Setctty, in this case Ctty must be a descriptor
-	// number in the parent process.
+	// Foregroundは、子プロセスグループをフォアグラウンドに配置します。
+	// これはSetpgidを暗黙的に含みます。Cttyフィールドには
+	// 制御TTYのディスクリプタを設定しなければなりません。
+	// Setcttyとは異なり、この場合Cttyは親プロセス内の
+	// ディスクリプタ番号でなければなりません。
 	Foreground bool
 	Pgid       int
-	// Pdeathsig, if non-zero, is a signal that the kernel will send to
-	// the child process when the creating thread dies. Note that the signal
-	// is sent on thread termination, which may happen before process termination.
-	// There are more details at https://go.dev/issue/27505.
+	// Pdeathsigがゼロでない場合、作成したスレッドが終了したときにカーネルが
+	// 子プロセスに送信するシグナルです。シグナルはスレッドの終了時に送信され、
+	// それはプロセスの終了前に発生する可能性があることに注意してください。
+	// 詳細は https://go.dev/issue/27505 にあります。
 	Pdeathsig    Signal
 	Cloneflags   uintptr
 	Unshareflags uintptr
 	UidMappings  []SysProcIDMap
 	GidMappings  []SysProcIDMap
-	// GidMappingsEnableSetgroups enabling setgroups syscall.
-	// If false, then setgroups syscall will be disabled for the child process.
-	// This parameter is no-op if GidMappings == nil. Otherwise for unprivileged
-	// users this should be set to false for mappings work.
+	// GidMappingsEnableSetgroupsはsetgroupsシステムコールを有効にします。
+	// falseの場合、子プロセスではsetgroupsシステムコールが無効になります。
+	// このパラメータは、GidMappings == nilの場合は何もしません。それ以外の場合、
+	// 特権を持たないユーザーでマッピングを機能させるにはfalseに設定するべきです。
 	GidMappingsEnableSetgroups bool
 	AmbientCaps                []uintptr
 	UseCgroupFD                bool
 	CgroupFD                   int
-	// PidFD, if not nil, is used to store the pidfd of a child, if the
-	// functionality is supported by the kernel, or -1. Note *PidFD is
-	// changed only if the process starts successfully.
+	// PidFDがnilでない場合、カーネルがその機能をサポートしていれば子のpidfdを、
+	// そうでなければ-1を格納するために使用されます。*PidFDは
+	// プロセスが正常に開始した場合にのみ変更されることに注意してください。
 	PidFD *int
 }

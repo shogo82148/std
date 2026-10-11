@@ -112,9 +112,8 @@ type ConnectionState struct {
 	// クライアントの場合はHelloRetryRequestを受信したかどうかを示します。
 	HelloRetryRequest bool
 
-	// LocalCertificate is the certificate chain presented to the peer, if any,
-	// during the handshake. This field is only populated for connections which
-	// are not resumed (DidResume is false).
+	// LocalCertificateは、ハンドシェイク中にピアに提示された証明書チェーンです（存在する場合）。
+	// このフィールドは、再開されていない接続（DidResumeがfalse）に対してのみ設定されます。
 	LocalCertificate [][]byte
 
 	// ekm is a closure exposed via ExportKeyingMaterial.

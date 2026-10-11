@@ -127,7 +127,7 @@ func (h *Hash) Size() int
 // BlockSize は h のブロックサイズを返します。
 func (h *Hash) BlockSize() int
 
-// Clone implements [hash.Cloner].
+// Cloneは [hash.Cloner] を実装します。
 func (h *Hash) Clone() (hash.Cloner, error)
 
 // Comparableは、与えられたシードで比較可能な値vのハッシュを返します。

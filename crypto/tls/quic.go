@@ -95,9 +95,9 @@ const (
 	// このイベントはクライアント接続でのみ発生します。
 	QUICStoreSession
 
-	// QUICErrorEvent indicates that a fatal error has occurred.
-	// The handshake cannot proceed and the connection must be closed.
-	// QUICEvent.Err is set.
+	// QUICErrorEventは、致命的なエラーが発生したことを示します。
+	// ハンドシェイクを続行することはできず、接続を閉じる必要があります。
+	// QUICEvent.Errが設定されます。
 	QUICErrorEvent
 )
 
@@ -118,11 +118,11 @@ type QUICEvent struct {
 	// QUICSetReadSecretおよびQUICSetWriteSecretに設定します。
 	Suite uint16
 
-	// Set for QUICResumeSession and QUICStoreSession.
+	// QUICResumeSessionおよびQUICStoreSessionで設定されます。
 	SessionState *SessionState
 
-	// Set for QUICErrorEvent.
-	// The error will wrap AlertError.
+	// QUICErrorEventで設定されます。
+	// エラーはAlertErrorをラップします。
 	Err error
 }
 

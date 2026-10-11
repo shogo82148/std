@@ -9,35 +9,35 @@ package types
 
 import "github.com/shogo82148/std/go/token"
 
-// LookupParent follows the parent chain of scopes starting with s until
-// it finds a scope where Lookup(name) returns a non-nil object, and then
-// returns that scope and object. If a valid position pos is provided,
-// only objects that were declared at or before pos are considered.
-// If no such scope and object exists, the result is (nil, nil).
-// The results are guaranteed to be valid only if the type-checked
-// AST has complete position information.
+// LookupParentは、sから始まるスコープの親チェーンをたどり、
+// Lookup(name)がnilでないオブジェクトを返すスコープを見つけると、
+// そのスコープとオブジェクトを返します。有効な位置posが指定された場合、
+// pos以前に宣言されたオブジェクトのみが考慮されます。
+// そのようなスコープとオブジェクトが存在しない場合、結果は(nil, nil)です。
+// 結果が有効であることが保証されるのは、型チェックされたASTが
+// 完全な位置情報を持っている場合のみです。
 //
-// Note that obj.Parent() may be different from the returned scope if the
-// object was inserted into the scope and already had a parent at that
-// time (see Insert). This can only happen for dot-imported objects
-// whose parent is the scope of the package that exported them.
+// オブジェクトがスコープに挿入されたときにすでに親を持っていた場合
+// （Insertを参照）、obj.Parent()は返されたスコープと異なる場合があることに注意してください。
+// これは、親がそれをエクスポートしたパッケージのスコープであるドットインポートされた
+// オブジェクトでのみ発生します。
 func (s *Scope) LookupParent(name string, pos token.Pos) (*Scope, Object)
 
-// Pos and End describe the scope's source code extent [pos, end).
-// The results are guaranteed to be valid only if the type-checked
-// AST has complete position information. The extent is undefined
-// for Universe and package scopes.
+// PosとEndは、スコープのソースコード範囲[pos, end)を表します。
+// 結果が有効であることが保証されるのは、型チェックされたASTが
+// 完全な位置情報を持っている場合のみです。範囲はUniverseスコープと
+// パッケージスコープについては未定義です。
 func (s *Scope) Pos() token.Pos
 func (s *Scope) End() token.Pos
 
-// Contains reports whether pos is within the scope's extent.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
+// Containsは、posがスコープの範囲内にあるかどうかを報告します。
+// 結果が有効であることが保証されるのは、型チェックされたASTが
+// 完全な位置情報を持っている場合のみです。
 func (s *Scope) Contains(pos token.Pos) bool
 
-// Innermost returns the innermost (child) scope containing
-// pos. If pos is not within any scope, the result is nil.
-// The result is also nil for the Universe scope.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
+// Innermostは、posを含む最も内側の（子の）スコープを返します。
+// posがどのスコープ内にもない場合、結果はnilです。
+// Universeスコープの場合も結果はnilです。
+// 結果が有効であることが保証されるのは、型チェックされたASTが
+// 完全な位置情報を持っている場合のみです。
 func (s *Scope) Innermost(pos token.Pos) *Scope
