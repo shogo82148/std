@@ -109,7 +109,7 @@ type VerifyOptions struct {
 	MaxConstraintComparisions int
 
 	// CertificatePoliciesは、ポリシー検証時に許容される証明書ポリシーOIDを指定します。
-	// CertificatePolicesフィールドが空の場合、任意の有効なポリシーが許容されることを意味します。
+	// CertificatePoliciesフィールドが空の場合、任意の有効なポリシーが許容されることを意味します。
 	CertificatePolicies []OID
 
 	// inhibitPolicyMapping indicates if policy mapping should be allowed

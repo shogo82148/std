@@ -251,7 +251,7 @@ type Certificate struct {
 	InhibitPolicyMapping int
 	// InhibitPolicyMappingZeroは、InhibitPolicyMapping==0を実際の最大パス長ゼロとして
 	// 解釈すべきことを示します。そうでない場合、その組み合わせは
-	// InhibitAnyPolicyが設定されていないものと解釈されます。
+	// InhibitPolicyMappingが設定されていないものと解釈されます。
 	InhibitPolicyMappingZero bool
 
 	// RequireExplicitPolicyとRequireExplicitPolicyZeroは、policyConstraints拡張の
@@ -270,7 +270,7 @@ type Certificate struct {
 	RequireExplicitPolicy int
 	// RequireExplicitPolicyZeroは、RequireExplicitPolicy==0を実際の最大パス長ゼロとして
 	// 解釈すべきことを示します。そうでない場合、その組み合わせは
-	// InhibitAnyPolicyが設定されていないものと解釈されます。
+	// RequireExplicitPolicyが設定されていないものと解釈されます。
 	RequireExplicitPolicyZero bool
 
 	// PolicyMappingsには、証明書に含まれるポリシーマッピングのリストが含まれます。

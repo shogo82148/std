@@ -8,7 +8,7 @@ package tls
 // エラー型です。サーバーが再試行用のECHConfigListを提示した場合、
 // RetryConfigListフィールドにそのリストが含まれます。
 //
-// クライアントは、RetryConfigsが空のECHRejectionErrorを、
+// クライアントは、RetryConfigListが空のECHRejectionErrorを、
 // サーバーからの安全なシグナルとして扱うことができます。
 type ECHRejectionError struct {
 	RetryConfigList []byte
