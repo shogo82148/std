@@ -13,7 +13,7 @@ import (
 // [Cross-Site Request Forgery (CSRF)]に対する保護を実装します。
 //
 // クロスオリジンリクエストは現在、2023年以降すべてのブラウザで利用可能な
-// [Sec-Fetch-Site]ヘッダーによって、または[Origin]ヘッダーのホスト名と
+// [Sec-Fetch-Site]ヘッダーによって、または [Origin] ヘッダーのホスト名と
 // Hostヘッダーを比較することによって検出されます。
 //
 // GET、HEAD、OPTIONSメソッドは[safe methods]であり、常に許可されます。
@@ -37,10 +37,10 @@ type CrossOriginProtection struct {
 	deny      atomic.Pointer[Handler]
 }
 
-// NewCrossOriginProtectionは新しい[CrossOriginProtection]の値を返します。
+// NewCrossOriginProtectionは新しい [CrossOriginProtection] の値を返します。
 func NewCrossOriginProtection() *CrossOriginProtection
 
-// AddTrustedOriginは、指定された値と完全に一致する[Origin]ヘッダーを持つ
+// AddTrustedOriginは、指定された値と完全に一致する [Origin] ヘッダーを持つ
 // すべてのリクエストを許可します。
 //
 // Originヘッダーの値は"scheme://host[:port]"の形式です。
@@ -53,7 +53,7 @@ func (c *CrossOriginProtection) AddTrustedOrigin(origin string) error
 
 // AddInsecureBypassPatternは、指定されたパターンに一致するすべてのリクエストを許可します。
 //
-// パターンの構文と優先順位のルールは[ServeMux]と同じです。パターンに直接一致する
+// パターンの構文と優先順位のルールは [ServeMux] と同じです。パターンに直接一致する
 // リクエストのみが許可されます。ServeMuxがパターンにリダイレクトするリクエスト
 // （例えばパスのクリーンアップや末尾のスラッシュの追加の後）は許可されません。
 //
@@ -78,6 +78,6 @@ func (c *CrossOriginProtection) Check(req *Request) error
 // ハンドラを返します。
 //
 // リクエストがクロスオリジンチェックに失敗した場合、そのリクエストは
-// 403 Forbiddenステータスで拒否されるか、[CrossOriginProtection.SetDenyHandler]に
+// 403 Forbiddenステータスで拒否されるか、[CrossOriginProtection.SetDenyHandler] に
 // 渡されたハンドラで処理されます。
 func (c *CrossOriginProtection) Handler(h Handler) Handler

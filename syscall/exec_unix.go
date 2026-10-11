@@ -49,9 +49,9 @@ import (
 //     ForkLockを使用します。
 //   - [Socket]。利用可能であればSOCK_CLOEXECを使用します。そうでなければ、ブロックしないため
 //     ForkLockを使用します。
-//   - [Open]。利用可能であれば[O_CLOEXEC]を使用します。そうでなければ、ブロックする可能性があるため
+//   - [Open]。利用可能であれば [O_CLOEXEC] を使用します。そうでなければ、ブロックする可能性があるため
 //     競合を受け入れます。
-//   - [Dup]。利用可能であれば[F_DUPFD_CLOEXEC]またはdup3を使用します。そうでなければ、
+//   - [Dup]。利用可能であれば [F_DUPFD_CLOEXEC] またはdup3を使用します。そうでなければ、
 //     ブロックしないためForkLockを使用します。
 var ForkLock sync.RWMutex
 
@@ -59,7 +59,7 @@ var ForkLock sync.RWMutex
 // ポインタのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
 // この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: 代わりに[SlicePtrFromStrings]を使用してください。
+// Deprecated: 代わりに [SlicePtrFromStrings] を使用してください。
 func StringSlicePtr(ss []string) []*byte
 
 // SlicePtrFromStringsは、文字列のスライスをNUL終端されたバイト配列への
@@ -71,7 +71,7 @@ func CloseOnExec(fd int)
 
 func SetNonblock(fd int, nonblocking bool) (err error)
 
-// Credentialは、[StartProcess]によって開始された子プロセスが引き受ける
+// Credentialは、[StartProcess] によって開始された子プロセスが引き受ける
 // ユーザーとグループのIDを保持します。
 type Credential struct {
 	Uid         uint32
@@ -80,7 +80,7 @@ type Credential struct {
 	NoSetGroups bool
 }
 
-// ProcAttrは、[StartProcess]によって開始される新しいプロセスに適用される
+// ProcAttrは、[StartProcess] によって開始される新しいプロセスに適用される
 // 属性を保持します。
 type ProcAttr struct {
 	Dir   string
@@ -92,7 +92,7 @@ type ProcAttr struct {
 // forkとexecの組み合わせで、スレッドセーフになるよう注意しています。
 func ForkExec(argv0 string, argv []string, attr *ProcAttr) (pid int, err error)
 
-// StartProcessは、osパッケージのために[ForkExec]をラップします。
+// StartProcessは、osパッケージのために [ForkExec] をラップします。
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)
 
 // Execはexecve(2)システムコールを呼び出します。

@@ -11,7 +11,7 @@ import (
 
 // ClientConnはHTTPサーバーへのクライアント接続です。
 //
-// [Transport]とは異なり、ClientConnは単一の接続を表します。
+// [Transport] とは異なり、ClientConnは単一の接続を表します。
 // ほとんどのユーザーは、クライアント接続を直接作成するのではなくTransportを使用するべきです。
 type ClientConn struct {
 	cc genericClientConn
@@ -40,7 +40,7 @@ type ClientConn struct {
 // すでに持っている場合でも、常に新しい接続を作成します。
 //
 // 新しい接続はTransportの接続キャッシュには追加されず、
-// [Transport.RoundTrip]によって使用されることはありません。
+// [Transport.RoundTrip] によって使用されることはありません。
 // MaxIdleConnsおよびMaxConnsPerHostの制限にはカウントされません。
 //
 // 新しい接続を閉じるのは呼び出し元の責任です。
@@ -55,7 +55,7 @@ func (cc *ClientConn) Close() error
 // nil以外を返した場合、その接続はもう使用できません。
 func (cc *ClientConn) Err() error
 
-// RoundTripは[RoundTripper]インターフェースを実装します。
+// RoundTripは [RoundTripper] インターフェースを実装します。
 //
 // リクエストは、要求されたURLやプロキシ設定に関係なく、
 // クライアント接続上で送信されます。

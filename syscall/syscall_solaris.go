@@ -72,7 +72,7 @@ func Gethostname() (name string, err error)
 
 func UtimesNano(path string, ts []Timespec) error
 
-// FcntlFlockは、[F_GETLK]、[F_SETLK]、[F_SETLKW]コマンドに対してfcntlシステムコールを実行します。
+// FcntlFlockは、[F_GETLK]、[F_SETLK]、[F_SETLKW] コマンドに対してfcntlシステムコールを実行します。
 func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) error
 
 func Accept(fd int) (nfd int, sa Sockaddr, err error)

@@ -17,7 +17,7 @@ package sync
 // Map型は2つの一般的なユースケースに最適化されています: (1) 特定のキーのエントリが
 // 一度だけ書き込まれ、何度も読み取られる場合（例えば、増加するだけのキャッシュ）、
 // または (2) 複数のゴルーチンが互いに素なキーの集合のエントリを読み取り、書き込み、
-// 上書きする場合です。これら2つのケースでは、Mapを使用すると、個別の[Mutex]や[RWMutex]と
+// 上書きする場合です。これら2つのケースでは、Mapを使用すると、個別の [Mutex] や [RWMutex] と
 // 組み合わせたGoのマップと比べて、ロックの競合を大幅に減らすことができます。
 //
 // ゼロ値のMapは空で、すぐに使用できます。Mapは最初の使用後にコピーしてはいけません。
@@ -26,11 +26,11 @@ package sync
 // 任意の読み取り操作よりも「前に同期する」ように調整します。ここで、読み取り操作と
 // 書き込み操作は次のように定義されます。
 // [Map.Load]、[Map.LoadAndDelete]、[Map.LoadOrStore]、[Map.Swap]、[Map.CompareAndSwap]、
-// [Map.CompareAndDelete]は読み取り操作です。
-// [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap]は書き込み操作です。
-// [Map.LoadOrStore]は、loadedがfalseに設定されて返される場合に書き込み操作です。
-// [Map.CompareAndSwap]は、swappedがtrueに設定されて返される場合に書き込み操作です。
-// [Map.CompareAndDelete]は、deletedがtrueに設定されて返される場合に書き込み操作です。
+// [Map.CompareAndDelete] は読み取り操作です。
+// [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap] は書き込み操作です。
+// [Map.LoadOrStore] は、loadedがfalseに設定されて返される場合に書き込み操作です。
+// [Map.CompareAndSwap] は、swappedがtrueに設定されて返される場合に書き込み操作です。
+// [Map.CompareAndDelete] は、deletedがtrueに設定されて返される場合に書き込み操作です。
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type Map struct {

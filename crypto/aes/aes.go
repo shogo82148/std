@@ -23,7 +23,7 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipherは新しい[cipher.Block]を作成して返します。
+// NewCipherは新しい [cipher.Block] を作成して返します。
 // key引数はAES鍵でなければならず、16、24、32バイトのいずれかで
 // AES-128、AES-192、AES-256を選択します。
 func NewCipher(key []byte) (cipher.Block, error)

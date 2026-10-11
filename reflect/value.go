@@ -455,8 +455,8 @@ type SliceHeader struct {
 // 領域を保証します。Grow(n)の後、少なくともn個の要素を追加の割り当てなしに
 // スライスに追加できます。
 //
-// vのKindが[Slice]でない場合、nが負であるかメモリを割り当てるには大きすぎる場合、
-// または[Value.CanSet]がfalseを返す場合はパニックします。
+// vのKindが [Slice] でない場合、nが負であるかメモリを割り当てるには大きすぎる場合、
+// または [Value.CanSet] がfalseを返す場合はパニックします。
 func (v Value) Grow(n int)
 
 // Clearメソッドは、マップの内容をクリアするか、スライスの内容をゼロにします。

@@ -10,7 +10,7 @@
 package time
 
 // LoadLocationFromTZDataは、IANAタイムゾーンデータベース形式のデータから初期化された、
-// 指定された名前を持つ新しい[Location]を返します。
+// 指定された名前を持つ新しい [Location] を返します。
 // データは標準のIANAタイムゾーンファイルの形式
 // （例えば、Unixシステムの/etc/localtimeの内容）でなければなりません。
 func LoadLocationFromTZData(name string, data []byte) (*Location, error)

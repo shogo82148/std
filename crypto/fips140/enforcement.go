@@ -17,5 +17,5 @@ func WithoutEnforcement(f func())
 
 // Enforcedは、厳格なFIPS 140-3の強制が有効かどうかを示します。
 // 厳格な強制は、プログラムがGODEBUG=fips140=onlyで実行され、
-// [WithoutEnforcement]の呼び出しによって強制が無効化されていない場合に有効になります。
+// [WithoutEnforcement] の呼び出しによって強制が無効化されていない場合に有効になります。
 func Enforced() bool

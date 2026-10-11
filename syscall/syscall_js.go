@@ -26,7 +26,7 @@ const PathMax = 256
 //		err = errno
 //	}
 //
-// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// Errnoの値は、[errors.Is] を使用してエラー値と比較できます。
 // 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
@@ -42,7 +42,7 @@ func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
 // Signalは、プロセスシグナルを記述する数値です。
-// これは[os.Signal]インターフェースを実装します。
+// これは [os.Signal] インターフェースを実装します。
 type Signal int
 
 const (

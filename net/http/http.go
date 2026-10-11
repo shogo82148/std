@@ -73,7 +73,7 @@ type Pusher interface {
 	Push(target string, opts *PushOptions) error
 }
 
-// HTTP2Configは、[Transport]と[Server]の両方に共通する
+// HTTP2Configは、[Transport] と [Server] の両方に共通する
 // HTTP/2の設定パラメータを定義します。
 type HTTP2Config struct {
 	// MaxConcurrentStreamsは、ピアが同時に開くことができる

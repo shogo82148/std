@@ -16,25 +16,25 @@ import (
 func Lines(s []byte) iter.Seq[[]byte]
 
 // SplitSeqは、sepで区切られたsのすべてのサブスライスに対するイテレータを返します。
-// イテレータは[Split](s, sep)が返すのと同じサブスライスを生成しますが、
+// イテレータは [Split](s, sep)が返すのと同じサブスライスを生成しますが、
 // サブスライスを含む新しいスライスを構築しません。
 // これは使い捨てのイテレータを返します。
 func SplitSeq(s, sep []byte) iter.Seq[[]byte]
 
 // SplitAfterSeqは、sepの各出現の後で分割されたsのサブスライスに対するイテレータを返します。
-// イテレータは[SplitAfter](s, sep)が返すのと同じサブスライスを生成しますが、
+// イテレータは [SplitAfter](s, sep)が返すのと同じサブスライスを生成しますが、
 // サブスライスを含む新しいスライスを構築しません。
 // これは使い捨てのイテレータを返します。
 func SplitAfterSeq(s, sep []byte) iter.Seq[[]byte]
 
-// FieldsSeqは、[unicode.IsSpace]で定義される連続する空白文字の周りで分割された
+// FieldsSeqは、[unicode.IsSpace] で定義される連続する空白文字の周りで分割された
 // sのサブスライスに対するイテレータを返します。
-// イテレータは[Fields](s)が返すのと同じサブスライスを生成しますが、
+// イテレータは [Fields](s)が返すのと同じサブスライスを生成しますが、
 // サブスライスを含む新しいスライスを構築しません。
 func FieldsSeq(s []byte) iter.Seq[[]byte]
 
 // FieldsFuncSeqは、f(c)を満たす連続するUnicodeコードポイントの周りで分割された
 // sのサブスライスに対するイテレータを返します。
-// イテレータは[FieldsFunc](s)が返すのと同じサブスライスを生成しますが、
+// イテレータは [FieldsFunc](s)が返すのと同じサブスライスを生成しますが、
 // サブスライスを含む新しいスライスを構築しません。
 func FieldsFuncSeq(s []byte, f func(rune) bool) iter.Seq[[]byte]

@@ -105,7 +105,7 @@ type FileHeader struct {
 	UncompressedSize64 uint64
 
 	// Extraは拡張可能なデータフィールドです。ライターは必要に応じて
-	// 適切なZip64フィールドを自動的に含め、[Writer.Close]はZip64フィールドの
+	// 適切なZip64フィールドを自動的に含め、[Writer.Close] はZip64フィールドの
 	// セントラルディレクトリ版をExtraに追加します。
 	Extra []byte
 

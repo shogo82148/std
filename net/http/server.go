@@ -651,7 +651,7 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // [Hijacker] または [Flusher] インターフェースはサポートしません。
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
-// ErrHandlerTimeoutは、タイムアウトしたハンドラ内での[ResponseWriter]の
+// ErrHandlerTimeoutは、タイムアウトしたハンドラ内での [ResponseWriter] の
 // Write呼び出しで返されます。
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 

@@ -41,18 +41,18 @@ type Dir struct {
 	Muid   string
 }
 
-// Nullは、[Wstat]の際に変更されないように、dのメンバーに
+// Nullは、[Wstat] の際に変更されないように、dのメンバーに
 // 特別な「変更しない」値を割り当てます。
 func (d *Dir) Null()
 
 // Marshalは、dに対応する9Pのstatメッセージをbにエンコードします。
 //
-// bにstatメッセージのための十分な領域がない場合、[ErrShortStat]が返されます。
+// bにstatメッセージのための十分な領域がない場合、[ErrShortStat] が返されます。
 func (d *Dir) Marshal(b []byte) (n int, err error)
 
 // UnmarshalDirは、bから単一の9Pのstatメッセージをデコードし、結果のDirを返します。
 //
-// bが有効なstatメッセージを保持するには小さすぎる場合、[ErrShortStat]が返されます。
+// bが有効なstatメッセージを保持するには小さすぎる場合、[ErrShortStat] が返されます。
 //
-// statメッセージ自体が無効な場合、[ErrBadStat]が返されます。
+// statメッセージ自体が無効な場合、[ErrBadStat] が返されます。
 func UnmarshalDir(b []byte) (*Dir, error)

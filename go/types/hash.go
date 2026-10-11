@@ -9,13 +9,13 @@ import (
 )
 
 type (
-	// Hasherは、[Identical]と一貫性のある[Types]のハッシュ関数と
+	// Hasherは、[Identical] と一貫性のある [Types] のハッシュ関数と
 	// 同値関係を定義します。
 	// Hasherはステートレスです。
 	Hasher struct{}
 
-	// HasherIgnoreTagsは、[IdenticalIgnoreTags]と一貫性のある
-	// [Hasher]の変種です。
+	// HasherIgnoreTagsは、[IdenticalIgnoreTags] と一貫性のある
+	// [Hasher] の変種です。
 	HasherIgnoreTags struct{}
 )
 

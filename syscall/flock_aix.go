@@ -4,5 +4,5 @@
 
 package syscall
 
-// FcntlFlockは、[F_GETLK]、[F_SETLK]、[F_SETLKW]コマンドに対してfcntlシステムコールを実行します。
+// FcntlFlockは、[F_GETLK]、[F_SETLK]、[F_SETLKW] コマンドに対してfcntlシステムコールを実行します。
 func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) (err error)

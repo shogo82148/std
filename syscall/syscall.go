@@ -16,10 +16,10 @@
 // マニュアルを参照してください。
 // これらの呼び出しは成功を示すためにerr == nilを返します。そうでない場合、
 // errは失敗を説明するオペレーティングシステムのエラーです。
-// ほとんどのシステムでは、そのエラーは[Errno]型です。
+// ほとんどのシステムでは、そのエラーは [Errno] 型です。
 //
 // 注意: このパッケージで定義されている関数、型、定数のほとんどは
-// [golang.org/x/sys]パッケージでも利用できます。
+// [golang.org/x/sys] パッケージでも利用できます。
 // そのパッケージはこのパッケージよりも多くのシステムコールをサポートしており、
 // ほとんどの新しいコードは可能な限りそのパッケージを優先するべきです。
 // 詳細については https://golang.org/s/go1.4-syscall を参照してください。
@@ -38,7 +38,7 @@ func ByteSliceFromString(s string) ([]byte, error)
 // StringBytePtrは、NUL終端されたバイト配列へのポインタを返します。
 // sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: 代わりに[BytePtrFromString]を使用してください。
+// Deprecated: 代わりに [BytePtrFromString] を使用してください。
 func StringBytePtr(s string) *byte
 
 // BytePtrFromStringは、sのテキストを含むNUL終端されたバイト配列へのポインタを返します。

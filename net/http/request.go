@@ -232,7 +232,7 @@ type Request struct {
 	// Responseは、このリクエストが作成されたクライアントリダイレクト中にのみ設定されるリダイレクトレスポンスです。
 	Response *Response
 
-	// Patternは、リクエストに一致した[ServeMux]のパターンです。
+	// Patternは、リクエストに一致した [ServeMux] のパターンです。
 	// リクエストがパターンと照合されなかった場合は空です。
 	Pattern string
 

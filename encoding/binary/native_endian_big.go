@@ -6,5 +6,5 @@
 
 package binary
 
-// NativeEndianは、[ByteOrder]と[AppendByteOrder]のネイティブエンディアンの実装です。
+// NativeEndianは、[ByteOrder] と [AppendByteOrder] のネイティブエンディアンの実装です。
 var NativeEndian nativeEndian

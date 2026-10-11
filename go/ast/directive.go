@@ -42,7 +42,7 @@ type Directive struct {
 // テキストが"//"で始まらない場合、falseを返します。
 //
 // 呼び出し元はcの先頭のファイル位置を指定できます。これは引数の位置を
-// 追跡するために使用されます。これは[Comment.Slash]、呼び出し元が合成した値、
+// 追跡するために使用されます。これは [Comment.Slash]、呼び出し元が合成した値、
 // または単に0にすることができます。呼び出し元が0を渡した場合、位置は実質的に
 // 文字列cへのバイトオフセットになります。
 func ParseDirective(pos token.Pos, c string) (Directive, bool)
@@ -59,7 +59,7 @@ type DirectiveArg struct {
 	Pos token.Pos
 }
 
-// ParseArgsは、標準の慣例を使用して[Directive]の引数をパースします。
+// ParseArgsは、標準の慣例を使用して [Directive] の引数をパースします。
 // 標準の慣例とはトークンの並びであり、各トークンは裸の単語、
 // ダブルクォートで囲まれたGo文字列、またはバッククォートで囲まれたGoの生文字列です。
 // 各トークンは1つ以上のUnicodeスペースで区切られていなければなりません。

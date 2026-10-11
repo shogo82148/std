@@ -78,7 +78,7 @@ func Dial(network, address string) (*Client, error)
 // シャットダウン中の場合、[ErrShutdown] が返されます。
 func (client *Client) Close() error
 
-// Goは関数を非同期に呼び出します。呼び出しを表す[Call]構造体を返します。
+// Goは関数を非同期に呼び出します。呼び出しを表す [Call] 構造体を返します。
 // done チャネルは、呼び出しが完了したときに同じCallオブジェクトを返すことで通知します。
 // doneがnilの場合、Goは新しいチャネルを割り当てます。
 // nilでない場合、doneはバッファ付きでなければならず、そうでなければGoは意図的にクラッシュします。

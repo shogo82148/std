@@ -16,12 +16,12 @@ type ReadLinkFS interface {
 
 // ReadLinkは、指定されたシンボリックリンクのリンク先を返します。
 //
-// fsysが[ReadLinkFS]を実装していない場合、ReadLinkはエラーを返します。
+// fsysが [ReadLinkFS] を実装していない場合、ReadLinkはエラーを返します。
 func ReadLink(fsys FS, name string) (string, error)
 
-// Lstatは、指定されたファイルを記述する[FileInfo]を返します。
-// ファイルがシンボリックリンクの場合、返される[FileInfo]はシンボリックリンクを記述します。
+// Lstatは、指定されたファイルを記述する [FileInfo] を返します。
+// ファイルがシンボリックリンクの場合、返される [FileInfo] はシンボリックリンクを記述します。
 // Lstatはリンクをたどろうとはしません。
 //
-// fsysが[ReadLinkFS]を実装していない場合、Lstatは[Stat]と同じです。
+// fsysが [ReadLinkFS] を実装していない場合、Lstatは [Stat] と同じです。
 func Lstat(fsys FS, name string) (FileInfo, error)

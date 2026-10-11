@@ -8,7 +8,7 @@
 
 package syscall
 
-// CmsgLenは、必要なアライメントを考慮して、[Cmsghdr]構造体のLenフィールドに
+// CmsgLenは、必要なアライメントを考慮して、[Cmsghdr] 構造体のLenフィールドに
 // 格納する値を返します。
 func CmsgLen(datalen int) int
 

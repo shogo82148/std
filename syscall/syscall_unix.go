@@ -25,7 +25,7 @@ var (
 //		err = errno
 //	}
 //
-// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// Errnoの値は、[errors.Is] を使用してエラー値と比較できます。
 // 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
@@ -41,7 +41,7 @@ func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
 // Signalは、プロセスシグナルを記述する数値です。
-// これは[os.Signal]インターフェースを実装します。
+// これは [os.Signal] インターフェースを実装します。
 type Signal int
 
 func (s Signal) Signal()
@@ -57,7 +57,7 @@ func Pread(fd int, p []byte, offset int64) (n int, err error)
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
 // テスト用: クライアントはこのフラグを設定することで、
-// IPv6ソケットの作成で強制的に[EAFNOSUPPORT]を返すようにできます。
+// IPv6ソケットの作成で強制的に [EAFNOSUPPORT] を返すようにできます。
 var SocketDisableIPv6 bool
 
 type Sockaddr interface {

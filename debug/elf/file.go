@@ -136,7 +136,7 @@ type Symbol struct {
 	// これは動的シンボルテーブルに対してのみtrueになります。
 	HasVersion bool
 	// VersionIndexは、シンボルのバージョンインデックスです。
-	// アクセスするには[VersionIndex]型のメソッドを使用してください。
+	// アクセスするには [VersionIndex] 型のメソッドを使用してください。
 	// このフィールドはHasVersionがtrueの場合にのみ意味を持ちます。
 	VersionIndex VersionIndex
 

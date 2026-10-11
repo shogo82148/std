@@ -246,7 +246,7 @@ type Info struct {
 	// ファイルがバージョンを指定していない場合、報告される文字列は
 	// Config.GoVersionです。
 	// バージョン文字列は“go1.21”のように“go”で始まり、
-	// [go/version]パッケージで使用するのに適しています。
+	// [go/version] パッケージで使用するのに適しています。
 	FileVersions map[*ast.File]string
 }
 

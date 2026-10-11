@@ -33,7 +33,7 @@ func (b BitString) At(i int) int
 // RightAlign はパディングビットが先頭にあるスライスを返します。スライスは BitString とメモリを共有する場合があります。
 func (b BitString) RightAlign() []byte
 
-// NullRawValueは、TagにASN.1のNULL型タグ（5）が設定された[RawValue]です。
+// NullRawValueは、TagにASN.1のNULL型タグ（5）が設定された [RawValue] です。
 var NullRawValue = RawValue{Tag: TagNull}
 
 // NullBytesには、DERエンコードされたASN.1 NULLタイプを表すバイトが含まれています。

@@ -35,7 +35,7 @@ var (
 	ErrHeader = errors.New("zlib: invalid header")
 )
 
-// Resetterは、[NewReader]または[NewReaderDict]によって返されたReadCloserをリセットし、
+// Resetterは、[NewReader] または [NewReaderDict] によって返されたReadCloserをリセットし、
 // 新しい基礎となるReaderに切り替えます。これにより、新しいReadCloserを割り当てる代わりに
 // 再利用できます。
 type Resetter interface {
@@ -44,16 +44,16 @@ type Resetter interface {
 
 // NewReaderは新しいReadCloserを作成します。
 // 返されたReadCloserからの読み取りは、rからデータを読み取って解凍します。
-// rが[io.ByteReader]を実装していない場合、解凍器はrから必要以上のデータを
+// rが [io.ByteReader] を実装していない場合、解凍器はrから必要以上のデータを
 // 読み取る可能性があります。
 // 終了時にReadCloserのCloseを呼び出すのは呼び出し元の責任です。
 //
-// NewReaderによって返される[io.ReadCloser]は[Resetter]も実装しています。
+// NewReaderによって返される [io.ReadCloser] は [Resetter] も実装しています。
 func NewReader(r io.Reader) (io.ReadCloser, error)
 
-// NewReaderDictは[NewReader]と同様ですが、プリセット辞書を使用します。
+// NewReaderDictは [NewReader] と同様ですが、プリセット辞書を使用します。
 // 圧縮データが辞書を参照していない場合、NewReaderDictは辞書を無視します。
-// 圧縮データが別の辞書を参照している場合、NewReaderDictは[ErrDictionary]を返します。
+// 圧縮データが別の辞書を参照している場合、NewReaderDictは [ErrDictionary] を返します。
 //
-// NewReaderDictによって返されるReadCloserも[Resetter]を実装しています。
+// NewReaderDictによって返されるReadCloserも [Resetter] を実装しています。
 func NewReaderDict(r io.Reader, dict []byte) (io.ReadCloser, error)

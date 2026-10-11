@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// coverageパッケージは、[os.Exit]によって終了しない長時間実行されるプログラムや
+// coverageパッケージは、[os.Exit] によって終了しない長時間実行されるプログラムや
 // サーバープログラムから、実行時にカバレッジプロファイルデータを書き込むためのAPIを含みます。
 package coverage
 

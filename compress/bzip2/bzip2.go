@@ -12,7 +12,7 @@ type StructuralError string
 
 func (s StructuralError) Error() string
 
-// NewReaderは、rからbzip2データを解凍する[io.Reader]を返します。
-// rが[io.ByteReader]も実装していない場合、
+// NewReaderは、rからbzip2データを解凍する [io.Reader] を返します。
+// rが [io.ByteReader] も実装していない場合、
 // 解凍器はrから必要以上のデータを読み取る可能性があります。
 func NewReader(r io.Reader) io.Reader

@@ -199,12 +199,12 @@ func Getpgrp() (pid int)
 // プロセス全体の同時の状態変更をエミュレートすることを目的としています。
 //
 // AllThreadsSyscallは、cgoでリンクされたコードによって明示的に起動された
-// スレッドを認識しないため、cgoを使用するバイナリでは常に[ENOTSUP]を返します。
+// スレッドを認識しないため、cgoを使用するバイナリでは常に [ENOTSUP] を返します。
 //
 //go:uintptrescapes
 func AllThreadsSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 
-// AllThreadsSyscall6は[AllThreadsSyscall]と同様ですが、6つの引数に拡張されています。
+// AllThreadsSyscall6は [AllThreadsSyscall] と同様ですが、6つの引数に拡張されています。
 //
 //go:uintptrescapes
 func AllThreadsSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)

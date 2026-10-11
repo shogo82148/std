@@ -243,7 +243,7 @@ func (n *Null[T]) Scan(value any) error
 
 func (n Null[T]) Value() (driver.Value, error)
 
-// Scannerは[Rows.Scan]で使用されるインターフェースです。
+// Scannerは [Rows.Scan] で使用されるインターフェースです。
 type Scanner interface {
 	Scan(src any) error
 }

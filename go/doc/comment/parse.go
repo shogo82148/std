@@ -175,7 +175,7 @@ type Parser struct {
 // ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
-// Parseはドキュメントコメントのテキストをパースし、*[Doc]形式を返します。
+// Parseはドキュメントコメントのテキストをパースし、*[Doc] 形式を返します。
 // テキスト内のコメントマーカー（/* // および */）は事前に取り除かれている必要があります。
 func (p *Parser) Parse(text string) *Doc
 

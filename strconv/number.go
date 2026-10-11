@@ -30,13 +30,13 @@ func AppendBool(dst []byte, b bool) []byte
 // complex64に変換できます。
 //
 // sが表す数値は、N、Ni、またはN±Niの形式でなければなりません。ここでNは
-// [ParseFloat]が認識する浮動小数点数を表し、iは虚数成分です。
+// [ParseFloat] が認識する浮動小数点数を表し、iは虚数成分です。
 // 2番目のNが符号なしの場合、±で示されるように2つの成分の間に+記号が必要です。
 // 2番目のNがNaNの場合、+記号のみが受け付けられます。
 // 形式は括弧で囲むことができ、スペースを含めることはできません。
 // 結果の複素数は、ParseFloatによって変換された2つの成分で構成されます。
 //
-// ParseComplexが返すエラーの具体的な型は[*NumError]であり、
+// ParseComplexが返すエラーの具体的な型は [*NumError] であり、
 // err.Num = sを含みます。
 //
 // sが構文的に正しくない場合、ParseComplexはerr.Err = ErrSyntaxを返します。
@@ -72,7 +72,7 @@ func ParseComplex(s string, bitSize int) (complex128, error)
 // [floating-point literals]: https://go.dev/ref/spec#Floating-point_literals
 func ParseFloat(s string, bitSize int) (float64, error)
 
-// ParseUintは[ParseInt]と同様ですが、符号なしの数値用です。
+// ParseUintは [ParseInt] と同様ですが、符号なしの数値用です。
 //
 // 符号の接頭辞は許可されません。
 func ParseUint(s string, base int, bitSize int) (uint64, error)
@@ -91,11 +91,11 @@ func ParseUint(s string, base int, bitSize int) (uint64, error)
 // ビットサイズ0、8、16、32、64は、それぞれint、int8、int16、int32、int64に対応します。
 // bitSizeが0未満または64を超える場合、エラーが返されます。
 //
-// ParseIntが返すエラーの具体的な型は[*NumError]であり、
+// ParseIntが返すエラーの具体的な型は [*NumError] であり、
 // err.Num = sを含みます。sが空であるか無効な数字を含む場合、
-// err.Err = [ErrSyntax]となり、返される値は0です。
+// err.Err = [ErrSyntax] となり、返される値は0です。
 // sに対応する値が指定されたサイズの符号付き整数で表現できない場合、
-// err.Err = [ErrRange]となり、返される値は適切なbitSizeと符号の
+// err.Err = [ErrRange] となり、返される値は適切なbitSizeと符号の
 // 絶対値が最大の整数です。
 //
 // [integer literals]: https://go.dev/ref/spec#Integer_literals
@@ -107,7 +107,7 @@ func Atoi(s string) (int, error)
 // FormatComplexは、複素数cを(a+bi)の形式の文字列に変換します。
 // ここでaとbは実部と虚部であり、書式fmtと精度precに従ってフォーマットされます。
 //
-// 書式fmtと精度precは[FormatFloat]と同じ意味を持ちます。
+// 書式fmtと精度precは [FormatFloat] と同じ意味を持ちます。
 // 元の値がbitSizeビットの複素数値から得られたものと仮定して結果を丸めます。
 // bitSizeはcomplex64の場合は64、complex128の場合は128でなければなりません。
 func FormatComplex(c complex128, fmt byte, prec, bitSize int) string
@@ -135,7 +135,7 @@ func FormatComplex(c complex128, fmt byte, prec, bitSize int) string
 // 'b'以外のすべての形式では、少なくとも2桁になります。
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
-// AppendFloatは、[FormatFloat]によって生成された浮動小数点数fの文字列形式を
+// AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式を
 // dstに追加し、拡張されたバッファを返します。
 func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte
 
@@ -147,14 +147,14 @@ func FormatUint(i uint64, base int) string
 // 結果は、10以上の数字の値に小文字の'a'から'z'を使用します。
 func FormatInt(i int64, base int) string
 
-// Itoaは[FormatInt](int64(i), 10)と同等です。
+// Itoaは [FormatInt](int64(i), 10)と同等です。
 func Itoa(i int) string
 
-// AppendIntは、[FormatInt]によって生成された整数iの文字列形式を
+// AppendIntは、[FormatInt] によって生成された整数iの文字列形式を
 // dstに追加し、拡張されたバッファを返します。
 func AppendInt(dst []byte, i int64, base int) []byte
 
-// AppendUintは、[FormatUint]によって生成された符号なし整数iの文字列形式を
+// AppendUintは、[FormatUint] によって生成された符号なし整数iの文字列形式を
 // dstに追加し、拡張されたバッファを返します。
 func AppendUint(dst []byte, i uint64, base int) []byte
 

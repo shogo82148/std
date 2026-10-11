@@ -17,7 +17,7 @@ const InvalidHandle = ^Handle(0)
 // StringToUTF16は、UTF-8文字列sのUTF-16エンコーディングに終端のNULを追加したものを返します。
 // sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: 代わりに[UTF16FromString]を使用してください。
+// Deprecated: 代わりに [UTF16FromString] を使用してください。
 func StringToUTF16(s string) []uint16
 
 // UTF16FromStringは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを追加したものを返します。
@@ -34,7 +34,7 @@ func UTF16ToString(s []uint16) string
 // 追加したものへのポインタを返します。sにNULバイトが含まれている場合、
 // この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: 代わりに[UTF16PtrFromString]を使用してください。
+// Deprecated: 代わりに [UTF16PtrFromString] を使用してください。
 func StringToUTF16Ptr(s string) *uint16
 
 // UTF16PtrFromStringは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
@@ -45,7 +45,7 @@ func UTF16PtrFromString(s string) (*uint16, error)
 
 // ErrnoはWindowsのエラー番号です。
 //
-// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// Errnoの値は、[errors.Is] を使用してエラー値と比較できます。
 // 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
@@ -137,7 +137,7 @@ func LoadCancelIoEx() error
 func LoadSetFileCompletionNotificationModes() error
 
 // テスト用: クライアントはこのフラグを設定することで、
-// IPv6ソケットの作成で強制的に[EAFNOSUPPORT]を返すようにできます。
+// IPv6ソケットの作成で強制的に [EAFNOSUPPORT] を返すようにできます。
 var SocketDisableIPv6 bool
 
 type RawSockaddrInet4 struct {
@@ -354,7 +354,7 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 // 減らしながら呼び出さなければなりません。
 //
 // このAPIの連続した呼び出しは同じOSスレッド上で行われなければならないため、
-// この関数を呼び出す前に[runtime.LockOSThread]を呼び出してください。
+// この関数を呼び出す前に [runtime.LockOSThread] を呼び出してください。
 func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)
 
 func GetStartupInfo(startupInfo *StartupInfo) error

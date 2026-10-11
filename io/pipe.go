@@ -54,13 +54,13 @@ func (w *PipeWriter) Close() error
 func (w *PipeWriter) CloseWithError(err error) error
 
 // Pipeは同期的なインメモリパイプを作成します。
-// これは、[io.Reader]を期待するコードと[io.Writer]を期待するコードを
+// これは、[io.Reader] を期待するコードと [io.Writer] を期待するコードを
 // 接続するために使用できます。
 //
 // パイプ上のReadとWriteは、1つのWriteを消費するために複数のReadが必要な場合を除き、
 // 1対1で対応します。
-// つまり、[PipeWriter]への各Writeは、書き込まれたデータを完全に消費する
-// [PipeReader]からの1つ以上のReadを満たすまでブロックします。
+// つまり、[PipeWriter] への各Writeは、書き込まれたデータを完全に消費する
+// [PipeReader] からの1つ以上のReadを満たすまでブロックします。
 // データはWriteから対応するRead（または複数のRead）に直接コピーされます。
 // 内部バッファリングはありません。
 //

@@ -42,13 +42,13 @@ type SysProcAttr struct {
 // forkとexecの組み合わせで、スレッドセーフになるよう注意しています。
 func ForkExec(argv0 string, argv []string, attr *ProcAttr) (pid int, err error)
 
-// StartProcessは、osパッケージのために[ForkExec]をラップします。
+// StartProcessは、osパッケージのために [ForkExec] をラップします。
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)
 
 // Ordinary exec.
 func Exec(argv0 string, argv []string, envv []string) (err error)
 
 // WaitProcessは、実行中のプロセスのpidがwaitメッセージのキューで
-// 見つかるまで待機します。これは[ForkExec]/[StartProcess]と組み合わせて、
+// 見つかるまで待機します。これは [ForkExec]/[StartProcess] と組み合わせて、
 // 実行中のプロセスの終了を待つために使用されます。
 func WaitProcess(pid int, w *Waitmsg) (err error)

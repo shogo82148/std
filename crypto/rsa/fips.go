@@ -34,7 +34,7 @@ type PSSOptions struct {
 	Hash crypto.Hash
 }
 
-// HashFuncはopts.Hashを返すことで、[PSSOptions]が[crypto.SignerOpts]を実装するようにします。
+// HashFuncはopts.Hashを返すことで、[PSSOptions] が [crypto.SignerOpts] を実装するようにします。
 func (opts *PSSOptions) HashFunc() crypto.Hash
 
 // SignPSSはPSSを使用してdigestの署名を計算します。
@@ -45,7 +45,7 @@ func (opts *PSSOptions) HashFunc() crypto.Hash
 //
 // 署名はメッセージ、鍵、ソルトサイズに応じて、randomからのバイトを使用して
 // ランダム化されます。ほとんどのアプリケーションはrandomとして
-// [crypto/rand.Reader]を使用するべきです。
+// [crypto/rand.Reader] を使用するべきです。
 func SignPSS(random io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
 // VerifyPSSはPSS署名を検証します。
@@ -67,7 +67,7 @@ func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts
 //
 // randomパラメータはエントロピー源として使用され、同じメッセージを2回暗号化しても
 // 同じ暗号文にならないようにします。
-// ほとんどのアプリケーションはrandomとして[crypto/rand.Reader]を使用するべきです。
+// ほとんどのアプリケーションはrandomとして [crypto/rand.Reader] を使用するべきです。
 //
 // labelパラメータには暗号化されない任意のデータを含めることができますが、
 // メッセージに重要なコンテキストを与えます。例えば、ある公開鍵が2種類の
@@ -83,9 +83,9 @@ func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, l
 // 与えられたメッセージをRSA-OAEPで暗号化します。
 //
 // この関数は、OAEPとMGF1のハッシュを個別に指定する必要がある場合にのみ
-// [EncryptOAEP]の代わりに使用するべきです。
+// [EncryptOAEP] の代わりに使用するべきです。
 //
-// 詳細は[EncryptOAEP]を参照してください。
+// 詳細は [EncryptOAEP] を参照してください。
 func EncryptOAEPWithOptions(random io.Reader, pub *PublicKey, msg []byte, opts *OAEPOptions) ([]byte, error)
 
 // DecryptOAEPはRSA-OAEPを使用して暗号文を復号します。
@@ -97,7 +97,7 @@ func EncryptOAEPWithOptions(random io.Reader, pub *PublicKey, msg []byte, opts *
 // randomパラメータはレガシーであり無視されます。nilでもかまいません。
 //
 // labelパラメータは暗号化時に指定した値と一致しなければなりません。
-// 詳細は[EncryptOAEP]を参照してください。
+// 詳細は [EncryptOAEP] を参照してください。
 func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)
 
 // SignPKCS1v15は、RSA PKCS #1 v1.5のRSASSA-PKCS1-V1_5-SIGNを使用して

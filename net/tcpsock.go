@@ -161,8 +161,8 @@ func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
 // AcceptTCPは次の着信呼び出しを受け入れ、新しい接続を返します。
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
-// Acceptは[Listener]インターフェースのAcceptメソッドを実装します。
-// 次の呼び出しを待機し、汎用的な[Conn]を返します。
+// Acceptは [Listener] インターフェースのAcceptメソッドを実装します。
+// 次の呼び出しを待機し、汎用的な [Conn] を返します。
 func (l *TCPListener) Accept() (Conn, error)
 
 // Close は TCP アドレスのリスニングを停止します。

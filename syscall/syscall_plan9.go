@@ -27,7 +27,7 @@ func (e Errno) Timeout() bool
 
 // ErrorStringは、自分自身を返すことでErrorのStringメソッドを実装します。
 //
-// ErrorStringの値は、[errors.Is]を使用してエラー値と比較できます。
+// ErrorStringの値は、[errors.Is] を使用してエラー値と比較できます。
 // 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
@@ -60,7 +60,7 @@ var (
 )
 
 // テスト用: クライアントはこのフラグを設定することで、
-// IPv6ソケットの作成で強制的に[EAFNOSUPPORT]を返すようにできます。
+// IPv6ソケットの作成で強制的に [EAFNOSUPPORT] を返すようにできます。
 var SocketDisableIPv6 bool
 
 func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err ErrorString)

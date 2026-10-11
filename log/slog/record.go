@@ -28,8 +28,8 @@ type Record struct {
 	// レコードが構築された時点のプログラムカウンタで、runtime.Callersによって決定されます。
 	// ゼロの場合、プログラムカウンタは利用できません。
 	//
-	// この値の唯一の有効な使用法は、[runtime.CallersFrames]の引数としての使用です。
-	// 特に、[runtime.FuncForPC]に渡してはいけません。
+	// この値の唯一の有効な使用法は、[runtime.CallersFrames] の引数としての使用です。
+	// 特に、[runtime.FuncForPC] に渡してはいけません。
 	PC uintptr
 
 	// Allocation optimization: an inline array sized to hold

@@ -53,7 +53,7 @@ func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
 // Signalは、プロセスシグナルを記述する数値です。
-// これは[os.Signal]インターフェースを実装します。
+// これは [os.Signal] インターフェースを実装します。
 type Signal uint8
 
 const (
@@ -197,7 +197,7 @@ func (w WaitStatus) StopSignal() Signal
 func (w WaitStatus) TrapCause() int
 
 // Rusageは、Goプログラムをプラットフォーム間で移植可能にする必要があるため、
-// [os/exec]パッケージのコンパイルを可能にするためのプレースホルダーです。
+// [os/exec] パッケージのコンパイルを可能にするためのプレースホルダーです。
 // WASIにはプロセスを生成する仕組みがないため、アプリケーションが
 // この型に依存する理由はありません。
 type Rusage struct {
@@ -206,7 +206,7 @@ type Rusage struct {
 }
 
 // ProcAttrは、Goプログラムをプラットフォーム間で移植可能にする必要があるため、
-// [os/exec]パッケージのコンパイルを可能にするためのプレースホルダーです。
+// [os/exec] パッケージのコンパイルを可能にするためのプレースホルダーです。
 // WASIにはプロセスを生成する仕組みがないため、アプリケーションが
 // この型に依存する理由はありません。
 type ProcAttr struct {

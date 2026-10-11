@@ -50,9 +50,9 @@ func (b *Reader) Reset(r io.Reader)
 // 次の読み取り呼び出しで無効になります。必要に応じて、Peekはnバイトを
 // 利用可能にするためにバッファにさらにバイトを読み込みます。Peekが
 // nバイト未満を返す場合、読み取りが不足した理由を説明するエラーも返します。
-// nがbのバッファサイズより大きい場合、エラーは[ErrBufferFull]です。
+// nがbのバッファサイズより大きい場合、エラーは [ErrBufferFull] です。
 //
-// Peekを呼び出すと、次の読み取り操作まで[Reader.UnreadByte]や[Reader.UnreadRune]の
+// Peekを呼び出すと、次の読み取り操作まで [Reader.UnreadByte] や [Reader.UnreadRune] の
 // 呼び出しは成功しなくなります。
 func (b *Reader) Peek(n int) ([]byte, error)
 

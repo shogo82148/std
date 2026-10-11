@@ -147,8 +147,8 @@ func (h *Header) FileInfo() fs.FileInfo
 // Header.GnameとHeader.Unameはインターフェースのメソッドによって提供されます。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
-// FileInfoNamesは[fs.FileInfo]を拡張します。
-// これのインスタンスを[FileInfoHeader]に渡すと、呼び出し元はUnameとGnameを
+// FileInfoNamesは [fs.FileInfo] を拡張します。
+// これのインスタンスを [FileInfoHeader] に渡すと、呼び出し元はUnameとGnameを
 // 直接指定することで、システムに依存した名前の検索を回避できます。
 type FileInfoNames interface {
 	fs.FileInfo

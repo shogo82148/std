@@ -16,21 +16,21 @@ import (
 func Lines(s string) iter.Seq[string]
 
 // SplitSeqは、sepで区切られたsのすべての部分文字列に対するイテレータを返します。
-// イテレータは[Split](s, sep)が返すのと同じ文字列を生成しますが、スライスを構築しません。
+// イテレータは [Split](s, sep)が返すのと同じ文字列を生成しますが、スライスを構築しません。
 // これは使い捨てのイテレータを返します。
 func SplitSeq(s, sep string) iter.Seq[string]
 
 // SplitAfterSeqは、sepの各出現の後で分割されたsの部分文字列に対するイテレータを返します。
-// イテレータは[SplitAfter](s, sep)が返すのと同じ文字列を生成しますが、スライスを構築しません。
+// イテレータは [SplitAfter](s, sep)が返すのと同じ文字列を生成しますが、スライスを構築しません。
 // これは使い捨てのイテレータを返します。
 func SplitAfterSeq(s, sep string) iter.Seq[string]
 
-// FieldsSeqは、[unicode.IsSpace]で定義される連続する空白文字の周りで分割された
+// FieldsSeqは、[unicode.IsSpace] で定義される連続する空白文字の周りで分割された
 // sの部分文字列に対するイテレータを返します。
-// イテレータは[Fields](s)が返すのと同じ文字列を生成しますが、スライスを構築しません。
+// イテレータは [Fields](s)が返すのと同じ文字列を生成しますが、スライスを構築しません。
 func FieldsSeq(s string) iter.Seq[string]
 
 // FieldsFuncSeqは、f(c)を満たす連続するUnicodeコードポイントの周りで分割された
 // sの部分文字列に対するイテレータを返します。
-// イテレータは[FieldsFunc](s)が返すのと同じ文字列を生成しますが、スライスを構築しません。
+// イテレータは [FieldsFunc](s)が返すのと同じ文字列を生成しますが、スライスを構築しません。
 func FieldsFuncSeq(s string, f func(rune) bool) iter.Seq[string]
