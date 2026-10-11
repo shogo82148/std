@@ -4,6 +4,6 @@
 
 package comment
 
-// Text returns a textual formatting of the [Doc].
-// See the [Printer] documentation for ways to customize the text output.
+// Textは、[Doc]をテキスト形式にフォーマットしたものを返します。
+// テキスト出力をカスタマイズする方法については、[Printer]のドキュメントを参照してください。
 func (p *Printer) Text(d *Doc) []byte

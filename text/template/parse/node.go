@@ -87,7 +87,7 @@ func (t *TextNode) String() string
 
 func (t *TextNode) Copy() Node
 
-// CommentNode holds a comment.
+// CommentNodeはコメントを保持します。
 type CommentNode struct {
 	NodeType
 	Pos

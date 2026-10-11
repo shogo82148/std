@@ -719,5 +719,5 @@ func (p *Package) End() token.Pos
 //	gen := ast.IsGenerated(f)
 func IsGenerated(file *File) bool
 
-// Unparen returns the expression with any enclosing parentheses removed.
+// Unparenは、囲んでいる括弧をすべて取り除いた式を返します。
 func Unparen(e Expr) Expr

@@ -4,32 +4,30 @@
 
 package subtle
 
-// WithDataIndependentTiming enables architecture specific features which ensure
-// that the timing of specific instructions is independent of their inputs
-// before executing f. On f returning it disables these features.
+// WithDataIndependentTimingは、fを実行する前に、特定の命令のタイミングが
+// 入力に依存しないことを保証するアーキテクチャ固有の機能を有効にします。
+// fが戻るとこれらの機能を無効にします。
 //
-// Any goroutine spawned by f will also have data independent timing enabled for
-// its lifetime, as well as any of their descendant goroutines.
+// fによって生成されたゴルーチンも、その生存期間中、およびその子孫のゴルーチンも、
+// データ非依存タイミングが有効になります。
 //
-// Any C code called via cgo from within f, or from a goroutine spawned by f, will
-// also have data independent timing enabled for the duration of the call. If the
-// C code disables data independent timing, it will be re-enabled on return to Go.
+// f内、またはfによって生成されたゴルーチンからcgo経由で呼び出されたCコードも、
+// 呼び出しの間はデータ非依存タイミングが有効になります。Cコードがデータ非依存タイミングを
+// 無効にした場合、Goに戻る際に再度有効になります。
 //
-// If C code called via cgo, from f or elsewhere, enables or disables data
-// independent timing then calling into Go will preserve that state for the
-// duration of the call.
+// fまたはその他の場所からcgo経由で呼び出されたCコードがデータ非依存タイミングを
+// 有効または無効にした場合、Goを呼び出してもその呼び出しの間はその状態が維持されます。
 //
-// WithDataIndependentTiming should only be used when f is written to make use
-// of constant-time operations. WithDataIndependentTiming does not make
-// variable-time code constant-time.
+// WithDataIndependentTimingは、fが定数時間操作を利用するように書かれている場合にのみ
+// 使用するべきです。WithDataIndependentTimingは可変時間のコードを定数時間にするものではありません。
 //
-// Calls to WithDataIndependentTiming may be nested.
+// WithDataIndependentTimingの呼び出しはネストできます。
 //
-// On Arm64 processors with FEAT_DIT, WithDataIndependentTiming enables
-// PSTATE.DIT. See https://developer.arm.com/documentation/ka005181/1-0/?lang=en.
+// FEAT_DITを備えたArm64プロセッサでは、WithDataIndependentTimingはPSTATE.DITを有効にします。
+// https://developer.arm.com/documentation/ka005181/1-0/?lang=en を参照してください。
 //
-// Currently, on all other architectures WithDataIndependentTiming executes f immediately
-// with no other side-effects.
+// 現在、その他のすべてのアーキテクチャでは、WithDataIndependentTimingは
+// 他の副作用なしにfを即座に実行します。
 //
 //go:noinline
 func WithDataIndependentTiming(f func())

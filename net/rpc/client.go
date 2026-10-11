@@ -78,10 +78,10 @@ func Dial(network, address string) (*Client, error)
 // シャットダウン中の場合、[ErrShutdown] が返されます。
 func (client *Client) Close() error
 
-// Go invokes the function asynchronously. It returns the [Call] structure representing
-// the invocation. The done channel will signal when the call is complete by returning
-// the same Call object. If done is nil, Go will allocate a new channel.
-// If non-nil, done must be buffered or Go will deliberately crash.
+// Goは関数を非同期に呼び出します。呼び出しを表す[Call]構造体を返します。
+// done チャネルは、呼び出しが完了したときに同じCallオブジェクトを返すことで通知します。
+// doneがnilの場合、Goは新しいチャネルを割り当てます。
+// nilでない場合、doneはバッファ付きでなければならず、そうでなければGoは意図的にクラッシュします。
 func (client *Client) Go(serviceMethod string, args any, reply any, done chan *Call) *Call
 
 // Callは指定された関数を呼び出し、その完了を待ち、エラー状態を返します。

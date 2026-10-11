@@ -8,33 +8,33 @@ import (
 	"github.com/shogo82148/std/iter"
 )
 
-// Lines returns an iterator over the newline-terminated lines in the byte slice s.
-// The lines yielded by the iterator include their terminating newlines.
-// If s is empty, the iterator yields no lines at all.
-// If s does not end in a newline, the final yielded line will not end in a newline.
-// It returns a single-use iterator.
+// Linesは、バイトスライスs内の改行で終わる行に対するイテレータを返します。
+// イテレータが生成する行には、終端の改行が含まれます。
+// sが空の場合、イテレータは行をまったく生成しません。
+// sが改行で終わらない場合、最後に生成される行は改行で終わりません。
+// これは使い捨てのイテレータを返します。
 func Lines(s []byte) iter.Seq[[]byte]
 
-// SplitSeq returns an iterator over all subslices of s separated by sep.
-// The iterator yields the same subslices that would be returned by [Split](s, sep),
-// but without constructing a new slice containing the subslices.
-// It returns a single-use iterator.
+// SplitSeqは、sepで区切られたsのすべてのサブスライスに対するイテレータを返します。
+// イテレータは[Split](s, sep)が返すのと同じサブスライスを生成しますが、
+// サブスライスを含む新しいスライスを構築しません。
+// これは使い捨てのイテレータを返します。
 func SplitSeq(s, sep []byte) iter.Seq[[]byte]
 
-// SplitAfterSeq returns an iterator over subslices of s split after each instance of sep.
-// The iterator yields the same subslices that would be returned by [SplitAfter](s, sep),
-// but without constructing a new slice containing the subslices.
-// It returns a single-use iterator.
+// SplitAfterSeqは、sepの各出現の後で分割されたsのサブスライスに対するイテレータを返します。
+// イテレータは[SplitAfter](s, sep)が返すのと同じサブスライスを生成しますが、
+// サブスライスを含む新しいスライスを構築しません。
+// これは使い捨てのイテレータを返します。
 func SplitAfterSeq(s, sep []byte) iter.Seq[[]byte]
 
-// FieldsSeq returns an iterator over subslices of s split around runs of
-// whitespace characters, as defined by [unicode.IsSpace].
-// The iterator yields the same subslices that would be returned by [Fields](s),
-// but without constructing a new slice containing the subslices.
+// FieldsSeqは、[unicode.IsSpace]で定義される連続する空白文字の周りで分割された
+// sのサブスライスに対するイテレータを返します。
+// イテレータは[Fields](s)が返すのと同じサブスライスを生成しますが、
+// サブスライスを含む新しいスライスを構築しません。
 func FieldsSeq(s []byte) iter.Seq[[]byte]
 
-// FieldsFuncSeq returns an iterator over subslices of s split around runs of
-// Unicode code points satisfying f(c).
-// The iterator yields the same subslices that would be returned by [FieldsFunc](s),
-// but without constructing a new slice containing the subslices.
+// FieldsFuncSeqは、f(c)を満たす連続するUnicodeコードポイントの周りで分割された
+// sのサブスライスに対するイテレータを返します。
+// イテレータは[FieldsFunc](s)が返すのと同じサブスライスを生成しますが、
+// サブスライスを含む新しいスライスを構築しません。
 func FieldsFuncSeq(s []byte, f func(rune) bool) iter.Seq[[]byte]

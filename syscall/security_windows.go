@@ -25,8 +25,8 @@ const (
 	NameDnsDomain        = 12
 )
 
-// TranslateAccountName converts a directory service
-// object name from one format to another.
+// TranslateAccountNameは、ディレクトリサービスのオブジェクト名を
+// ある形式から別の形式に変換します。
 func TranslateAccountName(username string, from, to uint32, initSize int) (string, error)
 
 const (
@@ -58,32 +58,31 @@ const (
 	SidTypeLabel
 )
 
-// The security identifier (SID) structure is a variable-length
-// structure used to uniquely identify users or groups.
+// セキュリティ識別子（SID）構造体は、ユーザーまたはグループを一意に識別するために
+// 使用される可変長の構造体です。
 type SID struct{}
 
-// StringToSid converts a string-format security identifier
-// sid into a valid, functional sid.
+// StringToSidは、文字列形式のセキュリティ識別子sidを、
+// 有効で機能するsidに変換します。
 func StringToSid(s string) (*SID, error)
 
-// LookupSID retrieves a security identifier sid for the account
-// and the name of the domain on which the account was found.
-// System specify target computer to search.
+// LookupSIDは、アカウントのセキュリティ識別子sidと、
+// そのアカウントが見つかったドメインの名前を取得します。
+// systemには検索対象のコンピュータを指定します。
 func LookupSID(system, account string) (sid *SID, domain string, accType uint32, err error)
 
-// String converts sid to a string format
-// suitable for display, storage, or transmission.
+// Stringは、sidを表示、保存、または送信に適した文字列形式に変換します。
 func (sid *SID) String() (string, error)
 
-// Len returns the length, in bytes, of a valid security identifier sid.
+// Lenは、有効なセキュリティ識別子sidの長さをバイト単位で返します。
 func (sid *SID) Len() int
 
-// Copy creates a duplicate of security identifier sid.
+// Copyは、セキュリティ識別子sidの複製を作成します。
 func (sid *SID) Copy() (*SID, error)
 
-// LookupAccount retrieves the name of the account for this sid
-// and the name of the first domain on which this sid is found.
-// System specify target computer to search for.
+// LookupAccountは、このsidのアカウント名と、
+// このsidが見つかった最初のドメインの名前を取得します。
+// systemには検索対象のコンピュータを指定します。
 func (sid *SID) LookupAccount(system string) (account, domain string, accType uint32, err error)
 
 const (
@@ -162,30 +161,29 @@ type Tokenprimarygroup struct {
 	PrimaryGroup *SID
 }
 
-// An access token contains the security information for a logon session.
-// The system creates an access token when a user logs on, and every
-// process executed on behalf of the user has a copy of the token.
-// The token identifies the user, the user's groups, and the user's
-// privileges. The system uses the token to control access to securable
-// objects and to control the ability of the user to perform various
-// system-related operations on the local computer.
+// アクセストークンには、ログオンセッションのセキュリティ情報が含まれます。
+// システムはユーザーがログオンするとアクセストークンを作成し、
+// ユーザーの代わりに実行されるすべてのプロセスはトークンのコピーを持ちます。
+// トークンは、ユーザー、ユーザーのグループ、およびユーザーの特権を識別します。
+// システムはトークンを使用して、セキュリティ保護可能なオブジェクトへのアクセスを制御し、
+// ローカルコンピュータ上でさまざまなシステム関連の操作を実行するユーザーの能力を制御します。
 type Token Handle
 
-// OpenCurrentProcessToken opens the access token
-// associated with current process.
+// OpenCurrentProcessTokenは、現在のプロセスに関連付けられた
+// アクセストークンを開きます。
 func OpenCurrentProcessToken() (Token, error)
 
-// Close releases access to access token.
+// Closeは、アクセストークンへのアクセスを解放します。
 func (t Token) Close() error
 
-// GetTokenUser retrieves access token t user account information.
+// GetTokenUserは、アクセストークンtのユーザーアカウント情報を取得します。
 func (t Token) GetTokenUser() (*Tokenuser, error)
 
-// GetTokenPrimaryGroup retrieves access token t primary group information.
-// A pointer to a SID structure representing a group that will become
-// the primary group of any objects created by a process using this access token.
+// GetTokenPrimaryGroupは、アクセストークンtのプライマリグループ情報を取得します。
+// これは、このアクセストークンを使用するプロセスによって作成されたオブジェクトの
+// プライマリグループとなるグループを表すSID構造体へのポインタです。
 func (t Token) GetTokenPrimaryGroup() (*Tokenprimarygroup, error)
 
-// GetUserProfileDirectory retrieves path to the
-// root directory of the access token t user's profile.
+// GetUserProfileDirectoryは、アクセストークンtのユーザーのプロファイルの
+// ルートディレクトリへのパスを取得します。
 func (t Token) GetUserProfileDirectory() (string, error)

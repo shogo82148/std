@@ -42,31 +42,29 @@ type PipeWriter struct{ r PipeReader }
 // それ以外の場合、errは [ErrClosedPipe] です。
 func (w *PipeWriter) Write(data []byte) (n int, err error)
 
-// Close closes the writer; subsequent reads from the
-// read half of the pipe will return no bytes and EOF.
+// Closeはライターを閉じます。その後のパイプの読み取り側からの読み取りは、
+// バイトを返さずEOFを返します。
 func (w *PipeWriter) Close() error
 
-// CloseWithError closes the writer; subsequent reads from the
-// read half of the pipe will return no bytes and the error err,
-// or EOF if err is nil.
+// CloseWithErrorはライターを閉じます。その後のパイプの読み取り側からの読み取りは、
+// バイトを返さずエラーerrを返します。errがnilの場合はEOFを返します。
 //
-// CloseWithError never overwrites the previous error if it exists
-// and always returns nil.
+// CloseWithErrorは、以前のエラーが存在する場合はそれを上書きせず、
+// 常にnilを返します。
 func (w *PipeWriter) CloseWithError(err error) error
 
-// Pipe creates a synchronous in-memory pipe.
-// It can be used to connect code expecting an [io.Reader]
-// with code expecting an [io.Writer].
+// Pipeは同期的なインメモリパイプを作成します。
+// これは、[io.Reader]を期待するコードと[io.Writer]を期待するコードを
+// 接続するために使用できます。
 //
-// Reads and Writes on the pipe are matched one to one
-// except when multiple Reads are needed to consume a single Write.
-// That is, each Write to the [PipeWriter] blocks until it has satisfied
-// one or more Reads from the [PipeReader] that fully consume
-// the written data.
-// The data is copied directly from the Write to the corresponding
-// Read (or Reads); there is no internal buffering.
+// パイプ上のReadとWriteは、1つのWriteを消費するために複数のReadが必要な場合を除き、
+// 1対1で対応します。
+// つまり、[PipeWriter]への各Writeは、書き込まれたデータを完全に消費する
+// [PipeReader]からの1つ以上のReadを満たすまでブロックします。
+// データはWriteから対応するRead（または複数のRead）に直接コピーされます。
+// 内部バッファリングはありません。
 //
-// It is safe to call Read and Write in parallel with each other or with Close.
-// Parallel calls to Read and parallel calls to Write are also safe:
-// the individual calls will be gated sequentially.
+// ReadとWriteを互いに、またはCloseと並行して呼び出しても安全です。
+// Readの並行呼び出しやWriteの並行呼び出しも安全です。
+// 個々の呼び出しは順番に処理されます。
 func Pipe() (*PipeReader, *PipeWriter)

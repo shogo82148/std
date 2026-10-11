@@ -286,19 +286,17 @@ func Test(t *testing.T, f func(*testing.T))
 // 同じバブル内で、複数 goroutine から同時に Wait を呼び出してはいけません。
 func Wait()
 
-// Sleep blocks until the current bubble's clock has advanced
-// by the duration of d and every goroutine within the current bubble,
-// other than the current goroutine, is durably blocked.
+// Sleepは、現在のバブルの時計がdの期間だけ進み、現在のゴルーチン以外の
+// 現在のバブル内のすべてのゴルーチンが永続的にブロックされるまでブロックします。
 //
-// This is exactly equivalent to
+// これは次と完全に同等です
 //
 //	time.Sleep(d)
 //	synctest.Wait()
 //
-// In tests, this is often preferable to calling only [time.Sleep].
-// If the test itself and another goroutine running the system under test
-// sleeps for the exact same amount of time, it's unpredictable which
-// of the two goroutines will run first. The test itself usually wants
-// to wait for the system under test to "settle" after sleeping.
-// This is what Sleep accomplishes.
+// テストでは、[time.Sleep]だけを呼び出すよりもこちらの方が望ましい場合がよくあります。
+// テスト自体とテスト対象のシステムを実行している別のゴルーチンがまったく同じ時間だけ
+// スリープする場合、2つのゴルーチンのどちらが先に実行されるかは予測できません。
+// テスト自体は通常、スリープ後にテスト対象のシステムが「落ち着く」のを待ちたいものです。
+// Sleepはそれを実現します。
 func Sleep(d time.Duration)

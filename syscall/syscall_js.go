@@ -17,17 +17,17 @@ type Dirent struct {
 
 const PathMax = 256
 
-// An Errno is an unsigned number describing an error condition.
-// It implements the error interface. The zero Errno is by convention
-// a non-error, so code to convert from Errno to error should use:
+// Errnoは、エラー状態を記述する符号なしの数値です。
+// これはerrorインターフェースを実装します。ゼロのErrnoは慣例により
+// エラーではないため、Errnoからerrorに変換するコードは次のようにするべきです:
 //
 //	err = nil
 //	if errno != 0 {
 //		err = errno
 //	}
 //
-// Errno values can be tested against error values using [errors.Is].
-// For example:
+// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
@@ -41,8 +41,8 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
-// A Signal is a number describing a process signal.
-// It implements the [os.Signal] interface.
+// Signalは、プロセスシグナルを記述する数値です。
+// これは[os.Signal]インターフェースを実装します。
 type Signal int
 
 const (

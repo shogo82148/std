@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// DLLError describes reasons for DLL load failures.
+// DLLErrorは、DLLのロードに失敗した理由を記述します。
 type DLLError struct {
 	Err     error
 	ObjName string
@@ -19,116 +19,110 @@ func (e *DLLError) Error() string
 
 func (e *DLLError) Unwrap() error
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall(trap, nargs, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall6(trap, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall9(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall12(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 uintptr) (r1, r2 uintptr, err Errno)
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall15(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15 uintptr) (r1, r2 uintptr, err Errno)
 
-// Deprecated: Use [SyscallN] instead.
+// Deprecated: 代わりに[SyscallN]を使用してください。
 func Syscall18(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18 uintptr) (r1, r2 uintptr, err Errno)
 
 //go:noescape
 func SyscallN(trap uintptr, args ...uintptr) (r1, r2 uintptr, err Errno)
 
-// A DLL implements access to a single DLL.
+// DLLは、単一のDLLへのアクセスを実装します。
 type DLL struct {
 	Name   string
 	Handle Handle
 }
 
-// LoadDLL loads the named DLL file into memory.
+// LoadDLLは、指定されたDLLファイルをメモリにロードします。
 //
-// If name is not an absolute path and is not a known system DLL used by
-// Go, Windows will search for the named DLL in many locations, causing
-// potential DLL preloading attacks.
+// nameが絶対パスではなく、Goが使用する既知のシステムDLLでもない場合、
+// Windowsは多くの場所で指定されたDLLを検索するため、
+// DLLプリロード攻撃を受ける可能性があります。
 //
-// Use [LazyDLL] in golang.org/x/sys/windows for a secure way to
-// load system DLLs.
+// システムDLLを安全にロードするには、golang.org/x/sys/windowsの[LazyDLL]を使用してください。
 func LoadDLL(name string) (*DLL, error)
 
-// MustLoadDLL is like [LoadDLL] but panics if load operation fails.
+// MustLoadDLLは[LoadDLL]と同様ですが、ロード操作が失敗した場合はパニックします。
 func MustLoadDLL(name string) *DLL
 
-// FindProc searches [DLL] d for procedure named name and returns [*Proc]
-// if found. It returns an error if search fails.
+// FindProcは、[DLL] dからnameという名前のプロシージャを検索し、
+// 見つかった場合は[*Proc]を返します。検索に失敗した場合はエラーを返します。
 func (d *DLL) FindProc(name string) (proc *Proc, err error)
 
-// MustFindProc is like [DLL.FindProc] but panics if search fails.
+// MustFindProcは[DLL.FindProc]と同様ですが、検索に失敗した場合はパニックします。
 func (d *DLL) MustFindProc(name string) *Proc
 
-// Release unloads [DLL] d from memory.
+// Releaseは、[DLL] dをメモリからアンロードします。
 func (d *DLL) Release() (err error)
 
-// A Proc implements access to a procedure inside a [DLL].
+// Procは、[DLL]内のプロシージャへのアクセスを実装します。
 type Proc struct {
 	Dll  *DLL
 	Name string
 	addr uintptr
 }
 
-// Addr returns the address of the procedure represented by p.
-// The return value can be passed to Syscall to run the procedure.
+// Addrは、pが表すプロシージャのアドレスを返します。
+// 戻り値は、プロシージャを実行するためにSyscallに渡すことができます。
 func (p *Proc) Addr() uintptr
 
-// Call executes procedure p with arguments a.
+// Callは、引数aでプロシージャpを実行します。
 //
-// The returned error is always non-nil, constructed from the result of GetLastError.
-// Callers must inspect the primary return value to decide whether an error occurred
-// (according to the semantics of the specific function being called) before consulting
-// the error. The error always has type [Errno].
+// 返されるエラーは常にnilではなく、GetLastErrorの結果から構築されます。
+// 呼び出し元は、エラーを参照する前に、主な戻り値を調べて（呼び出される特定の関数の
+// セマンティクスに従って）エラーが発生したかどうかを判断しなければなりません。
+// エラーは常に[Errno]型です。
 //
-// On amd64, Call can pass and return floating-point values. To pass
-// an argument x with C type "float", use
-// uintptr(math.Float32bits(x)). To pass an argument with C type
-// "double", use uintptr(math.Float64bits(x)). Floating-point return
-// values are returned in r2. The return value for C type "float" is
-// [math.Float32frombits](uint32(r2)). For C type "double", it is
-// [math.Float64frombits](uint64(r2)).
+// amd64では、Callは浮動小数点値を渡したり返したりできます。C型"float"の
+// 引数xを渡すには、uintptr(math.Float32bits(x))を使用します。C型"double"の
+// 引数を渡すには、uintptr(math.Float64bits(x))を使用します。浮動小数点の戻り値は
+// r2で返されます。C型"float"の戻り値は[math.Float32frombits](uint32(r2))です。
+// C型"double"の場合は[math.Float64frombits](uint64(r2))です。
 //
 //go:uintptrescapes
 func (p *Proc) Call(a ...uintptr) (uintptr, uintptr, error)
 
-// A LazyDLL implements access to a single [DLL].
-// It will delay the load of the DLL until the first
-// call to its [LazyDLL.Handle] method or to one of its
-// [LazyProc]'s Addr method.
+// LazyDLLは、単一の[DLL]へのアクセスを実装します。
+// DLLのロードは、その[LazyDLL.Handle]メソッドまたはその[LazyProc]の
+// Addrメソッドのいずれかが最初に呼び出されるまで遅延されます。
 //
-// LazyDLL is subject to the same DLL preloading attacks as documented
-// on [LoadDLL].
+// LazyDLLは、[LoadDLL]で説明されているのと同じDLLプリロード攻撃の対象となります。
 //
-// Use LazyDLL in golang.org/x/sys/windows for a secure way to
-// load system DLLs.
+// システムDLLを安全にロードするには、golang.org/x/sys/windowsのLazyDLLを使用してください。
 type LazyDLL struct {
 	mu   sync.Mutex
 	dll  *DLL
 	Name string
 }
 
-// Load loads DLL file d.Name into memory. It returns an error if fails.
-// Load will not try to load DLL, if it is already loaded into memory.
+// Loadは、DLLファイルd.Nameをメモリにロードします。失敗した場合はエラーを返します。
+// DLLがすでにメモリにロードされている場合、LoadはDLLをロードしようとしません。
 func (d *LazyDLL) Load() error
 
-// Handle returns d's module handle.
+// Handleは、dのモジュールハンドルを返します。
 func (d *LazyDLL) Handle() uintptr
 
-// NewProc returns a [LazyProc] for accessing the named procedure in the [DLL] d.
+// NewProcは、[DLL] d内の指定されたプロシージャにアクセスするための[LazyProc]を返します。
 func (d *LazyDLL) NewProc(name string) *LazyProc
 
-// NewLazyDLL creates new [LazyDLL] associated with [DLL] file.
+// NewLazyDLLは、[DLL]ファイルに関連付けられた新しい[LazyDLL]を作成します。
 func NewLazyDLL(name string) *LazyDLL
 
-// A LazyProc implements access to a procedure inside a [LazyDLL].
-// It delays the lookup until the [LazyProc.Addr], [LazyProc.Call], or [LazyProc.Find] method is called.
+// LazyProcは、[LazyDLL]内のプロシージャへのアクセスを実装します。
+// 検索は、[LazyProc.Addr]、[LazyProc.Call]、[LazyProc.Find]メソッドが呼び出されるまで遅延されます。
 type LazyProc struct {
 	mu   sync.Mutex
 	Name string
@@ -136,17 +130,17 @@ type LazyProc struct {
 	proc *Proc
 }
 
-// Find searches [DLL] for procedure named p.Name. It returns
-// an error if search fails. Find will not search procedure,
-// if it is already found and loaded into memory.
+// Findは、[DLL]からp.Nameという名前のプロシージャを検索します。
+// 検索に失敗した場合はエラーを返します。プロシージャがすでに見つかっていて
+// メモリにロードされている場合、Findはプロシージャを検索しません。
 func (p *LazyProc) Find() error
 
-// Addr returns the address of the procedure represented by p.
-// The return value can be passed to Syscall to run the procedure.
+// Addrは、pが表すプロシージャのアドレスを返します。
+// 戻り値は、プロシージャを実行するためにSyscallに渡すことができます。
 func (p *LazyProc) Addr() uintptr
 
-// Call executes procedure p with arguments a. See the documentation of
-// Proc.Call for more information.
+// Callは、引数aでプロシージャpを実行します。詳細については
+// Proc.Callのドキュメントを参照してください。
 //
 //go:uintptrescapes
 func (p *LazyProc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)

@@ -2,39 +2,38 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package image implements a basic 2-D image library.
+// imageパッケージは、基本的な2次元画像ライブラリを実装します。
 //
-// The fundamental interface is called [Image]. An [Image] contains colors, which
-// are described in the image/color package.
+// 基本的なインターフェースは[Image]と呼ばれます。[Image]は色を含み、
+// 色はimage/colorパッケージで記述されています。
 //
-// Values of the [Image] interface are created either by calling functions such
-// as [NewRGBA] and [NewPaletted], or by calling [Decode] on an [io.Reader] containing
-// image data in a format such as GIF, JPEG or PNG. Decoding any particular
-// image format requires the prior registration of a decoder function.
-// Registration is typically automatic as a side effect of initializing that
-// format's package so that, to decode a PNG image, it suffices to have
+// [Image]インターフェースの値は、[NewRGBA]や[NewPaletted]などの関数を呼び出すか、
+// GIF、JPEG、PNGなどの形式の画像データを含む[io.Reader]に対して[Decode]を
+// 呼び出すことによって作成されます。特定の画像形式をデコードするには、
+// 事前にデコーダ関数を登録する必要があります。
+// 登録は通常、その形式のパッケージを初期化する際の副作用として自動的に行われるため、
+// PNG画像をデコードするには、プログラムのmainパッケージに
 //
 //	import _ "image/png"
 //
-// in a program's main package. The _ means to import a package purely for its
-// initialization side effects.
+// と記述するだけで十分です。_は、初期化の副作用のためだけにパッケージを
+// インポートすることを意味します。
 //
-// See "The Go image package" for more details:
+// 詳細については「The Go image package」を参照してください:
 // https://golang.org/doc/articles/image_package.html
 //
-// # Security Considerations
+// # セキュリティに関する考慮事項
 //
-// The image package can be used to parse arbitrarily large images, which can
-// cause resource exhaustion on machines which do not have enough memory to
-// store them. When operating on arbitrary images, [DecodeConfig] should be called
-// before [Decode], so that the program can decide whether the image, as defined
-// in the returned header, can be safely decoded with the available resources. A
-// call to [Decode] which produces an extremely large image, as defined in the
-// header returned by [DecodeConfig], is not considered a security issue,
-// regardless of whether the image is itself malformed or not. A call to
-// [DecodeConfig] which returns a header which does not match the image returned
-// by [Decode] may be considered a security issue, and should be reported per the
-// [Go Security Policy](https://go.dev/security/policy).
+// imageパッケージは任意の大きさの画像をパースするために使用できますが、
+// それらを格納するのに十分なメモリを持たないマシンではリソースの枯渇を引き起こす可能性があります。
+// 任意の画像を扱う場合は、[Decode]の前に[DecodeConfig]を呼び出して、
+// 返されたヘッダーで定義されている画像を利用可能なリソースで安全にデコードできるかどうかを
+// プログラムが判断できるようにするべきです。[DecodeConfig]が返すヘッダーで
+// 定義されているとおりの非常に大きな画像を生成する[Decode]の呼び出しは、
+// 画像自体が不正な形式であるかどうかにかかわらず、セキュリティ上の問題とはみなされません。
+// [Decode]が返す画像と一致しないヘッダーを返す[DecodeConfig]の呼び出しは
+// セキュリティ上の問題とみなされる可能性があり、
+// [Go Security Policy](https://go.dev/security/policy)に従って報告するべきです。
 package image
 
 import (
@@ -275,7 +274,7 @@ type Alpha16 struct {
 	Pix []uint8
 	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは画像の境界です。
 	Rect Rectangle
 }
 

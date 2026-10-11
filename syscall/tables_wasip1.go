@@ -85,6 +85,6 @@ const (
 	EXDEV           Errno = 75
 	ENOTCAPABLE     Errno = 76
 	EBADFD          Errno = 77
-	// needed by src/net/error_unix_test.go
+	// src/net/error_unix_test.goで必要
 	EOPNOTSUPP = ENOTSUP
 )

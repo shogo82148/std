@@ -14,51 +14,48 @@ type Handle uintptr
 
 const InvalidHandle = ^Handle(0)
 
-// StringToUTF16 returns the UTF-16 encoding of the UTF-8 string s,
-// with a terminating NUL added. If s contains a NUL byte this
-// function panics instead of returning an error.
+// StringToUTF16は、UTF-8文字列sのUTF-16エンコーディングに終端のNULを追加したものを返します。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: Use [UTF16FromString] instead.
+// Deprecated: 代わりに[UTF16FromString]を使用してください。
 func StringToUTF16(s string) []uint16
 
-// UTF16FromString returns the UTF-16 encoding of the UTF-8 string
-// s, with a terminating NUL added. If s contains a NUL byte at any
-// location, it returns (nil, [EINVAL]). Unpaired surrogates
-// are encoded using WTF-8.
+// UTF16FromStringは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを追加したものを返します。
+// sのいずれかの位置にNULバイトが含まれている場合、(nil, [EINVAL])を返します。
+// 対になっていないサロゲートはWTF-8を使用してエンコードされます。
 func UTF16FromString(s string) ([]uint16, error)
 
-// UTF16ToString returns the UTF-8 encoding of the UTF-16 sequence s,
-// with a terminating NUL removed. Unpaired surrogates are decoded
-// using WTF-8 instead of UTF-8 encoding.
+// UTF16ToStringは、UTF-16シーケンスsのUTF-8エンコーディングから終端のNULを
+// 取り除いたものを返します。対になっていないサロゲートは、UTF-8の代わりに
+// WTF-8を使用してデコードされます。
 func UTF16ToString(s []uint16) string
 
-// StringToUTF16Ptr returns pointer to the UTF-16 encoding of
-// the UTF-8 string s, with a terminating NUL added. If s
-// contains a NUL byte this function panics instead of
-// returning an error.
+// StringToUTF16Ptrは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
+// 追加したものへのポインタを返します。sにNULバイトが含まれている場合、
+// この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: Use [UTF16PtrFromString] instead.
+// Deprecated: 代わりに[UTF16PtrFromString]を使用してください。
 func StringToUTF16Ptr(s string) *uint16
 
-// UTF16PtrFromString returns pointer to the UTF-16 encoding of
-// the UTF-8 string s, with a terminating NUL added. If s
-// contains a NUL byte at any location, it returns (nil, EINVAL).
-// Unpaired surrogates are encoded using WTF-8.
+// UTF16PtrFromStringは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
+// 追加したものへのポインタを返します。sのいずれかの位置にNULバイトが
+// 含まれている場合、(nil, EINVAL)を返します。
+// 対になっていないサロゲートはWTF-8を使用してエンコードされます。
 func UTF16PtrFromString(s string) (*uint16, error)
 
-// Errno is the Windows error number.
+// ErrnoはWindowsのエラー番号です。
 //
-// Errno values can be tested against error values using [errors.Is].
-// For example:
+// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
 type Errno uintptr
 
-// FormatMessage is deprecated (msgsrc should be uintptr, not uint32, but can
-// not be changed due to the Go 1 compatibility guarantee).
+// FormatMessageは非推奨です（msgsrcはuint32ではなくuintptrであるべきですが、
+// Go 1の互換性保証により変更できません）。
 //
-// Deprecated: Use FormatMessage from golang.org/x/sys/windows instead.
+// Deprecated: 代わりにgolang.org/x/sys/windowsのFormatMessageを使用してください。
 func FormatMessage(flags uint32, msgsrc uint32, msgid uint32, langid uint32, buf []uint16, args *byte) (n uint32, err error)
 
 func (e Errno) Error() string
@@ -69,20 +66,20 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
-// NewCallback converts a Go function to a function pointer conforming to the stdcall calling convention.
-// This is useful when interoperating with Windows code requiring callbacks.
-// The argument is expected to be a function with one uintptr-sized result. The function must not have arguments with size larger than the size of uintptr.
-// Only a limited number of callbacks may be created in a single Go process, and any memory allocated
-// for these callbacks is never released.
-// Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
+// NewCallbackは、Goの関数をstdcall呼び出し規約に準拠した関数ポインタに変換します。
+// これは、コールバックを必要とするWindowsのコードと相互運用する場合に便利です。
+// 引数は、uintptrサイズの結果を1つ持つ関数であることが期待されます。関数はuintptrのサイズより大きいサイズの引数を持ってはいけません。
+// 単一のGoプロセスで作成できるコールバックの数は限られており、これらのコールバックのために
+// 割り当てられたメモリが解放されることはありません。
+// NewCallbackとNewCallbackCDeclを合わせて、少なくとも1024個のコールバックを常に作成できます。
 func NewCallback(fn any) uintptr
 
-// NewCallbackCDecl converts a Go function to a function pointer conforming to the cdecl calling convention.
-// This is useful when interoperating with Windows code requiring callbacks.
-// The argument is expected to be a function with one uintptr-sized result. The function must not have arguments with size larger than the size of uintptr.
-// Only a limited number of callbacks may be created in a single Go process, and any memory allocated
-// for these callbacks is never released.
-// Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
+// NewCallbackCDeclは、Goの関数をcdecl呼び出し規約に準拠した関数ポインタに変換します。
+// これは、コールバックを必要とするWindowsのコードと相互運用する場合に便利です。
+// 引数は、uintptrサイズの結果を1つ持つ関数であることが期待されます。関数はuintptrのサイズより大きいサイズの引数を持ってはいけません。
+// 単一のGoプロセスで作成できるコールバックの数は限られており、これらのコールバックのために
+// 割り当てられたメモリが解放されることはありません。
+// NewCallbackとNewCallbackCDeclを合わせて、少なくとも1024個のコールバックを常に作成できます。
 func NewCallbackCDecl(fn any) uintptr
 
 func Open(name string, flag int, perm uint32) (fd Handle, err error)
@@ -139,8 +136,8 @@ func LoadCancelIoEx() error
 
 func LoadSetFileCompletionNotificationModes() error
 
-// For testing: clients can set this flag to force
-// creation of IPv6 sockets to return [EAFNOSUPPORT].
+// テスト用: クライアントはこのフラグを設定することで、
+// IPv6ソケットの作成で強制的に[EAFNOSUPPORT]を返すようにできます。
 var SocketDisableIPv6 bool
 
 type RawSockaddrInet4 struct {
@@ -221,7 +218,7 @@ func LoadConnectEx() error
 
 func ConnectEx(fd Handle, sa Sockaddr, sendBuf *byte, sendDataLen uint32, bytesSent *uint32, overlapped *Overlapped) error
 
-// Invented structures to support what package os expects.
+// osパッケージが期待するものをサポートするために作られた構造体。
 type Rusage struct {
 	CreationTime Filetime
 	ExitTime     Filetime
@@ -251,8 +248,8 @@ func (w WaitStatus) Signaled() bool
 
 func (w WaitStatus) TrapCause() int
 
-// Timespec is an invented structure on Windows, but here for
-// consistency with the syscall package for other operating systems.
+// TimespecはWindowsでは作られた構造体ですが、他のオペレーティングシステム向けの
+// syscallパッケージとの一貫性のためにここに存在します。
 type Timespec struct {
 	Sec  int64
 	Nsec int64
@@ -326,42 +323,38 @@ func (s Signal) String() string
 
 func LoadCreateSymbolicLink() error
 
-// Readlink returns the destination of the named symbolic link.
+// Readlinkは、指定されたシンボリックリンクのリンク先を返します。
 func Readlink(path string, buf []byte) (n int, err error)
 
-// Deprecated: CreateIoCompletionPort has the wrong function signature. Use x/sys/windows.CreateIoCompletionPort.
+// Deprecated: CreateIoCompletionPortは関数シグネチャが誤っています。x/sys/windows.CreateIoCompletionPortを使用してください。
 func CreateIoCompletionPort(filehandle Handle, cphandle Handle, key uint32, threadcnt uint32) (Handle, error)
 
-// Deprecated: GetQueuedCompletionStatus has the wrong function signature. Use x/sys/windows.GetQueuedCompletionStatus.
+// Deprecated: GetQueuedCompletionStatusは関数シグネチャが誤っています。x/sys/windows.GetQueuedCompletionStatusを使用してください。
 func GetQueuedCompletionStatus(cphandle Handle, qty *uint32, key *uint32, overlapped **Overlapped, timeout uint32) error
 
-// Deprecated: PostQueuedCompletionStatus has the wrong function signature. Use x/sys/windows.PostQueuedCompletionStatus.
+// Deprecated: PostQueuedCompletionStatusは関数シグネチャが誤っています。x/sys/windows.PostQueuedCompletionStatusを使用してください。
 func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlapped *Overlapped) error
 
-// RegEnumKeyEx enumerates the subkeys of an open registry key.
-// Each call retrieves information about one subkey. name is
-// a buffer that should be large enough to hold the name of the
-// subkey plus a null terminating character. nameLen is its
-// length. On return, nameLen will contain the actual length of the
-// subkey.
+// RegEnumKeyExは、開いているレジストリキーのサブキーを列挙します。
+// 各呼び出しは1つのサブキーに関する情報を取得します。nameは、
+// サブキーの名前とNUL終端文字を保持するのに十分な大きさのバッファであるべきです。
+// nameLenはその長さです。戻り時に、nameLenにはサブキーの実際の長さが含まれます。
 //
-// Should name not be large enough to hold the subkey, this function
-// will return ERROR_MORE_DATA, and must be called again with an
-// appropriately sized buffer.
+// nameがサブキーを保持するのに十分な大きさでない場合、この関数は
+// ERROR_MORE_DATAを返し、適切なサイズのバッファで再度呼び出す必要があります。
 //
-// reserved must be nil. class and classLen behave like name and nameLen
-// but for the class of the subkey, except that they are optional.
-// lastWriteTime, if not nil, will be populated with the time the subkey
-// was last written.
+// reservedはnilでなければなりません。classとclassLenは、nameとnameLenと同様に
+// 動作しますが、サブキーのクラスに対するものであり、省略可能です。
+// lastWriteTimeがnilでない場合、サブキーが最後に書き込まれた時刻が設定されます。
 //
-// The caller must enumerate all subkeys in order. That is
-// RegEnumKeyEx must be called with index starting at 0, incrementing
-// the index until the function returns ERROR_NO_MORE_ITEMS, or with
-// the index of the last subkey (obtainable from RegQueryInfoKey),
-// decrementing until index 0 is enumerated.
+// 呼び出し元はすべてのサブキーを順番に列挙しなければなりません。つまり、
+// RegEnumKeyExは、インデックス0から開始して関数がERROR_NO_MORE_ITEMSを返すまで
+// インデックスを増やしながら呼び出すか、最後のサブキーのインデックス
+// （RegQueryInfoKeyから取得可能）から開始してインデックス0が列挙されるまで
+// 減らしながら呼び出さなければなりません。
 //
-// Successive calls to this API must happen on the same OS thread,
-// so call [runtime.LockOSThread] before calling this function.
+// このAPIの連続した呼び出しは同じOSスレッド上で行われなければならないため、
+// この関数を呼び出す前に[runtime.LockOSThread]を呼び出してください。
 func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)
 
 func GetStartupInfo(startupInfo *StartupInfo) error

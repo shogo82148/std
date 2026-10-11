@@ -16,16 +16,16 @@ var (
 	ErrBadName   = errors.New("bad character in file name")
 )
 
-// A Qid represents a 9P server's unique identification for a file.
+// Qidは、9Pサーバーにおけるファイルの一意な識別子を表します。
 type Qid struct {
 	Path uint64
 	Vers uint32
 	Type uint8
 }
 
-// A Dir contains the metadata for a file.
+// Dirはファイルのメタデータを含みます。
 type Dir struct {
-	// system-modified data
+	// システムによって変更されるデータ
 	Type uint16
 	Dev  uint32
 
@@ -41,18 +41,18 @@ type Dir struct {
 	Muid   string
 }
 
-// Null assigns special "don't touch" values to members of d to
-// avoid modifying them during [Wstat].
+// Nullは、[Wstat]の際に変更されないように、dのメンバーに
+// 特別な「変更しない」値を割り当てます。
 func (d *Dir) Null()
 
-// Marshal encodes a 9P stat message corresponding to d into b
+// Marshalは、dに対応する9Pのstatメッセージをbにエンコードします。
 //
-// If there isn't enough space in b for a stat message, [ErrShortStat] is returned.
+// bにstatメッセージのための十分な領域がない場合、[ErrShortStat]が返されます。
 func (d *Dir) Marshal(b []byte) (n int, err error)
 
-// UnmarshalDir decodes a single 9P stat message from b and returns the resulting Dir.
+// UnmarshalDirは、bから単一の9Pのstatメッセージをデコードし、結果のDirを返します。
 //
-// If b is too small to hold a valid stat message, [ErrShortStat] is returned.
+// bが有効なstatメッセージを保持するには小さすぎる場合、[ErrShortStat]が返されます。
 //
-// If the stat message itself is invalid, [ErrBadStat] is returned.
+// statメッセージ自体が無効な場合、[ErrBadStat]が返されます。
 func UnmarshalDir(b []byte) (*Dir, error)

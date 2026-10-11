@@ -4,12 +4,12 @@
 
 package tls
 
-// ECHRejectionError is the error type returned when ECH is rejected by a remote
-// server. If the server offered a ECHConfigList to use for retries, the
-// RetryConfigList field will contain this list.
+// ECHRejectionErrorは、リモートサーバーによってECHが拒否された場合に返される
+// エラー型です。サーバーが再試行用のECHConfigListを提示した場合、
+// RetryConfigListフィールドにそのリストが含まれます。
 //
-// The client may treat an ECHRejectionError with an empty set of RetryConfigs
-// as a secure signal from the server.
+// クライアントは、RetryConfigsが空のECHRejectionErrorを、
+// サーバーからの安全なシグナルとして扱うことができます。
 type ECHRejectionError struct {
 	RetryConfigList []byte
 }

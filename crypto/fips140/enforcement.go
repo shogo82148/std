@@ -4,18 +4,18 @@
 
 package fips140
 
-// WithoutEnforcement disables strict FIPS 140-3 enforcement while executing f.
-// Calling WithoutEnforcement without strict enforcement enabled
-// (GODEBUG=fips140=only is not set or already inside of a call to
-// WithoutEnforcement) is a no-op.
+// WithoutEnforcementは、fの実行中に厳格なFIPS 140-3の強制を無効にします。
+// 厳格な強制が有効になっていない状態（GODEBUG=fips140=onlyが設定されていないか、
+// すでにWithoutEnforcementの呼び出し内にある場合）でWithoutEnforcementを
+// 呼び出しても何もしません。
 //
-// WithoutEnforcement is inherited by any goroutines spawned while executing f.
+// WithoutEnforcementは、fの実行中に生成されたすべてのゴルーチンに継承されます。
 //
-// As this disables enforcement, it should be applied carefully to tightly
-// scoped functions.
+// これは強制を無効にするため、厳密にスコープが限定された関数に
+// 慎重に適用するべきです。
 func WithoutEnforcement(f func())
 
-// Enforced indicates if strict FIPS 140-3 enforcement is enabled. Strict
-// enforcement is enabled when a program is run with GODEBUG=fips140=only and
-// enforcement has not been disabled by a call to [WithoutEnforcement].
+// Enforcedは、厳格なFIPS 140-3の強制が有効かどうかを示します。
+// 厳格な強制は、プログラムがGODEBUG=fips140=onlyで実行され、
+// [WithoutEnforcement]の呼び出しによって強制が無効化されていない場合に有効になります。
 func Enforced() bool

@@ -151,7 +151,7 @@ func GetsockoptUcred(fd, level, opt int) (*Ucred, error)
 
 func SetsockoptIPMreqn(fd, level, opt int, mreq *IPMreqn) (err error)
 
-// BindToDevice binds the socket associated with fd to device.
+// BindToDeviceは、fdに関連付けられたソケットをデバイスにバインドします。
 func BindToDevice(fd int, device string) (err error)
 
 func PtracePeekText(pid int, addr uintptr, out []byte) (count int, err error)
@@ -188,27 +188,23 @@ func Mount(source string, target string, fstype string, flags uintptr, data stri
 
 func Getpgrp() (pid int)
 
-// AllThreadsSyscall performs a syscall on each OS thread of the Go
-// runtime. It first invokes the syscall on one thread. Should that
-// invocation fail, it returns immediately with the error status.
-// Otherwise, it invokes the syscall on all of the remaining threads
-// in parallel. It will terminate the program if it observes any
-// invoked syscall's return value differs from that of the first
-// invocation.
+// AllThreadsSyscallは、Goランタイムの各OSスレッドでシステムコールを実行します。
+// まず1つのスレッドでシステムコールを呼び出します。その呼び出しが失敗した場合、
+// エラーステータスとともに即座に戻ります。
+// それ以外の場合、残りのすべてのスレッドで並行してシステムコールを呼び出します。
+// 呼び出されたシステムコールの戻り値が最初の呼び出しの戻り値と異なることを
+// 検出した場合、プログラムを終了します。
 //
-// AllThreadsSyscall is intended for emulating simultaneous
-// process-wide state changes that require consistently modifying
-// per-thread state of the Go runtime.
+// AllThreadsSyscallは、Goランタイムのスレッドごとの状態を一貫して変更する必要がある、
+// プロセス全体の同時の状態変更をエミュレートすることを目的としています。
 //
-// AllThreadsSyscall is unaware of any threads that are launched
-// explicitly by cgo linked code, so the function always returns
-// [ENOTSUP] in binaries that use cgo.
+// AllThreadsSyscallは、cgoでリンクされたコードによって明示的に起動された
+// スレッドを認識しないため、cgoを使用するバイナリでは常に[ENOTSUP]を返します。
 //
 //go:uintptrescapes
 func AllThreadsSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 
-// AllThreadsSyscall6 is like [AllThreadsSyscall], but extended to six
-// arguments.
+// AllThreadsSyscall6は[AllThreadsSyscall]と同様ですが、6つの引数に拡張されています。
 //
 //go:uintptrescapes
 func AllThreadsSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)

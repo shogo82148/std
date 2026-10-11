@@ -11,116 +11,115 @@ import (
 )
 
 const (
-	// PSSSaltLengthAuto causes the salt in a PSS signature to be as large
-	// as possible when signing, and to be auto-detected when verifying.
+	// PSSSaltLengthAutoは、署名時にはPSS署名のソルトを可能な限り大きくし、
+	// 検証時には自動検出するようにします。
 	//
-	// When signing in FIPS 140-3 mode, the salt length is capped at the length
-	// of the hash function used in the signature.
+	// FIPS 140-3モードで署名する場合、ソルト長は署名で使用される
+	// ハッシュ関数の長さに制限されます。
 	PSSSaltLengthAuto = 0
-	// PSSSaltLengthEqualsHash causes the salt length to equal the length
-	// of the hash used in the signature.
+	// PSSSaltLengthEqualsHashは、ソルト長を署名で使用されるハッシュの長さと
+	// 等しくします。
 	PSSSaltLengthEqualsHash = -1
 )
 
-// PSSOptions contains options for creating and verifying PSS signatures.
+// PSSOptionsはPSS署名の作成と検証のためのオプションを含みます。
 type PSSOptions struct {
-	// SaltLength controls the length of the salt used in the PSS signature. It
-	// can either be a positive number of bytes, or one of the special
-	// PSSSaltLength constants.
+	// SaltLengthはPSS署名で使用されるソルトの長さを制御します。
+	// 正のバイト数か、特別なPSSSaltLength定数のいずれかを指定できます。
 	SaltLength int
 
-	// Hash is the hash function used to generate the message digest. If not
-	// zero, it overrides the hash function passed to SignPSS. It's required
-	// when using PrivateKey.Sign.
+	// Hashはメッセージダイジェストの生成に使用されるハッシュ関数です。
+	// ゼロでない場合、SignPSSに渡されたハッシュ関数を上書きします。
+	// PrivateKey.Signを使用する場合は必須です。
 	Hash crypto.Hash
 }
 
-// HashFunc returns opts.Hash so that [PSSOptions] implements [crypto.SignerOpts].
+// HashFuncはopts.Hashを返すことで、[PSSOptions]が[crypto.SignerOpts]を実装するようにします。
 func (opts *PSSOptions) HashFunc() crypto.Hash
 
-// SignPSS calculates the signature of digest using PSS.
+// SignPSSはPSSを使用してdigestの署名を計算します。
 //
-// digest must be the result of hashing the input message using the given hash
-// function. The opts argument may be nil, in which case sensible defaults are
-// used. If opts.Hash is set, it overrides hash.
+// digestは、指定されたハッシュ関数を使用して入力メッセージをハッシュした結果でなければなりません。
+// opts引数はnilでもよく、その場合は妥当なデフォルト値が使用されます。
+// opts.Hashが設定されている場合、hashを上書きします。
 //
-// The signature is randomized depending on the message, key, and salt size,
-// using bytes from random. Most applications should use [crypto/rand.Reader] as
-// random.
+// 署名はメッセージ、鍵、ソルトサイズに応じて、randomからのバイトを使用して
+// ランダム化されます。ほとんどのアプリケーションはrandomとして
+// [crypto/rand.Reader]を使用するべきです。
 func SignPSS(random io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
-// VerifyPSS verifies a PSS signature.
+// VerifyPSSはPSS署名を検証します。
 //
-// A valid signature is indicated by returning a nil error. digest must be the
-// result of hashing the input message using the given hash function. The opts
-// argument may be nil, in which case sensible defaults are used. opts.Hash is
-// ignored.
+// 有効な署名であることは、nilエラーを返すことで示されます。digestは、
+// 指定されたハッシュ関数を使用して入力メッセージをハッシュした結果でなければなりません。
+// opts引数はnilでもよく、その場合は妥当なデフォルト値が使用されます。
+// opts.Hashは無視されます。
 //
-// The inputs are not considered confidential, and may leak through timing side
-// channels, or if an attacker has control of part of the inputs.
+// 入力は機密とはみなされず、タイミングサイドチャネルを通じて、
+// あるいは攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts *PSSOptions) error
 
-// EncryptOAEP encrypts the given message with RSA-OAEP.
+// EncryptOAEPは与えられたメッセージをRSA-OAEPで暗号化します。
 //
-// OAEP is parameterised by a hash function that is used as a random oracle.
-// Encryption and decryption of a given message must use the same hash function
-// and sha256.New() is a reasonable choice.
+// OAEPはランダムオラクルとして使用されるハッシュ関数によってパラメータ化されます。
+// 特定のメッセージの暗号化と復号には同じハッシュ関数を使用する必要があり、
+// sha256.New()が妥当な選択です。
 //
-// The random parameter is used as a source of entropy to ensure that
-// encrypting the same message twice doesn't result in the same ciphertext.
-// Most applications should use [crypto/rand.Reader] as random.
+// randomパラメータはエントロピー源として使用され、同じメッセージを2回暗号化しても
+// 同じ暗号文にならないようにします。
+// ほとんどのアプリケーションはrandomとして[crypto/rand.Reader]を使用するべきです。
 //
-// The label parameter may contain arbitrary data that will not be encrypted,
-// but which gives important context to the message. For example, if a given
-// public key is used to encrypt two types of messages then distinct label
-// values could be used to ensure that a ciphertext for one purpose cannot be
-// used for another by an attacker. If not required it can be empty.
+// labelパラメータには暗号化されない任意のデータを含めることができますが、
+// メッセージに重要なコンテキストを与えます。例えば、ある公開鍵が2種類の
+// メッセージの暗号化に使用される場合、異なるlabel値を使用することで、
+// ある目的の暗号文が攻撃者によって別の目的に使用されないようにできます。
+// 必要なければ空でもかまいません。
 //
-// The message must be no longer than the length of the public modulus minus
-// twice the hash length, minus a further 2.
+// メッセージの長さは、公開モジュラスの長さからハッシュ長の2倍を引き、
+// さらに2を引いた長さ以下でなければなりません。
 func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
-// EncryptOAEPWithOptions encrypts the given message with RSA-OAEP using the
-// provided options.
+// EncryptOAEPWithOptionsは、指定されたオプションを使用して
+// 与えられたメッセージをRSA-OAEPで暗号化します。
 //
-// This function should only be used over [EncryptOAEP] when there is a need to
-// specify the OAEP and MGF1 hashes separately.
+// この関数は、OAEPとMGF1のハッシュを個別に指定する必要がある場合にのみ
+// [EncryptOAEP]の代わりに使用するべきです。
 //
-// See [EncryptOAEP] for additional details.
+// 詳細は[EncryptOAEP]を参照してください。
 func EncryptOAEPWithOptions(random io.Reader, pub *PublicKey, msg []byte, opts *OAEPOptions) ([]byte, error)
 
-// DecryptOAEP decrypts ciphertext using RSA-OAEP.
+// DecryptOAEPはRSA-OAEPを使用して暗号文を復号します。
 //
-// OAEP is parameterised by a hash function that is used as a random oracle.
-// Encryption and decryption of a given message must use the same hash function
-// and sha256.New() is a reasonable choice.
+// OAEPはランダムオラクルとして使用されるハッシュ関数によってパラメータ化されます。
+// 特定のメッセージの暗号化と復号には同じハッシュ関数を使用する必要があり、
+// sha256.New()が妥当な選択です。
 //
-// The random parameter is legacy and ignored, and it can be nil.
+// randomパラメータはレガシーであり無視されます。nilでもかまいません。
 //
-// The label parameter must match the value given when encrypting. See
-// [EncryptOAEP] for details.
+// labelパラメータは暗号化時に指定した値と一致しなければなりません。
+// 詳細は[EncryptOAEP]を参照してください。
 func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)
 
-// SignPKCS1v15 calculates the signature of hashed using
-// RSASSA-PKCS1-V1_5-SIGN from RSA PKCS #1 v1.5.  Note that hashed must
-// be the result of hashing the input message using the given hash
-// function. If hash is zero, hashed is signed directly. This isn't
-// advisable except for interoperability.
+// SignPKCS1v15は、RSA PKCS #1 v1.5のRSASSA-PKCS1-V1_5-SIGNを使用して
+// hashedの署名を計算します。hashedは、指定されたハッシュ関数を使用して
+// 入力メッセージをハッシュした結果でなければならないことに注意してください。
+// hashがゼロの場合、hashedは直接署名されます。これは相互運用性のため以外には
+// 推奨されません。
 //
-// The random parameter is legacy and ignored, and it can be nil.
+// randomパラメータはレガシーであり無視されます。nilでもかまいません。
 //
-// This function is deterministic. Thus, if the set of possible
-// messages is small, an attacker may be able to build a map from
-// messages to signatures and identify the signed messages. As ever,
-// signatures provide authenticity, not confidentiality.
+// この関数は決定的です。したがって、可能なメッセージの集合が小さい場合、
+// 攻撃者はメッセージから署名へのマップを構築し、署名されたメッセージを
+// 特定できる可能性があります。いつものことですが、署名は真正性を提供するものであり、
+// 機密性を提供するものではありません。
 func SignPKCS1v15(random io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) ([]byte, error)
 
-// VerifyPKCS1v15 verifies an RSA PKCS #1 v1.5 signature.
-// hashed is the result of hashing the input message using the given hash
-// function and sig is the signature. A valid signature is indicated by
-// returning a nil error. If hash is zero then hashed is used directly. This
-// isn't advisable except for interoperability.
+// VerifyPKCS1v15はRSA PKCS #1 v1.5署名を検証します。
+// hashedは指定されたハッシュ関数を使用して入力メッセージをハッシュした結果であり、
+// sigは署名です。有効な署名であることは、nilエラーを返すことで示されます。
+// hashがゼロの場合、hashedが直接使用されます。これは相互運用性のため以外には
+// 推奨されません。
 //
-// The inputs are not considered confidential, and may leak through timing side
-// channels, or if an attacker has control of part of the inputs.
+// 入力は機密とはみなされず、タイミングサイドチャネルを通じて、
+// あるいは攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error

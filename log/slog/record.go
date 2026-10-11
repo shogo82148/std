@@ -16,21 +16,20 @@ const nAttrsInline = 4
 // 新しいRecordを作成するには、 [NewRecord] を呼び出します。
 // 共有状態のないコピーを作成するには、 [Record.Clone] を使用します。
 type Record struct {
-	// The time at which the output method (Log, Info, etc.) was called.
+	// 出力メソッド（Log、Infoなど）が呼び出された時刻。
 	Time time.Time
 
-	// The log message.
+	// ログメッセージ。
 	Message string
 
-	// The level of the event.
+	// イベントのレベル。
 	Level Level
 
-	// The program counter at the time the record was constructed, as determined
-	// by runtime.Callers. If zero, no program counter is available.
+	// レコードが構築された時点のプログラムカウンタで、runtime.Callersによって決定されます。
+	// ゼロの場合、プログラムカウンタは利用できません。
 	//
-	// The only valid use for this value is as an argument to
-	// [runtime.CallersFrames]. In particular, it must not be passed to
-	// [runtime.FuncForPC].
+	// この値の唯一の有効な使用法は、[runtime.CallersFrames]の引数としての使用です。
+	// 特に、[runtime.FuncForPC]に渡してはいけません。
 	PC uintptr
 
 	// Allocation optimization: an inline array sized to hold
@@ -77,17 +76,17 @@ func (r *Record) Add(args ...any)
 
 // Sourceは、ソースコードの行の場所を記述します。
 type Source struct {
-	// Function is the package path-qualified function name containing the
-	// source line. If non-empty, this string uniquely identifies a single
-	// function in the program. This may be the empty string if not known.
+	// Functionは、ソース行を含むパッケージパスで修飾された関数名です。
+	// 空でない場合、この文字列はプログラム内の単一の関数を一意に識別します。
+	// 不明な場合は空文字列になることがあります。
 	Function string `json:"function"`
-	// File and Line are the file name and line number (1-based) of the source
-	// line. These may be the empty string and zero, respectively, if not known.
+	// FileとLineは、ソース行のファイル名と行番号（1始まり）です。
+	// 不明な場合は、それぞれ空文字列とゼロになることがあります。
 	File string `json:"file"`
 	Line int    `json:"line"`
 }
 
-// Source returns a new Source for the log event using r's PC.
-// If the PC field is zero, meaning the Record was created without the necessary information
-// or the location is unavailable, then nil is returned.
+// Sourceは、rのPCを使用してログイベントの新しいSourceを返します。
+// PCフィールドがゼロの場合、つまりRecordが必要な情報なしで作成されたか、
+// 位置が利用できない場合は、nilが返されます。
 func (r Record) Source() *Source

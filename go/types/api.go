@@ -95,13 +95,13 @@ type Config struct {
 	// IgnoreFuncBodies が設定されている場合、関数の本体は型チェックされません。
 	IgnoreFuncBodies bool
 
-	// If FakeImportC is set, `import "C"` (for packages requiring Cgo)
-	// declares an empty "C" package and errors are omitted for qualified
-	// identifiers referring to package C (which won't find an object).
-	// This feature is intended for the standard library cmd/api tool.
+	// FakeImportCが設定されている場合、`import "C"`（Cgoを必要とするパッケージ用）は
+	// 空の"C"パッケージを宣言し、パッケージCを参照する修飾識別子
+	// （オブジェクトは見つかりません）に対するエラーは省略されます。
+	// この機能は標準ライブラリのcmd/apiツール向けです。
 	//
-	// Caution: Effects may be unpredictable due to follow-on errors.
-	//          Do not use casually!
+	// 注意: 後続のエラーにより、影響が予測できない場合があります。
+	//          安易に使用しないでください！
 	FakeImportC bool
 
 	// go115UsesCgoが設定されている場合、型チェッカーはcmd/cgoを実行して生成された_cgo_gotypes.goファイルを
@@ -242,11 +242,11 @@ type Info struct {
 	// InitOrderはパッケージレベルの初期化子のリストであり、実行する必要がある順序で並んでいます。初期化依存関係に関連する変数を参照する初期化子は、トポロジカル順序で表示されます。他の初期化子はソース順序で表示されます。初期化式を持たない変数は、このリストに表示されません。
 	InitOrder []*Initializer
 
-	// FileVersions maps a file to its Go version string.
-	// If the file doesn't specify a version, the reported
-	// string is Config.GoVersion.
-	// Version strings begin with “go”, like “go1.21”, and
-	// are suitable for use with the [go/version] package.
+	// FileVersionsは、ファイルをそのGoバージョン文字列にマッピングします。
+	// ファイルがバージョンを指定していない場合、報告される文字列は
+	// Config.GoVersionです。
+	// バージョン文字列は“go1.21”のように“go”で始まり、
+	// [go/version]パッケージで使用するのに適しています。
 	FileVersions map[*ast.File]string
 }
 

@@ -2,63 +2,59 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package syscall contains an interface to the low-level operating system
-// primitives. The details vary depending on the underlying system, and
-// by default, godoc will display the syscall documentation for the current
-// system. If you want godoc to display syscall documentation for another
-// system, set $GOOS and $GOARCH to the desired system. For example, if
-// you want to view documentation for freebsd/arm on linux/amd64, set $GOOS
-// to freebsd and $GOARCH to arm.
-// The primary use of syscall is inside other packages that provide a more
-// portable interface to the system, such as "os", "time" and "net".  Use
-// those packages rather than this one if you can.
-// For details of the functions and data types in this package consult
-// the manuals for the appropriate operating system.
-// These calls return err == nil to indicate success; otherwise
-// err is an operating system error describing the failure.
-// On most systems, that error has type [Errno].
+// syscallパッケージは、低レベルのオペレーティングシステムのプリミティブへの
+// インターフェースを含みます。詳細は基礎となるシステムによって異なり、
+// デフォルトでは、godocは現在のシステムのsyscallのドキュメントを表示します。
+// godocに別のシステムのsyscallのドキュメントを表示させたい場合は、
+// $GOOSと$GOARCHを目的のシステムに設定してください。例えば、
+// linux/amd64でfreebsd/armのドキュメントを表示したい場合は、$GOOSを
+// freebsdに、$GOARCHをarmに設定してください。
+// syscallの主な用途は、"os"、"time"、"net"など、システムへのより移植性の高い
+// インターフェースを提供する他のパッケージの内部です。可能であれば、
+// このパッケージではなくそれらのパッケージを使用してください。
+// このパッケージの関数とデータ型の詳細については、適切なオペレーティングシステムの
+// マニュアルを参照してください。
+// これらの呼び出しは成功を示すためにerr == nilを返します。そうでない場合、
+// errは失敗を説明するオペレーティングシステムのエラーです。
+// ほとんどのシステムでは、そのエラーは[Errno]型です。
 //
-// NOTE: Most of the functions, types, and constants defined in
-// this package are also available in the [golang.org/x/sys] package.
-// That package has more system call support than this one,
-// and most new code should prefer that package where possible.
-// See https://golang.org/s/go1.4-syscall for more information.
+// 注意: このパッケージで定義されている関数、型、定数のほとんどは
+// [golang.org/x/sys]パッケージでも利用できます。
+// そのパッケージはこのパッケージよりも多くのシステムコールをサポートしており、
+// ほとんどの新しいコードは可能な限りそのパッケージを優先するべきです。
+// 詳細については https://golang.org/s/go1.4-syscall を参照してください。
 package syscall
 
-// StringByteSlice converts a string to a NUL-terminated []byte,
-// If s contains a NUL byte this function panics instead of
-// returning an error.
+// StringByteSliceは、文字列をNUL終端された[]byteに変換します。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: Use ByteSliceFromString instead.
+// Deprecated: 代わりにByteSliceFromStringを使用してください。
 func StringByteSlice(s string) []byte
 
-// ByteSliceFromString returns a NUL-terminated slice of bytes
-// containing the text of s. If s contains a NUL byte at any
-// location, it returns (nil, [EINVAL]).
+// ByteSliceFromStringは、sのテキストを含むNUL終端されたバイトのスライスを返します。
+// sのいずれかの位置にNULバイトが含まれている場合、(nil, [EINVAL])を返します。
 func ByteSliceFromString(s string) ([]byte, error)
 
-// StringBytePtr returns a pointer to a NUL-terminated array of bytes.
-// If s contains a NUL byte this function panics instead of returning
-// an error.
+// StringBytePtrは、NUL終端されたバイト配列へのポインタを返します。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
-// Deprecated: Use [BytePtrFromString] instead.
+// Deprecated: 代わりに[BytePtrFromString]を使用してください。
 func StringBytePtr(s string) *byte
 
-// BytePtrFromString returns a pointer to a NUL-terminated array of
-// bytes containing the text of s. If s contains a NUL byte at any
-// location, it returns (nil, [EINVAL]).
+// BytePtrFromStringは、sのテキストを含むNUL終端されたバイト配列へのポインタを返します。
+// sのいずれかの位置にNULバイトが含まれている場合、(nil, [EINVAL])を返します。
 func BytePtrFromString(s string) (*byte, error)
 
-// Unix returns the time stored in ts as seconds plus nanoseconds.
+// Unixは、tsに格納されている時間を秒とナノ秒で返します。
 func (ts *Timespec) Unix() (sec int64, nsec int64)
 
-// Unix returns the time stored in tv as seconds plus nanoseconds.
+// Unixは、tvに格納されている時間を秒とナノ秒で返します。
 func (tv *Timeval) Unix() (sec int64, nsec int64)
 
-// Nano returns the time stored in ts as nanoseconds.
+// Nanoは、tsに格納されている時間をナノ秒で返します。
 func (ts *Timespec) Nano() int64
 
-// Nano returns the time stored in tv as nanoseconds.
+// Nanoは、tvに格納されている時間をナノ秒で返します。
 func (tv *Timeval) Nano() int64
 
 func Getpagesize() int

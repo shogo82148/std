@@ -6,55 +6,53 @@
 
 package syscall
 
-// RouteRIB returns routing information base, as known as RIB,
-// which consists of network facility information, states and
-// parameters.
+// RouteRIBは、ネットワーク機能の情報、状態、パラメータで構成される
+// ルーティング情報ベース（RIBとも呼ばれる）を返します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 func RouteRIB(facility, param int) ([]byte, error)
 
-// RoutingMessage represents a routing message.
+// RoutingMessageは、ルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type RoutingMessage interface {
 	sockaddr() ([]Sockaddr, error)
 }
 
-// RouteMessage represents a routing message containing routing
-// entries.
+// RouteMessageは、ルーティングエントリを含むルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type RouteMessage struct {
 	Header RtMsghdr
 	Data   []byte
 }
 
-// InterfaceMessage represents a routing message containing
-// network interface entries.
+// InterfaceMessageは、ネットワークインターフェースのエントリを含む
+// ルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type InterfaceMessage struct {
 	Header IfMsghdr
 	Data   []byte
 }
 
-// InterfaceAddrMessage represents a routing message containing
-// network interface address entries.
+// InterfaceAddrMessageは、ネットワークインターフェースのアドレスエントリを含む
+// ルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type InterfaceAddrMessage struct {
 	Header IfaMsghdr
 	Data   []byte
 }
 
-// ParseRoutingMessage parses b as routing messages and returns the
-// slice containing the [RoutingMessage] interfaces.
+// ParseRoutingMessageは、bをルーティングメッセージとしてパースし、
+// [RoutingMessage]インターフェースを含むスライスを返します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
-// ParseRoutingSockaddr parses msg's payload as raw sockaddrs and
-// returns the slice containing the [Sockaddr] interfaces.
+// ParseRoutingSockaddrは、msgのペイロードを生のsockaddrとしてパースし、
+// [Sockaddr]インターフェースを含むスライスを返します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 func ParseRoutingSockaddr(msg RoutingMessage) ([]Sockaddr, error)

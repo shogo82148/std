@@ -16,17 +16,17 @@ var (
 	Stderr = 2
 )
 
-// An Errno is an unsigned number describing an error condition.
-// It implements the error interface. The zero Errno is by convention
-// a non-error, so code to convert from Errno to error should use:
+// Errnoは、エラー状態を記述する符号なしの数値です。
+// これはerrorインターフェースを実装します。ゼロのErrnoは慣例により
+// エラーではないため、Errnoからerrorに変換するコードは次のようにするべきです:
 //
 //	err = nil
 //	if errno != 0 {
 //		err = errno
 //	}
 //
-// Errno values can be tested against error values using [errors.Is].
-// For example:
+// Errnoの値は、[errors.Is]を使用してエラー値と比較できます。
+// 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
@@ -40,8 +40,8 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
-// A Signal is a number describing a process signal.
-// It implements the [os.Signal] interface.
+// Signalは、プロセスシグナルを記述する数値です。
+// これは[os.Signal]インターフェースを実装します。
 type Signal int
 
 func (s Signal) Signal()
@@ -56,8 +56,8 @@ func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
-// For testing: clients can set this flag to force
-// creation of IPv6 sockets to return [EAFNOSUPPORT].
+// テスト用: クライアントはこのフラグを設定することで、
+// IPv6ソケットの作成で強制的に[EAFNOSUPPORT]を返すようにできます。
 var SocketDisableIPv6 bool
 
 type Sockaddr interface {
@@ -122,20 +122,21 @@ func Socket(domain, typ, proto int) (fd int, err error)
 
 func Socketpair(domain, typ, proto int) (fd [2]int, err error)
 
-// Sendfile copies up to count bytes from file descriptor infd to file descriptor outfd.
+// Sendfileは、ファイルディスクリプタinfdからファイルディスクリプタoutfdに
+// 最大countバイトをコピーします。
 //
-// It wraps the sendfile system call. The behavior varies by operating system,
-// particularly regarding the offset argument and how partial writes are reported.
+// これはsendfileシステムコールをラップします。動作はオペレーティングシステムによって異なり、
+// 特にoffset引数と部分的な書き込みの報告方法に関して異なります。
 //
-// On Linux, if offset is nil, Sendfile uses and updates the current file
-// position of infd. If offset is non-nil, the current file position is
-// unchanged, and the offset pointer is updated to reflect the bytes written.
-// A non-nil error typically implies that no bytes were written.
+// Linuxでは、offsetがnilの場合、Sendfileはinfdの現在のファイル位置を使用して更新します。
+// offsetがnilでない場合、現在のファイル位置は変更されず、offsetポインタが
+// 書き込まれたバイト数を反映するように更新されます。
+// nilでないエラーは通常、バイトが書き込まれなかったことを意味します。
 //
-// On BSD-derived systems (including macOS), if offset is nil, Sendfile panics.
-// The offset argument is not updated by the system call; the caller must manually
-// update the offset using the number of bytes written. These systems may
-// return a non-zero byte count together with an error (for example, EAGAIN).
+// BSD派生システム（macOSを含む）では、offsetがnilの場合、Sendfileはパニックします。
+// offset引数はシステムコールによって更新されないため、呼び出し元は書き込まれたバイト数を
+// 使用して手動でoffsetを更新する必要があります。これらのシステムは、
+// ゼロでないバイト数とエラー（例えばEAGAIN）を同時に返す場合があります。
 //
-// For precise semantics, see the system documentation (e.g., man 2 sendfile).
+// 正確なセマンティクスについては、システムのドキュメント（例えばman 2 sendfile）を参照してください。
 func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)

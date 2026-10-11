@@ -9,174 +9,172 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// OpenInRoot opens the file name in the directory dir.
-// It is equivalent to OpenRoot(dir) followed by opening the file in the root.
+// OpenInRootは、ディレクトリdir内のファイルnameを開きます。
+// これは、OpenRoot(dir)の後にルート内でファイルを開くことと同等です。
 //
-// OpenInRoot returns an error if any component of the name
-// references a location outside of dir.
+// nameのいずれかの構成要素がdirの外部の場所を参照している場合、
+// OpenInRootはエラーを返します。
 //
-// See [Root] for details and limitations.
+// 詳細と制限については[Root]を参照してください。
 func OpenInRoot(dir, name string) (*File, error)
 
-// Root may be used to only access files within a single directory tree.
+// Rootは、単一のディレクトリツリー内のファイルにのみアクセスするために使用できます。
 //
-// Methods on Root can only access files and directories beneath a root directory.
-// If any component of a file name passed to a method of Root references a location
-// outside the root, the method returns an error.
-// File names may reference the directory itself (.).
+// Rootのメソッドは、ルートディレクトリ配下のファイルとディレクトリにのみアクセスできます。
+// Rootのメソッドに渡されたファイル名のいずれかの構成要素がルートの外部の場所を
+// 参照している場合、メソッドはエラーを返します。
+// ファイル名はディレクトリ自体（.）を参照することができます。
 //
-// Methods on Root will follow symbolic links, but symbolic links may not
-// reference a location outside the root.
-// Symbolic links must not be absolute.
+// Rootのメソッドはシンボリックリンクをたどりますが、シンボリックリンクは
+// ルートの外部の場所を参照できません。
+// シンボリックリンクは絶対パスであってはなりません。
 //
-// Methods on Root do not prohibit traversal of filesystem boundaries,
-// Linux bind mounts, /proc special files, or access to Unix device files.
+// Rootのメソッドは、ファイルシステムの境界、Linuxのバインドマウント、
+// /procの特殊ファイルの横断や、Unixデバイスファイルへのアクセスを禁止しません。
 //
-// Methods on Root are safe to be used from multiple goroutines simultaneously.
+// Rootのメソッドは、複数のゴルーチンから同時に使用しても安全です。
 //
-// On most platforms, creating a Root opens a file descriptor or handle referencing
-// the directory. If the directory is moved, methods on Root reference the original
-// directory in its new location.
+// ほとんどのプラットフォームでは、Rootを作成すると、そのディレクトリを参照する
+// ファイルディスクリプタまたはハンドルが開かれます。ディレクトリが移動された場合、
+// Rootのメソッドは新しい場所にある元のディレクトリを参照します。
 //
-// Root's behavior differs on some platforms:
+// Rootの動作は一部のプラットフォームで異なります:
 //
-//   - When GOOS=windows, file names may not reference Windows reserved device names
-//     such as NUL and COM1.
-//   - On Unix, [Root.Chmod], [Root.Chown], and [Root.Chtimes] are vulnerable to a race condition.
-//     If the target of the operation is changed from a regular file to a symlink
-//     while the operation is in progress, the operation may be performed on the link
-//     rather than the link target.
-//   - When GOOS=js, Root is vulnerable to TOCTOU (time-of-check-time-of-use)
-//     attacks in symlink validation, and cannot ensure that operations will not
-//     escape the root.
-//   - When GOOS=plan9 or GOOS=js, Root does not track directories across renames.
-//     On these platforms, a Root references a directory name, not a file descriptor.
-//   - WASI preview 1 (GOOS=wasip1) does not support [Root.Chmod].
+//   - GOOS=windowsの場合、ファイル名はNULやCOM1などのWindowsの予約デバイス名を
+//     参照できません。
+//   - Unixでは、[Root.Chmod]、[Root.Chown]、[Root.Chtimes]は競合状態に対して脆弱です。
+//     操作の進行中に操作の対象が通常のファイルからシンボリックリンクに変更された場合、
+//     操作はリンク先ではなくリンク自体に対して実行される可能性があります。
+//   - GOOS=jsの場合、Rootはシンボリックリンクの検証においてTOCTOU（time-of-check-time-of-use）
+//     攻撃に対して脆弱であり、操作がルートから抜け出さないことを保証できません。
+//   - GOOS=plan9またはGOOS=jsの場合、Rootは名前の変更をまたいでディレクトリを追跡しません。
+//     これらのプラットフォームでは、Rootはファイルディスクリプタではなくディレクトリ名を参照します。
+//   - WASI preview 1（GOOS=wasip1）は[Root.Chmod]をサポートしていません。
 type Root struct {
 	root *root
 }
 
-// OpenRoot opens the named directory.
-// It follows symbolic links in the directory name.
-// If there is an error, it will be of type [*PathError].
+// OpenRootは指定されたディレクトリを開きます。
+// ディレクトリ名のシンボリックリンクをたどります。
+// エラーがある場合、それは[*PathError]型になります。
 func OpenRoot(name string) (*Root, error)
 
-// Name returns the name of the directory presented to OpenRoot.
+// Nameは、OpenRootに渡されたディレクトリの名前を返します。
 //
-// It is safe to call Name after [Close].
+// [Close]の後にNameを呼び出しても安全です。
 func (r *Root) Name() string
 
-// Close closes the Root.
-// After Close is called, methods on Root return errors.
+// CloseはRootを閉じます。
+// Closeが呼び出された後、Rootのメソッドはエラーを返します。
 func (r *Root) Close() error
 
-// Open opens the named file in the root for reading.
-// See [Open] for more details.
+// Openは、ルート内の指定されたファイルを読み取り用に開きます。
+// 詳細は[Open]を参照してください。
 func (r *Root) Open(name string) (*File, error)
 
-// Create creates or truncates the named file in the root.
-// See [Create] for more details.
+// Createは、ルート内の指定されたファイルを作成または切り詰めます。
+// 詳細は[Create]を参照してください。
 func (r *Root) Create(name string) (*File, error)
 
-// OpenFile opens the named file in the root.
-// See [OpenFile] for more details.
+// OpenFileは、ルート内の指定されたファイルを開きます。
+// 詳細は[OpenFile]を参照してください。
 //
-// If perm contains bits other than the nine least-significant bits (0o777),
-// OpenFile returns an error.
+// permに下位9ビット（0o777）以外のビットが含まれている場合、
+// OpenFileはエラーを返します。
 func (r *Root) OpenFile(name string, flag int, perm FileMode) (*File, error)
 
-// OpenRoot opens the named directory in the root.
-// If there is an error, it will be of type [*PathError].
+// OpenRootは、ルート内の指定されたディレクトリを開きます。
+// エラーがある場合、それは[*PathError]型になります。
 func (r *Root) OpenRoot(name string) (*Root, error)
 
-// Chmod changes the mode of the named file in the root to mode.
-// See [Chmod] for more details.
+// Chmodは、ルート内の指定されたファイルのモードをmodeに変更します。
+// 詳細は[Chmod]を参照してください。
 func (r *Root) Chmod(name string, mode FileMode) error
 
-// Mkdir creates a new directory in the root
-// with the specified name and permission bits (before umask).
-// See [Mkdir] for more details.
+// Mkdirは、指定された名前とパーミッションビット（umask適用前）で、
+// ルート内に新しいディレクトリを作成します。
+// 詳細は[Mkdir]を参照してください。
 //
-// If perm contains bits other than the nine least-significant bits (0o777),
-// Mkdir returns an error.
+// permに下位9ビット（0o777）以外のビットが含まれている場合、
+// Mkdirはエラーを返します。
 func (r *Root) Mkdir(name string, perm FileMode) error
 
-// MkdirAll creates a new directory in the root, along with any necessary parents.
-// See [MkdirAll] for more details.
+// MkdirAllは、必要な親ディレクトリとともに、ルート内に新しいディレクトリを作成します。
+// 詳細は[MkdirAll]を参照してください。
 //
-// If perm contains bits other than the nine least-significant bits (0o777),
-// MkdirAll returns an error.
+// permに下位9ビット（0o777）以外のビットが含まれている場合、
+// MkdirAllはエラーを返します。
 func (r *Root) MkdirAll(name string, perm FileMode) error
 
-// Chown changes the numeric uid and gid of the named file in the root.
-// See [Chown] for more details.
+// Chownは、ルート内の指定されたファイルの数値のuidとgidを変更します。
+// 詳細は[Chown]を参照してください。
 func (r *Root) Chown(name string, uid, gid int) error
 
-// Lchown changes the numeric uid and gid of the named file in the root.
-// See [Lchown] for more details.
+// Lchownは、ルート内の指定されたファイルの数値のuidとgidを変更します。
+// 詳細は[Lchown]を参照してください。
 func (r *Root) Lchown(name string, uid, gid int) error
 
-// Chtimes changes the access and modification times of the named file in the root.
-// See [Chtimes] for more details.
+// Chtimesは、ルート内の指定されたファイルのアクセス時刻と更新時刻を変更します。
+// 詳細は[Chtimes]を参照してください。
 func (r *Root) Chtimes(name string, atime time.Time, mtime time.Time) error
 
-// Remove removes the named file or (empty) directory in the root.
-// See [Remove] for more details.
+// Removeは、ルート内の指定されたファイルまたは（空の）ディレクトリを削除します。
+// 詳細は[Remove]を参照してください。
 func (r *Root) Remove(name string) error
 
-// RemoveAll removes the named file or directory and any children that it contains.
-// See [RemoveAll] for more details.
+// RemoveAllは、指定されたファイルまたはディレクトリと、それに含まれるすべての子を削除します。
+// 詳細は[RemoveAll]を参照してください。
 func (r *Root) RemoveAll(name string) error
 
-// Stat returns a [FileInfo] describing the named file in the root.
-// See [Stat] for more details.
+// Statは、ルート内の指定されたファイルを記述する[FileInfo]を返します。
+// 詳細は[Stat]を参照してください。
 func (r *Root) Stat(name string) (FileInfo, error)
 
-// Lstat returns a [FileInfo] describing the named file in the root.
-// If the file is a symbolic link, the returned FileInfo
-// describes the symbolic link.
-// See [Lstat] for more details.
+// Lstatは、ルート内の指定されたファイルを記述する[FileInfo]を返します。
+// ファイルがシンボリックリンクの場合、返されるFileInfoは
+// シンボリックリンクを記述します。
+// 詳細は[Lstat]を参照してください。
 func (r *Root) Lstat(name string) (FileInfo, error)
 
-// Readlink returns the destination of the named symbolic link in the root.
-// See [Readlink] for more details.
+// Readlinkは、ルート内の指定されたシンボリックリンクのリンク先を返します。
+// 詳細は[Readlink]を参照してください。
 func (r *Root) Readlink(name string) (string, error)
 
-// Rename renames (moves) oldname to newname.
-// Both paths are relative to the root.
-// See [Rename] for more details.
+// Renameは、oldnameをnewnameに名前変更（移動）します。
+// 両方のパスはルートからの相対パスです。
+// 詳細は[Rename]を参照してください。
 func (r *Root) Rename(oldname, newname string) error
 
-// Link creates newname as a hard link to the oldname file.
-// Both paths are relative to the root.
-// See [Link] for more details.
+// Linkは、oldnameファイルへのハードリンクとしてnewnameを作成します。
+// 両方のパスはルートからの相対パスです。
+// 詳細は[Link]を参照してください。
 //
-// If oldname is a symbolic link, Link creates new link to oldname and not its target.
-// This behavior may differ from that of [Link] on some platforms.
+// oldnameがシンボリックリンクの場合、Linkはそのリンク先ではなくoldnameへの新しいリンクを作成します。
+// この動作は、一部のプラットフォームでは[Link]の動作と異なる場合があります。
 //
-// When GOOS=js, Link returns an error if oldname is a symbolic link.
+// GOOS=jsの場合、oldnameがシンボリックリンクであればLinkはエラーを返します。
 func (r *Root) Link(oldname, newname string) error
 
-// Symlink creates newname as a symbolic link to oldname.
-// See [Symlink] for more details.
+// Symlinkは、oldnameへのシンボリックリンクとしてnewnameを作成します。
+// 詳細は[Symlink]を参照してください。
 //
-// Symlink does not validate oldname,
-// which may reference a location outside the root.
+// Symlinkはoldnameを検証しないため、
+// oldnameはルートの外部の場所を参照する可能性があります。
 //
-// On Windows, a directory link is created if oldname references
-// a directory within the root. Otherwise a file link is created.
+// Windowsでは、oldnameがルート内のディレクトリを参照している場合はディレクトリリンクが
+// 作成されます。それ以外の場合はファイルリンクが作成されます。
 func (r *Root) Symlink(oldname, newname string) error
 
-// ReadFile reads the named file in the root and returns its contents.
-// See [ReadFile] for more details.
+// ReadFileは、ルート内の指定されたファイルを読み取り、その内容を返します。
+// 詳細は[ReadFile]を参照してください。
 func (r *Root) ReadFile(name string) ([]byte, error)
 
-// WriteFile writes data to the named file in the root, creating it if necessary.
-// See [WriteFile] for more details.
+// WriteFileは、ルート内の指定されたファイルにデータを書き込みます。必要に応じてファイルを作成します。
+// 詳細は[WriteFile]を参照してください。
 func (r *Root) WriteFile(name string, data []byte, perm FileMode) error
 
-// FS returns a file system (an fs.FS) for the tree of files in the root.
+// FSは、ルート内のファイルツリーのためのファイルシステム（fs.FS）を返します。
 //
-// The result implements [io/fs.StatFS], [io/fs.ReadFileFS],
-// [io/fs.ReadDirFS], and [io/fs.ReadLinkFS].
+// 結果は[io/fs.StatFS]、[io/fs.ReadFileFS]、[io/fs.ReadDirFS]、
+// [io/fs.ReadLinkFS]を実装します。
 func (r *Root) FS() fs.FS

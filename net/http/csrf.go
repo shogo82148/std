@@ -9,22 +9,22 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// CrossOriginProtection implements protections against [Cross-Site Request
-// Forgery (CSRF)] by rejecting non-safe cross-origin browser requests.
+// CrossOriginProtectionは、安全でないクロスオリジンのブラウザリクエストを拒否することで、
+// [Cross-Site Request Forgery (CSRF)]に対する保護を実装します。
 //
-// Cross-origin requests are currently detected with the [Sec-Fetch-Site]
-// header, available in all browsers since 2023, or by comparing the hostname of
-// the [Origin] header with the Host header.
+// クロスオリジンリクエストは現在、2023年以降すべてのブラウザで利用可能な
+// [Sec-Fetch-Site]ヘッダーによって、または[Origin]ヘッダーのホスト名と
+// Hostヘッダーを比較することによって検出されます。
 //
-// The GET, HEAD, and OPTIONS methods are [safe methods] and are always allowed.
-// It's important that applications do not perform any state changing actions
-// due to requests with safe methods.
+// GET、HEAD、OPTIONSメソッドは[safe methods]であり、常に許可されます。
+// アプリケーションが安全なメソッドのリクエストによって状態を変更する
+// アクションを実行しないことが重要です。
 //
-// Requests without Sec-Fetch-Site or Origin headers are currently assumed to be
-// either same-origin or non-browser requests, and are allowed.
+// Sec-Fetch-SiteヘッダーもOriginヘッダーもないリクエストは、現在、
+// 同一オリジンまたはブラウザ以外からのリクエストとみなされ、許可されます。
 //
-// The zero value of CrossOriginProtection is valid and has no trusted origins
-// or bypass patterns.
+// CrossOriginProtectionのゼロ値は有効であり、信頼されたオリジンや
+// バイパスパターンを持ちません。
 //
 // [Sec-Fetch-Site]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
 // [Origin]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
@@ -37,48 +37,47 @@ type CrossOriginProtection struct {
 	deny      atomic.Pointer[Handler]
 }
 
-// NewCrossOriginProtection returns a new [CrossOriginProtection] value.
+// NewCrossOriginProtectionは新しい[CrossOriginProtection]の値を返します。
 func NewCrossOriginProtection() *CrossOriginProtection
 
-// AddTrustedOrigin allows all requests with an [Origin] header
-// which exactly matches the given value.
+// AddTrustedOriginは、指定された値と完全に一致する[Origin]ヘッダーを持つ
+// すべてのリクエストを許可します。
 //
-// Origin header values are of the form "scheme://host[:port]".
+// Originヘッダーの値は"scheme://host[:port]"の形式です。
 //
-// AddTrustedOrigin can be called concurrently with other methods
-// or request handling, and applies to future requests.
+// AddTrustedOriginは他のメソッドやリクエスト処理と並行して呼び出すことができ、
+// 以降のリクエストに適用されます。
 //
 // [Origin]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
 func (c *CrossOriginProtection) AddTrustedOrigin(origin string) error
 
-// AddInsecureBypassPattern permits all requests that match the given pattern.
+// AddInsecureBypassPatternは、指定されたパターンに一致するすべてのリクエストを許可します。
 //
-// The pattern syntax and precedence rules are the same as [ServeMux]. Only
-// requests that match the pattern directly are permitted. Those that ServeMux
-// would redirect to a pattern (e.g. after cleaning the path or adding a
-// trailing slash) are not.
+// パターンの構文と優先順位のルールは[ServeMux]と同じです。パターンに直接一致する
+// リクエストのみが許可されます。ServeMuxがパターンにリダイレクトするリクエスト
+// （例えばパスのクリーンアップや末尾のスラッシュの追加の後）は許可されません。
 //
-// AddInsecureBypassPattern can be called concurrently with other methods or
-// request handling, and applies to future requests.
+// AddInsecureBypassPatternは他のメソッドやリクエスト処理と並行して呼び出すことができ、
+// 以降のリクエストに適用されます。
 func (c *CrossOriginProtection) AddInsecureBypassPattern(pattern string)
 
-// SetDenyHandler sets a handler to invoke when a request is rejected.
-// The default error handler responds with a 403 Forbidden status.
+// SetDenyHandlerは、リクエストが拒否されたときに呼び出すハンドラを設定します。
+// デフォルトのエラーハンドラは403 Forbiddenステータスで応答します。
 //
-// SetDenyHandler can be called concurrently with other methods
-// or request handling, and applies to future requests.
+// SetDenyHandlerは他のメソッドやリクエスト処理と並行して呼び出すことができ、
+// 以降のリクエストに適用されます。
 //
-// Check does not call the error handler.
+// Checkはエラーハンドラを呼び出しません。
 func (c *CrossOriginProtection) SetDenyHandler(h Handler)
 
-// Check applies cross-origin checks to a request.
-// It returns an error if the request should be rejected.
+// Checkはリクエストにクロスオリジンチェックを適用します。
+// リクエストを拒否すべき場合はエラーを返します。
 func (c *CrossOriginProtection) Check(req *Request) error
 
-// Handler returns a handler that applies cross-origin checks
-// before invoking the handler h.
+// Handlerは、ハンドラhを呼び出す前にクロスオリジンチェックを適用する
+// ハンドラを返します。
 //
-// If a request fails cross-origin checks, the request is rejected
-// with a 403 Forbidden status or handled with the handler passed
-// to [CrossOriginProtection.SetDenyHandler].
+// リクエストがクロスオリジンチェックに失敗した場合、そのリクエストは
+// 403 Forbiddenステータスで拒否されるか、[CrossOriginProtection.SetDenyHandler]に
+// 渡されたハンドラで処理されます。
 func (c *CrossOriginProtection) Handler(h Handler) Handler

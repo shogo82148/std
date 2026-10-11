@@ -10,34 +10,33 @@ import (
 	"github.com/shogo82148/std/internal/synctest"
 )
 
-// Func is a wrapped Go function to be called by JavaScript.
+// Funcは、JavaScriptから呼び出されるようにラップされたGoの関数です。
 type Func struct {
 	Value
 	bubble *synctest.Bubble
 	id     uint32
 }
 
-// FuncOf returns a function to be used by JavaScript.
+// FuncOfは、JavaScriptで使用される関数を返します。
 //
-// The Go function fn is called with the value of JavaScript's "this" keyword and the
-// arguments of the invocation. The return value of the invocation is
-// the result of the Go function mapped back to JavaScript according to ValueOf.
+// Goの関数fnは、JavaScriptの"this"キーワードの値と呼び出しの引数で呼び出されます。
+// 呼び出しの戻り値は、ValueOfに従ってJavaScriptにマッピングし直された
+// Goの関数の結果です。
 //
-// Invoking the wrapped Go function from JavaScript will
-// pause the event loop and spawn a new goroutine.
-// Other wrapped functions which are triggered during a call from Go to JavaScript
-// get executed on the same goroutine.
+// JavaScriptからラップされたGoの関数を呼び出すと、イベントループが一時停止し、
+// 新しいゴルーチンが生成されます。
+// GoからJavaScriptへの呼び出し中にトリガーされた他のラップされた関数は、
+// 同じゴルーチン上で実行されます。
 //
-// As a consequence, if one wrapped function blocks, JavaScript's event loop
-// is blocked until that function returns. Hence, calling any async JavaScript
-// API, which requires the event loop, like fetch (http.Client), will cause an
-// immediate deadlock. Therefore a blocking function should explicitly start a
-// new goroutine.
+// その結果、ラップされた関数の1つがブロックすると、JavaScriptのイベントループは
+// その関数が戻るまでブロックされます。したがって、fetch（http.Client）のような
+// イベントループを必要とする非同期のJavaScript APIを呼び出すと、即座にデッドロックが
+// 発生します。そのため、ブロックする関数は明示的に新しいゴルーチンを開始するべきです。
 //
-// Func.Release must be called to free up resources when the function will not be invoked any more.
+// 関数がもう呼び出されなくなったら、リソースを解放するためにFunc.Releaseを呼び出す必要があります。
 func FuncOf(fn func(this Value, args []Value) any) Func
 
-// Release frees up resources allocated for the function.
-// The function must not be invoked after calling Release.
-// It is allowed to call Release while the function is still running.
+// Releaseは、関数のために割り当てられたリソースを解放します。
+// Releaseを呼び出した後に関数を呼び出してはいけません。
+// 関数がまだ実行中にReleaseを呼び出すことは許可されています。
 func (c Func) Release()

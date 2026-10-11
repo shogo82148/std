@@ -7,7 +7,7 @@
 // それらのパッケージを使用してテンプレートを構築する必要があります。
 package parse
 
-// Tree is the representation of a single parsed template.
+// Treeは、単一のパースされたテンプレートの表現です。
 type Tree struct {
 	Name      string
 	ParseName string

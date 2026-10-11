@@ -93,6 +93,6 @@ const (
 	SourceKey = "source"
 )
 
-// DiscardHandler discards all log output.
-// DiscardHandler.Enabled returns false for all Levels.
+// DiscardHandlerはすべてのログ出力を破棄します。
+// DiscardHandler.Enabledはすべてのレベルに対してfalseを返します。
 var DiscardHandler Handler = discardHandler{}

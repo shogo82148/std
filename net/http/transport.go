@@ -245,17 +245,17 @@ type Transport struct {
 	// アップグレードを試みるには、これをtrueに設定します。
 	ForceAttemptHTTP2 bool
 
-	// HTTP2 configures HTTP/2 connections.
+	// HTTP2はHTTP/2接続を設定します。
 	HTTP2 *HTTP2Config
 
-	// Protocols is the set of protocols supported by the transport.
+	// Protocolsは、トランスポートがサポートするプロトコルのセットです。
 	//
-	// If Protocols includes UnencryptedHTTP2 and does not include HTTP1,
-	// the transport will use unencrypted HTTP/2 for requests for http:// URLs.
+	// ProtocolsがUnencryptedHTTP2を含み、HTTP1を含まない場合、
+	// トランスポートはhttp:// URLへのリクエストに暗号化されていないHTTP/2を使用します。
 	//
-	// If Protocols is nil, the default is usually HTTP/1 only.
-	// If ForceAttemptHTTP2 is true, or if TLSNextProto contains an "h2" entry,
-	// the default is HTTP/1 and HTTP/2.
+	// Protocolsがnilの場合、デフォルトは通常HTTP/1のみです。
+	// ForceAttemptHTTP2がtrueの場合、またはTLSNextProtoに"h2"エントリが含まれている場合、
+	// デフォルトはHTTP/1とHTTP/2です。
 	Protocols *Protocols
 }
 
