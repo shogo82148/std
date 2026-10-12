@@ -7,7 +7,6 @@ package types
 // Signatureは（ビルトインでない）関数またはメソッドの型を表します。
 // シグネチャを同一性で比較する際は、レシーバーは無視されます。
 type Signature struct {
-
 	// シグネチャのスコープを維持する必要があります（それを渡すのではなく、Funcオブジェクトに保存します）。
 	// なぜなら、関数リテラルの型チェック時に一般的な型チェッカーが呼び出され、一般的なタイプが返されるからです。
 	// 次に、*Signature を展開してリテラルの本体のためにスコープを使用します。
@@ -68,5 +67,5 @@ func (s *Signature) Results() *Tuple
 // Variadicは、シグネチャsが可変長引数であるかどうかを報告します。
 func (s *Signature) Variadic() bool
 
-func (t *Signature) Underlying() Type
-func (t *Signature) String() string
+func (s *Signature) Underlying() Type
+func (s *Signature) String() string

@@ -32,6 +32,7 @@ package obj
 
 import (
 	"github.com/shogo82148/std/bufio"
+	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/cmd/internal/dwarf"
 	"github.com/shogo82148/std/cmd/internal/goobj"
 	"github.com/shogo82148/std/cmd/internal/objabi"
@@ -298,9 +299,10 @@ type FuncInfo struct {
 	WrapInfo           *LSym
 	JumpTables         []JumpTable
 
-	FuncInfoSym   *LSym
-	WasmImportSym *LSym
-	WasmImport    *WasmImport
+	FuncInfoSym *LSym
+
+	WasmImport *WasmImport
+	WasmExport *WasmExport
 
 	sehUnwindInfoSym *LSym
 }
@@ -351,6 +353,9 @@ type TypeInfo struct {
 
 func (s *LSym) NewTypeInfo() *TypeInfo
 
+// TypeInfo returns the *TypeInfo associated with s, or else nil.
+func (s *LSym) TypeInfo() *TypeInfo
+
 // An ItabInfo contains information for a symbol
 // that contains a runtime.itab.
 type ItabInfo struct {
@@ -358,6 +363,9 @@ type ItabInfo struct {
 }
 
 func (s *LSym) NewItabInfo() *ItabInfo
+
+// ItabInfo returns the *ItabInfo associated with s, or else nil.
+func (s *LSym) ItabInfo() *ItabInfo
 
 // WasmImport represents a WebAssembly (WASM) imported function with
 // parameters and results translated into WASM types based on the Go function
@@ -369,13 +377,45 @@ type WasmImport struct {
 	// Name holds the WASM imported function name specified by the
 	// //go:wasmimport directive.
 	Name string
-	// Params holds the imported function parameter fields.
+
+	WasmFuncType
+
+	// aux symbol to pass metadata to the linker, serialization of
+	// the fields above.
+	AuxSym *LSym
+}
+
+func (wi *WasmImport) CreateAuxSym()
+
+func (wi *WasmImport) Write(w *bytes.Buffer)
+
+func (wi *WasmImport) Read(b []byte)
+
+// WasmFuncType represents a WebAssembly (WASM) function type with
+// parameters and results translated into WASM types based on the Go function
+// declaration.
+type WasmFuncType struct {
+	// Params holds the function parameter fields.
 	Params []WasmField
-	// Results holds the imported function result fields.
+	// Results holds the function result fields.
 	Results []WasmField
 }
 
-func (wi *WasmImport) CreateSym(ctxt *Link) *LSym
+func (ft *WasmFuncType) Write(w *bytes.Buffer)
+
+func (ft *WasmFuncType) Read(b []byte)
+
+// WasmExport represents a WebAssembly (WASM) exported function with
+// parameters and results translated into WASM types based on the Go function
+// declaration.
+type WasmExport struct {
+	WasmFuncType
+
+	WrappedSym *LSym
+	AuxSym     *LSym
+}
+
+func (we *WasmExport) CreateAuxSym()
 
 type WasmField struct {
 	Type WasmFieldType

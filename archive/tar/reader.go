@@ -8,9 +8,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-type fileReader struct{}
-type block struct{}
-
 // Readerはtarアーカイブの内容に順次アクセスするためのものです。
 // Reader.Next はアーカイブ内の次のファイル（最初のファイルを含む）に進み、
 // その後、Readerはファイルのデータにアクセスするためのio.Readerとして扱うことができます。

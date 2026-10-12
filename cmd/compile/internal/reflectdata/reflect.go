@@ -5,22 +5,15 @@
 package reflectdata
 
 import (
+	"github.com/shogo82148/std/internal/abi"
+
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
-// MapBucketType makes the map bucket type given the type of the map.
-func MapBucketType(t *types.Type) *types.Type
-
-// MapType returns a type interchangeable with runtime.hmap.
-// Make sure this stays in sync with runtime/map.go.
-func MapType() *types.Type
-
-// MapIterType returns a type interchangeable with runtime.hiter.
-// Make sure this stays in sync with runtime/map.go.
-func MapIterType() *types.Type
+func ABIKindOfType(t *types.Type) abi.Kind
 
 // TrackSym returns the symbol for tracking use of field/method f, assumed
 // to be a member of struct/interface type t.
@@ -79,7 +72,7 @@ func WriteBasicTypes()
 // GC information is always a bitmask, never a gc program.
 // GCSym may be called in concurrent backend, so it does not emit the symbol
 // content.
-func GCSym(t *types.Type) (lsym *obj.LSym, ptrdata int64)
+func GCSym(t *types.Type, onDemandAllowed bool) (lsym *obj.LSym, ptrdata int64)
 
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.

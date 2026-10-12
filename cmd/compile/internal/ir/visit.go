@@ -89,6 +89,13 @@ package ir
 // by directly calling the ones provided by this package.
 func DoChildren(n Node, do func(Node) bool) bool
 
+// DoChildrenWithHidden is like DoChildren, but also visits
+// Node-typed fields tagged with `mknode:"-"`.
+//
+// TODO(mdempsky): Remove the `mknode:"-"` tags so this function can
+// go away.
+func DoChildrenWithHidden(n Node, do func(Node) bool) bool
+
 // Visit visits each non-nil node x in the IR tree rooted at n
 // in a depth-first preorder traversal, calling visit on each node visited.
 func Visit(n Node, visit func(Node))
@@ -107,12 +114,6 @@ func VisitFuncAndClosures(fn *Func, visit func(n Node))
 // Any ends the traversal and returns true immediately.
 // Otherwise Any returns false after completing the entire traversal.
 func Any(n Node, cond func(Node) bool) bool
-
-// AnyList calls Any(x, cond) for each node x in the list, in order.
-// If any call returns true, AnyList stops and returns true.
-// Otherwise, AnyList returns false after calling Any(x, cond)
-// for every x in the list.
-func AnyList(list Nodes, cond func(Node) bool) bool
 
 // EditChildren edits the child nodes of n, replacing each child x with edit(x).
 //

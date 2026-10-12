@@ -160,6 +160,11 @@ type WasmImport struct {
 	Name   string
 }
 
+// WasmExport stores metadata associated with the //go:wasmexport pragma.
+type WasmExport struct {
+	Name string
+}
+
 // NewFunc returns a new Func with the given name and type.
 //
 // fpos is the position of the "func" token, and npos is the position
@@ -217,8 +222,6 @@ func (f *Func) Dupok() bool
 func (f *Func) Wrapper() bool
 func (f *Func) ABIWrapper() bool
 func (f *Func) Needctxt() bool
-func (f *Func) IsHiddenClosure() bool
-func (f *Func) IsDeadcodeClosure() bool
 func (f *Func) HasDefer() bool
 func (f *Func) NilCheckDisabled() bool
 func (f *Func) InlinabilityChecked() bool
@@ -231,8 +234,6 @@ func (f *Func) SetDupok(b bool)
 func (f *Func) SetWrapper(b bool)
 func (f *Func) SetABIWrapper(b bool)
 func (f *Func) SetNeedctxt(b bool)
-func (f *Func) SetIsHiddenClosure(b bool)
-func (f *Func) SetIsDeadcodeClosure(b bool)
 func (f *Func) SetHasDefer(b bool)
 func (f *Func) SetNilCheckDisabled(b bool)
 func (f *Func) SetInlinabilityChecked(b bool)
@@ -296,7 +297,7 @@ func (fn *Func) IsInlinedClosure() bool
 // should have an inline-adjusted position, whereas the ODCLFUNC and
 // ONAME must not.
 //
-// outerfn is the enclosing function, if any. The returned function is
+// outerfn is the enclosing function. The returned function is
 // appending to pkg.Funcs.
 //
 // why is the reason we're generating this Func. It can be OCLOSURE

@@ -5,8 +5,7 @@
 package poll
 
 import (
-	"runtime"
-
+	"github.com/shogo82148/std/runtime"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/syscall"
 )
@@ -30,11 +29,6 @@ type FD struct {
 
 	// System file descriptor. Immutable until Close.
 	Sysfd syscall.Handle
-
-	// Read operation.
-	rop operation
-	// Write operation.
-	wop operation
 
 	// I/O poller.
 	pd pollDesc
@@ -126,7 +120,7 @@ func (fd *FD) Read(buf []byte) (int, error)
 var ReadConsole = syscall.ReadConsole
 
 // Pread emulates the Unix pread system call.
-func (fd *FD) Pread(b []byte, off int64) (int, error)
+func (fd *FD) Pread(buf []byte, off int64) (int, error)
 
 // ReadFrom wraps the recvfrom network call.
 func (fd *FD) ReadFrom(buf []byte) (int, syscall.Sockaddr, error)

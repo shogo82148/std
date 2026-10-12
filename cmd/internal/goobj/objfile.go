@@ -134,6 +134,7 @@ const (
 	SymFlagLinkname
 	SymFlagLinknameStd
 	SymFlagABIWrapper
+	SymFlagWasmExport
 )
 
 // Returns the length of the name of the symbol.
@@ -163,6 +164,7 @@ func (s *Sym) IsPkgInit() bool
 func (s *Sym) IsLinkname() bool
 func (s *Sym) IsLinknameStd() bool
 func (s *Sym) ABIWrapper() bool
+func (s *Sym) WasmExport() bool
 
 func (s *Sym) SetName(x string, w *Writer)
 
@@ -251,6 +253,7 @@ const (
 	AuxPcinline
 	AuxPcdata
 	AuxWasmImport
+	AuxWasmType
 	AuxSehUnwindInfo
 )
 

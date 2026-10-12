@@ -92,8 +92,6 @@ func (v *Value) AuxArm64ConditionalParams() Arm64ConditionalParams
 
 func (v *Value) AuxSizeAndAlign() (int64, int64)
 
-func (v *Value) AuxSizeAndAlign() (int64, int64)
-
 // long form print.  v# = opcode <type> [aux] args [: reg] (names)
 func (v *Value) LongString() string
 

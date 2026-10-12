@@ -8,8 +8,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-const nAttrsInline = 4
-
 // Recordは、ログイベントに関する情報を保持します。
 // Recordのコピーは状態を共有します。
 // Recordをコピーしてから変更しないでください。

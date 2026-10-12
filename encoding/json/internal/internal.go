@@ -22,6 +22,7 @@ var AllowInternalUse NotForPublicUse
 var (
 	ErrCycle           = errors.New("encountered a cycle")
 	ErrNonNilReference = errors.New("value must be passed as a non-nil pointer reference")
+	ErrNilInterface    = errors.New("cannot derive concrete type for nil interface with finite type set")
 )
 
 // ValueError wraps the error with a Go value relevant to the error.

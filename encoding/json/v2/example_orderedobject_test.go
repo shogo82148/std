@@ -7,8 +7,6 @@
 package json_test
 
 import (
-	"encoding/json"
-
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/reflect"

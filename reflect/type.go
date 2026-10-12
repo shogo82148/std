@@ -243,14 +243,6 @@ func PointerTo(t Type) Type
 // もしtのサイズがこの制限以上である場合、ChanOfはパニックを引き起こします。
 func ChanOf(dir ChanDir, t Type) Type
 
-// MapOfは、指定されたキーと要素の型を持つマップ型を返します。
-// 例えば、kがintを表し、eがstringを表す場合、
-// MapOf(k, e)はmap[int]stringを表します。
-//
-// キーの型が有効なマップキーの型でない場合（つまり、Goの==演算子を
-// 実装していない場合）、MapOfはパニックを引き起こします。
-func MapOf(key, elem Type) Type
-
 // FuncOfは与えられた引数と戻り値の型を持つ関数型を返します。
 // 例えば、kがintを表し、eがstringを表す場合、
 // FuncOf([]Type{k}, []Type{e}, false)はfunc(int) stringを表します。

@@ -22,7 +22,7 @@ type Ordered interface {
 // Less xがyより小さい場合にtrueを報告します。
 // 浮動小数点型にはNaN（「非数」）値が含まれる場合があります。
 // NaN値は、任意の非NaN値よりも小さいと見なされ、-0.0は0.0より小さくありません（等しいです）。
-func Less[T Ordered](x, y T) bool { return false }
+func Less[T Ordered](x, y T) bool
 
 // Compareは、
 //
@@ -32,8 +32,8 @@ func Less[T Ordered](x, y T) bool { return false }
 //
 // 浮動小数点型にはNaN（「非数」）値が含まれる場合があります。
 // NaN値は、任意の非NaN値よりも小さいと見なされ、NaN値はNaN値と等しく、-0.0は0.0と等しいです。
-func Compare[T Ordered](x, y T) int { return 0 }
+func Compare[T Ordered](x, y T) int
 
 // Orは、ゼロ値でない最初の引数を返します。
 // 引数が非ゼロでない場合、ゼロ値を返します。
-func Or[T comparable](vals ...T) T { return vals[0] }
+func Or[T comparable](vals ...T) T

@@ -8,7 +8,6 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/internal/singleflight"
 	"github.com/shogo82148/std/net/netip"
-	"golang.org/x/sync/singleflight"
 )
 
 // DefaultResolverは、パッケージレベルのLookup関数と指定されていないResolverを持つDialersによって使用されるリゾルバーです。
@@ -18,7 +17,6 @@ var DefaultResolver = &Resolver{}
 //
 // nil *ResolverはゼロのResolverと同等です。
 type Resolver struct {
-
 	// PreferGoは、利用可能なプラットフォーム上でGoの組み込みDNSリゾルバーを優先するかどうかを制御します。これはGODEBUG=netdns=goを設定するのと同等ですが、このリゾルバーにのみスコープされます。
 	PreferGo bool
 

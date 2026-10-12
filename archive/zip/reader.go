@@ -19,8 +19,6 @@ var (
 	ErrInsecurePath = errors.New("zip: insecure file path")
 )
 
-type fileListEntry struct{}
-
 // Reader は、ZIP アーカイブからコンテンツを提供するための構造体です。
 type Reader struct {
 	r             io.ReaderAt

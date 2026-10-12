@@ -31,11 +31,11 @@ const (
 func NewEncoding(encoder string) *Encoding
 
 // StdEncodingは、RFC 4648で定義されている標準のbase32エンコーディングです。
-var StdEncoding = NewEncoding(encodeStd)
+var StdEncoding = NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567")
 
 // HexEncodingは、RFC 4648で定義されている「Extended Hex Alphabet」です。
 // 通常、DNSで使用されます。
-var HexEncoding = NewEncoding(encodeHex)
+var HexEncoding = NewEncoding("0123456789ABCDEFGHIJKLMNOPQRSTUV")
 
 // WithPaddingは、指定されたパディング文字またはNoPaddingを使用して、encと同一の新しいエンコーディングを作成します。
 // パディング文字は'\r'または'\n'ではなく、エンコーディングのアルファベットに含まれていない必要があり、'\xff'以下のルーンである必要があります。

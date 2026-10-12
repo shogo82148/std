@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 
 	"github.com/shogo82148/std/cmd/go/internal/mvs"
-	"github.com/shogo82148/std/cmd/go/internal/par"
+	"github.com/shogo82148/std/cmd/internal/par"
 
 	"golang.org/x/mod/module"
 )
@@ -160,9 +160,6 @@ func LoadModGraph(ld *Loader, ctx context.Context, goVersion string) (*ModuleGra
 // in the build list may have been changed (possibly to or from "none") as a
 // result.
 func EditBuildList(ld *Loader, ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
-
-// OverrideRoots edits the global requirement roots by replacing the specific module versions.
-func OverrideRoots(ctx context.Context, replace []module.Version)
 
 // A ConstraintError describes inconsistent constraints in EditBuildList
 type ConstraintError struct {

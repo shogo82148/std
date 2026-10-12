@@ -30,6 +30,13 @@ type BinaryUnmarshaler interface {
 	UnmarshalBinary(data []byte) error
 }
 
+// BinaryAppenderは、自身のバイナリー表現を追加できるオブジェクトによって実装されるインターフェースです。
+// 型が [BinaryAppender] と [BinaryMarshaler] の両方を実装している場合、
+// v.MarshalBinary() は v.AppendBinary(nil) と意味的に同一でなければなりません。
+type BinaryAppender interface {
+	AppendBinary(b []byte) ([]byte, error)
+}
+
 // TextMarshalerは、自身をテキスト形式にマーシャリングできるオブジェクトによって実装されるインターフェースです。
 //
 // MarshalTextは、レシーバーをUTF-8でエンコードされたテキストに変換し、結果を返します。
@@ -43,4 +50,11 @@ type TextMarshaler interface {
 // UnmarshalTextは、戻り値の後にテキストを保持する場合は、テキストをコピーする必要があります。
 type TextUnmarshaler interface {
 	UnmarshalText(text []byte) error
+}
+
+// TextAppenderは、自身のテキスト表現を追加できるオブジェクトによって実装されるインターフェースです。
+// 型が [TextAppender] と [TextMarshaler] の両方を実装している場合、
+// v.MarshalText() は v.AppendText(nil) と意味的に同一でなければなりません。
+type TextAppender interface {
+	AppendText(b []byte) ([]byte, error)
 }

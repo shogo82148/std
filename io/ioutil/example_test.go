@@ -65,12 +65,12 @@ func ExampleTempDir_suffix() {
 	globPattern := filepath.Join(parentDir, "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {
-		log.Fatalf("%qのマッチングに失敗しました: %v", globPattern, err)
+		log.Fatalf("Failed to match %q: %v", globPattern, err)
 	}
 
 	for _, match := range matches {
 		if err := os.RemoveAll(match); err != nil {
-			log.Printf("%qの削除に失敗しました: %v", match, err)
+			log.Printf("Failed to remove %q: %v", match, err)
 		}
 	}
 }

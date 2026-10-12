@@ -4,7 +4,7 @@
 
 //go:build darwin
 
-package macOS
+package macos
 
 const (
 	// various macOS error codes that can be returned from

@@ -13,6 +13,7 @@ import (
 	"github.com/shogo82148/std/debug/elf"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/internal/abi"
+	"github.com/shogo82148/std/iter"
 )
 
 var _ = fmt.Print
@@ -368,6 +369,10 @@ func (l *Loader) AttrCgoExportStatic(i Sym) bool
 // (see AttrCgoExportStatic).
 func (l *Loader) SetAttrCgoExportStatic(i Sym, v bool)
 
+// ForAllCgoExportStatic returns an iterator over all symbols
+// marked with the "cgo_export_static" compiler directive.
+func (l *Loader) ForAllCgoExportStatic() iter.Seq[Sym]
+
 // IsGeneratedSym returns true if a symbol's been previously marked as a
 // generator symbol through the SetIsGeneratedSym. The functions for generator
 // symbols are kept in the Link context.
@@ -570,7 +575,9 @@ func (l *Loader) Aux(i Sym, j int) Aux
 // contains the information necessary for the linker to add a WebAssembly
 // import statement.
 // (https://webassembly.github.io/spec/core/syntax/modules.html#imports)
-func (l *Loader) WasmImportSym(fnSymIdx Sym) (Sym, bool)
+func (l *Loader) WasmImportSym(fnSymIdx Sym) Sym
+
+func (l *Loader) WasmTypeSym(s Sym) Sym
 
 // SEHUnwindSym returns the auxiliary SEH unwind symbol associated with
 // a given function symbol.

@@ -13,8 +13,13 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ErrProcessDone は、[Process] が終了したことを示します。
-var ErrProcessDone = errors.New("os: process already finished")
+var (
+	// ErrProcessDone は、[Process] が終了したことを示します。
+	ErrProcessDone = errors.New("os: process already finished")
+
+	// ErrNoHandle は、[Process] がハンドルを持っていないことを示します。
+	ErrNoHandle = errors.New("os: process handle unavailable")
+)
 
 // Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
@@ -44,14 +49,11 @@ type Process struct {
 
 // ProcAttrはStartProcessによって開始される新しいプロセスに適用される属性を保持します。
 type ProcAttr struct {
-
 	// Dir が空でない場合、子プロセスを作成する前にディレクトリーに変更します。
 	Dir string
-
 	// もしEnvがnilでない場合、それは新しいプロセスの環境変数をEnvironによって返される形式で指定します。
 	// もしEnvがnilである場合、Environの結果が使用されます。
 	Env []string
-
 	// Filesは新しいプロセスに引き継がれるオープンファイルを指定します。最初の3つのエントリーは標準入力、標準出力、標準エラーに対応します。実装は、基礎となるオペレーティングシステムに応じて、追加のエントリーをサポートすることがあります。nilのエントリーは、そのファイルがプロセスの開始時に閉じられることを意味します。
 	// Unixシステムでは、StartProcessはこれらのFile値をブロッキングモードに変更します。つまり、SetDeadlineは動作しなくなり、Closeを呼び出してもReadまたはWriteが中断されません。
 	Files []*File
@@ -109,6 +111,14 @@ func (p *Process) Wait() (*ProcessState, error)
 // Signalは [Process] にシグナルを送信します。
 // Windowsでは [Interrupt] を送信することは実装されていません。
 func (p *Process) Signal(sig Signal) error
+
+// WithHandleは、有効なプロセスハンドルを引数として、指定された関数fを呼び出します。
+// pが終了した場合でも、fが戻るまでハンドルがプロセスpを参照することが保証されます。
+// この関数は、[Process.Release] または [Process.Wait] の後には使用できません。
+//
+// プロセスハンドルがサポートされていない場合、またはハンドルが利用できない場合は、
+// [ErrNoHandle] を返します。現在、プロセスハンドルはLinux 5.4以降（pidfd）とWindowsでサポートされています。
+func (p *Process) WithHandle(f func(handle uintptr)) error
 
 // UserTimeは終了したプロセスおよびその子プロセスのユーザーCPU時間を返します。
 func (p *ProcessState) UserTime() time.Duration

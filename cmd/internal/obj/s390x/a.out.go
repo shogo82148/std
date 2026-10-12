@@ -167,7 +167,7 @@ const (
 
 //go:generate go run ../mkcnames.go -i a.out.go -o anamesz.go -p s390x
 const (
-	C_NONE     = iota
+	C_NONE = iota
 	C_REG
 	C_FREG
 	C_VREG
@@ -420,6 +420,7 @@ const (
 	// storage-and-storage
 	AMVC
 	AMVCIN
+	AMVCLE
 	ACLC
 	AXC
 	AOC
@@ -690,6 +691,14 @@ const (
 	AWFLNDB
 	AVFLPDB
 	AWFLPDB
+	AVFMAXDB
+	AWFMAXDB
+	AVFMAXSB
+	AWFMAXSB
+	AVFMINDB
+	AWFMINDB
+	AVFMINSB
+	AWFMINSB
 	AVFSQ
 	AVFSQDB
 	AWFSQDB

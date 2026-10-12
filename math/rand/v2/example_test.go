@@ -6,7 +6,6 @@ package rand_test
 
 import (
 	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/math/rand/v2"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/strings"
 	"github.com/shogo82148/std/text/tabwriter"

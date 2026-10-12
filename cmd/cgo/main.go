@@ -33,12 +33,11 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
-	typedefs    map[string]bool
-	typedefList []typedefInfo
 	noCallbacks map[string]bool
 	noEscapes   map[string]bool
 }
 
+// Fileは、単一のGo入力ファイルに関する情報を収集します。
 type File struct {
 	AST         *ast.File
 	Comments    []*ast.CommentGroup
@@ -52,6 +51,8 @@ type File struct {
 	NoCallbacks map[string]bool
 	NoEscapes   map[string]bool
 	Edit        *edit.Buffer
+
+	debugs []*debug
 }
 
 // Callは、ASTのC.xxx関数の呼び出しを参照します。

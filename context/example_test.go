@@ -53,9 +53,6 @@ func ExampleWithCancel() {
 	// 5
 }
 
-var shortDuration time.Duration = 1
-var neverReady <-chan time.Time
-
 // This example passes a context with an arbitrary deadline to tell a blocking
 // function that it should abandon its work as soon as it gets to it.
 func ExampleWithDeadline() {

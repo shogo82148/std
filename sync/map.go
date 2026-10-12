@@ -1,14 +1,8 @@
-// Copyright 2016 The Go Authors. All rights reserved.
+// Copyright 2024 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !goexperiment.synchashtriemap
-
 package sync
-
-import (
-	"github.com/shogo82148/std/sync/atomic"
-)
 
 // MapはGoのmap[any]anyと似ていますが、追加のロックや調整なしで
 // 複数のゴルーチンから同時に使用しても安全です。
@@ -36,28 +30,7 @@ import (
 type Map struct {
 	_ noCopy
 
-	mu Mutex
-
-	// readには、muを保持している場合とそうでない場合の両方で、
-	// 同時アクセスが安全なマップの内容の一部が含まれています。
-	//
-	// readフィールド自体は常に安全に読み込むことができますが、
-	// muを保持しているときにのみ保存することができます。
-	//
-	// readに保存されているエントリーは、muなしで同時に更新することができますが、
-	// 以前に削除されたエントリーの更新には、そのエントリーをdirtyマップにコピーし、
-	// muを保持してunexpungedする必要があります。
-	read atomic.Pointer[readOnly]
-
-	// dirtyには、muの保持が必要なマップの内容の一部が含まれています。dirtyマップがすばやく読み取り用マップに昇格できるようにするため、読み取り用マップの非削除エントリーもすべて含まれています。
-	// 削除されたエントリーはdirtyマップに保存されません。クリーンマップの削除されたエントリーは、新しい値を格納する前に未削除にされてdirtyマップに追加する必要があります。
-	// dirtyマップがnilの場合、マップへの次の書き込みでは、クリーンマップのステールエントリーを省略して浅いコピーを作成して初期化します。
-	dirty map[any]*entry
-
-	// misses は、読み込みマップが最後に更新されて以降、キーが存在するかどうかを確認するために mu ロックが必要な読み込み回数を数えます。
-	//
-	// 十分な数のミスが発生し、汚れたマップのコピーのコストをカバーできるようになると、汚れたマップは読み込みマップに昇格します（修正されていない状態で）。
-	misses int
+	m isync.HashTrieMap[any, any]
 }
 
 // Loadは、キーに対応するマップ内の値を返します。もし値が存在しない場合はnilを返します。

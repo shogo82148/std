@@ -69,11 +69,13 @@ type Action struct {
 	TestOutput *bytes.Buffer
 	Args       []string
 
+	Provider any
+
 	triggers []*Action
 
 	buggyInstall bool
 
-	TryCache func(*Builder, *Action) bool
+	TryCache func(*Builder, *Action, *Action) bool
 
 	CacheExecutable bool
 

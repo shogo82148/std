@@ -12,6 +12,7 @@ import (
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/os/signal"
+	"github.com/shogo82148/std/time"
 )
 
 func ExampleHijacker() {
@@ -94,7 +95,6 @@ func ExampleStripPrefix() {
 }
 
 func ExampleServeMux_Handle() {
-	// ServeMux を作成し、"/api/" には apiHandler{} を、"/" には無名関数を割り当てます。
 	mux := http.NewServeMux()
 	mux.Handle("/api/", apiHandler{})
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
@@ -225,4 +225,23 @@ func ExampleProtocols_http1or2() {
 		log.Fatal(err)
 	}
 	res.Body.Close()
+}
+
+func ExampleCrossOriginProtection() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
+		io.WriteString(w, "request allowed\n")
+	})
+
+	srv := http.Server{
+		Addr:         ":8080",
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		// CrossOriginProtection.Handler を使用して、mux への安全でない
+		// クロスオリジンのブラウザーリクエストをすべてブロックします。
+		Handler: http.NewCrossOriginProtection().Handler(mux),
+	}
+
+	log.Fatal(srv.ListenAndServe())
 }

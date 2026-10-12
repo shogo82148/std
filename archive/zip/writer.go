@@ -9,12 +9,6 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-type (
-	countWriter struct{}
-	header      struct{}
-	fileWriter  struct{}
-)
-
 // Writer は、ZIP ファイルのライターを実装します。
 type Writer struct {
 	cw          *countWriter
