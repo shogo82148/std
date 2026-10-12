@@ -927,9 +927,11 @@ func (ci *ColumnType) DatabaseTypeName() string
 //	*uint, *uint8, *uint16, *uint32, *uint64
 //	*bool
 //	*float32, *float64
-//	*interface{}
+//	*any
 //	*RawBytes
 //	*Rows (カーソル値)
+//	*time.Time
+//	*uuid.UUID
 //	Scanner を実装する任意の型（Scannerドキュメントを参照）
 //
 // 最も単純な場合、ソース列の値の型が整数、ブール、または文字列型Tで、destが型*Tの場合、Scanは単にポインタを介して値を割り当てます。
@@ -938,9 +940,11 @@ func (ci *ColumnType) DatabaseTypeName() string
 //
 // dest引数の型が*[]byteの場合、Scanは対応するデータのコピーをその引数に保存します。コピーは呼び出し元が所有し、修正して無期限に保持できます。コピーを回避するには、代わりに [*RawBytes] の引数を使用します。[RawBytes] の使用制限については、 [RawBytes] のドキュメントを参照してください。
 //
-// 引数の型が*interface{}の場合、Scanは変換せずに基礎ドライバが提供する値をコピーします。[]byte型のソース値から*interface{}にスキャンする場合、スライスのコピーが作成され、呼び出し元が結果を所有します。
+// 引数の型が*anyの場合、Scanは変換せずに基礎ドライバが提供する値をコピーします。[]byte型のソース値から*interface{}にスキャンする場合、スライスのコピーが作成され、呼び出し元が結果を所有します。
 //
 // [time.Time] 型のソース値は、*time.Time、*interface{}、*string、または*[]byte型の値にスキャンできます。後者2つに変換する場合、[time.RFC3339Nano] が使用されます。
+//
+// string型およびbyte型のソース値は、 [*uuid.UUID] 型の値にスキャンできます。ソースには、UUIDの文字列表現または16バイトの[]byteを含めることができます。
 //
 // bool型のソース値は、*bool、*interface{}、*string、*[]byte、または [*RawBytes] 型にスキャンできます。
 //
