@@ -64,6 +64,8 @@ func (enc *Encoding) EncodeToString(src []byte) string
 func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
 
 // EncodedLenは、長さnの入力バッファーのbase32エンコーディングのバイト数を返します。
+// エンコード後の長さがintをオーバーフローする場合、パニックを引き起こします。
+// これは n > [math.MaxInt]/8*5 の場合にのみ起こり得ます。
 func (enc *Encoding) EncodedLen(n int) int
 
 type CorruptInputError int64

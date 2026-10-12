@@ -193,9 +193,10 @@ type Type struct {
 
 	intRegs, floatRegs uint8
 
-	flags             bitset8
-	alg               AlgKind
-	isSIMDTag, isSIMD bool
+	flags bitset16
+	alg   AlgKind
+
+	tflag uint8
 
 	// size of prefix of object that contains all pointers. valid if Align > 0.
 	// Note that for pointers, this is always PtrSize even if the element type
@@ -220,12 +221,14 @@ func (t *Type) Recur() bool
 func (t *Type) IsShape() bool
 func (t *Type) HasShape() bool
 func (t *Type) IsFullyInstantiated() bool
+func (t *Type) MethodsComputed() bool
 
 func (t *Type) SetNotInHeap(b bool)
 func (t *Type) SetNoalg(b bool)
 func (t *Type) SetDeferwidth(b bool)
 func (t *Type) SetRecur(b bool)
 func (t *Type) SetIsFullyInstantiated(b bool)
+func (t *Type) SetMethodsComputed(b bool)
 
 // Should always do SetHasShape(true) when doing SetIsShape(true).
 func (t *Type) SetIsShape(b bool)
@@ -363,8 +366,10 @@ type Field struct {
 	// the function name node.
 	Nname Object
 
-	// Offset in bytes of this field or method within its enclosing struct
-	// or interface Type. For parameters, this is BADWIDTH.
+	// Offset in bytes of this field within its enclosing struct. For interface
+	// methods, this is the byte offset of the method's entry in an itab's Fun
+	// array. For promoted, non-interface methods, this is the offset from the
+	// wrapper receiver to the wrapped receiver. For parameters, this is BADWIDTH.
 	Offset int64
 }
 

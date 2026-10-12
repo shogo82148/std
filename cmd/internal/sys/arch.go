@@ -151,6 +151,7 @@ var ArchMIPS = &Arch{
 	MinLC:          4,
 	Alignment:      4,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 4,
 }
@@ -164,6 +165,7 @@ var ArchMIPSLE = &Arch{
 	MinLC:          4,
 	Alignment:      4,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 4,
 }
@@ -177,6 +179,7 @@ var ArchMIPS64 = &Arch{
 	MinLC:          4,
 	Alignment:      8,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }
@@ -190,6 +193,7 @@ var ArchMIPS64LE = &Arch{
 	MinLC:          4,
 	Alignment:      8,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }
@@ -230,6 +234,7 @@ var ArchRISCV64 = &Arch{
 	MinLC:          2,
 	Alignment:      8,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }

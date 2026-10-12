@@ -162,15 +162,13 @@
 //			defer cancel()
 //
 //			// タイムアウトよりわずかに短く待つ。
-//			time.Sleep(timeout - time.Nanosecond)
-//			synctest.Wait()
+//			synctest.Sleep(timeout - time.Nanosecond)
 //			if err := ctx.Err(); err != nil {
 //				t.Fatalf("before timeout: ctx.Err() = %v, want nil\n", err)
 //			}
 //
 //			// 残り時間だけ待ってタイムアウトに到達する。
-//			time.Sleep(time.Nanosecond)
-//			synctest.Wait()
+//			synctest.Sleep(time.Nanosecond)
 //			if err := ctx.Err(); err != context.DeadlineExceeded {
 //				t.Fatalf("after timeout: ctx.Err() = %v, want DeadlineExceeded\n", err)
 //			}
@@ -300,3 +298,8 @@ func Wait()
 // テスト自体は通常、スリープ後にテスト対象のシステムが「落ち着く」のを待ちたいものです。
 // Sleepはそれを実現します。
 func Sleep(d time.Duration)
+
+// Subtest is a convenience function that runs f in a subtest of t called name.
+//
+// It is exactly equivalent to calling t.Run with a function that calls [Test].
+func Subtest(t *testing.T, name string, f func(*testing.T))

@@ -63,11 +63,11 @@ const (
 //	p.m         MethodVal     *T      m      func()     {1, 0}    true
 //	T.m         MethodExpr    T       m      func(T)    {1, 0}    false
 type Selection struct {
-	kind     SelectionKind
+	kind     int8
+	indirect bool
 	recv     Type
 	obj      Object
 	index    []int
-	indirect bool
 }
 
 // Kindは選択の種類を返します。

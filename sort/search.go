@@ -51,7 +51,7 @@ package sort
 //		fmt.Printf("0 から 100 までの整数を 1 つ選んでください。\n")
 //		answer := sort.Search(100, func(i int) bool {
 //			fmt.Printf("あなたの数は %d 以下ですか? ", i)
-//			fmt.Scanf("%s", &s)
+//			fmt.Scan(&s)
 //			return s != "" && s[0] == 'y'
 //		})
 //		fmt.Printf("あなたの数は %d です。\n", answer)

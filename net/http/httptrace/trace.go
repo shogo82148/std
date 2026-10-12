@@ -34,7 +34,6 @@ type ClientTrace struct {
 	// errがnilの場合、接続は正常にアイドルプールに返されました。
 	// errが非nilの場合、なぜ正常に返されなかったかを説明します。
 	// Transport.DisableKeepAlivesによって、接続再利用が無効化されている場合、PutIdleConnは呼び出されません。
-	// PutIdleConnは呼び出し元のResponse.Body.Close呼び出しの前に呼び出されます。
 	// HTTP/2では、このフックは現在使用されていません。
 	PutIdleConn func(err error)
 

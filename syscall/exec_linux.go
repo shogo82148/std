@@ -92,10 +92,18 @@ type SysProcAttr struct {
 	// 特権を持たないユーザーでマッピングを機能させるにはfalseに設定するべきです。
 	GidMappingsEnableSetgroups bool
 	AmbientCaps                []uintptr
+	NoNewPrivs                 bool
 	UseCgroupFD                bool
 	CgroupFD                   int
 	// PidFDがnilでない場合、カーネルがその機能をサポートしていれば子のpidfdを、
 	// そうでなければ-1を格納するために使用されます。*PidFDは
 	// プロセスが正常に開始した場合にのみ変更されることに注意してください。
 	PidFD *int
+	// UseLandlock places the child into a Landlock restriction by
+	// calling landlock_restrict_self(LandlockFD, LandlockFlags) before exec.
+	//
+	// Generally this should be combined with setting NoNewPrivs.
+	UseLandlock   bool
+	LandlockFD    int
+	LandlockFlags uint32
 }

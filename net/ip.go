@@ -149,6 +149,16 @@ func (m IPMask) Size() (ones, bits int)
 // Stringは、句読点なしのmの16進数形式を返します。
 func (m IPMask) String() string
 
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
+// IPMaskはIPアドレスであるかのようにマーシャルされます。
+func (m IPMask) MarshalText() ([]byte, error)
+
+// UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
+// 古いバージョンのGoでは、IPMaskのJSONエンコーディングは[]byteのものでした。
+// 古いGoプログラムが生成したJSONエンコーディングを新しいGoプログラムで読み取れるように、
+// []byteのエンコーディングもサポートしています。
+func (m *IPMask) UnmarshalText(text []byte) error
+
 // Containsは、ネットワークが指定したIPを含んでいるかどうかを報告します。
 func (n *IPNet) Contains(ip IP) bool
 

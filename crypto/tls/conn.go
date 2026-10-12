@@ -84,10 +84,25 @@ type Conn struct {
 	clientProtocol string
 
 	// 入力/出力
-	in, out   halfConn
-	rawInput  bytes.Buffer
-	input     bytes.Reader
-	hand      bytes.Buffer
+	in, out halfConn
+	// rawInputは、レコードヘッダーから始まる生の入力を保持します。
+	// 入力がバッファリングされていないときはnilで、その場合バッファーは
+	// rawInputPoolに返却されており、Readでアイドル状態の接続が
+	// レコードサイズのバッファーを保持し続けないようになっています。
+	// readFromUntilによって、必要になったときにプールから再取得されます。
+	rawInput *bytes.Buffer
+	// smallInputは、rawInputがrawInputPoolに返却された後、
+	// レコードヘッダーを待つ間にrawInputとして使われる小さなバッファーです。
+	// readFromUntilによって必要になったときに割り当てられ、
+	// その後は接続が存続する間保持されます。
+	smallInput *bytes.Buffer
+	// inputは、rawInput.Nextから得られた、読み取り待ちのアプリケーションデータを保持します。
+	input bytes.Reader
+	// handは、読み取り待ちのハンドシェイクデータを保持します。
+	// ハンドシェイクデータがバッファリングされていないときはnilで、その場合
+	// バッファーはhandPoolに返却されています。アクセスするには
+	// handBufとhandLenを使用してください。
+	hand      *bytes.Buffer
 	buffering bool
 	sendBuf   []byte
 

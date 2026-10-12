@@ -22,6 +22,14 @@ func LoadFloat64x2Part(s []float64) (Float64x2, int)
 
 func BroadcastFloat64x2(x float64) Float64x2
 
+type Int8x16 archsimd.Int8x16
+
+func LoadInt8x16(s []int8) Int8x16
+
+func LoadInt8x16Part(s []int8) (Int8x16, int)
+
+func BroadcastInt8x16(x int8) Int8x16
+
 type Int16x8 archsimd.Int16x8
 
 func LoadInt16x8(s []int16) Int16x8
@@ -46,18 +54,18 @@ func LoadInt64x2Part(s []int64) (Int64x2, int)
 
 func BroadcastInt64x2(x int64) Int64x2
 
-type Int8x16 archsimd.Int8x16
-
-func LoadInt8x16(s []int8) Int8x16
-
-func LoadInt8x16Part(s []int8) (Int8x16, int)
-
-func BroadcastInt8x16(x int8) Int8x16
-
+type Mask8x16 archsimd.Mask8x16
 type Mask16x8 archsimd.Mask16x8
 type Mask32x4 archsimd.Mask32x4
 type Mask64x2 archsimd.Mask64x2
-type Mask8x16 archsimd.Mask8x16
+type Uint8x16 archsimd.Uint8x16
+
+func LoadUint8x16(s []uint8) Uint8x16
+
+func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
+
 type Uint16x8 archsimd.Uint16x8
 
 func LoadUint16x8(s []uint16) Uint16x8
@@ -82,15 +90,7 @@ func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
 func BroadcastUint64x2(x uint64) Uint64x2
 
-type Uint8x16 archsimd.Uint8x16
-
-func LoadUint8x16(s []uint8) Uint8x16
-
-func LoadUint8x16Part(s []uint8) (Uint8x16, int)
-
-func BroadcastUint8x16(x uint8) Uint8x16
-
-func (x Int8x16) Abs() Int8x16
+func (x Int8x16) Abs() Uint8x16
 
 func (x Int8x16) Add(y Int8x16) Int8x16
 
@@ -130,7 +130,11 @@ func (x Int8x16) Not() Int8x16
 
 func (x Int8x16) NotEqual(y Int8x16) Mask8x16
 
+func (x Int8x16) OnesCount() Int8x16
+
 func (x Int8x16) Or(y Int8x16) Int8x16
+
+func (x Int8x16) ReduceSum() int8
 
 func (x Int8x16) Store(s []int8)
 
@@ -148,7 +152,7 @@ func (x Int8x16) ToMask() Mask8x16
 
 func (x Int8x16) Xor(y Int8x16) Int8x16
 
-func (x Int16x8) Abs() Int16x8
+func (x Int16x8) Abs() Uint16x8
 
 func (x Int16x8) Add(y Int16x8) Int16x8
 
@@ -190,13 +194,11 @@ func (x Int16x8) NotEqual(y Int16x8) Mask16x8
 
 func (x Int16x8) Or(y Int16x8) Int16x8
 
-func (x Int16x8) RotateAllLeft(shift uint64) Int16x8
+func (x Int16x8) ReduceSum() int16
 
-func (x Int16x8) RotateAllRight(shift uint64) Int16x8
+func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
-func (x Int16x8) ShiftAllLeft(y uint64) Int16x8
-
-func (x Int16x8) ShiftAllRight(y uint64) Int16x8
+func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
 
 func (x Int16x8) Store(s []int16)
 
@@ -214,7 +216,7 @@ func (x Int16x8) ToMask() Mask16x8
 
 func (x Int16x8) Xor(y Int16x8) Int16x8
 
-func (x Int32x4) Abs() Int32x4
+func (x Int32x4) Abs() Uint32x4
 
 func (x Int32x4) Add(y Int32x4) Int32x4
 
@@ -256,13 +258,11 @@ func (x Int32x4) NotEqual(y Int32x4) Mask32x4
 
 func (x Int32x4) Or(y Int32x4) Int32x4
 
-func (x Int32x4) RotateAllLeft(shift uint64) Int32x4
+func (x Int32x4) ReduceSum() int32
 
-func (x Int32x4) RotateAllRight(shift uint64) Int32x4
+func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
-func (x Int32x4) ShiftAllLeft(y uint64) Int32x4
-
-func (x Int32x4) ShiftAllRight(y uint64) Int32x4
+func (x Int32x4) ShiftAllRight(shift uint64) Int32x4
 
 func (x Int32x4) Store(s []int32)
 
@@ -310,11 +310,7 @@ func (x Int64x2) NotEqual(y Int64x2) Mask64x2
 
 func (x Int64x2) Or(y Int64x2) Int64x2
 
-func (x Int64x2) RotateAllLeft(shift uint64) Int64x2
-
-func (x Int64x2) RotateAllRight(shift uint64) Int64x2
-
-func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
+func (x Int64x2) ShiftAllLeft(shift uint64) Int64x2
 
 func (x Int64x2) Store(s []int64)
 
@@ -362,7 +358,11 @@ func (x Uint8x16) Not() Uint8x16
 
 func (x Uint8x16) NotEqual(y Uint8x16) Mask8x16
 
+func (x Uint8x16) OnesCount() Uint8x16
+
 func (x Uint8x16) Or(y Uint8x16) Uint8x16
+
+func (x Uint8x16) ReduceSum() uint8
 
 func (x Uint8x16) ReshapeToUint16s() Uint16x8
 
@@ -424,6 +424,8 @@ func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x8) Or(y Uint16x8) Uint16x8
 
+func (x Uint16x8) ReduceSum() uint16
+
 func (x Uint16x8) ReshapeToUint32s() Uint32x4
 
 func (x Uint16x8) ReshapeToUint64s() Uint64x2
@@ -434,9 +436,9 @@ func (x Uint16x8) RotateAllLeft(shift uint64) Uint16x8
 
 func (x Uint16x8) RotateAllRight(shift uint64) Uint16x8
 
-func (x Uint16x8) ShiftAllLeft(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
-func (x Uint16x8) ShiftAllRight(y uint64) Uint16x8
+func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
 
 func (x Uint16x8) Store(s []uint16)
 
@@ -490,6 +492,8 @@ func (x Uint32x4) NotEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x4) Or(y Uint32x4) Uint32x4
 
+func (x Uint32x4) ReduceSum() uint32
+
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 
 func (x Uint32x4) ReshapeToUint64s() Uint64x2
@@ -500,9 +504,9 @@ func (x Uint32x4) RotateAllLeft(shift uint64) Uint32x4
 
 func (x Uint32x4) RotateAllRight(shift uint64) Uint32x4
 
-func (x Uint32x4) ShiftAllLeft(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
-func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
+func (x Uint32x4) ShiftAllRight(shift uint64) Uint32x4
 
 func (x Uint32x4) Store(s []uint32)
 
@@ -562,9 +566,9 @@ func (x Uint64x2) RotateAllLeft(shift uint64) Uint64x2
 
 func (x Uint64x2) RotateAllRight(shift uint64) Uint64x2
 
-func (x Uint64x2) ShiftAllLeft(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllLeft(shift uint64) Uint64x2
 
-func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
+func (x Uint64x2) ShiftAllRight(shift uint64) Uint64x2
 
 func (x Uint64x2) Store(s []uint64)
 
@@ -612,6 +616,8 @@ func (x Float32x4) Neg() Float32x4
 
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
 
+func (x Float32x4) ReduceSum() float32
+
 func (x Float32x4) Sqrt() Float32x4
 
 func (x Float32x4) Store(s []float32)
@@ -658,6 +664,8 @@ func (x Float64x2) Neg() Float64x2
 
 func (x Float64x2) NotEqual(y Float64x2) Mask64x2
 
+func (x Float64x2) ReduceSum() float64
+
 func (x Float64x2) Sqrt() Float64x2
 
 func (x Float64x2) Store(s []float64)
@@ -670,7 +678,13 @@ func (x Float64x2) Sub(y Float64x2) Float64x2
 
 func (x Float64x2) ToBits() Uint64x2
 
+func (x Mask8x16) All() bool
+
 func (x Mask8x16) And(y Mask8x16) Mask8x16
+
+func (x Mask8x16) Any() bool
+
+func (x Mask8x16) None() bool
 
 func (x Mask8x16) Or(y Mask8x16) Mask8x16
 
@@ -678,7 +692,15 @@ func (x Mask8x16) String() string
 
 func (x Mask8x16) ToInt8s() Int8x16
 
+func (x Mask8x16) TrailingZeros() int
+
+func (x Mask16x8) All() bool
+
 func (x Mask16x8) And(y Mask16x8) Mask16x8
+
+func (x Mask16x8) Any() bool
+
+func (x Mask16x8) None() bool
 
 func (x Mask16x8) Or(y Mask16x8) Mask16x8
 
@@ -686,7 +708,15 @@ func (x Mask16x8) String() string
 
 func (x Mask16x8) ToInt16s() Int16x8
 
+func (x Mask16x8) TrailingZeros() int
+
+func (x Mask32x4) All() bool
+
 func (x Mask32x4) And(y Mask32x4) Mask32x4
+
+func (x Mask32x4) Any() bool
+
+func (x Mask32x4) None() bool
 
 func (x Mask32x4) Or(y Mask32x4) Mask32x4
 
@@ -694,10 +724,20 @@ func (x Mask32x4) String() string
 
 func (x Mask32x4) ToInt32s() Int32x4
 
+func (x Mask32x4) TrailingZeros() int
+
+func (x Mask64x2) All() bool
+
 func (x Mask64x2) And(y Mask64x2) Mask64x2
+
+func (x Mask64x2) Any() bool
+
+func (x Mask64x2) None() bool
 
 func (x Mask64x2) Or(y Mask64x2) Mask64x2
 
 func (x Mask64x2) String() string
 
 func (x Mask64x2) ToInt64s() Int64x2
+
+func (x Mask64x2) TrailingZeros() int

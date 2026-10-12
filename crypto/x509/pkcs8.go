@@ -7,8 +7,9 @@ package x509
 // ParsePKCS8PrivateKeyは、PKCS #8、ASN.1 DER形式の暗号化されていない秘密鍵を解析します。
 //
 // 戻り値は、*[rsa.PrivateKey]、*[ecdsa.PrivateKey]、[ed25519.PrivateKey]
-// （ポインターではありません）、*[mldsa.PrivateKey]、または*[ecdh.PrivateKey]
-// （X25519用）のいずれかです。
+// （ポインターではありません）、*[mldsa.PrivateKey]、*[ecdh.PrivateKey]
+// （X25519用）、*[mlkem.DecapsulationKey768]、または *[mlkem.DecapsulationKey1024]
+// のいずれかです。
 // 将来的に、さらに多くの型がサポートされる可能性があります。
 //
 // この種の鍵は、一般的に"PRIVATE KEY"タイプのPEMブロックでエンコードされます。
@@ -21,7 +22,8 @@ func ParsePKCS8PrivateKey(der []byte) (key any, err error)
 //
 // 現在サポートされている鍵型は、*[rsa.PrivateKey]、
 // *[ecdsa.PrivateKey]、[ed25519.PrivateKey]（ポインターではありません）、
-// *[mldsa.PrivateKey]、および*[ecdh.PrivateKey]です。
+// *[mldsa.PrivateKey]、*[ecdh.PrivateKey]、*[mlkem.DecapsulationKey768]、
+// および *[mlkem.DecapsulationKey1024] です。
 // サポートされていない鍵型を指定するとエラーになります。
 //
 // この種の鍵は、一般的に"PRIVATE KEY"タイプのPEMブロックでエンコードされます。

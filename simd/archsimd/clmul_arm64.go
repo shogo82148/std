@@ -20,7 +20,7 @@ package archsimd
 // polynomial terms, but coefficients "add" with XOR.)
 //
 // Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyOdd computes the carryless
 // multiplications of selected odd halves of the elements of x and y.
@@ -36,7 +36,7 @@ func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
 // polynomial terms, but coefficients "add" with XOR.)
 //
 // Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyOddEven computes the carryless
 // multiplications of selected odd half of x's elements and even half of y's elements.
@@ -52,7 +52,7 @@ func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
 // polynomial terms, but coefficients "add" with XOR.)
 //
 // Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyEvenOdd computes the carryless
 // multiplications of selected even half of x's elements and odd half of y's elements.
@@ -68,4 +68,4 @@ func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
 // polynomial terms, but coefficients "add" with XOR.)
 //
 // Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)

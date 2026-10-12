@@ -240,6 +240,10 @@ NaN、無限大。
 		デフォルト以外の GODEBUG=fips140ems=... 設定により、
 		crypto/tls パッケージで実行されたデフォルト以外の動作の回数。
 
+	/godebug/non-default-behavior/fips140ems:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=fips140ems=... setting.
+
 	/godebug/non-default-behavior/gocachehash:events
 		デフォルト以外の GODEBUG=gocachehash=... 設定により、
 		cmd/go パッケージで実行されたデフォルト以外の動作の回数。
@@ -288,6 +292,11 @@ NaN、無限大。
 		デフォルト以外の GODEBUG=httpservecontentmaxranges=... 設定により、
 		net/http パッケージで実行されたデフォルト以外の動作の回数。
 
+	/godebug/non-default-behavior/httpservecontentmaxranges:events
+		The number of non-default behaviors executed
+		by the net/http package due to a non-default
+		GODEBUG=httpservecontentmaxranges=... setting.
+
 	/godebug/non-default-behavior/installgoroot:events
 		デフォルト以外の GODEBUG=installgoroot=... 設定により、
 		go/build パッケージで実行されたデフォルト以外の動作の回数。
@@ -307,6 +316,10 @@ NaN、無限大。
 	/godebug/non-default-behavior/netedns0:events
 		デフォルト以外の GODEBUG=netedns0=... 設定により、
 		net パッケージで実行されたデフォルト以外の動作の回数。
+
+	/godebug/non-default-behavior/netmarshal:events
+		The number of non-default behaviors executed by the net package
+		due to a non-default GODEBUG=netmarshal=... setting.
 
 	/godebug/non-default-behavior/panicnil:events
 		デフォルト以外の GODEBUG=panicnil=... 設定により、

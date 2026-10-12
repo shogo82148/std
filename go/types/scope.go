@@ -12,17 +12,20 @@ package types
 import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
+	"github.com/shogo82148/std/sync/atomic"
 )
 
 // スコープはオブジェクトのセットを保持し、それが含まれる（親）スコープと含まれる（子）スコープへのリンクを維持します。オブジェクトは名前で挿入および検索することができます。Scopeのゼロ値は使用可能な空のスコープです。
 type Scope struct {
-	parent   *Scope
-	children []*Scope
-	number   int
-	elems    map[string]Object
-	pos, end token.Pos
-	comment  string
-	isFunc   bool
+	parent      *Scope
+	children    []*Scope
+	number      int
+	objects     map[string]Object
+	pos, end    token.Pos
+	comment     string
+	isFunc      bool
+	sortedNames atomic.Pointer[[]string]
 }
 
 // NewScopeは、指定された親スコープに含まれる新しい空のスコープを返します（存在する場合）。コメントはデバッグ用です。
@@ -31,10 +34,11 @@ func NewScope(parent *Scope, pos, end token.Pos, comment string) *Scope
 // Parentはスコープの含まれる（親）スコープを返します。
 func (s *Scope) Parent() *Scope
 
-// Lenはスコープ要素の数を返します。
+// Lenはスコープ内のオブジェクトの数を返します。
 func (s *Scope) Len() int
 
-// Namesはスコープ内の要素名をソートされた順序で返します。
+// Namesはスコープ内のオブジェクト名をソートされた順序で返します。
+// 呼び出し元はこの配列を変更してはいけません。
 func (s *Scope) Names() []string
 
 // NumChildrenはsにネストされたスコープの数を返します。
@@ -46,6 +50,15 @@ func (s *Scope) Child(i int) *Scope
 // Lookupは、名前が与えられたスコープs内のオブジェクトを返します。
 // オブジェクトが存在する場合はそのオブジェクトを返し、存在しない場合はnilを返します。
 func (s *Scope) Lookup(name string) Object
+
+// Objectsは、スコープ内のオブジェクトを名前順に並べたシーケンスを返します。
+//
+// 呼び出し元は、反復処理中にScopeを変更すべきではありません。
+//
+// 例:
+//
+//	for obj := range s.Objects() { ... }
+func (s *Scope) Objects() iter.Seq[Object]
 
 // Insertはオブジェクトobjをスコープsに挿入しようと試みます。
 // sが既に同じ名前の代替オブジェクトaltを含んでいる場合、

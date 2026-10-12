@@ -17,6 +17,7 @@ type Feature string
 const FeatureDenialOfService Feature = "denial-of-service"
 const FeatureHasCertPolicies Feature = "has-cert-policies"
 const FeatureHasCrl Feature = "has-crl"
+const FeatureHasMldsa Feature = "has-mldsa"
 const FeatureHasPolicyConstraints Feature = "has-policy-constraints"
 const FeatureMaxChainDepth Feature = "max-chain-depth"
 const FeatureNameConstraintDn Feature = "name-constraint-dn"
@@ -124,6 +125,9 @@ const SignatureAlgorithmED448 SignatureAlgorithm = "ED448"
 const SignatureAlgorithmGOSTR34102012WITH34112012256 SignatureAlgorithm = "GOSTR3410_2012_WITH_3411_2012_256"
 const SignatureAlgorithmGOSTR34102012WITH34112012512 SignatureAlgorithm = "GOSTR3410_2012_WITH_3411_2012_512"
 const SignatureAlgorithmGOSTR341194WITH34102001 SignatureAlgorithm = "GOSTR3411_94_WITH_3410_2001"
+const SignatureAlgorithmMLDSA44 SignatureAlgorithm = "ML_DSA_44"
+const SignatureAlgorithmMLDSA65 SignatureAlgorithm = "ML_DSA_65"
+const SignatureAlgorithmMLDSA87 SignatureAlgorithm = "ML_DSA_87"
 const SignatureAlgorithmRSASSAPSS SignatureAlgorithm = "RSASSA_PSS"
 const SignatureAlgorithmRSAWITHMD5 SignatureAlgorithm = "RSA_WITH_MD5"
 const SignatureAlgorithmRSAWITHSHA1 SignatureAlgorithm = "RSA_WITH_SHA1"
@@ -201,7 +205,7 @@ type Testcase struct {
 	ValidationKind ValidationKind `json:"validation_kind"`
 
 	// The time at which to perform the validation
-	ValidationTime interface{} `json:"validation_time,omitempty,omitzero"`
+	ValidationTime *time.Time `json:"validation_time,omitempty,omitzero"`
 }
 
 // For server (i.e. client-side) validation: the expected peer name, if any
@@ -219,8 +223,6 @@ func (j *TestcaseExpectedPeerName) UnmarshalJSON(value []byte) error
 type TestcaseMaxChainDepth_0 *int
 
 type TestcasePeerCertificateKey_0 *string
-
-type TestcaseValidationTime_0 *time.Time
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (j *Testcase) UnmarshalJSON(value []byte) error

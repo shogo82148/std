@@ -27,6 +27,7 @@ type Alias struct {
 	targs   *TypeList
 	fromRHS Type
 	actual  Type
+	check   *Checker
 }
 
 // NewAliasは、指定された型名とrhsを持つ新しいAlias型を作成します。

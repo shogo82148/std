@@ -16,7 +16,7 @@ func VectorBitSize() int
 func Emulated() bool
 
 // HasHardwareCarrylessMultiply returns whether this platform
-// as a hardware-implemented version of carryless multiply.
+// has a hardware-implemented version of carryless multiply.
 // With default GODEBUG=simd settings, if this is false,
 // it is emulated and merely slow, but with non-default settings
 // this can indicate the possibility of a missing instruction

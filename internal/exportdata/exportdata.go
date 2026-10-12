@@ -39,7 +39,7 @@ import (
 // | [optional padding]    | padding byte (0x0A) if size is odd
 // | [ar file header]      | other ar files
 // | [ar file data]        |
-func ReadUnified(r *bufio.Reader) (data []byte, err error)
+func ReadUnified(r *bufio.Reader, allowPrivate bool) (data []byte, err error)
 
 // FindPackageDefinition positions the reader r at the beginning of a package
 // definition file ("__.PKGDEF") within a GC-created archive by reading
@@ -63,9 +63,10 @@ func ReadObjectHeaders(r *bufio.Reader) (objapi string, headers []string, err er
 // It returns the number of bytes read, or an error if the format is no longer
 // supported or it failed to read.
 //
-// The only currently supported format is binary export data in the
-// unified export format.
-func ReadExportDataHeader(r *bufio.Reader) (n int, err error)
+// The currently supported formats are the unified ("u") and private ("p") formats,
+// both of which are binary formats. To read the private format, allowPrivate must
+// be true.
+func ReadExportDataHeader(r *bufio.Reader, allowPrivate bool) (n int, err error)
 
 // FindPkg returns the filename and unique package id for an import
 // path based on package information provided by build.Import (using

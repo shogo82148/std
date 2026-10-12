@@ -56,12 +56,18 @@ func (r *ProxyRequest) SetXForwarded()
 //
 // 1xxレスポンスは、基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
 //
+// アップグレードリクエスト（RFC 9110のセクション7.8）は転送されます。
+// サーバーが101 Switching Protocolsレスポンスを返した場合、
+// その後のクライアントとサーバーからのデータは変更されずに転送されます。
+// 例えば、ReverseProxyはWebSocket接続を転送します。
+// "h2c"（暗号化されていないHTTP/2）へのアップグレードは転送されません。
+//
 // ホップバイホップヘッダー（RFC 9110のセクション7.6.1参照）、
 // Connection、Proxy-Connection、Keep-Alive、Proxy-Authenticate、
-// Proxy-Authorization、TE、Trailer、Transfer-Encoding、Upgradeなどは、
+// Proxy-Authorization、TE、Trailer、Transfer-Encodingなどは、
 // クライアントリクエストおよびバックエンドレスポンスから削除されます。
-// Rewrite関数を使用してリクエストにホップバイホップヘッダーを追加したり、
-// ModifyResponse関数を使用してレスポンスからそれらを削除することができます。
+// ホップバイホップのUpgradeヘッダーは、上記のとおり保持されます。
+// Rewrite関数を使用してリクエストにホップバイホップヘッダーを追加することができます。
 type ReverseProxy struct {
 
 	// Rewriteは、リクエストを変更してTransportを使用して送信される新しいリクエストに変換する関数でなければなりません。
@@ -74,6 +80,16 @@ type ReverseProxy struct {
 	// 解析できないクエリーパラメーターは、Rewriteが呼び出される前に送信リクエストから削除されます。
 	// Rewrite関数は、インバウンドURLのRawQueryをアウトバウンドURLにコピーして、元のパラメーター文字列を保持することがあります。
 	// 注意：これは、プロキシーのクエリーパラメーターの解釈がダウンストリームサーバーと一致しない場合にセキュリティーの問題を引き起こす可能性があります。
+	//
+	// 送信されるリクエストには、受信したリクエストのCookieヘッダーが
+	// （存在する場合）そのまま含まれます。
+	// リクエストのCookieを検査するプロキシーは、
+	// エラーを返すhttp.ParseCookieを使用して
+	// Cookieを解析・検証すべきです。
+	// http.RequestのCookie、Cookies、CookiesNamedメソッドは
+	// 不正なCookieを黙って破棄するため、それらを使ってCookieの値にアクセスすると、
+	// プロキシーによるCookie値の解釈が下流サーバーの解釈と一致しない場合に
+	// セキュリティー上の問題を引き起こす可能性があります。
 	//
 	// RewriteまたはDirectorのいずれか一つのみ設定できます。
 	Rewrite func(*ProxyRequest)

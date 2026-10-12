@@ -68,10 +68,6 @@ type Client struct {
 	//
 	// Clientは、RequestのContextが終了した場合と同様に、
 	// ベースとなるTransportへのリクエストをキャンセルします。
-	//
-	// 互換性のために、ClientはTransportにCancelRequestメソッドも使用しますが、
-	// 新しいRoundTripperの実装はCancelRequestではなく、
-	// リクエストのContextを使用してキャンセルするべきです。
 	Timeout time.Duration
 }
 

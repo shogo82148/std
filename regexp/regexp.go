@@ -55,6 +55,7 @@ package regexp
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/regexp/syntax"
 )
 
@@ -246,9 +247,41 @@ func (re *Regexp) FindStringSubmatchIndex(s string) []int
 // これは返されたマッチを超えて読み込むことも含まれます。
 func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
 
+// Allはbにおけるreのすべてのマッチを返します。
+func (re *Regexp) All(b []byte) iter.Seq[[]byte]
+
+// AllStringはsにおけるreのすべてのマッチを返します。
+func (re *Regexp) AllString(s string) iter.Seq[string]
+
+// AllIndexはbにおけるreのすべてのマッチの位置を返します。
+func (re *Regexp) AllIndex(b []byte) iter.Seq[[]int]
+
+// AllStringIndexはsにおけるreのすべてのマッチの位置を返します。
+func (re *Regexp) AllStringIndex(s string) iter.Seq[[]int]
+
+// AllSubmatchは、サブマッチの位置を含め、bにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はm[0]、
+// 最初のサブマッチはm[1]、以下同様です。
+func (re *Regexp) AllSubmatch(b []byte) iter.Seq[[][]byte]
+
+// AllStringSubmatchは、サブマッチの位置を含め、sにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、m[0]はマッチ全体、
+// m[1]は最初のサブマッチ、以下同様です。
+func (re *Regexp) AllStringSubmatch(s string) iter.Seq[[]string]
+
+// AllSubmatchIndexは、サブマッチの位置を含め、bにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はb[m[0]:m[1]]、
+// 最初のサブマッチはb[m[2]:m[3]]、以下同様です。
+func (re *Regexp) AllSubmatchIndex(b []byte) iter.Seq[[]int]
+
+// AllStringSubmatchIndexは、サブマッチの位置を含め、sにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はs[m[0]:m[1]]、
+// 最初のサブマッチはs[m[2]:m[3]]、以下同様です。
+func (re *Regexp) AllStringSubmatchIndex(s string) iter.Seq[[]int]
+
 // FindAllはbでreのすべてのマッチを返します。
 // n >= 0の場合、FindAllは最大でnのマッチを返します。
-// 同等のイテレーター形式については、[Regexp.All]を参照してください。
+// 同等のイテレーター形式については、[Regexp.All] を参照してください。
 func (re *Regexp) FindAll(b []byte, n int) [][]byte
 
 // FindAllStringはsでreのすべてのマッチを返します。
@@ -303,6 +336,9 @@ func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) [
 // ExpandStringは、 [Regexp.Expand] と同様にテンプレートとソースが文字列の場合に使用します。
 // 割り当てに対する制御を呼び出し元のコードに提供するために、バイトスライスに追加して返します。
 func (re *Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
+
+// SplitSeqは、式で区切られたsの部分文字列に対するイテレーターを返します。
+func (re *Regexp) SplitSeq(s string) iter.Seq[string]
 
 // Splitは式で区切られたs内の部分文字列にスライスし、
 // それらの式のマッチ間の部分文字列のスライスを返します。

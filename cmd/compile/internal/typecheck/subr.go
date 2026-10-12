@@ -20,21 +20,21 @@ func LookupNum(prefix string, n int) *types.Sym
 func NewFuncParams(origs []*types.Field) []*types.Field
 
 // NodAddr returns a node representing &n at base.Pos.
-func NodAddr(n ir.Node) *ir.AddrExpr
+func NodAddr(curfunc *ir.Func, n ir.Node) *ir.AddrExpr
 
 // NodAddrAt returns a node representing &n at position pos.
-func NodAddrAt(pos src.XPos, n ir.Node) *ir.AddrExpr
+func NodAddrAt(curfunc *ir.Func, pos src.XPos, n ir.Node) *ir.AddrExpr
 
 // LinksymAddr returns a new expression that evaluates to the address
 // of lsym. typ specifies the type of the addressed memory.
-func LinksymAddr(pos src.XPos, lsym *obj.LSym, typ *types.Type) *ir.AddrExpr
+func LinksymAddr(curfunc *ir.Func, pos src.XPos, lsym *obj.LSym, typ *types.Type) *ir.AddrExpr
 
 func NodNil() ir.Node
 
 // AddImplicitDots finds missing fields in obj.field that
 // will give the shortest unique addressing and
 // modifies the tree with missing field names.
-func AddImplicitDots(n *ir.SelectorExpr) *ir.SelectorExpr
+func AddImplicitDots(curfunc *ir.Func, n *ir.SelectorExpr) *ir.SelectorExpr
 
 // CalcMethods calculates all the methods (including embedding) of a non-interface
 // type t.

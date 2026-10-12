@@ -284,7 +284,7 @@ func ExampleStreamReader() {
 
 	// もしキーがそれぞれの暗号文ごとにユニークである場合、ゼロの初期化ベクトル（IV）を使用しても問題ありません。
 	var iv [aes.BlockSize]byte
-	stream := cipher.NewOFB(block, iv[:])
+	stream := cipher.NewCTR(block, iv[:])
 
 	reader := &cipher.StreamReader{S: stream, R: bReader}
 	// 入力を出力ストリームにコピーし、逐次復号化する。
@@ -314,7 +314,7 @@ func ExampleStreamWriter() {
 
 	// キーが各暗号文ごとにユニークな場合、ゼロのIVを使用することは問題ありません。
 	var iv [aes.BlockSize]byte
-	stream := cipher.NewOFB(block, iv[:])
+	stream := cipher.NewCTR(block, iv[:])
 
 	var out bytes.Buffer
 

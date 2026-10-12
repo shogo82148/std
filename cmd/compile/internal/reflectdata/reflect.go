@@ -38,7 +38,7 @@ func TypeLinksym(t *types.Type) *obj.LSym
 
 // TypePtrAt returns an expression that evaluates to the
 // *runtime._type value for t.
-func TypePtrAt(pos src.XPos, t *types.Type) *ir.AddrExpr
+func TypePtrAt(curfunc *ir.Func, pos src.XPos, t *types.Type) *ir.AddrExpr
 
 // ITabLsym returns the LSym representing the itab for concrete type typ implementing
 // interface iface. A dummy tab will be created in the unusual case where typ doesn't
@@ -52,7 +52,7 @@ func ITabLsym(typ, iface *types.Type) *obj.LSym
 // ITabAddrAt returns an expression that evaluates to the
 // *runtime.itab value for concrete type typ implementing interface
 // iface.
-func ITabAddrAt(pos src.XPos, typ, iface *types.Type) *ir.AddrExpr
+func ITabAddrAt(curfunc *ir.Func, pos src.XPos, typ, iface *types.Type) *ir.AddrExpr
 
 // InterfaceMethodOffset returns the offset of the i-th method in the interface
 // type descriptor, ityp.
@@ -60,6 +60,12 @@ func InterfaceMethodOffset(ityp *types.Type, i int64) int64
 
 // NeedRuntimeType ensures that a runtime type descriptor is emitted for t.
 func NeedRuntimeType(t *types.Type)
+
+// ForEachRuntimeType calls fn for each type for which a runtime type descriptor
+// has been requested. This is used by the code that indexes symbols early, so
+// we can recursively index the symbols WriteRuntimeTypes numbers using the
+// recursive writeType function.
+func ForEachRuntimeType(fn func(*types.Type))
 
 func WriteRuntimeTypes()
 
@@ -77,7 +83,11 @@ func GCSym(t *types.Type) (lsym *obj.LSym, ptrdata int64)
 
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.
-func ZeroAddr(size int64) ir.Node
+func ZeroAddr(curfunc *ir.Func, size int64) ir.Node
+
+// TypeCanBeDupok reports whether the type descriptor can be defined in multiple packages:
+// that is, unnamed types, instantiated types and shape types.
+func TypeCanBeDupok(t *types.Type) bool
 
 // NeedEmit reports whether typ is a type that we need to emit code
 // for (e.g., runtime type descriptors, method wrappers).
@@ -93,4 +103,4 @@ func MarkTypeSymUsedInInterface(tsym *obj.LSym, from *obj.LSym)
 
 // MarkUsedIfaceMethod marks that an interface method is used in the current
 // function. n is OCALLINTER node.
-func MarkUsedIfaceMethod(n *ir.CallExpr)
+func MarkUsedIfaceMethod(curfunc *ir.Func, n *ir.CallExpr)

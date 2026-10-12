@@ -41,7 +41,8 @@ func (t *Interface) MarkImplicit()
 func (t *Interface) NumExplicitMethods() int
 
 // ExplicitMethodは0 <= i < t.NumExplicitMethods()に対して、インターフェースtのi番目に明示的に宣言されたメソッドを返します。
-// メソッドは一意の [Id] によって順序付けられます。
+// メソッドは、エクスポートされたメソッドが先で、次に名前順、
+// そして同じ名前のエクスポートされていないメソッドについてはパッケージパス順に並べられます。
 func (t *Interface) ExplicitMethod(i int) *Func
 
 // NumEmbeddeds はインターフェース t 内の埋め込まれた型の数を返します。
@@ -61,7 +62,8 @@ func (t *Interface) NumMethods() int
 
 // メソッドは、0 <= i < t.NumMethods() を満たす i の場合に、
 // インターフェース t の i 番目のメソッドを返します。
-// メソッドはそのユニークな ID によって順序づけされます。
+// メソッドは、エクスポートされたメソッドが先で、次に名前順、
+// そして同じ名前のエクスポートされていないメソッドについてはパッケージパス順に並べられます。
 func (t *Interface) Method(i int) *Func
 
 // Emptyはtが空のインターフェースであるかどうかを報告します。

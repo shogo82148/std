@@ -4,4 +4,11 @@
 
 package ssa
 
+import "github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
+
+// NotStmtBoundary reports whether a value with opcode op can never be a statement
+// boundary. Such values don't correspond to a user's understanding of a
+// statement boundary.
+func NotStmtBoundary(op ssaop.Op) bool
+
 func (b *Block) FirstPossibleStmtValue() *Value

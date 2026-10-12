@@ -39,12 +39,23 @@ type FD struct {
 	// I/O poller.
 	pd pollDesc
 
-	// Used to implement pread/pwrite.
-	l sync.Mutex
+	// Coordination of I/O cancellation.
+	ioCancel ioCancelState
+
+	// lazyInit is set by Init before the FD is made available to callers.
+	// initOnce serializes first use; initMu protects initialization against
+	// Close and DisassociateIOCP. Close cancels I/O before waiting for initMu,
+	// and DisassociateIOCP only tries to lock it.
+	lazyInit bool
+	initOnce sync.Once
+	initMu   sync.Mutex
+	skipIOCP bool
 
 	// The file offset for the next read or write.
 	// Overlapped IO operations don't use the real file pointer,
 	// so we need to keep track of the offset ourselves.
+	// Read and Write only use this for kindFile.
+	// Protected by both the read and write locks.
 	offset int64
 
 	// For console I/O.
@@ -56,8 +67,8 @@ type FD struct {
 	// Semaphore signaled when file is closed.
 	csema uint32
 
-	// Don't wait from completion port notifications for successful
-	// operations that complete synchronously.
+	// Whether to wait for an IOCP completion packet for operations that
+	// complete synchronously. Only used while associated is true.
 	waitOnSuccess bool
 
 	// Whether this is a streaming descriptor, as opposed to a
@@ -93,10 +104,12 @@ type FD struct {
 // Init initializes the FD. The Sysfd field should already be set.
 // This can be called multiple times on a single FD.
 // The net argument is a network name from the net package (e.g., "tcp"),
-// or "file" or "console" or "dir".
-// Set pollable to true if fd should be managed by runtime netpoll.
-// Pollable must be set to true for overlapped fds.
-func (fd *FD) Init(net string, pollable bool) error
+// or "file", "console", or "pipe".
+// The overlapped argument reports whether the handle was opened for overlapped I/O.
+// Such handles use the runtime poller when possible, or explicit events otherwise.
+// If overlapped is nil, mode detection and poller initialization are deferred
+// until first use.
+func (fd *FD) Init(net string, overlapped *bool) error
 
 // DisassociateIOCP disassociates the file handle from the IOCP.
 // The disassociate operation will not succeed if there is any

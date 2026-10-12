@@ -5,6 +5,7 @@
 package ir
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/stats"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
@@ -47,6 +48,11 @@ import (
 // pointer from the Func back to the OMETHVALUE.
 type Func struct {
 	miniNode
+
+	// NumPreWalkNodes is the number of IR nodes before Walk.
+	// It is used as an estimate of backend compilation cost.
+	NumPreWalkNodes int32
+
 	Body Nodes
 
 	Nname    *Name
@@ -143,6 +149,9 @@ type Func struct {
 	// WasmExport is used by the //go:wasmexport directive to store info about
 	// a WebAssembly function export.
 	WasmExport *WasmExport
+
+	// Stats holds compiler statistics for this function.
+	Stats *stats.Stats
 }
 
 // WasmImport stores metadata associated with the //go:wasmimport pragma.
@@ -256,18 +265,27 @@ func LinkFuncName(f *Func) string
 // to the package path and local symbol name.
 func ParseLinkFuncName(name string) (pkg, sym string, err error)
 
-var CurFunc *Func
-
-// WithFunc invokes do with CurFunc and base.Pos set to curfn and
-// curfn.Pos(), respectively, and then restores their previous values
-// before returning.
-func WithFunc(curfn *Func, do func())
+// WithPos invokes do with base.Pos set to curfn.Pos(), and then
+// restores its previous value before returning.
+func WithPos(curfn *Func, do func())
 
 func FuncSymName(s *types.Sym) string
 
 // ClosureDebugRuntimeCheck applies boilerplate checks for debug flags
 // and compiling runtime.
 func ClosureDebugRuntimeCheck(clo *ClosureExpr)
+
+// IsInlinedClosure reports whether fn is a function literal that inlining
+// copied, either because it appears in an inlined function body or because it
+// is nested in such a closure.
+//
+// All the copies of such a closure share a single linker symbol, including the
+// copy in the function that was inlined: closureName tells them apart with a
+// hash of the inline call stack, but that hash is stripped when the object
+// file is written, see #60324. Copies are interchangeable as long as they only
+// differ in the variables they capture, so anything that specializes the body
+// of one copy must leave them all alone.
+func (fn *Func) IsInlinedClosure() bool
 
 // NewClosureFunc creates a new Func to represent a function literal
 // with the given type.

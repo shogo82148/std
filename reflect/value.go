@@ -44,9 +44,7 @@ type Value struct {
 	//	- flagIndir：valはデータへのポインターを保持しています
 	//	- flagAddr：v.CanAddrがtrue（flagIndirとptrが非nilであることを意味します）
 	//	- flagMethod：vはメソッドの値です。
-	// ifaceIndir(typ)の場合、codeはflagIndirが設定されていると想定することができます。
-	//
-	// 残りの22ビット以上は、メソッドの番号を示します。
+	// !typ.IsDirectIface()の場合、codeはflagIndirが設定されていると想定することができます。
 	// flag.kind() != Funcの場合、codeはflagMethodが未設定であると想定することができます。
 	flag
 }

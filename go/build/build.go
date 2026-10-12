@@ -253,4 +253,6 @@ func IsLocalImport(path string) bool
 // Goの以前のバージョンでは、返された文字列はコンパイラーとリンカーのツール名、デフォルトのオブジェクトファイルの接尾辞、
 // およびデフォルトのリンカーの出力名に使用されました。Go 1.5以降、これらの文字列はアーキテクチャによって異なりません。
 // それらの文字列は、compile、link、.o、およびa.outです。
+//
+// Deprecated: もはやアーキテクチャによって異なりません。
 func ArchChar(goarch string) (string, error)

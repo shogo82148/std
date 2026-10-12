@@ -8,9 +8,6 @@ import (
 	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
-// Emit generates the unify.Value representation of this operand
-func (op *Operand) Emit() *unify.Value
-
 // EmitAll generates instruction definitions for all arrangements of this instruction.
 // Returns nil for instructions with UnsupportedArngs.
 func (instruction *Instruction) EmitAll() []*unify.Value

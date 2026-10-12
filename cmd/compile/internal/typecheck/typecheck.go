@@ -10,24 +10,24 @@ import (
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
-func AssignExpr(n ir.Node) ir.Node
-func Expr(n ir.Node) ir.Node
-func Stmt(n ir.Node) ir.Node
+func AssignExpr(curfunc *ir.Func, n ir.Node) ir.Node
+func Expr(curfunc *ir.Func, n ir.Node) ir.Node
+func Stmt(curfunc *ir.Func, n ir.Node) ir.Node
 
-func Exprs(exprs []ir.Node)
-func Stmts(stmts []ir.Node)
+func Exprs(curfunc *ir.Func, exprs []ir.Node)
+func Stmts(curfunc *ir.Func, stmts []ir.Node)
 
-func Call(pos src.XPos, callee ir.Node, args []ir.Node, dots bool) ir.Node
+func Call(curfunc *ir.Func, pos src.XPos, callee ir.Node, args []ir.Node, dots bool) ir.Node
 
-func Callee(n ir.Node) ir.Node
+func Callee(curfunc *ir.Func, n ir.Node) ir.Node
 
 // RewriteNonNameCall replaces non-Name call expressions with temps,
 // rewriting f()(...) to t0 := f(); t0(...).
-func RewriteNonNameCall(n *ir.CallExpr)
+func RewriteNonNameCall(curfunc *ir.Func, n *ir.CallExpr)
 
 // RewriteMultiValueCall rewrites multi-valued f() to use temporaries,
 // so the backend wouldn't need to worry about tuple-valued expressions.
-func RewriteMultiValueCall(n ir.InitNode, call ir.Node)
+func RewriteMultiValueCall(curfunc *ir.Func, n ir.InitNode, call ir.Node)
 
 // Lookdot1 looks up the specified method s in the list fs of methods, returning
 // the matching field or nil. If dostrcmp is 0, it matches the symbols. If
@@ -45,10 +45,10 @@ func NewMethodExpr(pos src.XPos, recv *types.Type, sym *types.Sym) *ir.SelectorE
 // methods. If dostrcmp is 0, it matches the field/method with the exact symbol
 // as n.Sel (appropriate for exported fields). If dostrcmp is 1, it matches by name
 // exactly. If dostrcmp is 2, it matches names with case folding.
-func Lookdot(n *ir.SelectorExpr, t *types.Type, dostrcmp int) *types.Field
+func Lookdot(curfunc *ir.Func, n *ir.SelectorExpr, t *types.Type, dostrcmp int) *types.Field
 
-func Conv(n ir.Node, t *types.Type) ir.Node
+func Conv(curfunc *ir.Func, n ir.Node, t *types.Type) ir.Node
 
 // ConvNop converts node n to type t using the OCONVNOP op
 // and typechecks the result with ctxExpr.
-func ConvNop(n ir.Node, t *types.Type) ir.Node
+func ConvNop(curfunc *ir.Func, n ir.Node, t *types.Type) ir.Node

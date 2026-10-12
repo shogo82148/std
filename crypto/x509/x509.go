@@ -29,7 +29,8 @@ import (
 //
 // 戻り値は、*[rsa.PublicKey]、*[dsa.PublicKey]、*[ecdsa.PublicKey]、
 // [ed25519.PublicKey]（ポインターではありません）、*[mldsa.PublicKey]、
-// または*[ecdh.PublicKey]（X25519用）のいずれかです。
+// *[ecdh.PublicKey]（X25519用）、*[mlkem.EncapsulationKey768]、
+// または *[mlkem.EncapsulationKey1024] のいずれかです。
 // 将来的に、さらに多くの型がサポートされる可能性があります。
 //
 // この種の鍵は、一般的に"PUBLIC KEY"タイプのPEMブロックでエンコードされます。
@@ -41,7 +42,8 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 //
 // 現在サポートされている鍵型は、*[rsa.PublicKey]、
 // *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインターではありません）、
-// *[mldsa.PublicKey]、および*[ecdh.PublicKey]です。
+// *[mldsa.PublicKey]、*[ecdh.PublicKey]、*[mlkem.EncapsulationKey768]、
+// および *[mlkem.EncapsulationKey1024] です。
 // サポートされていない鍵型を指定するとエラーになります。
 //
 // この種類のキーは一般的には"type 'PUBLIC KEY'のPEMブロックでエンコードされます。

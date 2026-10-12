@@ -30,6 +30,9 @@ package types
 // 埋め込まれた構造体フィールドのインデックスであり、深度0から開始します。
 //
 // また、コンポーネントを別々に返す [LookupFieldOrMethod] も参照してください。
+//
+// Selectionは一般にポインターで渡したり返したりすべきです。
+// ここでポインターになっていないのは不幸な誤りでした。
 func LookupSelection(T Type, addressable bool, pkg *Package, name string) (Selection, bool)
 
 // LookupFieldOrMethodは、T内で指定されたパッケージと名前を持つフィールドまたはメソッドを検索し、

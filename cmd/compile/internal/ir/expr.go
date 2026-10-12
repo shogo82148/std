@@ -489,20 +489,17 @@ func ParamNames(ft *types.Type) []Node
 
 func RecvParamNames(ft *types.Type) []Node
 
-// MethodSym returns the method symbol representing a method name
-// associated with a specific receiver type.
-//
-// Method symbols can be used to distinguish the same method appearing
-// in different method sets. For example, T.M and (*T).M have distinct
-// method symbols.
-//
-// The returned symbol will be marked as a function.
-func MethodSym(recv *types.Type, msym *types.Sym) *types.Sym
+// MethodSym returns the method function symbol for recv. The second result
+// reports whether the symbol is a shared promoted wrapper.
+func MethodSym(recv *types.Type, method *types.Field) (*types.Sym, bool)
 
-// MethodSymSuffix is like MethodSym, but allows attaching a
-// distinguisher suffix. To avoid collisions, the suffix must not
-// start with a letter, number, or period.
-func MethodSymSuffix(recv *types.Type, msym *types.Sym, suffix string) *types.Sym
+// ReceiverMethodSym returns the receiver-named method function symbol.
+func ReceiverMethodSym(recv *types.Type, msym *types.Sym) *types.Sym
+
+// ReceiverMethodSymSuffix is like ReceiverMethodSym, but allows attaching a
+// distinguisher suffix. To avoid collisions, the suffix must not start with a
+// letter, number, or period.
+func ReceiverMethodSymSuffix(recv *types.Type, msym *types.Sym, suffix string) *types.Sym
 
 // LookupMethodSelector returns the types.Sym of the selector for a method
 // named in local symbol name, as well as the types.Sym of the receiver.

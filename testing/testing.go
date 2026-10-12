@@ -447,7 +447,9 @@ var (
 // その他の報告用メソッド（[T.Log] や [T.Error] のバリエーションなど）は、複数のゴルーチンから同時に呼び出すことができます。
 type T struct {
 	common
-	denyParallel bool
+	// denyParallel, if non-empty, is the operation (such as "t.Setenv") that
+	// forbids a later call to t.Parallel.
+	denyParallel string
 	tstate       *testState
 }
 

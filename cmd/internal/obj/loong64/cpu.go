@@ -226,6 +226,9 @@ const (
 	REGCTXT = REG_R29
 	REGG    = REG_R22
 	REGTMP  = REG_R30
+	REGRT1  = REG_R20
+	REGRT2  = REG_R21
+	REGTLS  = REG_R2
 	FREGRET = REG_F0
 )
 
@@ -243,10 +246,13 @@ const (
 
 const (
 	// mark flags
-	LABEL  = 1 << 0
-	LEAF   = 1 << 1
-	SYNC   = 1 << 2
-	BRANCH = 1 << 3
+	LABEL = 1 << iota
+	LEAF
+	SYNC
+	BRANCH
+
+	// p expands to multiple instructions and uses REGTMP.
+	USES_REG_TMP
 )
 
 // Arrangement for Loong64 SIMD instructions
@@ -281,7 +287,7 @@ const (
 // bits 5-9 indicates arrangement: <T>
 // bits 10 indicates SMID type: 0: LSX, 1: LASX
 const (
-	REG_ARNG = obj.RBaseLOONG64 + (1 << 10) + (iota << 11)
+	REG_ARNG = obj.RBaseLOONG64 + (1 << 12) + (iota << 11)
 	REG_ELEM
 	REG_ELEM_END
 )

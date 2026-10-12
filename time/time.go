@@ -64,7 +64,7 @@ package time
 // Time型のゼロ値は、UTCでの1年1月1日00:00:00.000000000です。
 // この時刻は実際にはほとんど使われないため、[Time.IsZero] メソッドは明示的に初期化されていない時刻を検出するための簡単な方法です。
 //
-// 各時刻には関連する [Location] があります。[Time.Local]、[Time.UTC]、および Time.In メソッドは、特定のLocationを持つTimeを返します。
+// 各時刻には関連する [Location] があります。[Time.Local]、[Time.UTC]、および [Time.In] メソッドは、特定のLocationを持つTimeを返します。
 // これらのメソッドを使用してTime値のLocationを変更しても、それが表す実際の瞬間は変更されず、解釈するタイムゾーンのみが変更されます。
 //
 // [Time.GobEncode]、[Time.MarshalBinary]、[Time.AppendBinary]、[Time.MarshalJSON]、[Time.MarshalText]、[Time.AppendText] メソッドで保存された

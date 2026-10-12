@@ -23,7 +23,7 @@ import (
 
 // DefaultTransportは [Transport] のデフォルト実装であり、[DefaultClient] によって使用されます。
 // 必要に応じてネットワーク接続を確立し、後続の呼び出しで再利用するためにキャッシュします。
-// 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン）によって指示されたように、HTTPプロキシーを使用します。
+// 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン。小文字バージョンは大文字バージョンより優先されます）によって指示されたように、HTTPプロキシーを使用します。
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
 	DialContext: defaultTransportDialContext(&net.Dialer{
@@ -63,7 +63,7 @@ const DefaultMaxIdleConnsPerHost = 2
 // Transportは、ネットワークエラーに遭遇した場合、接続が既に正常に使用されており、
 // かつリクエストが冪等であり、ボディーがないか、または[Request.GetBody]が
 // 定義されている場合にのみ、リクエストを再試行します。HTTPリクエストは、
-// HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEの場合、
+// HTTPメソッドがGET、HEAD、OPTIONS、TRACE、またはQUERYの場合、
 // または[Header]マップに"Idempotency-Key"または"X-Idempotency-Key"
 // エントリーが含まれている場合に冪等と見なされます。冪等キーの値が
 // 長さゼロのスライスの場合、リクエストは冪等として扱われますが、
@@ -74,9 +74,6 @@ type Transport struct {
 	idleConn     map[connectMethodKey][]*persistConn
 	idleConnWait map[connectMethodKey]wantConnQueue
 	idleLRU      connLRU
-
-	reqMu       sync.Mutex
-	reqCanceler map[*Request]context.CancelCauseFunc
 
 	altMu    sync.Mutex
 	altProto atomic.Value
@@ -262,7 +259,7 @@ type Transport struct {
 // Cloneは、tのエクスポートされたフィールドのディープコピーを返します。
 func (t *Transport) Clone() *Transport
 
-// ProxyFromEnvironmentは、環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはそれらの小文字バージョン）によって示されるように、
+// ProxyFromEnvironmentは、環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはそれらの小文字バージョン。小文字バージョンは大文字バージョンより優先されます）によって示されるように、
 // 指定されたリクエストに使用するプロキシーのURLを返します。
 // リクエストは、NO_PROXYによって除外されていない限り、スキームに一致する環境変数からプロキシーを使用します。
 //
@@ -295,12 +292,9 @@ func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 // 現在使用中の接続は中断しません。
 func (t *Transport) CloseIdleConnections()
 
-// CancelRequestは、その接続を閉じることにより、進行中のリクエストをキャンセルします。
-// CancelRequestは、 [Transport.RoundTrip] が返された後にのみ呼び出す必要があります。
+// CancelRequestは廃止されており、何もしません。
 //
-// Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するために [Request.WithContext] を使用してください。
-// CancelRequestは、HTTP/2リクエストをキャンセルできません。
-// これは、Goの将来のリリースでno-opになる可能性があります。
+// Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するために [NewRequestWithContext] を使用してください。
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

@@ -122,6 +122,10 @@ func (u *Userinfo) String() string
 // エラーを返さない場合があります。
 func Parse(rawURL string) (*URL, error)
 
+// MustParseは [Parse](rawURL) を呼び出し、エラーの場合はパニックを引き起こします。
+// これは、有効なURLを表すハードコードされた文字列で使用することを意図しています。
+func MustParse(rawURL string) *URL
+
 // ParseRequestURIは生のURLを [URL] 構造体に解析します。これは、URLがHTTPリクエストで受け取られたものであることを前提としており、urlは絶対URIまたは絶対パスとしてのみ解釈されます。
 // 文字列urlには#fragmentの接尾辞がないことが前提とされています。
 // （ウェブブラウザはURLをウェブサーバーに送信する前に#fragmentを取り除きます。）

@@ -15,7 +15,7 @@ import (
 // uses it to generate a plist,
 // and flushes that plist to machine code.
 // worker indicates which of the backend workers is doing the processing.
-func Compile(fn *ir.Func, worker int, profile *pgoir.Profile)
+func Compile(ssacompiler ssa.Compiler, fn *ir.Func, worker int, profile *pgoir.Profile)
 
 // RegisterMapInitLsym records "s" in the set of outlined map initializer
 // functions.

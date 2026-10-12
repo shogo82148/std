@@ -59,6 +59,21 @@ func (v *Point) Bytes() []byte
 // the ecosystem rather than RFC 8032.
 func (v *Point) SetBytes(x []byte) (*Point, error)
 
+// BytesMontgomery converts v to a point on the birationally-equivalent
+// Curve25519 Montgomery curve, and returns its canonical 32 bytes encoding
+// according to RFC 7748.
+//
+// Note that BytesMontgomery only encodes the u-coordinate, so v and -v encode
+// to the same value. If v is the identity point, BytesMontgomery returns 32
+// zero bytes, analogously to the X25519 function.
+//
+// The lack of an inverse operation (such as SetMontgomeryBytes) is deliberate:
+// while every valid edwards25519 point has a unique u-coordinate Montgomery
+// encoding, X25519 accepts inputs on the quadratic twist, which don't correspond
+// to any edwards25519 point, and every other X25519 input corresponds to two
+// edwards25519 points.
+func (v *Point) BytesMontgomery() []byte
+
 // d is a constant in the curve equation.
 var _ = new(field.Element).SetBytes([]byte{
 	0xa3, 0x78, 0x59, 0x13, 0xca, 0x4d, 0xeb, 0x75,

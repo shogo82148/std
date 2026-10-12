@@ -75,6 +75,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/time"
 )
@@ -139,6 +140,7 @@ type Flag struct {
 	Usage    string
 	Value    Value
 	DefValue string
+	IsSet    bool
 }
 
 // Output は使用方法やエラーメッセージのための出力先を返します。 output が設定されていない場合や nil に設定されている場合は、[os.Stderr] が返されます。
@@ -157,6 +159,14 @@ func (f *FlagSet) SetOutput(output io.Writer)
 // VisitAllは辞書順にフラグを訪れ、それぞれについてfnを呼び出します。
 // 設定されていないフラグも含めて、すべてのフラグを訪れます。
 func (f *FlagSet) VisitAll(fn func(*Flag))
+
+// Allは、フラグを辞書順に返します。
+// 設定されていないフラグも含めて、すべてのフラグを訪れます。
+func (f *FlagSet) All() iter.Seq[*Flag]
+
+// Allは、すべてのコマンドラインフラグを辞書順に返します。
+// 設定されていないフラグも含めて、すべてのフラグを訪れます。
+func All() iter.Seq[*Flag]
 
 // VisitAllはコマンドラインフラグを辞書順に訪れ、それぞれに対してfnを呼び出します。設定されていないフラグも含めて、すべてのフラグを訪れます。
 func VisitAll(fn func(*Flag))

@@ -235,7 +235,8 @@ func (e InvalidAddrError) Timeout() bool
 func (e InvalidAddrError) Temporary() bool
 
 // DNSConfigErrorは、マシンのDNS設定を読み取る際のエラーを表します。
-// （使用されていませんが、互換性のために保持されています。）
+//
+// Deprecated: もはや使用されていません。互換性のために保持されています。
 type DNSConfigError struct {
 	Err error
 }

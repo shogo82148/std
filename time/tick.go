@@ -6,8 +6,8 @@ package time
 
 // Tickerは、時計の間隔で "ticks" を配信するチャネルを保持します。
 type Ticker struct {
-	C          <-chan Time
-	initTicker bool
+	C    <-chan Time
+	self *Ticker
 }
 
 // NewTickerは、各ティック後にチャネル上の現在の時間を送信するチャネルを含む新しい [Ticker] を返します。

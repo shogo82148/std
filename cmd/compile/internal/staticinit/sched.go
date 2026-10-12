@@ -37,14 +37,14 @@ type Schedule struct {
 }
 
 // StaticInit adds an initialization statement n to the schedule.
-func (s *Schedule) StaticInit(n ir.Node)
+func (s *Schedule) StaticInit(curfunc *ir.Func, n ir.Node)
 
 // MapInitToVar is the inverse of VarToMapInit; it maintains a mapping
 // from a compiler-generated init function to the map the function is
 // initializing.
 var MapInitToVar map[*ir.Func]*ir.Name
 
-func (s *Schedule) StaticAssign(l *ir.Name, loff int64, r ir.Node, typ *types.Type) bool
+func (s *Schedule) StaticAssign(curfunc *ir.Func, l *ir.Name, loff int64, r ir.Node, typ *types.Type) bool
 
 // StaticName returns a name backed by a (writable) static data symbol.
 func StaticName(t *types.Type) *ir.Name
@@ -67,3 +67,13 @@ func AddKeepRelocations()
 // profitable), to facilitate better dead-code elimination by the
 // linker.
 func OutlineMapInits(fn *ir.Func)
+
+// GenerateVarInitFunc create a new function that will (eventually) have this form:
+//
+//	func init.part.%d() {
+//		...
+//	}
+func GenerateVarInitFunc() *ir.Func
+
+// CanOptimize reports whether the given fn can be optimized for static assignments.
+func CanOptimize(fn *ir.Func) bool

@@ -253,6 +253,7 @@ GoとCの型の間を変換します。疑似Go定義では次のようになり
 	func C.CBytes([]byte) unsafe.Pointer
 
 	// C文字列からGo文字列へ
+	// ポインターがnilの場合、C.GoStringは空文字列を返します。
 	func C.GoString(*C.char) string
 
 	// 明示的な長さを持つCデータからGo文字列へ

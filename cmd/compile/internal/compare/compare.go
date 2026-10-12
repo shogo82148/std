@@ -38,7 +38,7 @@ func EqStructCost(t *types.Type) int64
 // The first return value is the flattened list of conditions,
 // the second value is a boolean indicating whether any of the
 // comparisons could panic.
-func EqStruct(t *types.Type, np, nq ir.Node) ([]ir.Node, bool)
+func EqStruct(curfunc *ir.Func, t *types.Type, np, nq ir.Node) ([]ir.Node, bool)
 
 // EqString returns the nodes
 //
@@ -50,7 +50,7 @@ func EqStruct(t *types.Type, np, nq ir.Node) ([]ir.Node, bool)
 //
 // which can be used to construct string equality comparison.
 // eqlen must be evaluated before eqmem, and shortcircuiting is required.
-func EqString(s, t ir.Node) (eqlen *ir.BinaryExpr, eqmem *ir.CallExpr)
+func EqString(curfunc *ir.Func, s, t ir.Node) (eqlen *ir.BinaryExpr, eqmem *ir.CallExpr)
 
 // EqInterface returns the nodes
 //
@@ -62,4 +62,4 @@ func EqString(s, t ir.Node) (eqlen *ir.BinaryExpr, eqmem *ir.CallExpr)
 //
 // which can be used to construct interface equality comparison.
 // eqtab must be evaluated before eqdata, and shortcircuiting is required.
-func EqInterface(s, t ir.Node) (eqtab *ir.BinaryExpr, eqdata *ir.CallExpr)
+func EqInterface(curfunc *ir.Func, s, t ir.Node) (eqtab *ir.BinaryExpr, eqdata *ir.CallExpr)
