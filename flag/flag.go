@@ -117,7 +117,6 @@ const (
 // FlagSetは定義されたフラグの集合を表します。FlagSetのゼロ値は名前を持たず、 [ContinueOnError] エラーハンドリングを持ちます。
 // [Flag] の名前はFlagSet内でユニークでなければなりません。既に使用されている名前でフラグを定義しようとすると、パニックを引き起こします。
 type FlagSet struct {
-
 	// Usage はフラグの解析中にエラーが発生した場合に呼び出される関数です。
 	// このフィールドは、カスタムのエラーハンドラーを指すように変更できる関数（メソッドではありません）です。
 	// Usage が呼び出された後に何が起こるかは、ErrorHandling の設定に依存します。
@@ -440,7 +439,7 @@ func Parsed() bool
 
 // CommandLineは [os.Args] から解析されたデフォルトのコマンドラインフラグのセットです。
 // [BoolVar]、[Arg] などのトップレベルの関数は、CommandLineのメソッドのラッパーです。
-var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
+var CommandLine *FlagSet
 
 // NewFlagSetは指定された名前とエラーハンドリングプロパティーを持つ新しい空のフラグセットを返します。名前が空でない場合、デフォルトの使用方法メッセージとエラーメッセージに表示されます。
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet

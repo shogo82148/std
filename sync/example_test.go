@@ -6,7 +6,6 @@ package sync_test
 
 import (
 	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/sync"
 )

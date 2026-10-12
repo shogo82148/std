@@ -8,12 +8,12 @@ package jsontext_test
 
 import (
 	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/encoding/json/jsontext"
-	"github.com/shogo82148/std/encoding/json/v2"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/strings"
+
+	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
 // この例は、[Encoder] と [Decoder] を使って、

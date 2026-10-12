@@ -58,7 +58,6 @@ var (
 
 // PushOptionsは、[Pusher.Push] のオプションを記述します。
 type PushOptions struct {
-
 	// Methodは要求されたリクエストのHTTPメソッドを指定します。
 	// 設定する場合、"GET"または"HEAD"でなければなりません。空は"GET"を意味します。
 	Method string
@@ -80,6 +79,15 @@ type HTTP2Config struct {
 	// 同時ストリームの数をオプションで指定します。
 	// ゼロの場合、MaxConcurrentStreamsのデフォルトは少なくとも100です。
 	MaxConcurrentStreams int
+
+	// StrictMaxConcurrentRequestsは、HTTP/2サーバーの同時実行数の上限を
+	// そのサーバーへのすべての接続にわたって守るかどうかを制御します。
+	// trueの場合、接続の同時実行数の上限を超えたときに送信された新しいリクエストは、
+	// 既存のリクエストが完了するまでブロックします。
+	// falseの場合、既存のすべての接続が上限に達していれば、追加の接続が開かれます。
+	//
+	// このパラメーターはTransportにのみ適用されます。
+	StrictMaxConcurrentRequests bool
 
 	// MaxDecoderHeaderTableSizeは、ピアから送信されたヘッダーのデコードに使用される
 	// ヘッダー圧縮テーブルのサイズの上限をオプションで指定します。

@@ -43,11 +43,11 @@ func (enc Encoding) WithPadding(padding rune) *Encoding
 func (enc Encoding) Strict() *Encoding
 
 // StdEncodingは、RFC 4648で定義されている標準のbase64エンコーディングです。
-var StdEncoding = NewEncoding(encodeStd)
+var StdEncoding = NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
 
 // URLEncodingは、RFC 4648で定義されている代替のbase64エンコーディングです。
 // 通常、URLやファイル名で使用されます。
-var URLEncoding = NewEncoding(encodeURL)
+var URLEncoding = NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_")
 
 // RawStdEncodingは、RFC 4648 Section 3.2 で定義されている標準の生の、パディングされていないbase64エンコーディングです。
 // これは、[StdEncoding] と同じですが、パディング文字が省略されています。

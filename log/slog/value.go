@@ -111,7 +111,7 @@ func (v Value) Uint64() uint64
 func (v Value) Bool() bool
 
 // Durationは、vの値をtime.Durationとして返します。vが [time.Duration] でない場合はパニックを引き起こします。
-func (a Value) Duration() time.Duration
+func (v Value) Duration() time.Duration
 
 // Float64は、vの値をfloat64として返します。vがfloat64でない場合はパニックを引き起こします。
 func (v Value) Float64() float64

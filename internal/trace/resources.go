@@ -81,7 +81,7 @@ func (s ProcState) String() string
 type ResourceKind uint8
 
 const (
-	ResourceNone      ResourceKind = iota
+	ResourceNone ResourceKind = iota
 	ResourceGoroutine
 	ResourceProc
 	ResourceThread
@@ -145,7 +145,6 @@ type StateTransition struct {
 
 	// The actual transition data. Stored in a neutral form so that
 	// we don't need fields for every kind of resource.
-	id       int64
 	oldState uint8
 	newState uint8
 }

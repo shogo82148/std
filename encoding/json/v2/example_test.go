@@ -22,7 +22,6 @@ import (
 	"github.com/shogo82148/std/time"
 
 	"github.com/shogo82148/std/encoding/json/jsontext"
-	"github.com/shogo82148/std/encoding/json/v2"
 )
 
 // 型が [encoding.TextMarshaler] や [encoding.TextUnmarshaler] を実装している場合、
@@ -106,16 +105,16 @@ func Example_fieldNames() {
 func Example_caseSensitivity() {
 	// 様々な命名規則を使ったJSON入力。
 	const input = `[
-        {"firstname": true},
-        {"firstName": true},
-        {"FirstName": true},
-        {"FIRSTNAME": true},
-        {"first_name": true},
-        {"FIRST_NAME": true},
-        {"first-name": true},
-        {"FIRST-NAME": true},
-        {"unknown": true}
-    ]`
+		{"firstname": true},
+		{"firstName": true},
+		{"FirstName": true},
+		{"FIRSTNAME": true},
+		{"first_name": true},
+		{"FIRST_NAME": true},
+		{"first-name": true},
+		{"FIRST-NAME": true},
+		{"unknown": true}
+	]`
 
 	// "case:ignore"なしの場合、Unmarshalは完全一致のみを探します。
 	var caseStrict []struct {
@@ -512,10 +511,10 @@ func ExampleWithUnmarshalers_rawNumber() {
 func ExampleWithUnmarshalers_recordOffsets() {
 	// 仮想的な設定ファイル。
 	const input = `[
-					{"Source": "192.168.0.100:1234", "Destination": "192.168.0.1:80"},
-					{"Source": "192.168.0.251:4004"},
-					{"Source": "192.168.0.165:8080", "Destination": "0.0.0.0:80"}
-			]`
+		{"Source": "192.168.0.100:1234", "Destination": "192.168.0.1:80"},
+		{"Source": "192.168.0.251:4004"},
+		{"Source": "192.168.0.165:8080", "Destination": "0.0.0.0:80"}
+	]`
 	type Tunnel struct {
 		Source      netip.AddrPort
 		Destination netip.AddrPort

@@ -78,12 +78,6 @@ const (
 	UnsafePointer
 )
 
-const (
-	// TODO (khr, drchase) why aren't these in TFlag?  Investigate, fix if possible.
-	KindDirectIface Kind = 1 << 5
-	KindMask        Kind = (1 << 5) - 1
-)
-
 // TFlag is used by a Type to signal what extra type information is
 // available in the memory directly following the Type value.
 type TFlag uint8
@@ -161,10 +155,7 @@ func (t *Type) HasName() bool
 // Pointers reports whether t contains pointers.
 func (t *Type) Pointers() bool
 
-// IfaceIndir reports whether t is stored indirectly in an interface value.
-func (t *Type) IfaceIndir() bool
-
-// isDirectIface reports whether t is stored directly in an interface value.
+// IsDirectIface reports whether t is stored directly in an interface value.
 func (t *Type) IsDirectIface() bool
 
 func (t *Type) GcSlice(begin, end uintptr) []byte
@@ -281,31 +272,6 @@ func (t *Type) NumMethod() int
 
 // NumMethod returns the number of interface methods in the type's method set.
 func (t *InterfaceType) NumMethod() int
-
-type MapType struct {
-	Type
-	Key    *Type
-	Elem   *Type
-	Bucket *Type
-	// function for hashing keys (ptr to key, seed) -> hash
-	Hasher     func(unsafe.Pointer, uintptr) uintptr
-	KeySize    uint8
-	ValueSize  uint8
-	BucketSize uint16
-	Flags      uint32
-}
-
-// Note: flag values must match those used in the TMAP case
-// in ../cmd/compile/internal/reflectdata/reflect.go:writeType.
-func (mt *MapType) IndirectKey() bool
-
-func (mt *MapType) IndirectElem() bool
-
-func (mt *MapType) ReflexiveKey() bool
-
-func (mt *MapType) NeedKeyUpdate() bool
-
-func (mt *MapType) HashMightPanic() bool
 
 func (t *Type) Key() *Type
 

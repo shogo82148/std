@@ -95,10 +95,10 @@ If a run of go test has any test or non-test flags outside this set,
 the result is not cached. To disable test caching, use any test flag
 or argument other than the cacheable flags. The idiomatic way to disable
 test caching explicitly is to use -count=1. Tests that open files within
-the package's source root (usually $GOPATH) or that consult environment
-variables only match future runs in which the files and environment
-variables are unchanged. A cached test result is treated as executing
-in no time at all, so a successful package test result will be cached and
+the package's module or that consult environment variables only
+match future runs in which the files and environment variables are
+unchanged. A cached test result is treated as executing in no time
+at all, so a successful package test result will be cached and
 reused regardless of -timeout setting.
 
 In addition to the build flags, the flags handled by 'go test' itself are:
@@ -148,8 +148,8 @@ and flags that apply to the resulting test binary.
 
 Several of the flags control profiling and write an execution profile
 suitable for "go tool pprof"; run "go tool pprof -h" for more
-information. The --alloc_space, --alloc_objects, and --show_bytes
-options of pprof control how the information is presented.
+information. The -sample_index=alloc_space, -sample_index=alloc_objects,
+and -show_bytes options of pprof control how the information is presented.
 
 The following flags are recognized by the 'go test' command and
 control the execution of any test:

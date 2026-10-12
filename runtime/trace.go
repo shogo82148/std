@@ -193,4 +193,4 @@ func StopTrace()
 
 // ReadTrace はバイナリー追跡データの次のチャンクを返します。データが利用可能になるまでブロックされます。もし追跡がオフになっており、オンの間に蓄積されたデータがすべて返された場合、ReadTrace は nil を返します。呼び出し元は、再度 ReadTrace を呼び出す前に返されたデータをコピーする必要があります。
 // ReadTrace は一度に1つのゴルーチンから呼び出す必要があります。
-func ReadTrace() []byte
+func ReadTrace() (buf []byte)

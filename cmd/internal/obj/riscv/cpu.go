@@ -32,6 +32,8 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
+var CSRs map[uint16]string = csrs
+
 const (
 	// Base register numberings.
 	REG_X0 = obj.RBaseRISCV + iota
@@ -1626,9 +1628,10 @@ type SpecialOperand int
 
 const (
 	SPOP_BEGIN SpecialOperand = obj.SpecialOperandRISCVBase
+	SPOP_RVV_BEGIN
 
 	// Vector mask policy.
-	SPOP_MA SpecialOperand = obj.SpecialOperandRISCVBase + iota - 1
+	SPOP_MA SpecialOperand = obj.SpecialOperandRISCVBase + iota - 2
 	SPOP_MU
 
 	// Vector tail policy.
@@ -1649,6 +1652,7 @@ const (
 	SPOP_E16
 	SPOP_E32
 	SPOP_E64
+	SPOP_RVV_END
 
 	// CSR names.  4096 special operands are reserved for RISC-V CSR names.
 	SPOP_CSR_BEGIN = SPOP_RVV_END
@@ -1678,6 +1682,7 @@ const (
 	SPOP_END = SPOP_FENCE_END + 1
 )
 
+// String returns the textual representation of a SpecialOperand.
 func (so SpecialOperand) String() string
 
 // Instruction encoding masks.

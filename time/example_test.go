@@ -292,11 +292,13 @@ func ExampleTime_Format() {
 	// 参照時刻の時は15、または午後3時です。レイアウトはどちらの形式でも表現できますが、私たちの値は朝の時間なので、AMとして表示する必要があります。両方を1つの書式文字列で表示します。小文字でも。
 	do("AM/PM", "3PM==3pm==15h", "11AM==11am==11h")
 
+	// 解析時に、秒の値の後に小数点といくつかの数字が続く場合、
+	// レイアウト文字列が小数秒を表していなくても、それは小数秒として扱われます。
+	// ここでは、上で使用した時刻の値に小数秒を追加します。
 	t, err = time.Parse(time.UnixDate, "Wed Feb 25 11:06:39.1234 PST 2015")
 	if err != nil {
 		panic(err)
 	}
-
 	// レイアウト文字列に少数秒の表現が含まれていない場合、出力には表示されません。
 	do("No fraction", time.UnixDate, "Wed Feb 25 11:06:39 PST 2015")
 
@@ -387,7 +389,6 @@ func ExampleTime_GoString() {
 }
 
 func ExampleParse() {
-
 	// Time.Formatの例を参照して、time.Time値を解析するためにレイアウト文字列を定義する方法の詳細を見てください。ParseとFormatは、入力と出力を記述するために同じモデルを使用します。
 
 	// longFormは、参照時刻がどのように所望のレイアウトで表されるかを例示します。
@@ -648,7 +649,7 @@ func ExampleTime_Before() {
 	year3000 := time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	isYear2000BeforeYear3000 := year2000.Before(year3000) // 真
-	isYear3000BeforeYear2000 := year3000.Before(year2000) // false
+	isYear3000BeforeYear2000 := year3000.Before(year2000) // False
 
 	fmt.Printf("year2000.Before(year3000) = %v\n", isYear2000BeforeYear3000)
 	fmt.Printf("year3000.Before(year2000) = %v\n", isYear3000BeforeYear2000)
@@ -708,8 +709,8 @@ func ExampleTime_String() {
 	timeWithoutNanoseconds := time.Date(2000, 2, 1, 12, 13, 14, 0, time.UTC)
 	withoutNanoseconds := timeWithoutNanoseconds.String()
 
-	fmt.Printf("withNanoseconds = %v\n", string(withNanoseconds))
-	fmt.Printf("withoutNanoseconds = %v\n", string(withoutNanoseconds))
+	fmt.Printf("withNanoseconds = %v\n", withNanoseconds)
+	fmt.Printf("withoutNanoseconds = %v\n", withoutNanoseconds)
 
 	// Output:
 	// withNanoseconds = 2000-02-01 12:13:14.000000015 +0000 UTC

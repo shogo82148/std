@@ -81,7 +81,6 @@ package time
 // 一般的には、t.Equal(u)をt == uよりも優先し、t.Equalは最も正確な比較を使用し、
 // 1つの引数のみが単調な時計の読み取りを持つ場合のケースを正しく処理します。
 type Time struct {
-
 	// wallとextは、壁時の秒、壁時のナノ秒、およびオプションの単調クロックの読み取り値（ナノ秒単位）をエンコードします。
 	// 上位から下位のビット位置に従い、wallは1ビットのフラグ（hasMonotonic）、33ビットの秒フィールド、および30ビットの壁時のナノ秒フィールドをエンコードします。
 	// ナノ秒のフィールドの範囲は[0, 999999999]です。
@@ -95,6 +94,9 @@ type Time struct {
 	// すべてのUTC時刻はloc==nilで表され、loc==&utcLocではありません。
 	loc *Location
 }
+
+// IsZeroは、tがゼロ時刻、すなわち紀元1年1月1日00:00:00 UTCを表しているかどうかを報告します。
+func (t Time) IsZero() bool
 
 // tがuより後の時刻であるかどうかを報告します。
 func (t Time) After(u Time) bool
@@ -148,9 +150,6 @@ const (
 
 // Stringは日の英語名（"Sunday", "Monday", ...）を返します。
 func (d Weekday) String() string
-
-// IsZeroは、tがゼロ時刻、すなわち紀元1年1月1日00:00:00 UTCを表しているかどうかを報告します。
-func (t Time) IsZero() bool
 
 // Dateはtが発生する年、月、日を返します。
 func (t Time) Date() (year int, month Month, day int)

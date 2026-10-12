@@ -8,9 +8,15 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
+// Openat flags supported by syscall.Open.
+const (
+	O_DIRECTORY = 0x04000
+)
+
 // Openat flags not supported by syscall.Open.
 //
-// These are invented values.
+// These are invented values, use values in the 33-63 bit range
+// to avoid overlap with flags and attributes supported by [syscall.Open].
 //
 // When adding a new flag here, add an unexported version to
 // the set of invented O_ values in syscall/types_windows.go

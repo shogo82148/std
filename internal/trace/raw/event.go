@@ -26,3 +26,6 @@ type Event struct {
 // This format is the same format that is parsed by the TextReader
 // and emitted by the TextWriter.
 func (e *Event) String() string
+
+// EncodedSize returns the canonical encoded size of an event.
+func (e *Event) EncodedSize() int

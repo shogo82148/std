@@ -25,9 +25,9 @@ func ExampleWriter() {
 	var files = []struct {
 		Name, Body string
 	}{
-		{"readme.txt", "このアーカイブにはいくつかのテキストファイルが含まれています。"},
+		{"readme.txt", "This archive contains some text files."},
 		{"gopher.txt", "Gopher names:\nGeorge\nGeoffrey\nGonzo"},
-		{"todo.txt", "動物取扱業免許を取得する。\nもっと例を書く。"},
+		{"todo.txt", "Get animal handling licence.\nWrite more examples."},
 	}
 	for _, file := range files {
 		f, err := w.Create(file.Name)

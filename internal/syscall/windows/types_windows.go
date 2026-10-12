@@ -5,7 +5,7 @@
 package windows
 
 import (
-	"github.com/shogo82148/std/internal/syscall/windows"
+	"github.com/shogo82148/std/internal/runtime/syscall/windows"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -146,6 +146,22 @@ type SECURITY_QUALITY_OF_SERVICE struct {
 	ContextTrackingMode byte
 	EffectiveOnly       byte
 }
+
+// File flags for [os.OpenFile]. The O_ prefix is used to indicate
+// that these flags are specific to the OpenFile function.
+const (
+	O_FILE_FLAG_OPEN_NO_RECALL     = 0x00100000
+	O_FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000
+	O_FILE_FLAG_SESSION_AWARE      = 0x00800000
+	O_FILE_FLAG_POSIX_SEMANTICS    = 0x01000000
+	O_FILE_FLAG_BACKUP_SEMANTICS   = 0x02000000
+	O_FILE_FLAG_DELETE_ON_CLOSE    = 0x04000000
+	O_FILE_FLAG_SEQUENTIAL_SCAN    = 0x08000000
+	O_FILE_FLAG_RANDOM_ACCESS      = 0x10000000
+	O_FILE_FLAG_NO_BUFFERING       = 0x20000000
+	O_FILE_FLAG_OVERLAPPED         = 0x40000000
+	O_FILE_FLAG_WRITE_THROUGH      = 0x80000000
+)
 
 const (
 	// CreateDisposition flags for NtCreateFile and NtCreateNamedPipeFile.

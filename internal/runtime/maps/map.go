@@ -11,7 +11,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Note: changes here must be reflected in cmd/compile/internal/reflectdata/map_swiss.go:SwissMapType.
+// Note: changes here must be reflected in cmd/compile/internal/reflectdata/map.go:MapType.
 type Map struct {
 	// The number of filled slots (i.e. the number of elements in all
 	// tables). Excludes deleted slots.
@@ -32,7 +32,7 @@ type Map struct {
 	// details.
 	//
 	// Small map optimization: if the map always contained
-	// abi.SwissMapGroupSlots or fewer entries, it fits entirely in a
+	// abi.MapGroupSlots or fewer entries, it fits entirely in a
 	// single group. In that case dirPtr points directly to a single group.
 	//
 	// dirPtr *group
@@ -74,7 +74,7 @@ const Use64BitHash = goarch.PtrSize == 8 && goarch.IsWasm == 0
 // maxAlloc should be runtime.maxAlloc.
 //
 // TODO(prattmic): Put maxAlloc somewhere accessible.
-func NewMap(mt *abi.SwissMapType, hint uintptr, m *Map, maxAlloc uintptr) *Map
+func NewMap(mt *abi.MapType, hint uintptr, m *Map, maxAlloc uintptr) *Map
 
 func NewEmptyMap() *Map
 
@@ -82,21 +82,19 @@ func (m *Map) Used() uint64
 
 // Get performs a lookup of the key that key points to. It returns a pointer to
 // the element, or false if the key doesn't exist.
-func (m *Map) Get(typ *abi.SwissMapType, key unsafe.Pointer) (unsafe.Pointer, bool)
+func (m *Map) Get(typ *abi.MapType, key unsafe.Pointer) (unsafe.Pointer, bool)
 
-func (m *Map) Put(typ *abi.SwissMapType, key, elem unsafe.Pointer)
+func (m *Map) Put(typ *abi.MapType, key, elem unsafe.Pointer)
 
 // PutSlot returns a pointer to the element slot where an inserted element
 // should be written.
 //
 // PutSlot never returns nil.
-func (m *Map) PutSlot(typ *abi.SwissMapType, key unsafe.Pointer) unsafe.Pointer
+func (m *Map) PutSlot(typ *abi.MapType, key unsafe.Pointer) unsafe.Pointer
 
-func (m *Map) Delete(typ *abi.SwissMapType, key unsafe.Pointer)
+func (m *Map) Delete(typ *abi.MapType, key unsafe.Pointer)
 
 // Clear deletes all entries from the map resulting in an empty map.
-func (m *Map) Clear(typ *abi.SwissMapType)
+func (m *Map) Clear(typ *abi.MapType)
 
-func (m *Map) Clone(typ *abi.SwissMapType) *Map
-
-func OldMapKeyError(t *abi.OldMapType, p unsafe.Pointer) error
+func (m *Map) Clone(typ *abi.MapType) *Map

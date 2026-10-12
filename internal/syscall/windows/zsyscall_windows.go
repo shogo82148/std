@@ -11,6 +11,8 @@ var _ unsafe.Pointer
 
 func DuplicateTokenEx(hExistingToken syscall.Token, dwDesiredAccess uint32, lpTokenAttributes *syscall.SecurityAttributes, impersonationLevel uint32, tokenType TokenType, phNewToken *syscall.Token) (err error)
 
+func ImpersonateLoggedOnUser(token syscall.Token) (err error)
+
 func ImpersonateSelf(impersonationlevel uint32) (err error)
 
 func IsValidSid(sid *syscall.SID) (valid bool)
@@ -57,6 +59,8 @@ func GetCurrentThread() (pseudoHandle syscall.Handle, err error)
 
 func GetFileInformationByHandleEx(handle syscall.Handle, class uint32, info *byte, bufsize uint32) (err error)
 
+func GetFileSizeEx(handle syscall.Handle, size *int64) (err error)
+
 func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSize uint32, flags uint32) (n uint32, err error)
 
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
@@ -98,6 +102,10 @@ func VirtualQuery(address uintptr, buffer *MemoryBasicInformation, length uintpt
 func NetShareAdd(serverName *uint16, level uint32, buf *byte, parmErr *uint16) (neterr error)
 
 func NetShareDel(serverName *uint16, netName *uint16, reserved uint32) (neterr error)
+
+func NetUserAdd(serverName *uint16, level uint32, buf *byte, parmErr *uint32) (neterr error)
+
+func NetUserDel(serverName *uint16, userName *uint16) (neterr error)
 
 func NetUserGetLocalGroups(serverName *uint16, userName *uint16, level uint32, flags uint32, buf **byte, prefMaxLen uint32, entriesRead *uint32, totalEntries *uint32) (neterr error)
 

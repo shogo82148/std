@@ -76,17 +76,36 @@ func PathEscape(s string) string
 //
 // URLのStringメソッドは、パスを取得するためにEscapedPathメソッドを使用します。
 type URL struct {
-	Scheme      string
-	Opaque      string
-	User        *Userinfo
-	Host        string
-	Path        string
-	RawPath     string
-	OmitHost    bool
-	ForceQuery  bool
-	RawQuery    string
-	Fragment    string
+	Scheme   string
+	Opaque   string
+	User     *Userinfo
+	Host     string
+	Path     string
+	Fragment string
+
+	// RawQueryは、先頭の '?' を除いたエンコード済みのクエリー値を保持します。
+	// クエリーをデコードするには URL.Query を使用してください。
+	RawQuery string
+
+	// RawPathは、エンコード済みのパスのヒントを保持するオプションのフィールドです。
+	// 詳細については、EscapedPathメソッドを参照してください。
+	//
+	// 一般に、コードはRawPathを読み取る代わりにEscapedPathを呼び出すべきです。
+	RawPath string
+
+	// RawFragmentは、エンコード済みのフラグメントのヒントを保持するオプションのフィールドです。
+	// 詳細については、EscapedFragmentメソッドを参照してください。
+	//
+	// 一般に、コードはRawFragmentを読み取る代わりにEscapedFragmentを呼び出すべきです。
 	RawFragment string
+
+	// ForceQueryは、元のURLがクエリー文字 ('?') を含んでいたかどうかを示します。
+	// 設定されている場合、RawQueryが空であっても、Stringメソッドは末尾に '?' を含めます。
+	ForceQuery bool
+
+	// OmitHostは、URLのホスト（authority）が空であることを示します。
+	// 設定されている場合、ホストが空のときStringメソッドはホストを含めません。
+	OmitHost bool
 }
 
 // Userは、提供されたユーザー名を含む [Userinfo] を返します
@@ -244,6 +263,8 @@ func (u *URL) Hostname() string
 func (u *URL) Port() string
 
 func (u *URL) MarshalBinary() (text []byte, err error)
+
+func (u *URL) AppendBinary(b []byte) ([]byte, error)
 
 func (u *URL) UnmarshalBinary(text []byte) error
 

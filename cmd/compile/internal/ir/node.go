@@ -24,6 +24,7 @@ type Node interface {
 	copy() Node
 
 	doChildren(func(Node) bool) bool
+	doChildrenWithHidden(func(Node) bool) bool
 	editChildren(func(Node) Node)
 	editChildrenWithHidden(func(Node) Node)
 
@@ -198,7 +199,6 @@ const (
 	OSLICEHEADER
 	OSTRINGHEADER
 	ORECOVER
-	ORECOVERFP
 	ORECV
 	ORUNESTR
 	OSELRECV2

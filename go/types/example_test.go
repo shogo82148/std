@@ -122,9 +122,8 @@ type I interface { m() byte }
 	celsius := pkg.Scope().Lookup("Celsius").Type()
 	for _, t := range []types.Type{celsius, types.NewPointer(celsius)} {
 		fmt.Printf("Method set of %s:\n", t)
-		mset := types.NewMethodSet(t)
-		for i := 0; i < mset.Len(); i++ {
-			fmt.Println(mset.At(i))
+		for m := range types.NewMethodSet(t).Methods() {
+			fmt.Println(m)
 		}
 		fmt.Println()
 	}
@@ -162,7 +161,6 @@ func fib(x int) int {
 	}
 	return fib(x-1) - fib(x-2)
 }`
-
 	// このテストでは、位置情報のために特定のファイルセットが必要です。
 	// 型チェックのヘルパーは使用できません。
 	fset := token.NewFileSet()

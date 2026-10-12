@@ -45,7 +45,7 @@ type Named struct {
 	methods []*Func
 
 	// loaderは型パラメーター、基礎となる型、およびメソッドを遅延読み込みするために提供されるかもしれません。
-	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
+	loader func(*Named) ([]*TypeParam, Type, []*Func, []func())
 }
 
 // NewNamedは、与えられた型名、基礎型、および関連するメソッドに対して新しい名前付き型を返します。

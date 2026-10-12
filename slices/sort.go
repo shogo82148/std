@@ -12,7 +12,7 @@ import (
 
 // Sort は、任意の順序付け可能な型のスライスを昇順にソートします。
 // 浮動小数点数をソートする場合、NaN は他の値の前に並べられます。
-func Sort[S ~[]E, E cmp.Ordered](x S) {}
+func Sort[S ~[]E, E cmp.Ordered](x S)
 
 // SortFunc は、cmp 関数によって決定される昇順でスライス x をソートします。
 // このソートは安定であることは保証されません。
@@ -22,7 +22,7 @@ func Sort[S ~[]E, E cmp.Ordered](x S) {}
 // SortFunc は、cmp が厳密な弱順序であることを要求します。
 // https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings を参照してください。
 // 関数は比較不可能なアイテムに対して0を返すべきです。
-func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int) {}
+func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int)
 
 // SortStableFunc は、cmp 関数によって決定される順序でスライス x をソートします。
 // このソートは安定であり、等しい要素の元の順序を維持します。
@@ -30,38 +30,38 @@ func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int) {}
 //
 // SortStableFunc は、cmp が厳密な弱順序であることを要求します。
 // https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings を参照してください。
-func SortStableFunc[S ~[]E, E any](x S, cmp func(a, b E) int) {}
+func SortStableFunc[S ~[]E, E any](x S, cmp func(a, b E) int)
 
 // IsSorted は、x が昇順にソートされているかどうかを報告します。
-func IsSorted[S ~[]E, E cmp.Ordered](x S) bool { return false }
+func IsSorted[S ~[]E, E cmp.Ordered](x S) bool
 
 // IsSortedFunc は、x が昇順にソートされているかどうかを報告します。
 // このソートは、cmp 関数によって定義された比較関数によって行われます。
-func IsSortedFunc[S ~[]E, E any](x S, cmp func(a, b E) int) bool { return false }
+func IsSortedFunc[S ~[]E, E any](x S, cmp func(a, b E) int) bool
 
 // Min は、x 内の最小値を返します。x が空の場合は panic を発生させます。
 // 浮動小数点数の場合、Min は NaN を伝播します（x 内の任意の NaN 値は、出力を NaN にします）。
-func Min[S ~[]E, E cmp.Ordered](x S) E { var zero E; return zero }
+func Min[S ~[]E, E cmp.Ordered](x S) E
 
 // MinFunc は、cmp 関数によって比較された x 内の最小値を返します。
 // x が空の場合、MinFunc は panic を発生させます。
 // cmp 関数によって複数の最小要素がある場合、MinFunc は最初の要素を返します。
-func MinFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E { var zero E; return zero }
+func MinFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E
 
 // Max は、x 内の最大値を返します。x が空の場合は panic を発生させます。
 // 浮動小数点数の場合、Max は NaN を伝播します（x 内の任意の NaN 値は、出力を NaN にします）。
-func Max[S ~[]E, E cmp.Ordered](x S) E { var zero E; return zero }
+func Max[S ~[]E, E cmp.Ordered](x S) E
 
 // MaxFunc は、cmp 関数によって比較された x 内の最大値を返します。
 // x が空の場合、MaxFunc は panic を発生させます。
 // cmp 関数によって複数の最大要素がある場合、MaxFunc は最初の要素を返します。
-func MaxFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E { var zero E; return zero }
+func MaxFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E
 
 // BinarySearch は、ソートされたスライス内で target を検索し、target が見つかる位置、
 // またはソート順序で target が表示される位置を返します。
 // また、スライス内に target が本当に見つかったかどうかを示す bool も返します。
 // スライスは昇順にソートする必要があります。
-func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, false }
+func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool)
 
 // BinarySearchFunc は、カスタム比較関数を使用して [BinarySearch] と同様に動作します。
 // スライスは、cmp によって定義される増加順でソートする必要があります。
@@ -69,6 +69,4 @@ func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, 
 // スライス要素がターゲットよりも後ろの場合は正の数を返す必要があります。
 // cmp は、スライスと同じ順序付けを実装する必要があります。つまり、
 // cmp(a, t) < 0 かつ cmp(b, t) >= 0 の場合、a はスライス内で b よりも前になければなりません。
-func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool) {
-	return 0, false
-}
+func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool)

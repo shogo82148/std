@@ -49,3 +49,16 @@ func Is(err, target error) bool
 // Asは、targetがエラーを実装する型または任意のインターフェース型の、
 // 非nilポインターでない場合にパニックを引き起こします。
 func As(err error, target any) bool
+
+// AsTypeは、errのツリー内で型Eに一致する最初のエラーを見つけ、
+// 見つかった場合はそのエラー値とtrueを返します。それ以外の場合は、
+// Eのゼロ値とfalseを返します。
+//
+// ツリーは、err自体と、そのUnwrap() errorまたはUnwrap() []errorメソッドを
+// 繰り返し呼び出すことで得られるエラーで構成されます。errが複数のエラーを
+// ラップしている場合、AsTypeはerrを調べた後、その子を深さ優先で走査します。
+//
+// 型アサーション err.(E) が成り立つ場合、またはエラーがメソッド As(any) bool を持ち、
+// targetが非nilの *E であるときに err.As(target) がtrueを返す場合、エラーerrは型Eに一致します。
+// 後者の場合、Asメソッドがtargetを設定する責任を負います。
+func AsType[E error](err error) (E, bool)

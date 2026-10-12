@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/net/netip"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -17,7 +18,6 @@ import (
 //
 // Dialerのメソッドを同時に呼び出しても安全です。
 type Dialer struct {
-
 	// Timeoutはダイヤルが接続の完了を待つ最大時間です。Deadlineも設定されている場合、より早く失敗する可能性があります。
 	// デフォルトはタイムアウトなしです。
 	// TCPを使用して複数のIPアドレスを持つホスト名にダイヤルする場合、タイムアウトはそれらの間で分割される場合があります。
@@ -189,9 +189,40 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // ネットワークやアドレスパラメーターの説明については、[Dial] 関数を参照してください。
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
+// DialTCPは、提供されたコンテキストを使用して、TCPネットワークに対するDialのように動作します。
+//
+// 提供されるContextはnilであってはなりません。接続が完了する前にコンテキストの有効期限が切れた場合、
+// エラーが返されます。接続に成功した後は、コンテキストの有効期限が切れても接続には影響しません。
+//
+// networkはTCPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
+func (d *Dialer) DialTCP(ctx context.Context, network string, laddr netip.AddrPort, raddr netip.AddrPort) (*TCPConn, error)
+
+// DialUDPは、提供されたコンテキストを使用して、UDPネットワークに対するDialのように動作します。
+//
+// 提供されるContextはnilであってはなりません。接続が完了する前にコンテキストの有効期限が切れた場合、
+// エラーが返されます。接続に成功した後は、コンテキストの有効期限が切れても接続には影響しません。
+//
+// networkはUDPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
+func (d *Dialer) DialUDP(ctx context.Context, network string, laddr netip.AddrPort, raddr netip.AddrPort) (*UDPConn, error)
+
+// DialIPは、提供されたコンテキストを使用して、IPネットワークに対するDialのように動作します。
+//
+// 提供されるContextはnilであってはなりません。接続が完了する前にコンテキストの有効期限が切れた場合、
+// エラーが返されます。接続に成功した後は、コンテキストの有効期限が切れても接続には影響しません。
+//
+// networkはIPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
+func (d *Dialer) DialIP(ctx context.Context, network string, laddr netip.Addr, raddr netip.Addr) (*IPConn, error)
+
+// DialUnixは、提供されたコンテキストを使用して、Unixネットワークに対するDialのように動作します。
+//
+// 提供されるContextはnilであってはなりません。接続が完了する前にコンテキストの有効期限が切れた場合、
+// エラーが返されます。接続に成功した後は、コンテキストの有効期限が切れても接続には影響しません。
+//
+// networkはUnixネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
+func (d *Dialer) DialUnix(ctx context.Context, network string, laddr *UnixAddr, raddr *UnixAddr) (*UnixConn, error)
+
 // ListenConfig はアドレスのリッスンに関するオプションを含んでいます。
 type ListenConfig struct {
-
 	// Controlがnilでない場合、ネットワーク接続を作成した後、
 	// オペレーティングシステムにバインドする前に呼び出されます。
 	//

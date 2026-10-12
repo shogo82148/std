@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:generate go run gen.go -output md5block.go
-//go:generateコマンドを使用して、gen.goを実行し、md5block.goに出力します。
 
 // md5 パッケージは、RFC 1321で定義されたMD5ハッシュアルゴリズムを実装します。
 //

@@ -8,8 +8,6 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-type commonHandler struct{}
-
 // Handlerは、Loggerによって生成されたログレコードを処理します。
 //
 // 典型的なハンドラーは、ログレコードを標準エラーに出力したり、

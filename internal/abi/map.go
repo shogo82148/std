@@ -4,20 +4,26 @@
 
 package abi
 
-import "github.com/shogo82148/std/unsafe"
+import (
+	"github.com/shogo82148/std/unsafe"
+)
 
 // Map constants common to several packages
 // runtime/runtime-gdb.py:MapTypePrinter contains its own copy
 const (
-	// Maximum number of key/elem pairs a bucket can hold.
-	MapBucketCountBits = 3
-	MapBucketCount     = 1 << MapBucketCountBits
+	// Number of bits in the group.slot count.
+	MapGroupSlotsBits = 3
+
+	// Number of slots in a group.
+	MapGroupSlots = 1 << MapGroupSlotsBits
 
 	// Maximum key or elem size to keep inline (instead of mallocing per element).
 	// Must fit in a uint8.
-	// Note: fast map functions cannot handle big elems (bigger than MapMaxElemBytes).
 	MapMaxKeyBytes  = 128
 	MapMaxElemBytes = 128
+
+	// Value of control word with all empty slots.
+	MapCtrlEmpty = bitsetLSB * uint64(ctrlEmpty)
 )
 
 type MapType struct {
