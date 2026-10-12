@@ -45,7 +45,7 @@ func Log(ctx context.Context, category, message string)
 // Logfは[Log]と似ていますが、値は指定されたフォーマット仕様を使用して整形されます。
 func Logf(ctx context.Context, category, format string, args ...any)
 
-// WithRegionは、呼び出し元のgoroutineに関連付けられた領域を開始し、fnを実行し、その後領域を終了します。もしコンテキストにタスクがある場合、領域はそのタスクに関連付けられます。そうでない場合、領域はバックグラウンドのタスクにアタッチされます。
+// WithRegionは、呼び出し元のゴルーチンに関連付けられた領域を開始し、fnを実行し、その後領域を終了します。もしコンテキストにタスクがある場合、領域はそのタスクに関連付けられます。そうでない場合、領域はバックグラウンドのタスクにアタッチされます。
 // regionTypeは領域を分類するために使用されるため、ユニークなregionTypeはごくわずかであるべきです。
 func WithRegion(ctx context.Context, regionType string, fn func())
 

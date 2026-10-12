@@ -173,7 +173,7 @@ type PB struct {
 	bN      uint64
 }
 
-// Nextは、さらに実行するイテレーションがあるかどうかを返します。
+// Nextは、さらに実行するイテレーションがあるかどうかを報告します。
 func (pb *PB) Next() bool
 
 // RunParallelは、ベンチマークを並行して実行します。

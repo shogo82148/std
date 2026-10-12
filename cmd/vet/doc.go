@@ -47,7 +47,7 @@ Vetの終了コードは、ツールの誤った呼び出しまたは問題が�
 	stdversion       新しすぎる標準ライブラリーシンボルの使用を報告
 	stringintconv    string(int)変換をチェック
 	structtag        構造体フィールドタグがreflect.StructTag.Getに準拠するかチェック
-	testinggoroutine テストが開始したgoroutineからの(*testing.T).Fatal呼び出しを報告
+	testinggoroutine テストが開始したゴルーチンからの(*testing.T).Fatal呼び出しを報告
 	tests            テストと例の一般的な誤用をチェック
 	timeformat       2006-02-01を使った(time.Time).FormatやTime.Parse呼び出しをチェック
 	unmarshal        unmarshalに非ポインターまたは非インターフェース値を渡すことを報告

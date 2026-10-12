@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/crypto/ecdsa"
 )
 
-// ParseECPrivateKeyはSEC 1、ASN.1 DER形式のECプライベートキーを解析します。
+// ParseECPrivateKeyはSEC 1、ASN.1 DER形式のEC秘密鍵を解析します。
 //
 // この種類のキーは、一般的に "EC PRIVATE KEY" タイプのPEMブロックにエンコードされています。
 func ParseECPrivateKey(der []byte) (*ecdsa.PrivateKey, error)

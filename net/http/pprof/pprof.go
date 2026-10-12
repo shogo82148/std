@@ -58,7 +58,7 @@
 //
 // 使用可能なプロファイルをすべて表示するには、ブラウザでhttp://localhost:6060/debug/pprof/を開いてください。
 //
-// 機能の詳細については、次のURLをご覧ください：
+// 機能の詳細については、次のURLを参照してください：
 // https://blog.golang.org/2011/06/profiling-go-programs.html。
 package pprof
 

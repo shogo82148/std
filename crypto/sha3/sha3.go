@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sha3 は、FIPS 202 で定義された SHA-3 ハッシュアルゴリズムと
+// sha3パッケージは、FIPS 202 で定義された SHA-3 ハッシュアルゴリズムと
 // SHAKE 拡張出力関数を実装します。
 package sha3
 
@@ -92,14 +92,14 @@ func NewSHAKE256() *SHAKE
 //
 // N は cSHAKE ベースの関数を定義するために使われ、通常の cSHAKE が必要な
 // 場合は空にできます。S はドメイン分離に使うカスタマイズ用バイト列です。
-// N と S がともに空の場合、これは NewSHAKE128 と等価です。
+// N と S がともに空の場合、これは NewSHAKE128 と同等です。
 func NewCSHAKE128(N, S []byte) *SHAKE
 
 // NewCSHAKE256 は新しい cSHAKE256 XOF を生成します。
 //
 // N は cSHAKE ベースの関数を定義するために使われ、通常の cSHAKE が必要な
 // 場合は空にできます。S はドメイン分離に使うカスタマイズ用バイト列です。
-// N と S がともに空の場合、これは NewSHAKE256 と等価です。
+// N と S がともに空の場合、これは NewSHAKE256 と同等です。
 func NewCSHAKE256(N, S []byte) *SHAKE
 
 // Write は XOF の状態にさらにデータを取り込みます。

@@ -223,7 +223,7 @@ type ClientHelloInfo struct {
 	// SupportedProtosはクライアントがサポートしているアプリケーションプロトコルのリストです。
 	// SupportedProtosは、アプリケーション層プロトコルネゴシエーション拡張が使用されている場合にのみ設定されます（RFC 7301、セクション3.1を参照）。
 	//
-	// サーバーは、GetConfigForClientの返り値でConfig.NextProtosを設定することでプロトコルを選択できます。
+	// サーバーは、GetConfigForClientの戻り値でConfig.NextProtosを設定することでプロトコルを選択できます。
 	SupportedProtos []string
 
 	// SupportedVersions はクライアントでサポートされているTLSのバージョンをリストにします。
@@ -458,7 +458,7 @@ type Config struct {
 	//
 	// WrapSessionがエラーを返すと、接続は終了します。
 	//
-	// 警告：返り値は平文でワイヤー上やクライアントに公開されます。
+	// 警告：戻り値は平文でワイヤー上やクライアントに公開されます。
 	// アプリケーションはそれを暗号化し、認証する（およびキーをローテーションする）
 	// または高エントロピーの識別子を返すことが責任です。
 	// 正しく行わないと、現在の接続や以前の接続、将来の接続が妥協される可能性があります。
@@ -690,8 +690,8 @@ type Certificate struct {
 	// SignedCertificateTimestampsには、要求するクライアントに提供されるオプションの署名付き証明書タイムスタンプのリストが含まれています。
 	SignedCertificateTimestamps [][]byte
 
-	// Leafは、パースされたリーフ証明書の形式であり、x509.ParseCertificateを使用して初期化することができます。
-	// デフォルトではnilである場合、リーフ証明書は必要に応じてパースされます。
+	// Leafは、解析されたリーフ証明書の形式であり、x509.ParseCertificateを使用して初期化することができます。
+	// デフォルトではnilである場合、リーフ証明書は必要に応じて解析されます。
 	Leaf *x509.Certificate
 }
 

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package tlsは、RFC 5246で規定されているTLS 1.2と、
+// tlsパッケージは、RFC 5246で規定されているTLS 1.2と、
 // RFC 8446で規定されているTLS 1.3を部分的に実装しています。
 //
 // # FIPS 140-3 mode
@@ -44,7 +44,7 @@ var _ error = timeoutError{}
 
 // DialWithDialerは、dialer.Dialを使用して指定されたネットワークアドレスに接続し、
 // TLSハンドシェイクを開始し、結果のTLS接続を返します。dialerで指定されたタイムアウトや
-// デッドラインは、接続とTLSハンドシェイク全体に適用されます。
+// 期限は、接続とTLSハンドシェイク全体に適用されます。
 //
 // DialWithDialerは、nilの設定をゼロの設定として解釈します。
 // デフォルトの内容については、 [Config] のドキュメントを参照してください。
@@ -57,7 +57,7 @@ func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*
 // Dial関数は、net.Dialを使用して指定されたネットワークアドレスに接続し、
 // 次にTLSハンドシェイクを開始して、結果として得られるTLSコネクションを返します。
 // Dialはnilのconfigurationをゼロのconfigurationと同等だと解釈します。
-// デフォルトの設定については、Configのドキュメンテーションを参照してください。
+// デフォルトの設定については、Configのドキュメントを参照してください。
 func Dial(network, addr string, config *Config) (*Conn, error)
 
 // Dialerは、設定と基礎となる接続のためのダイアラーを使用してTLS接続をダイアルします。

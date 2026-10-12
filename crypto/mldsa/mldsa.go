@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package mldsaは、[FIPS 204] で規定された耐量子計算機性ML-DSA署名方式を実装します。
+// mldsaパッケージは、[FIPS 204] で規定された耐量子計算機性ML-DSA署名方式を実装します。
 //
 // このパッケージは、[FIPS 140-3 Go Cryptographic Module] v1.0.0 を使用している場合は利用できません。
 // その場合、[GenerateKey]、[NewPrivateKey]、[NewPublicKey]、[Verify] は

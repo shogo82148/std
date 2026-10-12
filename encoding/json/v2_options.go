@@ -35,13 +35,13 @@
 //     クォートするように制限されていますが、
 //     通常JSON数値として表現される任意のGo型に対して動作するよう
 //     サポートが拡張されています。
-//     この挙動の差は [StringifyWithLegacySemantics] オプションで制御できます。
+//     この動作の差は [StringifyWithLegacySemantics] オプションで制御できます。
 //
 //   - v1では、nilのGoスライスまたはGoマップはJSON nullとしてマーシャルされます。
 //     一方、v2ではnilのGoスライスまたはGoマップはそれぞれ
 //     空のJSON配列またはJSONオブジェクトとしてマーシャルされます。
 //     [jsonv2.FormatNilSliceAsNull] および [jsonv2.FormatNilMapAsNull] オプションで
-//     この挙動の違いを制御できます。
+//     この動作の違いを制御できます。
 //
 //   - v1では、Go配列は任意の長さのJSON配列からアンマーシャルできます。
 //     一方、v2ではGo配列は同じ長さのJSON配列からのみアンマーシャルでき、長さが違うとエラーになります。
@@ -49,7 +49,7 @@
 //
 //   - v1では、Goのバイト配列はJSON数値のJSON配列として表現されます。
 //     一方、v2ではGoのバイト配列はBase64エンコードされたJSON文字列として表現されます。
-//     [FormatByteArrayAsArray] オプションでこの挙動の違いを制御できます。
+//     [FormatByteArrayAsArray] オプションでこの動作の違いを制御できます。
 //
 //   - v1では、ポインターレシーバーで宣言されたMarshalJSONメソッドはGo値がアドレス可能な場合のみ呼び出されます。
 //     一方、v2ではMarshalJSONメソッドはアドレス可能かどうかに関係なく常に呼び出されます。
@@ -83,7 +83,7 @@
 //   - v1では、[time.Duration] はナノ秒数を表すJSON数値として表現されます。
 //     一方、v2では [time.Duration] にデフォルトの表現はなく、
 //     実行時エラーになります。
-//     [FormatDurationAsNano] オプションでこの挙動の違いを制御できます。
+//     [FormatDurationAsNano] オプションでこの動作の違いを制御できます。
 //
 //   - v1では、Go構造体型に構造的なエラー（例：タグオプションの不正）があっても実行時エラーは報告されません。
 //     一方、v2ではJSONシリアライズに関連するGo型が不正な場合は実行時エラーが報告されます。例えば、エクスポートされていないフィールドのみのGo構造体はシリアライズできません。
@@ -226,7 +226,7 @@ func FormatBytesWithLegacySemantics(v bool) Options
 
 // FormatDurationAsNanoは、[time.Duration] を
 // ナノ秒数を表すJSON数値としてフォーマットすることを指定します。
-// これは、エラーを報告するv2のデフォルト挙動とは異なります。
+// これは、エラーを報告するv2のデフォルト動作とは異なります。
 //
 // このオプションはマーシャル・アンマーシャルの両方に影響します。
 // v1のデフォルトはtrueです。
@@ -277,14 +277,14 @@ func MergeWithLegacySemantics(v bool) Options
 // v1のデフォルトはtrueです。
 func OmitEmptyWithLegacySemantics(v bool) Options
 
-// ParseBytesWithLooseRFC4648は、"base32"や"base64"でエンコードされたバイナリーデータをパースする際に、'\r'や'\n'文字の存在を無視することを指定します。
+// ParseBytesWithLooseRFC4648は、"base32"や"base64"でエンコードされたバイナリーデータを解析する際に、'\r'や'\n'文字の存在を無視することを指定します。
 // 対して、v2のデフォルトではRFC 4648の厳密な準拠のためエラーを報告します（RFC 4648セクション3.3では非アルファベット文字は拒否する必要があります）。
 //
 // このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 // v1のデフォルトはtrueです。
 func ParseBytesWithLooseRFC4648(v bool) Options
 
-// ParseTimeWithLooseRFC3339は、[time.Time] 型のパースをRFC 3339に緩やかに準拠して行うことを指定します。
+// ParseTimeWithLooseRFC3339は、[time.Time] 型の解析をRFC 3339に緩やかに準拠して行うことを指定します。
 // 特に、過去の誤った表現（時間のフォーマット、秒以下の区切り文字、タイムゾーン表現の揺れ）も許容します。
 // 一方、v2のデフォルト動作ではRFC 3339で定められた文法に厳密に従います。
 //

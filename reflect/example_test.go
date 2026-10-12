@@ -41,7 +41,7 @@ func ExampleMakeFunc() {
 
 	// makeSwapは、fptrがnil関数へのポインターであることを期待しています。
 	// それは、MakeFuncで作成された新しい関数にそのポインターを設定します。
-	// 関数が呼び出されると、reflectは引数をValuesに変換し、swapを呼び出し、swapの結果スライスを新しい関数の返り値として変換します。
+	// 関数が呼び出されると、reflectは引数をValuesに変換し、swapを呼び出し、swapの結果スライスを新しい関数の戻り値として変換します。
 	makeSwap := func(fptr any) {
 		// fptrは関数へのポインターです。
 		// リフレクト値として関数値自体（おそらくnil）を取得し、

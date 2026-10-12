@@ -87,7 +87,7 @@ func FindProcess(pid int) (*Process, error)
 // StartProcessは、name、argv、attrで指定されたプログラム、引数、属性で新しいプロセスを開始します。
 // argvスライスは新しいプロセスで [os.Args] になるため、通常はプログラム名で始まります。
 //
-// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
+// 呼び出し元のゴルーチンが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
 //
 // StartProcessは低レベルなインターフェースです。[os/exec] パッケージはより高レベルなインターフェースを提供します。
 //

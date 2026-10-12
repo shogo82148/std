@@ -101,7 +101,7 @@ type Addr interface {
 
 // Connは汎用のストリーム指向のネットワーク接続です。
 //
-// 複数のgoroutineがConn上のメソッドを同時に呼び出すことができます。
+// 複数のゴルーチンがConn上のメソッドを同時に呼び出すことができます。
 type Conn interface {
 	Read(b []byte) (n int, err error)
 

@@ -175,11 +175,11 @@ func ExampleDecoder_Decode_stream() {
 	// json.Delim: ]
 }
 
-// この例ではRawMessageを使ってJSONメッセージの一部のパースを遅延させます。
+// この例ではRawMessageを使ってJSONメッセージの一部の解析を遅延させます。
 func ExampleRawMessage_unmarshal() {
 	type Color struct {
 		Space string
-		Point json.RawMessage // カラースペースが判明するまでパースを遅延する
+		Point json.RawMessage // カラースペースが判明するまで解析を遅延する
 	}
 	type RGB struct {
 		R uint8

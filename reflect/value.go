@@ -39,8 +39,8 @@ type Value struct {
 	// 最下位の5ビットは値の種類（typ.Kind()と同じ）を示します。
 	//
 	// 次のビットはフラグビットです：
-	//	- flagStickyRO：非公開で埋め込まれていないフィールドから取得されたため、読み取り専用
-	//	- flagEmbedRO：非公開の埋め込まれたフィールドから取得されたため、読み取り専用
+	//	- flagStickyRO：エクスポートされていない、埋め込まれていないフィールドから取得されたため、読み取り専用
+	//	- flagEmbedRO：エクスポートされていない埋め込みフィールドから取得されたため、読み取り専用
 	//	- flagIndir：valはデータへのポインターを保持しています
 	//	- flagAddr：v.CanAddrがtrue（flagIndirとptrが非nilであることを意味します）
 	//	- flagMethod：vはメソッドの値です。
@@ -82,7 +82,7 @@ func (v Value) Bytes() []byte
 func (v Value) CanAddr() bool
 
 // CanSetはvの値を変更できるかどうかを報告します。
-// 値はアドレス可能であり、非公開の構造体フィールドの使用では
+// 値はアドレス可能であり、エクスポートされていない構造体フィールドの使用では
 // 取得されていない場合にのみ変更できます。
 // CanSetがfalseを返す場合、Setや任意のタイプ固有のセッター（例： [Value.SetBool] 、 [Value.SetInt] ）を呼び出すとパニックを引き起こします。
 func (v Value) CanSet() bool
@@ -95,7 +95,7 @@ func (v Value) CanSet() bool
 // 代入可能でなければなりません。
 // vが可変長引数関数の場合、Callは可変長引数用のスライス引数を
 // 対応する値をコピーして自動的に作成します。
-// 非公開の構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
+// エクスポートされていない構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
 func (v Value) Call(in []Value) []Value
 
 // CallSliceは、入力引数inを使って可変長引数関数vを呼び出し、
@@ -105,7 +105,7 @@ func (v Value) Call(in []Value) []Value
 // 戻り値として、出力結果をValueのスライスで返します。
 // Goと同様に、各入力引数は対応する関数入力パラメーターの型に
 // 代入可能でなければなりません。
-// 非公開の構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
+// エクスポートされていない構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap は v の容量を返します。
@@ -175,9 +175,9 @@ func (v Value) CanInterface() bool
 // Interfaceは、vの現在の値をinterface{}として返します。
 // これは以下と同等です：
 //
-//	var i interface{} = (vの基底値)
+//	var i interface{} = (vの基礎となる値)
 //
-// もしValueが非公開の構造体フィールドにアクセスして取得された場合はパニックを引き起こします。
+// もしValueがエクスポートされていない構造体フィールドにアクセスして取得された場合はパニックを引き起こします。
 func (v Value) Interface() (i any)
 
 // TypeAssertは意味的に以下と同等です：
@@ -280,7 +280,7 @@ func (v Value) OverflowUint(x uint64) bool
 // vのKindが [Func] の場合、返されるポインターは基礎となる
 // コードポインターですが、単一の関数を一意に識別するのに
 // 必ずしも十分とは限りません。特に、コードポインターが等しい
-// 関数であっても、呼び出したときの挙動が同一とは限りません。
+// 関数であっても、呼び出したときの動作が同一とは限りません。
 // 唯一の保証は、結果がゼロになるのは
 // vがnilのfunc Valueである場合に限る、ということです。
 //
@@ -307,7 +307,7 @@ func (v Value) Send(x Value)
 // Setはxに値vを割り当てます。
 // [Value.CanSet] がfalseを返す場合、パニックを引き起こします。
 // Go言語と同様に、xの値はvの型に割り当て可能であり、
-// 非公開フィールドから派生していない必要があります。
+// エクスポートされていないフィールドから派生していない必要があります。
 func (v Value) Set(x Value)
 
 // SetBoolはvの基礎となる値を設定します。
@@ -410,7 +410,7 @@ func (v Value) UnsafePointer() unsafe.Pointer
 // Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレーターを返します。
 //
 // シーケンスは [0, NumField()) の範囲内の各インデックスiに対して
-// [Value.Field] を連続して呼び出すことと等価です。
+// [Value.Field] を連続して呼び出すことと同等です。
 //
 // vのKindがStructでない場合はパニックを引き起こします。
 func (v Value) Fields() iter.Seq2[StructField, Value]
@@ -420,7 +420,7 @@ func (v Value) Fields() iter.Seq2[StructField, Value]
 // レシーバーは [Value.Call] の引数に含めるべきではありません。
 //
 // シーケンスは [0, NumMethod()) の範囲内の各インデックスiに対して
-// [Value.Method] を連続して呼び出すことと等価です。
+// [Value.Method] を連続して呼び出すことと同等です。
 //
 // vがnilインターフェース値の場合、Methodsはパニックを引き起こします。
 //

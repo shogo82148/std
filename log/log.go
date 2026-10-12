@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージlogはシンプルなロギングパッケージを実装します。出力のフォーマットに関するメソッドを持つ [Logger] という型を定義します。
+// logパッケージはシンプルなロギングパッケージを実装します。出力のフォーマットに関するメソッドを持つ [Logger] という型を定義します。
 // また、Print[f|ln]、Fatal[f|ln]、Panic[f|ln]というヘルパー関数を通じてアクセス可能な、事前定義された'standard' Loggerもあります。
 // これらは、手動でLoggerを作成するよりも使いやすいです。そのロガーは標準エラーに書き込み、各ログメッセージの日付と時間を印刷します。
 // すべてのログメッセージは別々の行に出力されます：印刷されるメッセージが改行で終わらない場合、ロガーは一つ追加します。
@@ -41,7 +41,7 @@ const (
 
 // Loggerは、[io.Writer] に対して出力行を生成するアクティブなロギングオブジェクトを表します。
 // 各ロギング操作は、WriterのWriteメソッドを一度だけ呼び出します。
-// Loggerは複数のgoroutineから同時に使用することができます。これはWriterへのアクセスをシリアライズすることを保証します。
+// Loggerは複数のゴルーチンから同時に使用することができます。これはWriterへのアクセスをシリアライズすることを保証します。
 type Logger struct {
 	outMu sync.Mutex
 	out   io.Writer

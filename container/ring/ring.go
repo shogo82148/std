@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージringは循環リストに対する操作を実装します。
+// ringパッケージは循環リストに対する操作を実装します。
 package ring
 
 // Ringは循環リスト、またはリングの要素です。
@@ -51,5 +51,5 @@ func (r *Ring) Unlink(n int) *Ring
 func (r *Ring) Len() int
 
 // Doはリングの各要素に対して、前方向の順序で関数fを呼び出します。
-// fが*rを変更した場合、Doの振る舞いは未定義です。
+// fが*rを変更した場合、Doの動作は未定義です。
 func (r *Ring) Do(f func(any))

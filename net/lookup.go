@@ -31,7 +31,7 @@ type Resolver struct {
 
 	// lookupGroupは同じホストのルックアップをまとめてLookupIPAddr呼び出しをマージします。
 	// lookupGroupのキーはLookupIPAddr.hostの引数です。
-	// 返り値は([]IPAddr, error)です。
+	// 戻り値は([]IPAddr, error)です。
 	lookupGroup singleflight.Group
 }
 

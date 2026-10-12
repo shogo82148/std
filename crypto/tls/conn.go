@@ -156,7 +156,7 @@ func (c *Conn) Write(b []byte) (int, error)
 // Readは接続からデータを読み込みます。
 //
 // [Conn.Handshake] を呼び出すため、ハンドシェイクがまだ完了していない場合、
-// Readが呼び出される前にReadと [Conn.Write] の両方にデッドラインを設定する必要があります
+// Readが呼び出される前にReadと [Conn.Write] の両方に期限を設定する必要があります
 // 無制限のブロッキングを防ぐためです。
 // [Conn.SetDeadline] 、 [Conn.SetReadDeadline] 、および [Conn.SetWriteDeadline] を参照してください。
 func (c *Conn) Read(b []byte) (int, error)

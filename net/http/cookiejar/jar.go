@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package cookiejarは、メモリー上で [RFC 6265] に準拠した [http.CookieJar] を実装します。
+// cookiejarパッケージは、メモリー上で [RFC 6265] に準拠した [http.CookieJar] を実装します。
 //
 // [RFC 6265]: https://www.rfc-editor.org/info/rfc6265
 package cookiejar

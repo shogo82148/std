@@ -167,7 +167,7 @@ func NewTestServer(t testing.TB, handler http.Handler) *Server
 // 新しい [Server] を起動して返します。
 // これは [NewUnstartedServer] を呼び出してから [Server.Start] を呼ぶのと同等です。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。
@@ -176,10 +176,10 @@ func NewServer(handler http.Handler) *Server
 // NewUnstartedServerは、ローカルネットワークのループバックインターフェースで待ち受ける
 // 新しい [Server] を返します。サーバーは起動しません。
 //
-// サーバー設定を変更した後、呼び出し側は [Server.Start] または [Server.StartTLS] を
+// サーバー設定を変更した後、呼び出し元は [Server.Start] または [Server.StartTLS] を
 // 呼び出す必要があります。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。
@@ -199,7 +199,7 @@ func (s *Server) StartTLS()
 // 新しい [Server] を起動して返します。
 // これは [NewUnstartedServer] を呼び出してから [Server.StartTLS] を呼ぶのと同等です。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。

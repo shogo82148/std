@@ -70,7 +70,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 
 | 英語 | 推奨訳 | 備考 |
 | --- | --- | --- |
-| Package X implements ... | X パッケージは、...を実装します。 | 「パッケージ X は」より「X パッケージは」が多数派 (155 : 8) |
+| Package X implements ... | X パッケージは、...を実装します。 | 「パッケージ X は」「Package X は」は使わない |
 | Package X provides ... | X パッケージは、...を提供します。 | |
 | X returns ... | X は ... を返します。 | |
 | X returns a new Y. | X は新しい Y を返します。 | |
@@ -82,7 +82,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | X is the interface that wraps the Y method. | X は、Y メソッドをラップするインターフェースです。 | |
 | X is the interface that groups the basic Y and Z methods. | X は、基本的な Y と Z メソッドをグループ化するインターフェースです。 | |
 | X implements the [Y] interface. | X は [Y] インターフェースを実装します。 | |
-| X is equivalent to Y. | X は Y と同等です。 | (65)。「等価です」(17) より多い |
+| X is equivalent to Y. | X は Y と同等です。 | 「等価です」は使わない |
 | X is like Y but ... | X は Y と同様ですが、... | |
 | X is a convenience wrapper around Y. | X は Y の便利なラッパーです。 | |
 | See [X] for details. | 詳細は [X] を参照してください。 | 「をご覧ください」は使わない |
@@ -127,7 +127,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | argument | 引数 | |
 | parameter | パラメーター | 型パラメーター (type parameter) も同様 |
 | type argument | 型引数 | |
-| return value | 戻り値 | 「返り値」(34) より「戻り値」(97) |
+| return value | 戻り値 | 「返り値」は使わない |
 | result | 結果 | |
 | field | フィールド | |
 | struct | 構造体 | |
@@ -157,7 +157,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | assignable | 代入可能な | |
 | underlying | 基礎となる | 「基になる」「基盤となる」「下層の」「基底の」「元となる」は使わない。underlying type は「基礎となる型」。base type（レシーバーの基底型など）は「基底型」 |
 | exported | エクスポートされた | |
-| unexported | エクスポートされていない | |
+| unexported | エクスポートされていない | 「非公開」「未エクスポート」は使わない（private の意味の「非公開」は可） |
 | identifier | 識別子 | |
 | keyword | キーワード | |
 | declaration | 宣言 | |
@@ -181,7 +181,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 
 | 英語 | 推奨訳 | 備考 |
 | --- | --- | --- |
-| goroutine | ゴルーチン | |
+| goroutine | ゴルーチン | 地の文で「goroutine」とは書かない。プロファイル名など識別子としての goroutine はそのまま |
 | concurrently | 同時に／並行して | |
 | parallel | 並列 | testing の t.Parallel など |
 | atomically | アトミックに | |
@@ -194,7 +194,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | heap | ヒープ | |
 | stack | スタック | |
 | stack trace | スタックトレース | |
-| allocate / allocation | 割り当てる／割り当て | 「アロケーション」より「割り当て」 |
+| allocate / allocation | 割り当てる／割り当て | 「アロケーション」は使わない |
 | garbage collector | ガベージコレクター | 「GC」とそのまま書いてもよい |
 | thread | スレッド | |
 | signal | シグナル | |
@@ -205,7 +205,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | metric | メトリクス | |
 | context | コンテキスト | |
 | cancel / canceled | キャンセル／キャンセルされた | |
-| deadline | 期限 | 「デッドライン」より多数派 |
+| deadline | 期限 | 「デッドライン」は使わない |
 | timeout | タイムアウト | |
 | callback | コールバック | |
 | iterator | イテレーター | |
@@ -218,9 +218,9 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | error | エラー | |
 | wrap / wrapped | ラップする／ラップされた | |
 | unwrap | アンラップする | |
-| caller | 呼び出し元 | 「呼び出し側」(25) より「呼び出し元」(200) |
+| caller | 呼び出し元 | 「呼び出し側」は使わない |
 | call / invoke | 呼び出す | |
-| behavior | 動作 | 「振る舞い」「挙動」より「動作」 |
+| behavior | 動作 | 「振る舞い」「挙動」は使わない。behaves like は「〜のように動作します」 |
 | default | デフォルト | |
 | valid / invalid | 有効な／無効な | |
 | ignored | 無視される | |
@@ -233,7 +233,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | canonical | 正規 | canonical form は「正規形式」 |
 | immutable | 不変 | |
 | equal | 等しい | |
-| documentation | ドキュメント | 「ドキュメンテーション」より「ドキュメント」 |
+| documentation | ドキュメント | 「ドキュメンテーション」は使わない |
 | doc comment | ドキュメントコメント | |
 
 ### I/O・ファイル
@@ -272,7 +272,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | --- | --- | --- |
 | encode / encoding | エンコード／エンコーディング | 「符号化」は使わない |
 | decode | デコード | |
-| parse | 解析する | (284)。「パース」(84) も見られるが、新規は「解析」に揃える |
+| parse | 解析する | 「パース」は使わない。parse tree は「解析ツリー」。sparse の「スパース」や reparse point の「リパースポイント」は別語 |
 | marshal / unmarshal | マーシャル／アンマーシャル | |
 | serialize | シリアライズ | |
 | format | 形式／フォーマット | 「〜形式の文字列」のように名詞は「形式」、動詞の format は「フォーマットする」 |

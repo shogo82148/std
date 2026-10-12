@@ -75,7 +75,7 @@ func ExampleTemplate_helpers() {
 	if err != nil {
 		log.Fatal("parsing driver2: ", err)
 	}
-	// 実行前にすべてのテンプレートをロードします。このパッケージはそのような振る舞いを
+	// 実行前にすべてのテンプレートをロードします。このパッケージはそのような動作を
 	// 必要としませんが、html/templateのエスケープ処理はそれを必要とするので、それは良い習慣です。
 	err = templates.ExecuteTemplate(os.Stdout, "driver1", nil)
 	if err != nil {

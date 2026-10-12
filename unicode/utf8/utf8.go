@@ -81,7 +81,7 @@ func RuneCount(p []byte) int
 // RuneCountInStringは [RuneCount] と同様ですが、入力は文字列です。
 func RuneCountInString(s string) (n int)
 
-// RuneStartは、バイトが符号化された（おそらく無効な）ルーンの最初のバイトであるかどうかを報告します。2番目以降のバイトは常に上位2ビットが10に設定されます。
+// RuneStartは、バイトがエンコードされた（おそらく無効な）ルーンの最初のバイトであるかどうかを報告します。2番目以降のバイトは常に上位2ビットが10に設定されます。
 func RuneStart(b byte) bool
 
 // Validは、pが完全に有効なUTF-8エンコードされたルーンで構成されているかどうかを示します。

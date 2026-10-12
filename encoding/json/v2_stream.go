@@ -54,7 +54,7 @@ func (dec *Decoder) Decode(v any) error
 // 時間とともに変わる可能性があります。
 //
 // 最後にデコードされたJSON値の後に続くバイト列全体を得るには、
-// このバッファーと入力Readerの残りを連結する責任は呼び出し側にあります。
+// このバッファーと入力Readerの残りを連結する責任は呼び出し元にあります。
 //
 // このリーダーは、次の [Decoder.Decode] または [Decoder.Token] の呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
@@ -121,7 +121,7 @@ func (d Delim) String() string
 // カンマやコロンは省略されます。
 func (dec *Decoder) Token() (Token, error)
 
-// Moreは、現在パース中の配列またはオブジェクトに次の要素が存在するかどうかを報告します。
+// Moreは、現在解析中の配列またはオブジェクトに次の要素が存在するかどうかを報告します。
 func (dec *Decoder) More() bool
 
 // InputOffsetは、現在のデコーダー位置の入力ストリームのバイトオフセットを返します。

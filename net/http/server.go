@@ -343,8 +343,8 @@ func Handle(pattern string, handler Handler)
 // [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
 // ハンドラーは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
@@ -355,8 +355,8 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 // Serveは常にnilでないエラーを返します。
 func Serve(l net.Listener, handler Handler) error
 
-// ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
 // ハンドラーは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
@@ -395,7 +395,7 @@ type Server struct {
 	ReadTimeout time.Duration
 
 	// ReadHeaderTimeoutは、リクエストヘッダーを読み取るために許される時間です。
-	// ヘッダーを読み取った後、接続の読み取りデッドラインはリセットされ、
+	// ヘッダーを読み取った後、接続の読み取り期限はリセットされ、
 	// ハンドラーは本文にとって何が遅すぎると考えられるかを決定できます。
 	// もしゼロならば、ReadTimeoutの値が使用されます。
 	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
@@ -587,8 +587,8 @@ func (srv *Server) ListenAndServe() error
 // ErrServerClosedは、[Server.Shutdown] または [Server.Close] の呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
 var ErrServerClosed = errors.New("http: Server closed")
 
-// Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
+// Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
 //
 // Listenerが [*tls.Conn] 接続を返し、TLS Config.NextProtosで「h2」が構成されている場合、HTTP/2サポートが有効になります。
 //
@@ -596,8 +596,8 @@ var ErrServerClosed = errors.New("http: Server closed")
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
 func (srv *Server) Serve(l net.Listener) error
 
-// ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
+// ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
 //
 // サーバー用の証明書と一致する秘密鍵を含むファイルを提供する必要があります。これは、[Server] の
 // TLSConfig.Certificates、TLSConfig.GetCertificate、または

@@ -45,13 +45,13 @@ type InterfaceAddrMessage struct {
 	Data   []byte
 }
 
-// ParseRoutingMessageは、bをルーティングメッセージとしてパースし、
+// ParseRoutingMessageは、bをルーティングメッセージとして解析し、
 // [RoutingMessage] インターフェースを含むスライスを返します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
-// ParseRoutingSockaddrは、msgのペイロードを生のsockaddrとしてパースし、
+// ParseRoutingSockaddrは、msgのペイロードを生のsockaddrとして解析し、
 // [Sockaddr] インターフェースを含むスライスを返します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。

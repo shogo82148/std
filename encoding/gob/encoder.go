@@ -11,7 +11,7 @@ import (
 )
 
 // Encoderは、接続の他方に対する型とデータ情報の送信を管理します。
-// 複数のgoroutineが同時に使用しても安全です。
+// 複数のゴルーチンが同時に使用しても安全です。
 type Encoder struct {
 	mutex      sync.Mutex
 	w          []io.Writer

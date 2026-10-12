@@ -45,7 +45,7 @@ var ErrNonStringName = errors.New("object member name must be a string")
 //
 // 特定の値へのポインターには、正確に1つの表現しかありません。
 // そのため、Pointer 値の比較可能性は、
-// 両者が同じ値を指しているかどうかを確認することと等価です。
+// 両者が同じ値を指しているかどうかを確認することと同等です。
 type Pointer string
 
 // IsValidは、pがRFC 6901に従った有効なJSONポインターかどうかを報告します。

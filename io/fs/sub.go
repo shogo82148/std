@@ -20,7 +20,7 @@ type SubFS interface {
 // この実装は、ReadDir、ReadFile、ReadLink、Lstat、Globの呼び出しも適切に変換します。
 // Subは、ディレクトリーが現在存在するかどうかをチェックしません。
 //
-// Sub(os.DirFS("/"), "prefix")はos.DirFS("/prefix")と等価ですが、
+// Sub(os.DirFS("/"), "prefix")はos.DirFS("/prefix")と同等ですが、
 // どちらも"/prefix"の外でのオペレーティングシステムアクセスを避けることを
 // 保証しません。これは [os.DirFS] の実装が"/prefix"内で他のディレクトリーを
 // 指すシンボリックリンクをチェックしないためです。つまり、[os.DirFS] は

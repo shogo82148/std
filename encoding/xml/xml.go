@@ -21,7 +21,7 @@ func (e *SyntaxError) Error() string
 
 // Nameは、名前空間識別子（Space）で注釈付けされたXML名（Local）を表します。
 // [Decoder.Token] によって返されるトークンでは、Space識別子は
-// パースされるドキュメントで使用される短いプレフィックスではなく、
+// 解析されるドキュメントで使用される短いプレフィックスではなく、
 // 正規のURLとして与えられます。
 type Name struct {
 	Space, Local string
@@ -98,7 +98,7 @@ func CopyToken(t Token) Token
 // 次のReadはnil, [io.EOF] を返すべきです。
 //
 // Tokenの実装は、nilトークンとnilエラーを返すことを推奨されていません。
-// 呼び出し元はnil, nilの返り値を何も起こらなかったことを示すものとして扱うべきです。
+// 呼び出し元はnil, nilの戻り値を何も起こらなかったことを示すものとして扱うべきです。
 // 特に、これはEOFを示すものではありません。
 type TokenReader interface {
 	Token() (Token, error)
@@ -143,7 +143,7 @@ type Decoder struct {
 
 	// CharsetReaderがnilでない場合、提供された非UTF-8文字セットからUTF-8に変換する
 	// 文字セット変換リーダーを生成する関数を定義します。CharsetReaderがnilであるか、
-	// エラーを返す場合、パースはエラーで停止します。CharsetReaderの結果値のうちの
+	// エラーを返す場合、解析はエラーで停止します。CharsetReaderの結果値のうちの
 	// 一つは非nilでなければなりません。
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 
@@ -217,12 +217,12 @@ func (d *Decoder) InputPos() (line, column int)
 
 // HTMLEntityは、標準的なHTMLエンティティー文字の変換を含むエンティティーマップです。
 //
-// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメントを参照してください。
 var HTMLEntity map[string]string = htmlEntity
 
 // HTMLAutoCloseは、自動的に閉じるとみなすべきHTML要素のセットです。
 //
-// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメントを参照してください。
 var HTMLAutoClose []string = htmlAutoClose
 
 // EscapeTextは、プレーンテキストデータsの適切にエスケープされたXML相当物をwに書き込みます。

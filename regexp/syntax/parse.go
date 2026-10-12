@@ -19,7 +19,7 @@ const (
 	// 予期しないエラー
 	ErrInternalError ErrorCode = "regexp/syntax: internal error"
 
-	// パースエラー
+	// 解析エラー
 	ErrInvalidCharClass      ErrorCode = "invalid character class"
 	ErrInvalidCharRange      ErrorCode = "invalid character class range"
 	ErrInvalidEscape         ErrorCode = "invalid escape sequence"

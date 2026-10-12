@@ -66,7 +66,7 @@ func ExampleTemplate_parsefiles() {
 	}(dir1, dir2)
 
 	// ここからが実際の例です。
-	// dir1/T0とdir2/T2だけをパースしましょう
+	// dir1/T0とdir2/T2だけを解析しましょう
 	paths := []string{
 		filepath.Join(dir1, "T1.tmpl"),
 		filepath.Join(dir2, "T2.tmpl"),
@@ -112,7 +112,7 @@ func ExampleTemplate_helpers() {
 	if err != nil {
 		log.Fatal("parsing driver2: ", err)
 	}
-	// 実行前にすべてのテンプレートをロードします。このパッケージはそのような振る舞いを必要としませんが、
+	// 実行前にすべてのテンプレートをロードします。このパッケージはそのような動作を必要としませんが、
 	// html/templateのエスケープはそれを必要とするので、それは良い習慣です。
 	err = templates.ExecuteTemplate(os.Stdout, "driver1", nil)
 	if err != nil {

@@ -73,7 +73,7 @@ func ExampleUnaryOp() {
 		case constant.Int:
 
 			// 16ビットの精度を使用します。
-			// これは^uint16(v)と等価です。
+			// これは^uint16(v)と同等です。
 			vs[i] = constant.UnaryOp(token.XOR, v, 16)
 		}
 	}

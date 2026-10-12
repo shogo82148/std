@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージlistは双方向連結リストを実装します。
+// listパッケージは双方向連結リストを実装します。
 //
 // リストを反復するには（l は *List）:
 //

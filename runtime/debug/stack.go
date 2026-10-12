@@ -12,7 +12,7 @@ import (
 // PrintStack は [runtime.Stack] が返すスタックトレースを標準エラーに出力します。
 func PrintStack()
 
-// Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
+// Stackはそれを呼び出すゴルーチンのフォーマットされたスタックトレースを返します。
 // [runtime.Stack] を呼び出して、トレース全体をキャプチャする十分に大きなバッファーを使用します。
 func Stack() []byte
 

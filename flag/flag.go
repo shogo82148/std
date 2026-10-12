@@ -86,7 +86,7 @@ var ErrHelp = errors.New("flag: help requested")
 // （デフォルト値は文字列で表されます。）
 //
 // Valueがtrueを返すIsBoolFlag() boolメソッドを持つ場合、
-// コマンドラインパーサーは-nameを-name=trueと等価にし、次のコマンドライン引数を使用しないようにします。
+// コマンドラインパーサーは-nameを-name=trueと同等にし、次のコマンドライン引数を使用しないようにします。
 //
 // flagが存在するごとに、Setメソッドがコマンドラインの順序で一度呼び出されます。
 // flagパッケージはゼロ値のレシーバー（nilポインターなど）で [String] メソッドを呼び出す場合があります。
@@ -106,7 +106,7 @@ type Getter interface {
 // ErrorHandlingは、parseが失敗した場合に [FlagSet.Parse] の動作を定義します。
 type ErrorHandling int
 
-// これらの定数は、パースが失敗した場合に [FlagSet.Parse] が説明された動作をするようにします。
+// これらの定数は、解析が失敗した場合に [FlagSet.Parse] が説明された動作をするようにします。
 const (
 	ContinueOnError ErrorHandling = iota
 	ExitOnError
@@ -257,7 +257,7 @@ func BoolVar(p *bool, name string, value bool, usage string)
 func (f *FlagSet) Bool(name string, value bool, usage string) *bool
 
 // Boolは指定された名前、デフォルト値、使用方法の文字列を持つboolフラグを定義します。
-// 返り値はフラグの値を格納するbool変数のアドレスです。
+// 戻り値はフラグの値を格納するbool変数のアドレスです。
 func Bool(name string, value bool, usage string) *bool
 
 // IntVarは指定された名前、デフォルト値、使用法の文字列を持つintフラグを定義します。
@@ -269,11 +269,11 @@ func (f *FlagSet) IntVar(p *int, name string, value int, usage string)
 func IntVar(p *int, name string, value int, usage string)
 
 // Intは指定された名前、デフォルト値、使用法の文字列を持つintフラグを定義します。
-// 返り値は、フラグの値を格納するint変数のアドレスです。
+// 戻り値は、フラグの値を格納するint変数のアドレスです。
 func (f *FlagSet) Int(name string, value int, usage string) *int
 
 // Intは指定した名前、デフォルト値、使用方法の文字列を持つintフラグを定義します。
-// 返り値は、フラグの値を格納するint変数のアドレスです。
+// 戻り値は、フラグの値を格納するint変数のアドレスです。
 func Int(name string, value int, usage string) *int
 
 // Int64Varは指定された名前、デフォルト値、使用方法の文字列を持つint64フラグを定義します。
@@ -289,7 +289,7 @@ func Int64Var(p *int64, name string, value int64, usage string)
 func (f *FlagSet) Int64(name string, value int64, usage string) *int64
 
 // Int64は指定された名前、デフォルト値、使用方法の文字列を持つint64フラグを定義します。
-// 返り値は、フラグの値を保持するint64変数のアドレスです。
+// 戻り値は、フラグの値を保持するint64変数のアドレスです。
 func Int64(name string, value int64, usage string) *int64
 
 // UintVarは、指定された名前、デフォルト値、および使用方法の文字列を持つuintフラグを定義します。
@@ -305,7 +305,7 @@ func UintVar(p *uint, name string, value uint, usage string)
 func (f *FlagSet) Uint(name string, value uint, usage string) *uint
 
 // Uintは指定された名前、デフォルト値、使用法の文字列を持つuintフラグを定義します。
-// 返り値は、フラグの値を格納するuint変数のアドレスです。
+// 戻り値は、フラグの値を格納するuint変数のアドレスです。
 func Uint(name string, value uint, usage string) *uint
 
 // Uint64Varは、指定された名前、デフォルト値、使用方法の文字列を持つuint64フラグを定義します。
@@ -317,11 +317,11 @@ func (f *FlagSet) Uint64Var(p *uint64, name string, value uint64, usage string)
 func Uint64Var(p *uint64, name string, value uint64, usage string)
 
 // Uint64は指定された名前、デフォルト値、使用法のテキストでuint64のフラグを定義します。
-// 返り値は、フラグの値を保持するuint64変数のアドレスです。
+// 戻り値は、フラグの値を保持するuint64変数のアドレスです。
 func (f *FlagSet) Uint64(name string, value uint64, usage string) *uint64
 
 // Uint64は指定された名前、デフォルト値、使用法の文字列を持つuint64フラグを定義します。
-// 返り値は、フラグの値を格納するuint64変数のアドレスです。
+// 戻り値は、フラグの値を格納するuint64変数のアドレスです。
 func Uint64(name string, value uint64, usage string) *uint64
 
 // StringVarは指定された名前、デフォルト値、および使用法の文字列を持つ文字列フラグを定義します。
@@ -333,11 +333,11 @@ func (f *FlagSet) StringVar(p *string, name string, value string, usage string)
 func StringVar(p *string, name string, value string, usage string)
 
 // Stringは、指定された名前、デフォルト値、および使用法の文字列で文字列フラグを定義します。
-// 返り値は、フラグの値を格納する文字列変数のアドレスです。
+// 戻り値は、フラグの値を格納する文字列変数のアドレスです。
 func (f *FlagSet) String(name string, value string, usage string) *string
 
-// Stringは指定された名前、デフォルト値、使用方法のストリングフラグを定義します。
-// 返り値は、フラグの値を保存する文字列変数のアドレスです。
+// Stringは指定された名前、デフォルト値、使用方法の文字列フラグを定義します。
+// 戻り値は、フラグの値を保存する文字列変数のアドレスです。
 func String(name string, value string, usage string) *string
 
 // Float64Varは、指定した名前、デフォルト値、使用法の文字列を持つfloat64フラグを定義します。
@@ -349,7 +349,7 @@ func (f *FlagSet) Float64Var(p *float64, name string, value float64, usage strin
 func Float64Var(p *float64, name string, value float64, usage string)
 
 // Float64は指定された名前、デフォルト値、使用方法の文字列を持つfloat64フラグを定義します。
-// 返り値は、フラグの値を格納するfloat64変数のアドレスです。
+// 戻り値は、フラグの値を格納するfloat64変数のアドレスです。
 func (f *FlagSet) Float64(name string, value float64, usage string) *float64
 
 // Float64は指定された名前、デフォルト値、および使用法の文字列を持つfloat64フラグを定義します。
@@ -405,18 +405,18 @@ func (f *FlagSet) BoolFunc(name, usage string, fn func(string) error)
 
 // BoolFuncは値を必要とせず、指定した名前と使用方法のフラグを定義します。
 // フラグが表示されるたびに、fnがフラグの値で呼び出されます。
-// もしfnが非nilのエラーを返した場合、それはフラグの値のパースエラーとして扱われます。
+// もしfnが非nilのエラーを返した場合、それはフラグの値の解析エラーとして扱われます。
 func BoolFunc(name, usage string, fn func(string) error)
 
 // Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常、[Value] という型の最初の引数で示され、[Value] のユーザー定義の実装を保持します。例えば、呼び出し元は、[Value] のメソッドを持つスライスにカンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] メソッドはカンマ区切りの文字列をスライスに分解します。
 func (f *FlagSet) Var(value Value, name string, usage string)
 
-// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常は [Value] 型の最初の引数で表されます。この [Value] 型は一般的に、ユーザー定義の [Value] 型の実装を保持します。たとえば、呼び出し側は、値のメソッドを持つスライスにコンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] はコンマ区切りの文字列をスライスに分解します。
+// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常は [Value] 型の最初の引数で表されます。この [Value] 型は一般的に、ユーザー定義の [Value] 型の実装を保持します。たとえば、呼び出し元は、値のメソッドを持つスライスにコンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] はコンマ区切りの文字列をスライスに分解します。
 func Var(value Value, name string, usage string)
 
 // Parseは引数リストからフラグ定義を解析します。コマンド名は含まれていてはいけません。
 // [FlagSet] 内のすべてのフラグが定義され、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
-// 返り値は、-helpまたは-hが設定されているが定義されていない場合、 [ErrHelp] になります。
+// 戻り値は、-helpまたは-hが設定されているが定義されていない場合、 [ErrHelp] になります。
 func (f *FlagSet) Parse(arguments []string) error
 
 // Parsedはf.Parseが呼ばれたかどうかを報告する。

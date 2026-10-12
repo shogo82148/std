@@ -4,7 +4,7 @@
 
 package x509
 
-// ParsePKCS8PrivateKeyは、PKCS #8、ASN.1 DER形式の暗号化されていないプライベートキーを解析します。
+// ParsePKCS8PrivateKeyは、PKCS #8、ASN.1 DER形式の暗号化されていない秘密鍵を解析します。
 //
 // 戻り値は、*[rsa.PrivateKey]、*[ecdsa.PrivateKey]、[ed25519.PrivateKey]
 // （ポインターではありません）、*[mldsa.PrivateKey]、または*[ecdh.PrivateKey]
@@ -17,7 +17,7 @@ package x509
 // 古い動作を復元するには、GODEBUG=x509rsacrt=0環境変数を使用してください。
 func ParsePKCS8PrivateKey(der []byte) (key any, err error)
 
-// MarshalPKCS8PrivateKeyは、プライベートキーをPKCS #8、ASN.1 DER形式に変換します。
+// MarshalPKCS8PrivateKeyは、秘密鍵をPKCS #8、ASN.1 DER形式に変換します。
 //
 // 現在サポートされている鍵型は、*[rsa.PrivateKey]、
 // *[ecdsa.PrivateKey]、[ed25519.PrivateKey]（ポインターではありません）、

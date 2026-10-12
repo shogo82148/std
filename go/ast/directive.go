@@ -34,7 +34,7 @@ type Directive struct {
 	ArgsPos token.Pos
 }
 
-// ParseDirectiveは、ディレクティブコメントの単一のコメント行をパースします。
+// ParseDirectiveは、ディレクティブコメントの単一のコメント行を解析します。
 //
 // 行がディレクティブコメントでない場合、falseを返します。
 //
@@ -52,14 +52,14 @@ func (d *Directive) End() token.Pos
 
 // DirectiveArgは、ディレクティブコメントの引数です。
 type DirectiveArg struct {
-	// Argはパースされた引数文字列です。引数が引用符で囲まれた文字列だった場合、
+	// Argは解析された引数文字列です。引数が引用符で囲まれた文字列だった場合、
 	// これは引用符を外した形式です。
 	Arg string
 	// Posは、この引数の最初の文字の位置です。
 	Pos token.Pos
 }
 
-// ParseArgsは、標準の慣例を使用して [Directive] の引数をパースします。
+// ParseArgsは、標準の慣例を使用して [Directive] の引数を解析します。
 // 標準の慣例とはトークンの並びであり、各トークンは裸の単語、
 // ダブルクォートで囲まれたGo文字列、またはバッククォートで囲まれたGoの生文字列です。
 // 各トークンは1つ以上のUnicodeスペースで区切られていなければなりません。

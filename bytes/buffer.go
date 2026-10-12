@@ -78,7 +78,7 @@ func (b *Buffer) WriteString(s string) (n int, err error)
 // [Buffer.ReadFrom] は基礎となるバッファーを拡張しません。
 const MinRead = 512
 
-// ReadFromは、rからEOFまでデータを読み取り、バッファーに追加していきます。必要に応じてバッファーのサイズが拡大されます。返り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファーがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
+// ReadFromは、rからEOFまでデータを読み取り、バッファーに追加していきます。必要に応じてバッファーのサイズが拡大されます。戻り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファーがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
 
 // WriteTo はバッファーが空になるかエラーが発生するまで、データを w に書き込みます。
@@ -96,7 +96,7 @@ func (b *Buffer) WriteByte(c byte) error
 // 大きくなりすぎるとWriteRuneは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
-// Readは、バッファーから次のlen(p)バイトを読み取るか、バッファーが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファーに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
+// Readは、バッファーから次のlen(p)バイトを読み取るか、バッファーが空になるまで読み取ります。戻り値nは読み取られたバイト数です。バッファーに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
 func (b *Buffer) Read(p []byte) (n int, err error)
 
 // Nextは、バッファーから次のnバイトを含むスライスを返し、

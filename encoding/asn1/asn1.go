@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージasn1は、ITU-T Rec X.690で定義されたDERエンコードされたASN.1データ構造の解析を実装します。
+// asn1パッケージは、ITU-T Rec X.690で定義されたDERエンコードされたASN.1データ構造の解析を実装します。
 // また、「ASN.1、BER、およびDERのサブセットの素人向けガイド」も参照してください。
 // http://luca.ntop.org/Teaching/Appunti/asn1.html。
 package asn1

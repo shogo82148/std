@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// docパッケージはGo ASTからソースコードのドキュメンテーションを取得します。
+// docパッケージはGo ASTからソースコードのドキュメントを取得します。
 package doc
 
 import (
@@ -62,7 +62,7 @@ type Type struct {
 	Examples []*Example
 }
 
-// Funcはfunc宣言のためのドキュメンテーションです。
+// Funcはfunc宣言のためのドキュメントです。
 type Func struct {
 	Doc  string
 	Name string
@@ -96,7 +96,7 @@ const (
 	// AllDeclsは、公開されているものだけでなく、すべてのパッケージレベルの宣言のドキュメントを抽出するよう指示します。
 	AllDecls Mode = 1 << iota
 
-	// AllMethodsは、見えない（非公開）無名フィールドのみでなく、すべての埋め込まれたメソッドを表示するように指定します。
+	// AllMethodsは、見えない（エクスポートされていない）無名フィールドのみでなく、すべての埋め込まれたメソッドを表示するように指定します。
 	AllMethods
 
 	// PreserveASTは、ASTを変更せずにそのまま保持することを指定します。もともと、godocでは、関数の本体などのASTの一部がnilになってメモリーを節約していましたが、すべてのプログラムがその動作を望むわけではありません。
@@ -124,7 +124,7 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 // もし例の名前に接尾辞がある場合、それは [Example.Suffix] フィールドに設定されます。
 // 名前が正しくない [Example] はスキップされます。
 //
-// オプションとして、抽出の振る舞いの低レベルな側面を制御するために [Mode] 型の単一の追加引数を指定することができます。
+// オプションとして、抽出の動作の低レベルな側面を制御するために [Mode] 型の単一の追加引数を指定することができます。
 //
 // NewFromFilesはASTファイルの所有権を持ち、それらを編集する場合があります。
 // ただし、PreserveASTモードビットがオンになっている場合は、編集しません。

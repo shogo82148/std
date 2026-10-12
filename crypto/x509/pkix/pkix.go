@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pkix パッケージには、ASN.1 パースおよび X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
+// pkix パッケージには、ASN.1 解析および X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
 package pkix
 
 import (
@@ -71,7 +71,7 @@ type Name struct {
 	// RDNSequencesに統合する際には、Namesフィールドは無視されますが、ExtraNamesを参照してください。
 	Names []AttributeTypeAndValue
 
-	// ExtraNamesには、マーシャリングされる任意の識別名にコピーされる属性が含まれています。値は、同じOIDを持つ属性を上書きします。ExtraNamesフィールドは、パース時には埋め込まれません。Namesを参照してください。
+	// ExtraNamesには、マーシャリングされる任意の識別名にコピーされる属性が含まれています。値は、同じOIDを持つ属性を上書きします。ExtraNamesフィールドは、解析時には埋め込まれません。Namesを参照してください。
 	ExtraNames []AttributeTypeAndValue
 }
 
