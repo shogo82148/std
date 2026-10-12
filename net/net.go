@@ -31,7 +31,7 @@ Listen関数はサーバーを作成します：
 		go handleConnection(conn)
 	}
 
-# ネーム解決
+# Name Resolution
 
 ネーム解決の方法は、間接的にDialのような関数を使うか、[LookupHost] や [LookupAddr] のような関数を直接使うかによって、オペレーティングシステムによって異なります。
 

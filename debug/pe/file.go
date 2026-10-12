@@ -5,7 +5,7 @@
 /*
 peパッケージは、PE（Microsoft Windows Portable Executable）ファイルへのアクセスを実装します。
 
-# セキュリティ
+# Security
 
 このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
 https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
