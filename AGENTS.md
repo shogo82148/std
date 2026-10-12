@@ -48,6 +48,7 @@
 CI（`.github/workflows/godoc.yml`）と同じく、すべてのパッケージの godoc がエラーなく出力できることを確認します。
 
 ```bash
+set -o pipefail
 go list ./... | xargs -n1 go doc -all > /dev/null
 ```
 
