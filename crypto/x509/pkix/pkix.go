@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pkix パッケージには、ASN.1 パースおよび X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
+// pkix パッケージには、ASN.1 解析および X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
 package pkix
 
 import (
@@ -71,12 +71,12 @@ type Name struct {
 	// RDNSequencesに統合する際には、Namesフィールドは無視されますが、ExtraNamesを参照してください。
 	Names []AttributeTypeAndValue
 
-	// ExtraNamesには、マーシャリングされる任意の識別名にコピーされる属性が含まれています。値は、同じOIDを持つ属性を上書きします。ExtraNamesフィールドは、パース時には埋め込まれません。Namesを参照してください。
+	// ExtraNamesには、マーシャリングされる任意の識別名にコピーされる属性が含まれています。値は、同じOIDを持つ属性を上書きします。ExtraNamesフィールドは、解析時には埋め込まれません。Namesを参照してください。
 	ExtraNames []AttributeTypeAndValue
 }
 
 // FillFromRDNSequence は与えられた [RDNSequence] から n を埋めます。
-// 複数エントリの RDN は平坦化され、すべてのエントリは関連する n フィールドに追加され、グルーピングは保持されません。
+// 複数エントリーの RDN は平坦化され、すべてのエントリーは関連する n フィールドに追加され、グルーピングは保持されません。
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 
 // ToRDNSequenceはnを単一の[RDNSequence]に変換します。次の属性は複数値のRDNとしてエンコードされます：
@@ -89,7 +89,7 @@ func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 //   - 住所
 //   - 郵便番号
 //
-// 各ExtraNamesエントリは個別のRDNとしてエンコードされます。
+// 各ExtraNamesエントリーは個別のRDNとしてエンコードされます。
 func (n Name) ToRDNSequence() (ret RDNSequence)
 
 // Stringはnの文字列形式を返します。ほぼ、RFC 2253の識別名の構文に従います。

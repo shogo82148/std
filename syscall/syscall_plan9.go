@@ -13,23 +13,22 @@ package syscall
 
 const ImplementsGetwd = true
 
-// Errno is not used with GOOS plan9.
+// ErrnoはGOOS plan9では使用されません。
 //
-// It exists because because the Go 1 API contract
-// (api/go1.txt's "pkg syscall, type Errno uintptr")
-// says it exists, and so code in the ecosystem often
-// assume it exists. This lets portable code be written
-// without build-tagged files, using runtime.GOOS checks instead.
+// これは、Go 1のAPI契約（api/go1.txtの"pkg syscall, type Errno uintptr"）で
+// 存在すると規定されており、エコシステム内のコードはしばしばその存在を
+// 前提としているために存在します。これにより、ビルドタグ付きのファイルを使わずに、
+// 代わりにruntime.GOOSのチェックを使用して移植可能なコードを書くことができます。
 type Errno uintptr
 
 func (e Errno) Error() string
 func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
-// ErrorString implements Error's String method by returning itself.
+// ErrorStringは、自分自身を返すことでErrorのStringメソッドを実装します。
 //
-// ErrorString values can be tested against error values using [errors.Is].
-// For example:
+// ErrorStringの値は、[errors.Is] を使用してエラー値と比較できます。
+// 例えば:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
@@ -37,7 +36,7 @@ type ErrorString string
 
 func (e ErrorString) Error() string
 
-// NewError converts s to an ErrorString, which satisfies the Error interface.
+// NewErrorは、sをErrorインターフェースを満たすErrorStringに変換します。
 func NewError(s string) error
 
 func (e ErrorString) Is(target error) bool
@@ -46,8 +45,8 @@ func (e ErrorString) Temporary() bool
 
 func (e ErrorString) Timeout() bool
 
-// A Note is a string describing a process note.
-// It implements the os.Signal interface.
+// Noteは、プロセスのノートを記述する文字列です。
+// これはos.Signalインターフェースを実装します。
 type Note string
 
 func (n Note) Signal()
@@ -60,8 +59,8 @@ var (
 	Stderr = 2
 )
 
-// For testing: clients can set this flag to force
-// creation of IPv6 sockets to return [EAFNOSUPPORT].
+// テスト用: クライアントはこのフラグを設定することで、
+// IPv6ソケットの作成で強制的に [EAFNOSUPPORT] を返すようにできます。
 var SocketDisableIPv6 bool
 
 func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err ErrorString)

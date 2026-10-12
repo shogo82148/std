@@ -16,7 +16,7 @@ net/rpcパッケージは凍結されており、新しい機能は受け付け�
   - メソッドの型がエクスポートされていること。
   - メソッドがエクスポートされていること。
   - メソッドが2つの引数を持ち、両方の引数がエクスポートされている（または組み込み）型であること。
-  - メソッドの2番目の引数がポインタであること。
+  - メソッドの2番目の引数がポインターであること。
   - メソッドが戻り値としてerror型を持つこと。
 
 要するに、メソッドは次のようなスキーマである必要があります。
@@ -28,13 +28,13 @@ net/rpcパッケージは凍結されており、新しい機能は受け付け�
 （将来的には、カスタムコーデックに対してこれらの要件は緩和されるかもしれません。）
 
 メソッドの最初の引数は呼び出し元から提供される引数を表し、
-2番目の引数は呼び出し元に返される結果パラメータを表します。
+2番目の引数は呼び出し元に返される結果パラメーターを表します。
 メソッドの戻り値がnilでない場合、それはクライアントが [errors.New] によって作成されたかのようにクライアントが確認する文字列として送り返されます。
-エラーが返された場合、応答パラメータはクライアントに送り返されません。
+エラーが返された場合、応答パラメーターはクライアントに送り返されません。
 
 サーバーは、[ServeConn] を呼び出すことによって単一の接続上のリクエストを処理することができます。また、通常はネットワークリスナーを作成し、[Accept] を呼び出すか、HTTPリスナーの場合は [HandleHTTP] と [http.Serve] を呼び出します。
 
-サービスを使用するためには、クライアントは接続を確立し、その後、接続上で [NewClient] を呼び出します。[Dial]（[DialHTTP]）という便利な関数は、生のネットワーク接続（HTTP接続）に対して両方の手順を実行します。結果として得られる [Client] オブジェクトには、サービスとメソッドを指定するための2つのメソッド、[Call] とGoがあり、引数を含むポインタと結果パラメータを受け取るポインタを指定します。
+サービスを使用するためには、クライアントは接続を確立し、その後、接続上で [NewClient] を呼び出します。[Dial]（[DialHTTP]）という便利な関数は、生のネットワーク接続（HTTP接続）に対して両方の手順を実行します。結果として得られる [Client] オブジェクトには、サービスとメソッドを指定するための2つのメソッド、[Call] とGoがあり、引数を含むポインターと結果パラメーターを受け取るポインターを指定します。
 
 Callメソッドは、リモート呼び出しが完了するまで待機し、
 Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチャネルを使用して完了をシグナルします。
@@ -132,7 +132,7 @@ type Request struct {
 	next          *Request
 }
 
-// Responseは、すべてのRPCの戻り値の前に書かれるヘッダです。内部で使用されますが、ネットワークトラフィックを分析する際など、デバッグの支援としてここで文書化されています。
+// Responseは、すべてのRPCの戻り値の前に書かれるヘッダーです。内部で使用されますが、ネットワークトラフィックを分析する際など、デバッグの支援としてここで文書化されています。
 type Response struct {
 	ServiceMethod string
 	Seq           uint64
@@ -158,7 +158,7 @@ var DefaultServer = NewServer()
 // Registerは、以下の条件を満たすレシーバーのメソッドのセットをサーバーに公開します：
 //   - エクスポートされた型のエクスポートされたメソッド
 //   - 2つの引数、両方がエクスポートされた型
-//   - 2番目の引数がポインタであること
+//   - 2番目の引数がポインターであること
 //   - エラー型の1つの戻り値
 //
 // レシーバーがエクスポートされた型でないか、適切なメソッドがない場合は、エラーを返します。また、エラーをパッケージlogを使用してログに記録します。
@@ -188,10 +188,10 @@ func (server *Server) ServeRequest(codec ServerCodec) error
 // Acceptはリスナーがnon-nilのエラーを返すまでブロックされます。通常、呼び出し元はgoステートメントでAcceptを呼び出します。
 func (server *Server) Accept(lis net.Listener)
 
-// Registerはレシーバのメソッドを [DefaultServer] に登録します。
+// Registerはレシーバーのメソッドを [DefaultServer] に登録します。
 func Register(rcvr any) error
 
-// RegisterNameは、レシーバの具体的な型ではなく、与えられた名前を型として使用します。[Register] と同様の動作です。
+// RegisterNameは、レシーバーの具体的な型ではなく、与えられた名前を型として使用します。[Register] と同様の動作です。
 func RegisterName(name string, rcvr any) error
 
 // ServerCodecはRPCセッションのサーバー側でのRPCリクエストの読み取りとRPCレスポンスの書き込みを実装します。
@@ -229,10 +229,10 @@ func Accept(lis net.Listener)
 // ServeHTTPはRPCリクエストに答えるための [http.Handler] を実装します。
 func (server *Server) ServeHTTP(w http.ResponseWriter, req *http.Request)
 
-// HandleHTTPはrpcPathでRPCメッセージのためのHTTPハンドラを登録し、debugPathではデバッグハンドラを登録します。
+// HandleHTTPはrpcPathでRPCメッセージのためのHTTPハンドラーを登録し、debugPathではデバッグハンドラーを登録します。
 // 通常はGoステートメント内で [http.Serve]()を呼び出す必要があります。
 func (server *Server) HandleHTTP(rpcPath, debugPath string)
 
-// HandleHTTPはRPCメッセージのためのHTTPハンドラを [DefaultServer] に登録し、[DefaultRPCPath] にデバッグハンドラを登録します。
+// HandleHTTPはRPCメッセージのためのHTTPハンドラーを [DefaultServer] に登録し、[DefaultRPCPath] にデバッグハンドラーを登録します。
 // 通常はgoステートメントで [http.Serve]()を呼び出す必要があります。
 func HandleHTTP()

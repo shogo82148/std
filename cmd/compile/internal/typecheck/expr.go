@@ -18,7 +18,7 @@ func DotField(pos src.XPos, x ir.Node, index int) *ir.SelectorExpr
 // XDotField returns an expression representing the field selection
 // x.sym. If any implicit field selection are necessary, those are
 // inserted too.
-func XDotField(pos src.XPos, x ir.Node, sym *types.Sym) *ir.SelectorExpr
+func XDotField(curfunc *ir.Func, pos src.XPos, x ir.Node, sym *types.Sym) *ir.SelectorExpr
 
 // XDotMethod returns an expression representing the method value
 // x.sym (i.e., x is a value, not a type). If any implicit field
@@ -26,4 +26,4 @@ func XDotField(pos src.XPos, x ir.Node, sym *types.Sym) *ir.SelectorExpr
 //
 // If callee is true, the result is an ODOTMETH/ODOTINTER, otherwise
 // an OMETHVALUE.
-func XDotMethod(pos src.XPos, x ir.Node, sym *types.Sym, callee bool) *ir.SelectorExpr
+func XDotMethod(curfunc *ir.Func, pos src.XPos, x ir.Node, sym *types.Sym, callee bool) *ir.SelectorExpr

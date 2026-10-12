@@ -13,7 +13,7 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// LineTableは、プログラムカウンタを行番号にマッピングするデータ構造です。
+// LineTableは、プログラムカウンターを行番号にマッピングするデータ構造です。
 //
 // Go 1.1以前では、各関数（[Func] によって表される）は独自のLineTableを持ち、
 // 行番号はプログラム内のすべてのソース行を通じての番号付けに対応していました。
@@ -56,13 +56,13 @@ type LineTable struct {
 	fileMap map[string]uint32
 }
 
-// PCToLineは、指定されたプログラムカウンタに対応する行番号を返します。
+// PCToLineは、指定されたプログラムカウンターに対応する行番号を返します。
 //
 // Deprecated: 代わりにTableのPCToLineメソッドを使用してください。
 func (t *LineTable) PCToLine(pc uint64) int
 
-// LineToPCは、指定された行番号に対応するプログラムカウンタを返します。
-// ただし、maxpcより前のプログラムカウンタのみを考慮します。
+// LineToPCは、指定された行番号に対応するプログラムカウンターを返します。
+// ただし、maxpcより前のプログラムカウンターのみを考慮します。
 //
 // Deprecated: 代わりにTableのLineToPCメソッドを使用してください。
 func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
@@ -70,6 +70,6 @@ func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 // NewLineTableは、エンコードされたデータに対応する新しいPC/行テーブルを返します。
 // Textは、対応するテキストセグメントの開始アドレスでなければなりません。
 // この値は、'runtime.text'シンボルに格納されている正確な値です。
-// この値は、バイナリがcgoを有効にしてビルドされた場合、
+// この値は、バイナリーがcgoを有効にしてビルドされた場合、
 // テキストセグメントの開始アドレスと異なる場合があります。
 func NewLineTable(data []byte, text uint64) *LineTable

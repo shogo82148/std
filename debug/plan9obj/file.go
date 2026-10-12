@@ -5,7 +5,7 @@
 /*
 plan9objパッケージは、Plan 9 a.outオブジェクトファイルへのアクセスを実装します。
 
-# セキュリティ
+# Security
 
 このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
 https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
@@ -65,7 +65,7 @@ func (s *Section) Data() ([]byte, error)
 // Openは、Plan 9 a.outセクションを読み取る新しいReadSeekerを返します。
 func (s *Section) Open() io.ReadSeeker
 
-// Symは、Plan 9 a.outのシンボルテーブルセクションのエントリを表します。
+// Symは、Plan 9 a.outのシンボルテーブルセクションのエントリーを表します。
 type Sym struct {
 	Value uint64
 	Type  rune
@@ -73,7 +73,7 @@ type Sym struct {
 }
 
 // Openは、[os.Open] を使用して指定された名前のファイルを開き、
-// それをPlan 9 a.outバイナリとして使用するための準備をします。
+// それをPlan 9 a.outバイナリーとして使用するための準備をします。
 func Open(name string) (*File, error)
 
 // Closeは、[File] を閉じます。
@@ -81,8 +81,8 @@ func Open(name string) (*File, error)
 // Closeは何も影響を及ぼしません。
 func (f *File) Close() error
 
-// NewFileは、基礎となるリーダーでPlan 9バイナリにアクセスするための新しい [File] を作成します。
-// Plan 9バイナリは、ReaderAtの位置0で開始することが期待されます。
+// NewFileは、基礎となるリーダーでPlan 9バイナリーにアクセスするための新しい [File] を作成します。
+// Plan 9バイナリーは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
 // ErrNoSymbolsは、File内にそのようなセクションがない場合に、

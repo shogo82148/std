@@ -183,7 +183,6 @@ func (p *Package) Resolve(s *modload.Loader, imports []string) []string
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
 	Mode    string
-	Cfg     string
 	GenMeta bool
 }
 
@@ -251,11 +250,6 @@ func (s *ImportStack) PkgsWithPos() []string
 
 func (s *ImportStack) Top() (ImportInfo, bool)
 
-// ClearPackageCache clears the package cache.
-// It cannot be used concurrently with calls to LoadImport or other functions
-// that use packageCache without synchronization.
-func ClearPackageCache()
-
 // Mode flags for loadImport and download (in get.go).
 const (
 	// ResolveImport means that loadImport should do import path expansion.
@@ -303,7 +297,6 @@ type TargetDir int
 const (
 	ToTool TargetDir = iota
 	ToBin
-	StalePath
 )
 
 // InstallTargetDir reports the target directory for installing the command p.
@@ -340,7 +333,7 @@ func ResolveEmbed(dir string, patterns []string) ([]string, error)
 // GNU binutils flagfile specifiers, sometimes called "response files").
 // To be conservative, we reject almost any arg beginning with non-alphanumeric ASCII.
 // We accept leading . _ and / as likely in file system paths.
-// There is a copy of this function in cmd/compile/internal/gc/noder.go.
+// There is a copy of this function in cmd/compile/internal/noder/noder.go.
 func SafeArg(name string) bool
 
 // LinkerDeps returns the list of linker-induced dependencies for main package p.

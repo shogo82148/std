@@ -51,7 +51,7 @@ func (enc Encoding) WithPadding(padding rune) *Encoding
 func (enc *Encoding) Encode(dst, src []byte)
 
 // AppendEncodeは、base32でエンコードされたsrcをdstに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 func (enc *Encoding) AppendEncode(dst, src []byte) []byte
 
 // EncodeToStringは、srcのbase32エンコーディングを返します。
@@ -63,7 +63,9 @@ func (enc *Encoding) EncodeToString(src []byte) string
 // 書き込みが完了したら、呼び出し元は、部分的に書き込まれたブロックをフラッシュするために返されたエンコーダーを閉じる必要があります。
 func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
 
-// EncodedLenは、長さnの入力バッファのbase32エンコーディングのバイト数を返します。
+// EncodedLenは、長さnの入力バッファーのbase32エンコーディングのバイト数を返します。
+// エンコード後の長さがintをオーバーフローする場合、パニックを引き起こします。
+// これは n > [math.MaxInt]/8*5 の場合にのみ起こり得ます。
 func (enc *Encoding) EncodedLen(n int) int
 
 type CorruptInputError int64
@@ -79,7 +81,7 @@ func (e CorruptInputError) Error() string
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 
 // AppendDecodeは、base32でデコードされたsrcをdstに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 // 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
 // 改行文字（\rと\n）は無視されます。
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)

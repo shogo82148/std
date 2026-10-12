@@ -42,6 +42,8 @@ func (s *StdSizes) Alignof(T Type) (result int64)
 
 func IsSyncAtomicAlign64(T Type) bool
 
+func IsSyncAtomicAlign128(T Type) bool
+
 func (s *StdSizes) Offsetsof(fields []*Var) []int64
 
 func (s *StdSizes) Sizeof(T Type) int64

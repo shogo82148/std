@@ -27,7 +27,7 @@ func (s *CertPool) Clone() *CertPool
 // SystemCertPoolはシステム証明書プールのコピーを返します。
 //
 // 環境変数SSL_CERT_FILEとSSL_CERT_DIRを使用すると、
-// それぞれSSL証明書ファイルおよびSSL証明書ファイルディレクトリの
+// それぞれSSL証明書ファイルおよびSSL証明書ファイルディレクトリーの
 // システム既定の場所を上書きできます。後者はコロン区切りのリスト
 // （Windowsではセミコロン区切りのリスト）を指定できます。
 // 証明書検証のためのシステムAPIを持つプラットフォーム（macOSおよびWindows）では、

@@ -12,22 +12,21 @@ import (
 // PrintStack は [runtime.Stack] が返すスタックトレースを標準エラーに出力します。
 func PrintStack()
 
-// Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
-// [runtime.Stack] を呼び出して、トレース全体をキャプチャする十分に大きなバッファを使用します。
+// Stackはそれを呼び出すゴルーチンのフォーマットされたスタックトレースを返します。
+// [runtime.Stack] を呼び出して、トレース全体をキャプチャする十分に大きなバッファーを使用します。
 func Stack() []byte
 
-// CrashOptions provides options that control the formatting of the
-// fatal crash message.
+// CrashOptionsは、致命的なクラッシュメッセージのフォーマットを制御するオプションを提供します。
 type CrashOptions struct {
 }
 
-// SetCrashOutput configures a single additional file where unhandled
-// panics and other fatal errors are printed, in addition to standard error.
-// There is only one additional file: calling SetCrashOutput again overrides
-// any earlier call.
-// SetCrashOutput duplicates f's file descriptor, so the caller may safely
-// close f as soon as SetCrashOutput returns.
-// To disable this additional crash output, call SetCrashOutput(nil).
-// If called concurrently with a crash, some in-progress output may be written
-// to the old file even after an overriding SetCrashOutput returns.
+// SetCrashOutputは、標準エラーに加えて、処理されないパニックやその他の致命的なエラーが
+// 出力される追加のファイルを1つ設定します。
+// 追加のファイルは1つだけです。SetCrashOutputを再度呼び出すと、
+// 以前の呼び出しが上書きされます。
+// SetCrashOutputはfのファイルディスクリプターを複製するため、呼び出し元は
+// SetCrashOutputが戻った直後にfを安全に閉じることができます。
+// この追加のクラッシュ出力を無効にするには、SetCrashOutput(nil)を呼び出してください。
+// クラッシュと並行して呼び出された場合、上書きするSetCrashOutputが戻った後でも、
+// 進行中の出力の一部が古いファイルに書き込まれる可能性があります。
 func SetCrashOutput(f *os.File, opts CrashOptions) error

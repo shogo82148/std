@@ -21,7 +21,7 @@ func (e *SyntaxError) Error() string
 
 // Nameは、名前空間識別子（Space）で注釈付けされたXML名（Local）を表します。
 // [Decoder.Token] によって返されるトークンでは、Space識別子は
-// パースされるドキュメントで使用される短いプレフィックスではなく、
+// 解析されるドキュメントで使用される短いプレフィックスではなく、
 // 正規のURLとして与えられます。
 type Name struct {
 	Space, Local string
@@ -98,7 +98,7 @@ func CopyToken(t Token) Token
 // 次のReadはnil, [io.EOF] を返すべきです。
 //
 // Tokenの実装は、nilトークンとnilエラーを返すことを推奨されていません。
-// 呼び出し元はnil, nilの返り値を何も起こらなかったことを示すものとして扱うべきです。
+// 呼び出し元はnil, nilの戻り値を何も起こらなかったことを示すものとして扱うべきです。
 // 特に、これはEOFを示すものではありません。
 type TokenReader interface {
 	Token() (Token, error)
@@ -112,7 +112,7 @@ type Decoder struct {
 	//	* 要素が終了タグを欠いている場合、パーサーは必要に応じて
 	//	  終了タグを発明して、Tokenからの戻り値を適切にバランスさせます。
 	//	* 属性値とキャラクターデータでは、未知または不正な
-	//	  キャラクターエンティティ（&で始まるシーケンス）はそのままにされます。
+	//	  キャラクターエンティティー（&で始まるシーケンス）はそのままにされます。
 	//
 	// 設定：
 	//
@@ -131,7 +131,7 @@ type Decoder struct {
 	// これは、終了要素が存在するかどうかに関係なく適用されます。
 	AutoClose []string
 
-	// Entityは、非標準のエンティティ名を文字列の置換にマッピングするために使用できます。
+	// Entityは、非標準のエンティティー名を文字列の置換にマッピングするために使用できます。
 	// パーサーは、実際のマップの内容に関係なく、これらの標準マッピングがマップに存在するかのように動作します：
 	//
 	//	"lt": "<",
@@ -143,7 +143,7 @@ type Decoder struct {
 
 	// CharsetReaderがnilでない場合、提供された非UTF-8文字セットからUTF-8に変換する
 	// 文字セット変換リーダーを生成する関数を定義します。CharsetReaderがnilであるか、
-	// エラーを返す場合、パースはエラーで停止します。CharsetReaderの結果値のうちの
+	// エラーを返す場合、解析はエラーで停止します。CharsetReaderの結果値のうちの
 	// 一つは非nilでなければなりません。
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 
@@ -157,6 +157,7 @@ type Decoder struct {
 	buf            bytes.Buffer
 	saved          *bytes.Buffer
 	stk            *stack
+	stkDepth       int
 	free           *stack
 	needClose      bool
 	toClose        Name
@@ -167,7 +168,7 @@ type Decoder struct {
 	line           int
 	linestart      int64
 	offset         int64
-	unmarshalDepth int
+	inUnmarshalXML bool
 }
 
 // NewDecoderは、rから読み取る新しいXMLパーサーを作成します。
@@ -181,7 +182,7 @@ func NewTokenDecoder(t TokenReader) *Decoder
 // Tokenは、入力ストリームの次のXMLトークンを返します。
 // 入力ストリームの終わりでは、Tokenはnil, [io.EOF] を返します。
 //
-// 返されたトークンデータのバイトスライスは、パーサーの内部バッファを参照し、
+// 返されたトークンデータのバイトスライスは、パーサーの内部バッファーを参照し、
 // 次のTokenへの呼び出しまでのみ有効です。バイトのコピーを取得するには、
 // [CopyToken] を呼び出すか、トークンのCopyメソッドを呼び出します。
 //
@@ -206,22 +207,22 @@ func (d *Decoder) Token() (Token, error)
 // 名前空間のプレフィックスを対応するURLに変換しません。
 func (d *Decoder) RawToken() (Token, error)
 
-// InputOffsetは、現在のデコーダ位置の入力ストリームバイトオフセットを返します。
+// InputOffsetは、現在のデコーダー位置の入力ストリームバイトオフセットを返します。
 // オフセットは、最近返されたトークンの終わりと次のトークンの始まりの位置を示します。
 func (d *Decoder) InputOffset() int64
 
-// InputPosは、現在のデコーダ位置の行と、行の1ベースの入力位置を返します。
+// InputPosは、現在のデコーダー位置の行と、行の1ベースの入力位置を返します。
 // 位置は、最近返されたトークンの終わりの位置を示します。
 func (d *Decoder) InputPos() (line, column int)
 
-// HTMLEntityは、標準的なHTMLエンティティ文字の変換を含むエンティティマップです。
+// HTMLEntityは、標準的なHTMLエンティティー文字の変換を含むエンティティーマップです。
 //
-// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメントを参照してください。
 var HTMLEntity map[string]string = htmlEntity
 
 // HTMLAutoCloseは、自動的に閉じるとみなすべきHTML要素のセットです。
 //
-// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメントを参照してください。
 var HTMLAutoClose []string = htmlAutoClose
 
 // EscapeTextは、プレーンテキストデータsの適切にエスケープされたXML相当物をwに書き込みます。

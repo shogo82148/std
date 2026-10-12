@@ -23,7 +23,7 @@ func WithClientTrace(ctx context.Context, trace *ClientTrace) context.Context
 // 現在、ClientTraceは単一のHTTPリクエストとレスポンスをトレースし、リダイレクトされたリクエストのシリーズを対象とするフックはありません。
 // 詳細については、https://blog.golang.org/http-tracingを参照してください。
 type ClientTrace struct {
-	// GetConnは、接続が作成される前またはアイドルプールから取得される前に呼び出されます。hostPortは、対象またはプロキシの"ホスト:ポート"です。GetConnは、すでにアイドルキャッシュされた接続が利用可能である場合でも呼び出されます。
+	// GetConnは、接続が作成される前またはアイドルプールから取得される前に呼び出されます。hostPortは、対象またはプロキシーの"ホスト:ポート"です。GetConnは、すでにアイドルキャッシュされた接続が利用可能である場合でも呼び出されます。
 	GetConn func(hostPort string)
 
 	// GotConnは、成功した接続後に呼び出されます。
@@ -34,7 +34,6 @@ type ClientTrace struct {
 	// errがnilの場合、接続は正常にアイドルプールに返されました。
 	// errが非nilの場合、なぜ正常に返されなかったかを説明します。
 	// Transport.DisableKeepAlivesによって、接続再利用が無効化されている場合、PutIdleConnは呼び出されません。
-	// PutIdleConnは呼び出し元のResponse.Body.Close呼び出しの前に呼び出されます。
 	// HTTP/2では、このフックは現在使用されていません。
 	PutIdleConn func(err error)
 
@@ -64,7 +63,7 @@ type ClientTrace struct {
 	// net.Dialer.DualStack ("Happy Eyeballs") サポートが有効な場合、これは複数回呼び出される可能性があります。
 	ConnectDone func(network, addr string, err error)
 
-	// TLSHandshakeStartはTLSハンドシェイクが開始されたときに呼び出されます。HTTPプロキシを介してHTTPSサイトに接続する場合、ハンドシェイクはプロキシによってCONNECTリクエストが処理された後に行われます。
+	// TLSHandshakeStartはTLSハンドシェイクが開始されたときに呼び出されます。HTTPプロキシーを介してHTTPSサイトに接続する場合、ハンドシェイクはプロキシーによってCONNECTリクエストが処理された後に行われます。
 	TLSHandshakeStart func()
 
 	// TLSHandshakeDoneは、TLSハンドシェイクが成功した場合、またはハンドシェイクが失敗した場合に、成功したハンドシェイクの接続状態、またはハンドシェイクエラーのいずれかを受け取った後に呼び出される。
@@ -73,15 +72,15 @@ type ClientTrace struct {
 	// WroteHeaderField は、Transport が各リクエストヘッダーを書き込んだ後に呼び出されます。この呼び出し時点では、値はバッファリングされており、まだネットワークに書き込まれていない可能性があります。
 	WroteHeaderField func(key string, value []string)
 
-	// WroteHeaders は、Transport がすべてのリクエストヘッダを書き込んだ後に呼び出されます。
+	// WroteHeaders は、Transport がすべてのリクエストヘッダーを書き込んだ後に呼び出されます。
 	WroteHeaders func()
 
 	// Wait100Continue は、リクエストが "Expect: 100-continue" を指定し、
 	// トランスポートがリクエストヘッダーを書き込みましたが、
-	// リクエストボディを書き込む前にサーバーから "100 Continue" を待っている場合に呼び出されます。
+	// リクエストボディーを書き込む前にサーバーから "100 Continue" を待っている場合に呼び出されます。
 	Wait100Continue func()
 
-	// WroteRequestは、リクエストと任意のボディの書き込み結果が渡されたときに呼び出されます。再試行される場合には複数回呼び出されることがあります。
+	// WroteRequestは、リクエストと任意のボディーの書き込み結果が渡されたときに呼び出されます。再試行される場合には複数回呼び出されることがあります。
 	WroteRequest func(WroteRequestInfo)
 }
 

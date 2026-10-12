@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// quickパッケージは、ブラックボックステストを支援するためのユーティリティ関数を実装します。
+// quickパッケージは、ブラックボックステストを支援するためのユーティリティー関数を実装します。
 //
 // testing/quickパッケージは凍結されており、新たな機能は受け入れられません。
 package quick
@@ -32,7 +32,7 @@ type Config struct {
 	// -quickchecksフラグによって設定することもできます。
 	MaxCountScale float64
 	// Randは、乱数のソースを指定します。
-	// もしnilなら、デフォルトの疑似乱数ソースが使用されます。
+	// もしnilなら、デフォルトの擬似乱数ソースが使用されます。
 	Rand *rand.Rand
 	// Valuesは、テスト対象の関数の引数と一致する任意のreflect.Valuesのスライスを生成する関数を指定します。
 	// もしnilなら、トップレベルのValue関数がそれらを生成するために使用されます。

@@ -112,9 +112,8 @@ type ConnectionState struct {
 	// クライアントの場合はHelloRetryRequestを受信したかどうかを示します。
 	HelloRetryRequest bool
 
-	// LocalCertificate is the certificate chain presented to the peer, if any,
-	// during the handshake. This field is only populated for connections which
-	// are not resumed (DidResume is false).
+	// LocalCertificateは、ハンドシェイク中にピアに提示された証明書チェーンです（存在する場合）。
+	// このフィールドは、再開されていない接続（DidResumeがfalse）に対してのみ設定されます。
 	LocalCertificate [][]byte
 
 	// ekm is a closure exposed via ExportKeyingMaterial.
@@ -224,7 +223,7 @@ type ClientHelloInfo struct {
 	// SupportedProtosはクライアントがサポートしているアプリケーションプロトコルのリストです。
 	// SupportedProtosは、アプリケーション層プロトコルネゴシエーション拡張が使用されている場合にのみ設定されます（RFC 7301、セクション3.1を参照）。
 	//
-	// サーバーは、GetConfigForClientの返り値でConfig.NextProtosを設定することでプロトコルを選択できます。
+	// サーバーは、GetConfigForClientの戻り値でConfig.NextProtosを設定することでプロトコルを選択できます。
 	SupportedProtos []string
 
 	// SupportedVersions はクライアントでサポートされているTLSのバージョンをリストにします。
@@ -234,7 +233,7 @@ type ClientHelloInfo struct {
 	// Extensionsは、クライアントがClientHelloで提示した拡張機能のIDをリストします。
 	Extensions []uint16
 
-	// Connは接続の基盤となるnet.Connです。この接続から読み取ったり、
+	// Connは接続の基礎となるnet.Connです。この接続から読み取ったり、
 	// この接続に書き込んだりしないでください。そうするとTLS
 	// 接続が失敗します。
 	Conn net.Conn
@@ -281,7 +280,7 @@ type CertificateRequestInfo struct {
 // ハンドシェイクが終了するとキャンセルされます。
 func (c *CertificateRequestInfo) Context() context.Context
 
-// RenegotiationSupportは、TLS renegotiationのサポートレベルを列挙しています。TLS renegotiationとは、最初の接続の後に接続で追加のhandshakeを行うことです。これにより、ステートマシンが複雑化し、多くの微妙なセキュリティ上の問題の原因となっています。再交渉の開始はサポートされていませんが、再交渉リクエストの受け入れには対応している場合があります。
+// RenegotiationSupportは、TLS renegotiationのサポートレベルを列挙しています。TLS renegotiationとは、最初の接続の後に接続で追加のhandshakeを行うことです。これにより、ステートマシンが複雑化し、多くの微妙なセキュリティー上の問題の原因となっています。再交渉の開始はサポートされていませんが、再交渉リクエストの受け入れには対応している場合があります。
 // 有効にされていても、サーバーはハンドシェイク間で自身の識別情報を変更することはできません（つまり、リーフ証明書は同じである必要があります）。また、同時にハンドシェイクとアプリケーションデータのフローを行うことは許可されていないため、再交渉は、再交渉と同期するプロトコル（例：HTTPS）とのみ使用できます。
 // 再交渉はTLS 1.3で定義されていません。
 type RenegotiationSupport int
@@ -326,7 +325,7 @@ type Config struct {
 	// 証明書名は'*.example.com'のような形式であるため、必ずしもドメイン名である必要はありません。
 	//
 	// Deprecated: NameToCertificate では、特定の名前に対して単一の証明書の関連付けしか許可されません。
-	// このフィールドを nil のままにしておくと、ライブラリが Certificates から最初の互換性のあるチェーンを選択します。
+	// このフィールドを nil のままにしておくと、ライブラリーが Certificates から最初の互換性のあるチェーンを選択します。
 	NameToCertificate map[string]*Certificate
 
 	// GetCertificateは与えられたClientHelloInfoに基づいて証明書を返します。
@@ -425,7 +424,7 @@ type Config struct {
 
 	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
 	//
-	// かつて、このフィールドは、サーバーがクライアントの選好またはサーバーの選好に従うかどうかを制御していました。現在、サーバーは、推測されたクライアントのハードウェア、サーバーのハードウェア、およびセキュリティを考慮した論理に基づいて、最も相互にサポートされた暗号スイートを選択します。
+	// かつて、このフィールドは、サーバーがクライアントの選好またはサーバーの選好に従うかどうかを制御していました。現在、サーバーは、推測されたクライアントのハードウェア、サーバーのハードウェア、およびセキュリティーを考慮した論理に基づいて、最も相互にサポートされた暗号スイートを選択します。
 	//
 	// Deprecated: PreferServerCipherSuitesは無視されます。
 	PreferServerCipherSuites bool
@@ -440,18 +439,18 @@ type Config struct {
 	// 回転スケジュールのカスタマイズや同じホストに対して接続を終了するサーバーの同期を行う場合は、SetSessionTicketKeysを使用してください。
 	SessionTicketKey [32]byte
 
-	// ClientSessionCacheはTLSセッション再開のためのClientSessionStateエントリのキャッシュです。
+	// ClientSessionCacheはTLSセッション再開のためのClientSessionStateエントリーのキャッシュです。
 	// クライアント側でのみ使用されます。
 	ClientSessionCache ClientSessionCache
 
-	// UnwrapSessionは、[WrapSession]によって生成されたチケット/アイデンティティを、使用可能なセッションに変換するためにサーバー上で呼び出されます。
+	// UnwrapSessionは、[WrapSession]によって生成されたチケット/アイデンティティーを、使用可能なセッションに変換するためにサーバー上で呼び出されます。
 	//
 	// UnwrapSessionは通常、チケット内のセッション状態を復号化するか（たとえば、[Config.EncryptTicket]を使用して）、以前に保存された状態を回復するためにチケットを使用します。セッション状態を逆シリアル化するには、[ParseSessionState]を使用する必要があります。
 	//
 	// UnwrapSessionがエラーを返した場合、接続は終了されます。（nil、nil）を返す場合、セッションは無視されます。crypto/tlsは、それでも返されたセッションを再開しないこともあります。
 	UnwrapSession func(identity []byte, cs ConnectionState) (*SessionState, error)
 
-	// WrapSessionはサーバーで呼び出され、セッションのチケット/アイデンティティを生成します。
+	// WrapSessionはサーバーで呼び出され、セッションのチケット/アイデンティティーを生成します。
 	//
 	// WrapSessionはセッションの状態を[SessionState.Bytes]でシリアライズする必要があります。
 	// 次に、シリアライズされた状態を暗号化する（たとえば[Config.DecryptTicket]で）または状態を保存して
@@ -459,7 +458,7 @@ type Config struct {
 	//
 	// WrapSessionがエラーを返すと、接続は終了します。
 	//
-	// 警告：返り値は平文でワイヤー上やクライアントに公開されます。
+	// 警告：戻り値は平文でワイヤー上やクライアントに公開されます。
 	// アプリケーションはそれを暗号化し、認証する（およびキーをローテーションする）
 	// または高エントロピーの識別子を返すことが責任です。
 	// 正しく行わないと、現在の接続や以前の接続、将来の接続が妥協される可能性があります。
@@ -506,7 +505,7 @@ type Config struct {
 	// 出力先をオプションで指定します。Wiresharkなどの外部プログラムが
 	// TLS接続を復号化できるようにするために使用できます。
 	// https://datatracker.ietf.org/doc/draft-ietf-tls-keylogfile/ を参照してください。
-	// KeyLogWriterの使用はセキュリティを損なうため、デバッグ目的のみに
+	// KeyLogWriterの使用はセキュリティーを損なうため、デバッグ目的のみに
 	// 使用すべきです。
 	KeyLogWriter io.Writer
 
@@ -645,7 +644,7 @@ func (c *Config) Clone() *Config
 //
 // 新しいチケットを作成する際に最初のキーが使用され、すべてのキーはチケットの解読に使用できます。
 // セッションチケットのキーをローテーションするために、この関数を実行しても問題ありません（サーバーが実行中である場合）。
-// 関数はキーが空の場合、パニックを発生させます。
+// 関数はキーが空の場合、パニックを引き起こします。
 //
 // この関数を呼び出すと、自動的なセッションチケットキーのローテーションが無効になります。
 //
@@ -666,7 +665,7 @@ func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
 func (cri *CertificateRequestInfo) SupportsCertificate(c *Certificate) error
 
 // BuildNameToCertificateはc.Certificatesを解析し、各リーフ証明書のCommonNameとSubjectAlternateNameフィールドからc.NameToCertificateを構築します。
-// Deprecated: NameToCertificateは特定の名前に対して単一の証明書の関連付けしか許可しません。そのフィールドをnilのままにしておき、ライブラリに最初に互換性のあるチェーンを選択させます。
+// Deprecated: NameToCertificateは特定の名前に対して単一の証明書の関連付けしか許可しません。そのフィールドをnilのままにしておき、ライブラリーに最初に互換性のあるチェーンを選択させます。
 func (c *Config) BuildNameToCertificate()
 
 // ボタン構造体は、最初にリーフ（最下位）のボタンから始まり、その上位にある1つ以上のボタンのチェーンです。
@@ -691,8 +690,8 @@ type Certificate struct {
 	// SignedCertificateTimestampsには、要求するクライアントに提供されるオプションの署名付き証明書タイムスタンプのリストが含まれています。
 	SignedCertificateTimestamps [][]byte
 
-	// Leafは、パースされたリーフ証明書の形式であり、x509.ParseCertificateを使用して初期化することができます。
-	// デフォルトではnilである場合、リーフ証明書は必要に応じてパースされます。
+	// Leafは、解析されたリーフ証明書の形式であり、x509.ParseCertificateを使用して初期化することができます。
+	// デフォルトではnilである場合、リーフ証明書は必要に応じて解析されます。
 	Leaf *x509.Certificate
 }
 

@@ -34,6 +34,7 @@ var All = []Info{
 	{Name: "embedfollowsymlinks", Package: "cmd/go"},
 	{Name: "execerrdot", Package: "os/exec"},
 	{Name: "fips140", Package: "crypto/fips140", Opaque: true, Immutable: true},
+	{Name: "fips140ems", Package: "crypto/tls"},
 	{Name: "gocachehash", Package: "cmd/go"},
 	{Name: "gocachetest", Package: "cmd/go"},
 	{Name: "gocacheverify", Package: "cmd/go"},
@@ -46,6 +47,7 @@ var All = []Info{
 	{Name: "httplaxcontentlength", Package: "net/http", Changed: 22, Old: "1"},
 	{Name: "httpmuxgo121", Package: "net/http", Changed: 22, Old: "1"},
 	{Name: "httpservecontentkeepheaders", Package: "net/http", Changed: 23, Old: "1"},
+	{Name: "httpservecontentmaxranges", Package: "net/http", Changed: 26, Old: "1"},
 	{Name: "installgoroot", Package: "go/build"},
 	{Name: "jstmpllitinterp", Package: "html/template", Opaque: true},
 
@@ -54,6 +56,7 @@ var All = []Info{
 	{Name: "multipathtcp", Package: "net", Changed: 24, Old: "0"},
 	{Name: "netdns", Package: "net", Opaque: true},
 	{Name: "netedns0", Package: "net", Changed: 19, Old: "0"},
+	{Name: "netmarshal", Package: "net", Changed: 30, Old: "0"},
 	{Name: "panicnil", Package: "runtime", Changed: 21, Old: "1"},
 	{Name: "randautoseed", Package: "math/rand"},
 	{Name: "randseednop", Package: "math/rand", Changed: 24, Old: "0"},

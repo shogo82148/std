@@ -16,21 +16,21 @@ import (
 // kind-specificメソッドを呼び出す前に、値の種類を特定するためにKindメソッドを使用してください。型に適切でないメソッドを呼び出すと、ランタイムパニックが発生します。
 //
 // ゼロ値は何も表していません。
-// その [Value.IsValid] メソッドはfalseを返し、Kindメソッドは [Invalid] を返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを発生させます。
+// その [Value.IsValid] メソッドはfalseを返し、Kindメソッドは [Invalid] を返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを引き起こします。
 // ほとんどの関数やメソッドは無効な値を返さないでしょう。
 // もし返す場合は、そのドキュメントに条件が明示されています。
 //
 // Valueは、基礎となるGoの値が同等の直接操作で並行に使用できる場合、複数のゴルーチンで同時に使用することができます。
 //
 // 2つのValueを比較するには、Interfaceメソッドの結果を比較してください。
-// ==を使用して2つのValueを比較すると、それらが表す基礎の値を比較しません。
+// ==を使用して2つのValueを比較すると、それらが表す基礎となる値を比較しません。
 type Value struct {
 
 	// typ_はValueによって表される値の型を保持します。
 	// vのエスケープを避けるために、typメソッドを使用してアクセスしてください。
 	typ_ *abi.Type
 
-	// ポインタ値のデータまたは、flagIndirが設定されている場合はデータへのポインタ。
+	// ポインター値のデータまたは、flagIndirが設定されている場合はデータへのポインター。
 	// flagIndirが設定されているか、typ.pointers()が true の場合に有効です。
 	ptr unsafe.Pointer
 
@@ -39,14 +39,12 @@ type Value struct {
 	// 最下位の5ビットは値の種類（typ.Kind()と同じ）を示します。
 	//
 	// 次のビットはフラグビットです：
-	//	- flagStickyRO：非公開で埋め込まれていないフィールドから取得されたため、読み取り専用
-	//	- flagEmbedRO：非公開の埋め込まれたフィールドから取得されたため、読み取り専用
-	//	- flagIndir：valはデータへのポインタを保持しています
+	//	- flagStickyRO：エクスポートされていない、埋め込まれていないフィールドから取得されたため、読み取り専用
+	//	- flagEmbedRO：エクスポートされていない埋め込みフィールドから取得されたため、読み取り専用
+	//	- flagIndir：valはデータへのポインターを保持しています
 	//	- flagAddr：v.CanAddrがtrue（flagIndirとptrが非nilであることを意味します）
 	//	- flagMethod：vはメソッドの値です。
-	// ifaceIndir(typ)の場合、codeはflagIndirが設定されていると想定することができます。
-	//
-	// 残りの22ビット以上は、メソッドの番号を示します。
+	// !typ.IsDirectIface()の場合、codeはflagIndirが設定されていると想定することができます。
 	// flag.kind() != Funcの場合、codeはflagMethodが未設定であると想定することができます。
 	flag
 }
@@ -59,81 +57,81 @@ type ValueError struct {
 
 func (e *ValueError) Error() string
 
-// Addrはvのアドレスを表すポインタ値を返します。
-// [Value.CanAddr] がfalseを返す場合にはパニックを発生させます。
+// Addrはvのアドレスを表すポインター値を返します。
+// [Value.CanAddr] がfalseを返す場合にはパニックを引き起こします。
 // Addrは通常、構造体のフィールドやスライスの要素に対して
-// ポインタレシーバを必要とするメソッドを呼び出すために
-// ポインタを取得するために使用されます。
+// ポインターレシーバーを必要とするメソッドを呼び出すために
+// ポインターを取得するために使用されます。
 func (v Value) Addr() Value
 
 // Boolはvの基礎となる値を返します。
-// vの種類が [Bool] でない場合、パニックを起こします。
+// vの種類が [Bool] でない場合、パニックを引き起こします。
 func (v Value) Bool() bool
 
 // Bytesはvの基礎となる値を返します。
-// vの基礎となる値がバイトのスライスまたはアドレスのつけられたバイトの配列でない場合、パニックを発生させます。
+// vの基礎となる値がバイトのスライスまたはアドレスのつけられたバイトの配列でない場合、パニックを引き起こします。
 func (v Value) Bytes() []byte
 
 // CanAddr関数は、値のアドレスを [Value.Addr] で取得できるかどうかを報告します。
 // このような値は、addressableと呼ばれます。値がaddressableであるとは、
 // スライスの要素、addressableな配列の要素、addressableな構造体のフィールド、
-// またはポインタの参照結果である場合を指します。
-// CanAddrがfalseを返す場合、 [Value.Addr] を呼び出すとパニックが発生します。
+// またはポインターの参照結果である場合を指します。
+// CanAddrがfalseを返す場合、 [Value.Addr] を呼び出すとパニックを引き起こします。
 func (v Value) CanAddr() bool
 
 // CanSetはvの値を変更できるかどうかを報告します。
-// 値はアドレス可能であり、非公開の構造体フィールドの使用では
+// 値はアドレス可能であり、エクスポートされていない構造体フィールドの使用では
 // 取得されていない場合にのみ変更できます。
-// CanSetがfalseを返す場合、Setや任意のタイプ固有のセッター（例： [Value.SetBool] 、 [Value.SetInt] ）を呼び出すとパニックが発生します。
+// CanSetがfalseを返す場合、Setや任意のタイプ固有のセッター（例： [Value.SetBool] 、 [Value.SetInt] ）を呼び出すとパニックを引き起こします。
 func (v Value) CanSet() bool
 
 // Callは、入力引数inを使って関数vを呼び出します。
 // たとえば len(in) == 3 の場合、v.Call(in) は Go の呼び出し v(in[0], in[1], in[2]) を表します。
-// vのKindが [Func] でない場合、Callはパニックを発生させます。
+// vのKindが [Func] でない場合、Callはパニックを引き起こします。
 // 戻り値として、出力結果をValueのスライスで返します。
-// Goと同様に、各入力引数は対応する関数入力パラメータの型に
+// Goと同様に、各入力引数は対応する関数入力パラメーターの型に
 // 代入可能でなければなりません。
 // vが可変長引数関数の場合、Callは可変長引数用のスライス引数を
 // 対応する値をコピーして自動的に作成します。
-// 非公開の構造体フィールドへのアクセスから取得されたValueの場合はパニックを発生させます。
+// エクスポートされていない構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
 func (v Value) Call(in []Value) []Value
 
 // CallSliceは、入力引数inを使って可変長引数関数vを呼び出し、
 // in[len(in)-1] のスライスを v の最後の可変長引数に割り当てます。
 // たとえば len(in) == 3 の場合、v.CallSlice(in) は Go の呼び出し v(in[0], in[1], in[2]...) を表します。
-// vのKindが [Func] でない場合、またはvが可変長引数関数でない場合、CallSliceはパニックを発生させます。
+// vのKindが [Func] でない場合、またはvが可変長引数関数でない場合、CallSliceはパニックを引き起こします。
 // 戻り値として、出力結果をValueのスライスで返します。
-// Goと同様に、各入力引数は対応する関数入力パラメータの型に
+// Goと同様に、各入力引数は対応する関数入力パラメーターの型に
 // 代入可能でなければなりません。
-// 非公開の構造体フィールドへのアクセスから取得されたValueの場合はパニックを発生させます。
+// エクスポートされていない構造体フィールドへのアクセスから取得されたValueの場合はパニックを引き起こします。
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap は v の容量を返します。
-// v の Kind が [Array] 、 [Chan] 、 [Slice] 、または [Array] のポインタでない場合、パニックを発生させます。
+// v の Kind が [Array] 、 [Chan] 、 [Slice] 、または [Array] のポインターでない場合、パニックを引き起こします。
 func (v Value) Cap() int
 
 // Closeはチャネルvを閉じます。
-// vの種類が [Chan] でない場合はパニックを起こします。
+// vの種類が [Chan] でない場合はパニックを引き起こします。
 func (v Value) Close()
 
-// CanComplexは [Value.Complex] をパニックを起こさずに使用できるかどうかを報告します。
+// CanComplexは [Value.Complex] をパニックを引き起こさずに使用できるかどうかを報告します。
 func (v Value) CanComplex() bool
 
 // Complexはvの基礎となる値、つまりcomplex128を返します。
-// vのKindが [Complex64] または [Complex128] でない場合、パニックを発生させます。
+// vのKindが [Complex64] または [Complex128] でない場合、パニックを引き起こします。
 func (v Value) Complex() complex128
 
-// Elemは、インターフェースvに格納されている値またはvのポインタが指す値を返します。
-// vのKindが [Interface] または [Pointer] でない場合、パニックが発生します。
+// Elemは、インターフェースvに格納されている値またはvのポインターが指す値を返します。
+// vのKindが [Interface] または [Pointer] でない場合、パニックを引き起こします。
 // vがnilの場合、ゼロのValueを返します。
 func (v Value) Elem() Value
 
 // Fieldはvのi番目のフィールドを返します。
-// vのKindが [Struct] でない場合や、iが範囲外の場合にはパニックを起こします。
+// vのKindが [Struct] でない場合や、iが範囲外の場合にはパニックを引き起こします。
 func (v Value) Field(i int) Value
 
 // FieldByIndexは、インデックスに対応するネストされたフィールドを返します。
-// 評価にはnilポインターを通過する必要があるか、または構造体でないフィールドの場合、パニックします。
+// 評価にはnilポインターを通過する必要があるか、または構造体でないフィールドの場合、パニックを引き起こします。
 func (v Value) FieldByIndex(index []int) Value
 
 // FieldByIndexErrは、インデックスに対応するネストしたフィールドを返します。
@@ -143,30 +141,30 @@ func (v Value) FieldByIndexErr(index []int) (Value, error)
 
 // FieldByNameは指定された名前の構造体フィールドを返します。
 // フィールドが見つからない場合はゼロ値を返します。
-// vのKindが [Struct] でない場合はパニックを起こします。
+// vのKindが [Struct] でない場合はパニックを引き起こします。
 func (v Value) FieldByName(name string) Value
 
 // FieldByNameFuncは、マッチ関数を満たす名前を持つ構造体フィールドを返します。
-// vのKindが [Struct] でない場合、パニックを起こします。
+// vのKindが [Struct] でない場合、パニックを引き起こします。
 // フィールドが見つからなかった場合、ゼロの値を返します。
 func (v Value) FieldByNameFunc(match func(string) bool) Value
 
-// CanFloat は、 [Value.Float] をパニックせずに使用できるかどうかを報告します。
+// CanFloat は、 [Value.Float] をパニックを引き起こさずに使用できるかどうかを報告します。
 func (v Value) CanFloat() bool
 
 // Floatはvの基礎値をfloat64として返します。
-// もしvの種類が [Float32] または [Float64] でない場合、パニックを起こします。
+// もしvの種類が [Float32] または [Float64] でない場合、パニックを引き起こします。
 func (v Value) Float() float64
 
 // Indexはvのi番目の要素を返します。
-// vのKindが [Array] 、 [Slice] 、または [String] でない場合、またはiが範囲外の場合はパニックが発生します。
+// vのKindが [Array] 、 [Slice] 、または [String] でない場合、またはiが範囲外の場合はパニックを引き起こします。
 func (v Value) Index(i int) Value
 
-// CanIntはIntをパニックすることなく使用できるかどうかを報告します。
+// CanIntはIntをパニックを引き起こすことなく使用できるかどうかを報告します。
 func (v Value) CanInt() bool
 
-// Intはvの基になる値をint64として返します。
-// vのKindが [Int] 、 [Int8] 、 [Int16] 、 [Int32] 、または [Int64] でない場合、パニックします。
+// Intはvの基礎となる値をint64として返します。
+// vのKindが [Int] 、 [Int8] 、 [Int16] 、 [Int32] 、または [Int64] でない場合、パニックを引き起こします。
 func (v Value) Int() int64
 
 // CanInterfaceは、パニックなしで [Value.Interface] を使用できるかどうかを報告します。
@@ -175,34 +173,33 @@ func (v Value) CanInterface() bool
 // Interfaceは、vの現在の値をinterface{}として返します。
 // これは以下と同等です：
 //
-//	var i interface{} = (vの基底値)
+//	var i interface{} = (vの基礎となる値)
 //
-// もしValueが非公開の構造体フィールドにアクセスして取得された場合はパニックを起こします。
+// もしValueがエクスポートされていない構造体フィールドにアクセスして取得された場合はパニックを引き起こします。
 func (v Value) Interface() (i any)
 
 // TypeAssertは意味的に以下と同等です：
 //
 //	v2, ok := v.Interface().(T)
 //
-// Note that this function, just as the type assertion above, might return:
+// この関数は、上記の型アサーションと同様に、次のような結果を返す場合があることに注意してください。
 //
-//   - ok == false when v.Type() == reflect.TypeFor[T]()
-//     For example, when both T and v are interface types and v.IsNil() == true.
-//     In that case v.Interface() returns a nil interface value, and the
-//     assertion .(T) fails with ok == false.
+//   - v.Type() == reflect.TypeFor[T]() のときに ok == false
+//     例えば、Tとvが両方ともインターフェース型で、v.IsNil() == true の場合です。
+//     この場合、v.Interface()はnilのインターフェース値を返し、
+//     アサーション .(T) は ok == false で失敗します。
 //
-//   - ok == true when v.Type() != reflect.TypeFor[T]().
-//     For example, when T is an interface type and v holds a value whose
-//     concrete type implements T.
+//   - v.Type() != reflect.TypeFor[T]() のときに ok == true
+//     例えば、Tがインターフェース型で、vがTを実装する具象型の値を保持している場合です。
 func TypeAssert[T any](v Value) (T, bool)
 
 // InterfaceDataは未指定のuintptr値のペアを返します。
-// vのKindがInterfaceでない場合はパニックを発生させます。
+// vのKindがInterfaceでない場合はパニックを引き起こします。
 //
 // Goの以前のバージョンでは、この関数はインターフェースの値をuintptrのペアで返していました。
 // Go 1.4以降、インターフェースの値の実装はInterfaceDataの定義された使用を除外しています。
 //
-// Deprecated: インターフェースの値のメモリ表現はInterfaceDataと互換性がありません。
+// Deprecated: インターフェースの値のメモリー表現はInterfaceDataと互換性がありません。
 func (v Value) InterfaceData() [2]uintptr
 
 // IsNilは引数vがnilであるかどうかを報告します。引数は
@@ -211,7 +208,7 @@ func (v Value) IsNil() bool
 
 // IsValidは、vが値を表すかどうかを報告します。
 // vがゼロ値の場合はfalseを返します。
-// [Value.IsValid] がfalseを返す場合、Stringを除いた他のメソッドはすべてパニックします。
+// [Value.IsValid] がfalseを返す場合、Stringを除いた他のメソッドはすべてパニックを引き起こします。
 // ほとんどの関数やメソッドは無効な値を返しません。
 // 無効な値を返す場合、そのドキュメントは明示的に条件を説明します。
 func (v Value) IsValid() bool
@@ -221,7 +218,7 @@ func (v Value) IsValid() bool
 func (v Value) IsZero() bool
 
 // SetZeroはvをvの型のゼロ値に設定します。
-// [Value.CanSet] がfalseを返す場合はパニックを発生させます。
+// [Value.CanSet] がfalseを返す場合はパニックを引き起こします。
 func (v Value) SetZero()
 
 // KindはvのKindを返します。
@@ -229,14 +226,14 @@ func (v Value) SetZero()
 func (v Value) Kind() Kind
 
 // Lenはvの長さを返します。
-// vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインタでない場合、パニックを発生させます。
+// vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインターでない場合、パニックを引き起こします。
 func (v Value) Len() int
 
 // Methodはvのi番目のメソッドに対応する関数値を返します。
-// 返された関数に対するCallの引数にはレシーバを含めないでください。返された関数は常にvをレシーバとして使用します。
-// iが範囲外の場合やvがnilインターフェース値の場合、Methodはパニックを発生させます。
+// 返された関数に対するCallの引数にはレシーバーを含めないでください。返された関数は常にvをレシーバーとして使用します。
+// iが範囲外の場合やvがnilインターフェース値の場合、Methodはパニックを引き起こします。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのエクスポートされたメソッドを保持します。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのエクスポートされたメソッドを保持します。
 // これにより実行ファイルのサイズが大きくなる場合がありますが、実行速度には影響しません。
 func (v Value) Method(i int) Value
 
@@ -247,52 +244,55 @@ func (v Value) Method(i int) Value
 func (v Value) NumMethod() int
 
 // MethodByNameは、指定された名前のメソッドに対応する関数値を返します。
-// 返された関数に対するCallの引数にはレシーバを含めないでください。返された関数は常にvをレシーバとして使用します。
+// 返された関数に対するCallの引数にはレシーバーを含めないでください。返された関数は常にvをレシーバーとして使用します。
 // メソッドが見つからなかった場合はゼロ値を返します。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのこの名前のメソッドを保持します。
-// リンカが名前を判別できない場合、すべてのエクスポートされたメソッドを保持します。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのこの名前のメソッドを保持します。
+// リンカーが名前を判別できない場合、すべてのエクスポートされたメソッドを保持します。
 // これにより実行ファイルのサイズが大きくなる場合がありますが、実行速度には影響しません。
 func (v Value) MethodByName(name string) Value
 
 // NumFieldは構造体vのフィールドの数を返します。
-// vのKindが [Struct] でない場合は、パニックが発生します。
+// vのKindが [Struct] でない場合は、パニックを引き起こします。
 func (v Value) NumField() int
 
 // OverflowComplex は complex128 型の x が v の型で表現できないかどうかを報告します。
-// もし v の Kind が [Complex64] または [Complex128] でない場合は、パニックを起こします。
+// もし v の Kind が [Complex64] または [Complex128] でない場合は、パニックを引き起こします。
 func (v Value) OverflowComplex(x complex128) bool
 
 // OverflowFloatは、float64のxがvの型で表現できない場合にtrueを返します。
-// vの種類が [Float32] または [Float64] でない場合、パニックを発生させます。
+// vの種類が [Float32] または [Float64] でない場合、パニックを引き起こします。
 func (v Value) OverflowFloat(x float64) bool
 
 // OverflowInt は、int64型のxがvの型で表現できない場合にtrueを返します。
-// vのKindが [Int] 、 [Int8] 、 [Int16] 、 [Int32] 、または [Int64] でない場合はパニックを発生させます。
+// vのKindが [Int] 、 [Int8] 、 [Int16] 、 [Int32] 、または [Int64] でない場合はパニックを引き起こします。
 func (v Value) OverflowInt(x int64) bool
 
 // OverflowUintはuint64 xがvの型で表現できないかどうかを報告します。
-// vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合は、panicします。
+// vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合は、パニックを引き起こします。
 func (v Value) OverflowUint(x uint64) bool
 
 // Pointerはvの値をuintptrとして返します。
-// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックが発生します。
+// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを引き起こします。
 //
-// vの種類が [Func] の場合、返されるポインタは基礎となるコードポインタですが、
-// 単一の関数を一意に識別するために必要なものではありません。
-// ただし、結果がゼロであることは、vがnilのfunc Valueである場合に限ります。
+// vのKindが [Func] の場合、返されるポインターは基礎となる
+// コードポインターですが、単一の関数を一意に識別するのに
+// 必ずしも十分とは限りません。特に、コードポインターが等しい
+// 関数であっても、呼び出したときの動作が同一とは限りません。
+// 唯一の保証は、結果がゼロになるのは
+// vがnilのfunc Valueである場合に限る、ということです。
 //
-// vの種類が [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。
+// vの種類が [Slice] の場合、返されるポインターはスライスの最初の要素へのポインターです。
 // スライスがnilの場合、返される値は0です。
 // スライスが空で非nilの場合、返される値は0でない値です。
 //
-// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
+// vのKindが [String] である場合、返されるポインターは文字列の基礎となるバイトの最初の要素を指します。
 //
 // 同等の結果を得るには、uintptr(Value.UnsafePointer())を使用することが推奨されます。
 func (v Value) Pointer() uintptr
 
 // Recv はチャネル v から値を受信して返します。
-// v の Kind が [Chan] でない場合、パニックが発生します。
+// v の Kind が [Chan] でない場合、パニックを引き起こします。
 // 受信は値が準備されるまでブロックされます。
 // boolean 値 ok は、値 x がチャネル上の送信に対応する場合は true、チャネルが閉じられているために受信したゼロ値の場合は false です。
 func (v Value) Recv() (x Value, ok bool)
@@ -303,58 +303,58 @@ func (v Value) Recv() (x Value, ok bool)
 func (v Value) Send(x Value)
 
 // Setはxに値vを割り当てます。
-// [Value.CanSet] がfalseを返す場合、パニックを発生させます。
+// [Value.CanSet] がfalseを返す場合、パニックを引き起こします。
 // Go言語と同様に、xの値はvの型に割り当て可能であり、
-// 非公開フィールドから派生していない必要があります。
+// エクスポートされていないフィールドから派生していない必要があります。
 func (v Value) Set(x Value)
 
-// SetBoolはvの基になる値を設定します。
-// vのKindが [Bool] でない場合、または [Value.CanSet] がfalseを返す場合はパニックを発生させます。
+// SetBoolはvの基礎となる値を設定します。
+// vのKindが [Bool] でない場合、または [Value.CanSet] がfalseを返す場合はパニックを引き起こします。
 func (v Value) SetBool(x bool)
 
 // SetBytesはvの基礎となる値を設定します。
-// vの基礎となる値がバイトのスライスでない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vの基礎となる値がバイトのスライスでない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetBytes(x []byte)
 
 // SetComplexはvの基礎となる値をxに設定します。
-// vのKindが [Complex64] または [Complex128] でない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Complex64] または [Complex128] でない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetComplex(x complex128)
 
 // SetFloatはvの基礎となる値をxに設定します。
-// vのKindが [Float32] または [Float64] でない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Float32] または [Float64] でない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetFloat(x float64)
 
 // SetIntはvの基礎となる値をxに設定します。
-// vのKindが [Int]、[Int8]、[Int16]、[Int32]、または [Int64] でない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Int]、[Int8]、[Int16]、[Int32]、または [Int64] でない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetInt(x int64)
 
 // SetLenはvの長さをnに設定します。
-// vのKindが [Slice] でない場合、nが負またはスライスの容量を超える場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Slice] でない場合、nが負またはスライスの容量を超える場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetLen(n int)
 
 // SetCapはvの容量をnに設定します。
-// vのKindが [Slice] でない場合、nが長さより小さいか容量を超える場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Slice] でない場合、nが長さより小さいか容量を超える場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetCap(n int)
 
 // SetUintはvの基礎となる値をxに設定します。
-// vのKindが [Uint]、[Uintptr]、[Uint8]、[Uint16]、[Uint32]、または [Uint64] でない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [Uint]、[Uintptr]、[Uint8]、[Uint16]、[Uint32]、または [Uint64] でない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetUint(x uint64)
 
 // SetPointerは [unsafe.Pointer] 型の値vをxに設定します。
-// vのKindが [UnsafePointer] でない場合、または [Value.CanSet] がfalseの場合はパニックを発生させます。
+// vのKindが [UnsafePointer] でない場合、または [Value.CanSet] がfalseの場合はパニックを引き起こします。
 func (v Value) SetPointer(x unsafe.Pointer)
 
 // SetStringはvの基礎となる値をxに設定します。
-// vのKindが [String] でない場合、またはCanSet()がfalseの場合はパニックを発生させます。
+// vのKindが [String] でない場合、またはCanSet()がfalseの場合はパニックを引き起こします。
 func (v Value) SetString(x string)
 
 // Sliceはv[i:j]を返します。
-// vのKindが [Array] 、 [Slice] 、または [String] でない場合、またはvがアドレス指定できない配列、またはインデックスが範囲外の場合はpanicします。
+// vのKindが [Array] 、 [Slice] 、または [String] でない場合、またはvがアドレス指定できない配列、またはインデックスが範囲外の場合はパニックを引き起こします。
 func (v Value) Slice(i, j int) Value
 
 // Slice3はスライス操作の3つのインデックス形式です：v[i:j:k]を返します。
 // もしvの種類が [Array] または [Slice] でない場合、またはvがアドレス不可能な配列である場合、
-// もしくはインデックスが範囲外の場合、panicを発生させます。
+// もしくはインデックスが範囲外の場合、パニックを引き起こします。
 func (v Value) Slice3(i, j, k int) Value
 
 // Stringは、文字列vの基礎となる値を文字列として返します。
@@ -365,14 +365,14 @@ func (v Value) Slice3(i, j, k int) Value
 func (v Value) String() string
 
 // TryRecvはチャネルvから値を受信しようとしますが、ブロックしません。
-// vのKindが [Chan] でない場合、パニックが発生します。
+// vのKindが [Chan] でない場合、パニックを引き起こします。
 // 受信が値を配信する場合、xは転送された値であり、okはtrueです。
 // ブロックすることなく受信を完了できない場合、xはゼロ値であり、okはfalseです。
 // チャネルが閉じられている場合、xはチャネルの要素型のゼロ値であり、okはfalseです。
 func (v Value) TryRecv() (x Value, ok bool)
 
 // TrySend はチャネル v に x を送信しようと試みますが、ブロックしません。
-// v の種類が [Chan] でない場合は、パニックを発生させます。
+// v の種類が [Chan] でない場合は、パニックを引き起こします。
 // 値が送信されたかどうかを報告します。
 // Go のように、x の値はチャネルの要素型に割り当て可能である必要があります。
 func (v Value) TrySend(x Value) bool
@@ -380,55 +380,55 @@ func (v Value) TrySend(x Value) bool
 // Typeはvの型を返します。
 func (v Value) Type() Type
 
-// CanUintは、パニックせずに [Value.Uint] を使用できるかどうかを報告します。
+// CanUintは、パニックを引き起こさずに [Value.Uint] を使用できるかどうかを報告します。
 func (v Value) CanUint() bool
 
 // Uintはvの基礎値をuint64として返します。
-// vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合にはパニックを発生させます。
+// vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合にはパニックを引き起こします。
 func (v Value) Uint() uint64
 
-// UnsafeAddrはvのデータへのポインタを、uintptrとして返します。
-// vがアドレス可能でない場合、panicします。
+// UnsafeAddrはvのデータへのポインターを、uintptrとして返します。
+// vがアドレス可能でない場合、パニックを引き起こします。
 //
 // 同等の結果を得るためには、uintptr(Value.Addr().UnsafePointer())を使用することが推奨されます。
 func (v Value) UnsafeAddr() uintptr
 
 // UnsafePointerはvの値を [unsafe.Pointer] として返します。
-// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを発生させます。
+// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを引き起こします。
 //
-// vのKindが [Func] の場合、返されるポインタは基礎となるコードポインタですが、必ずしも単一の関数を一意に識別するためのものではありません。
+// vのKindが [Func] の場合、返されるポインターは基礎となるコードポインターですが、必ずしも単一の関数を一意に識別するためのものではありません。
 // 唯一の保証は、vがnil func Valueである場合にのみ結果がゼロであることです。
 //
-// vのKindが [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。スライスがnilの場合、返される値もnilです。
+// vのKindが [Slice] の場合、返されるポインターはスライスの最初の要素へのポインターです。スライスがnilの場合、返される値もnilです。
 // スライスが空であるが非nilの場合、返される値は非nilです。
 //
-// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
+// vのKindが [String] である場合、返されるポインターは文字列の基礎となるバイトの最初の要素を指します。
 func (v Value) UnsafePointer() unsafe.Pointer
 
-// Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレータを返します。
+// Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレーターを返します。
 //
 // シーケンスは [0, NumField()) の範囲内の各インデックスiに対して
-// [Value.Field] を連続して呼び出すことと等価です。
+// [Value.Field] を連続して呼び出すことと同等です。
 //
-// vのKindがStructでない場合はパニックを発生させます。
+// vのKindがStructでない場合はパニックを引き起こします。
 func (v Value) Fields() iter.Seq2[StructField, Value]
 
-// Methodsはvの各 [Method] を対応するメソッド [Value] と共に反復処理するイテレータを返します。
-// これはvがレシーバとしてバインドされた関数です。そのため、
-// レシーバは [Value.Call] の引数に含めるべきではありません。
+// Methodsはvの各 [Method] を対応するメソッド [Value] と共に反復処理するイテレーターを返します。
+// これはvがレシーバーとしてバインドされた関数です。そのため、
+// レシーバーは [Value.Call] の引数に含めるべきではありません。
 //
 // シーケンスは [0, NumMethod()) の範囲内の各インデックスiに対して
-// [Value.Method] を連続して呼び出すことと等価です。
+// [Value.Method] を連続して呼び出すことと同等です。
 //
-// vがnilインターフェース値の場合、Methodsはパニックを発生させます。
+// vがnilインターフェース値の場合、Methodsはパニックを引き起こします。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのエクスポートされたメソッドを保持します。
-// これにより実行ファイルのバイナリサイズが大きくなる可能性がありますが、実行時間には影響しません。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのエクスポートされたメソッドを保持します。
+// これにより実行ファイルのバイナリーサイズが大きくなる可能性がありますが、実行時間には影響しません。
 func (v Value) Methods() iter.Seq2[Method, Value]
 
 // StringHeaderは文字列のランタイム表現です。
 // 安全かつ可搬性が保証されておらず、将来のリリースで表現が変わる可能性があります。
-// さらに、Dataフィールドだけではデータがガベージコレクションされないことは保証できないため、プログラムは基礎データへの正しい型付きポインタを別途保持する必要があります。
+// さらに、Dataフィールドだけではデータがガベージコレクションされないことは保証できないため、プログラムは基礎データへの正しい型付きポインターを別途保持する必要があります。
 //
 // Deprecated: 代わりにunsafe.Stringまたはunsafe.StringDataを使用してください。
 type StringHeader struct {
@@ -439,7 +439,7 @@ type StringHeader struct {
 // SliceHeaderはスライスのランタイム表現です。
 // これは安全でも可搬性がありませんし、将来のバージョンで変更されるかもしれません。
 // さらに、Dataフィールドだけではデータがガベージコレクトされないことを保証できないため、
-// プログラムは基礎データへの正しい型のポインタを別に保持する必要があります。
+// プログラムは基礎データへの正しい型のポインターを別に保持する必要があります。
 //
 // 廃止予定: 代わりにunsafe.Sliceまたはunsafe.SliceDataを使用してください。
 type SliceHeader struct {
@@ -448,17 +448,17 @@ type SliceHeader struct {
 	Cap  int
 }
 
-// Grow increases the slice's capacity, if necessary, to guarantee space for
-// another n elements. After Grow(n), at least n elements can be appended
-// to the slice without another allocation.
+// Growは、必要に応じてスライスの容量を増やし、さらにn個の要素のための
+// 領域を保証します。Grow(n)の後、少なくともn個の要素を追加の割り当てなしに
+// スライスに追加できます。
 //
-// It panics if v's Kind is not a [Slice], or if n is negative or too large to
-// allocate the memory, or if [Value.CanSet] returns false.
+// vのKindが [Slice] でない場合、nが負であるかメモリーを割り当てるには大きすぎる場合、
+// または [Value.CanSet] がfalseを返す場合はパニックを引き起こします。
 func (v Value) Grow(n int)
 
 // Clearメソッドは、マップの内容をクリアするか、スライスの内容をゼロにします。
 //
-// もしvのKindが [Map] または [Slice] でない場合、panicが発生します。
+// もしvのKindが [Map] または [Slice] でない場合、パニックを引き起こします。
 func (v Value) Clear()
 
 // Appendは値xをスライスsに追加し、結果のスライスを返します。
@@ -473,7 +473,7 @@ func AppendSlice(s, t Value) Value
 // コピーした要素数を返します。
 // dstとsrcはそれぞれ [Slice] または [Array] のKindでなければならず、
 // dstとsrcは同じ要素型でなければなりません。
-// dstが [Array] の場合、[Value.CanSet] がfalseを返すとパニックになります。
+// dstが [Array] の場合、[Value.CanSet] がfalseを返すとパニックを引き起こします。
 //
 // 特別な場合として、dstの要素の種類がUint8である場合、srcの種類はStringであることができます。
 func Copy(dst, src Value) int
@@ -524,7 +524,7 @@ func MakeSlice(typ Type, len, cap int) Value
 // これは [unsafe.Slice] のようなものです。
 func SliceAt(typ Type, p unsafe.Pointer, n int) Value
 
-// MakeChanは指定された型とバッファサイズで新しいチャネルを作成します。
+// MakeChanは指定された型とバッファーサイズで新しいチャネルを作成します。
 func MakeChan(typ Type, buffer int) Value
 
 // MakeMapは指定された型の新しいマップを作成します。
@@ -547,25 +547,25 @@ func ValueOf(i any) Value
 // 返された値はアドレスを取ることも変更することもできません。
 func Zero(typ Type) Value
 
-// Newは指定された型の新しいゼロ値へのポインタを表すValueを返します。
+// Newは指定された型の新しいゼロ値へのポインターを表すValueを返します。
 // つまり、返されたValueのTypeは [PointerTo](typ)です。
 func New(typ Type) Value
 
-// NewAtは、pを指し示すポインタを使用して、指定された型の値へのポインタを表すValueを返します。
+// NewAtは、pを指し示すポインターを使用して、指定された型の値へのポインターを表すValueを返します。
 func NewAt(typ Type, p unsafe.Pointer) Value
 
 // Convert は値 v を型 t に変換した値を返します。
-// もし通常の Go の変換ルールによって値 v を型 t に変換することができない場合、または、v を型 t に変換する際にパニックが発生する場合、Convert はパニックを発生させます。
+// もし通常の Go の変換ルールによって値 v を型 t に変換することができない場合、または、v を型 t に変換する際にパニックを引き起こす場合、Convert はパニックを引き起こします。
 func (v Value) Convert(t Type) Value
 
 // CanConvertは、値vが型tに変換可能かどうかを報告します。
-// v.CanConvert(t)がtrueを返す場合、v.Convert(t)はパニックしません。
+// v.CanConvert(t)がtrueを返す場合、v.Convert(t)はパニックを引き起こしません。
 func (v Value) CanConvert(t Type) bool
 
 // Comparableは値vが比較可能かどうかを報告します。
 // もしvの型がインターフェースである場合、これは動的な型をチェックします。
-// もしこれがtrueを報告する場合、v.Interface() == x はどんなxに対してもパニックを起こしませんし、
-// v.Equal(u) もどんなValue uに対してもパニックを起こしません。
+// もしこれがtrueを報告する場合、v.Interface() == x はどんなxに対してもパニックを引き起こしませんし、
+// v.Equal(u) もどんなValue uに対してもパニックを引き起こしません。
 func (v Value) Comparable() bool
 
 // Equalは、vがuと等しい場合にtrueを返します。

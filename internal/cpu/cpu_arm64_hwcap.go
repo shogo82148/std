@@ -18,3 +18,7 @@ package cpu
 //
 //go:linkname HWCap
 var HWCap uint
+
+// HWCap2 may be initialized by archauxv and
+// should not be changed after it was initialized.
+var HWCap2 uint

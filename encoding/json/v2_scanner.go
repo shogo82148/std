@@ -10,7 +10,7 @@ package json
 func Valid(data []byte) bool
 
 // SyntaxErrorは、JSON構文エラーの内容を表します。
-// [Unmarshal]は、JSONをパースできない場合にSyntaxErrorを返します。
+// [Unmarshal]は、JSONを解析できない場合にSyntaxErrorを返します。
 type SyntaxError struct {
 	msg    string
 	Offset int64

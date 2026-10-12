@@ -41,11 +41,11 @@ const (
 
 	// CANotAuthorizedForExtKeyUsage は、中間証明書またはルート証明書が要求された拡張キー使用法を許可しない場合に発生します。
 	CANotAuthorizedForExtKeyUsage
-	// NoValidChains results when there are no valid chains to return.
+	// NoValidChainsは、返すべき有効なチェーンがない場合に発生します。
 	NoValidChains
 )
 
-// CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
+// CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリーのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
 type CertificateInvalidError struct {
 	Cert   *Certificate
 	Reason InvalidReason
@@ -84,7 +84,7 @@ func (se SystemRootsError) Error() string
 
 func (se SystemRootsError) Unwrap() error
 
-// VerifyOptionsにはCertificate.Verifyのパラメータが含まれています。
+// VerifyOptionsにはCertificate.Verifyのパラメーターが含まれています。
 type VerifyOptions struct {
 
 	// DNSNameが設定されている場合は、Certificate.VerifyHostnameまたはプラットフォームの検証器で葉証明書と照合されます。
@@ -108,9 +108,8 @@ type VerifyOptions struct {
 	// この制限は、プラットフォームの検証ツールには適用されません。
 	MaxConstraintComparisions int
 
-	// CertificatePolicies specifies which certificate policy OIDs are
-	// acceptable during policy validation. An empty CertificatePolices
-	// field implies any valid policy is acceptable.
+	// CertificatePoliciesは、ポリシー検証時に許容される証明書ポリシーOIDを指定します。
+	// CertificatePoliciesフィールドが空の場合、任意の有効なポリシーが許容されることを意味します。
 	CertificatePolicies []OID
 
 	// inhibitPolicyMapping indicates if policy mapping should be allowed

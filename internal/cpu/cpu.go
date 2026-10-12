@@ -90,6 +90,8 @@ var ARM64 struct {
 	HasDIT     bool
 	HasSB      bool
 	IsNeoverse bool
+	HasSVE     bool
+	HasSVE2    bool
 	_          CacheLinePad
 }
 
@@ -174,6 +176,7 @@ var RISCV64 struct {
 	HasZvksed         bool
 	HasZvksh          bool
 	HasZvkt           bool
+	VLENB             uint
 	_                 CacheLinePad
 }
 

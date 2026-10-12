@@ -29,7 +29,7 @@ const (
 	MagicFat uint32 = 0xcafebabe
 )
 
-// Typeは、Mach-Oファイルのタイプを表します。例えば、オブジェクトファイル、実行可能ファイル、または動的ライブラリなどです。
+// Typeは、Mach-Oファイルのタイプを表します。例えば、オブジェクトファイル、実行可能ファイル、または動的ライブラリーなどです。
 type Type uint32
 
 const (
@@ -140,7 +140,7 @@ type (
 		Nlocrel        uint32
 	}
 
-	// DylibCmdは、Mach-Oの動的ライブラリロードコマンドです。
+	// DylibCmdは、Mach-Oの動的ライブラリーロードコマンドです。
 	DylibCmd struct {
 		Cmd            LoadCmd
 		Len            uint32
@@ -226,7 +226,7 @@ type Section64 struct {
 	Reserve3 uint32
 }
 
-// Nlist32は、Mach-O 32ビットのシンボルテーブルエントリです。
+// Nlist32は、Mach-O 32ビットのシンボルテーブルエントリーです。
 type Nlist32 struct {
 	Name  uint32
 	Type  uint8
@@ -235,7 +235,7 @@ type Nlist32 struct {
 	Value uint32
 }
 
-// Nlist64は、Mach-O 64ビットのシンボルテーブルエントリです。
+// Nlist64は、Mach-O 64ビットのシンボルテーブルエントリーです。
 type Nlist64 struct {
 	Name  uint32
 	Type  uint8
@@ -244,7 +244,7 @@ type Nlist64 struct {
 	Value uint64
 }
 
-// Regs386は、Mach-O 386のレジスタ構造体です。
+// Regs386は、Mach-O 386のレジスター構造体です。
 type Regs386 struct {
 	AX    uint32
 	BX    uint32
@@ -264,7 +264,7 @@ type Regs386 struct {
 	GS    uint32
 }
 
-// RegsAMD64は、Mach-O AMD64のレジスタ構造体です。
+// RegsAMD64は、Mach-O AMD64のレジスター構造体です。
 type RegsAMD64 struct {
 	AX    uint64
 	BX    uint64

@@ -36,11 +36,11 @@ func SetLogLoggerLevel(level Level) (oldLevel Level)
 // Defaultは、デフォルトの [Logger] を返します。
 func Default() *Logger
 
-// SetDefault makes l the default [Logger], which is used by
-// the top-level functions [Info], [Debug] and so on.
-// After this call, output from the log package's default Logger
-// (as with [log.Print], etc.) will be logged using l's Handler,
-// at a level controlled by [SetLogLoggerLevel].
+// SetDefaultは、lをデフォルトの [Logger] にします。これはトップレベルの関数
+// [Info]、[Debug] などで使用されます。
+// この呼び出しの後、logパッケージのデフォルトのLoggerからの出力
+// （[log.Print] などによるもの）は、[SetLogLoggerLevel] で制御されるレベルで、
+// lのHandlerを使用してログに記録されます。
 func SetDefault(l *Logger)
 
 // Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、
@@ -75,8 +75,8 @@ func With(args ...any) *Logger
 // Enabledは、lが指定されたコンテキストとレベルでログレコードを生成するかどうかを報告します。
 func (l *Logger) Enabled(ctx context.Context, level Level) bool
 
-// NewLogLoggerは、指定されたハンドラにRecordをディスパッチするための新しい [log.Logger] を返します。
-// ロガーは、古いログAPIから新しい構造化ログハンドラへのブリッジとして機能します。
+// NewLogLoggerは、指定されたハンドラーにRecordをディスパッチするための新しい [log.Logger] を返します。
+// ロガーは、古いログAPIから新しい構造化ログハンドラーへのブリッジとして機能します。
 func NewLogLogger(h Handler, level Level) *log.Logger
 
 // Logは、現在の時刻と指定されたレベルとメッセージでログレコードを生成します。

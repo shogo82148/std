@@ -10,7 +10,7 @@ import (
 
 // LineReaderは、単一のコンパイルユニットのDWARF「line」セクションから [LineEntry] 構造体のシーケンスを読み取ります。
 // [LineEntry] は、PCの増加順に発生し、各 [LineEntry] は、その [LineEntry] のPCから次の [LineEntry] のPCの直前までの命令のメタデータを提供します。
-// 最後のエントリには、[LineEntry.EndSequence] フィールドが設定されます。
+// 最後のエントリーには、[LineEntry.EndSequence] フィールドが設定されます。
 type LineReader struct {
 	buf buf
 
@@ -46,7 +46,7 @@ type LineReader struct {
 
 // LineEntryは、DWARF行テーブル内の行を表します。
 type LineEntry struct {
-	// Addressは、コンパイラによって生成されたマシン命令のプログラムカウンター値です。
+	// Addressは、コンパイラーによって生成されたマシン命令のプログラムカウンター値です。
 	// このLineEntryは、Addressから次のLineEntryのAddressの直前までの各命令に適用されます。
 	Address uint64
 
@@ -73,7 +73,7 @@ type LineEntry struct {
 	// BasicBlockは、Addressが基本ブロックの開始であることを示します。
 	BasicBlock bool
 
-	// PrologueEndは、Addressが、含まれる関数へのエントリにブレークポイントを設定するために、
+	// PrologueEndは、Addressが、含まれる関数へのエントリーにブレークポイントを設定するために、
 	// 実行を一時停止する必要があるPCの1つ（可能性がある）であることを示します。
 	//
 	// DWARF 3で追加されました。
@@ -101,11 +101,11 @@ type LineEntry struct {
 	// EndSequenceは、Addressがターゲットマシン命令のシーケンスの終わりの直後の最初のバイトであることを示します。
 	// 設定されている場合、このフィールドとAddressフィールドのみが有意です。
 	// 行番号テーブルには、複数の可能性のある不連続な命令シーケンスの情報が含まれる場合があります。
-	// 行テーブルの最後のエントリには、常にEndSequenceが設定されている必要があります。
+	// 行テーブルの最後のエントリーには、常にEndSequenceが設定されている必要があります。
 	EndSequence bool
 }
 
-// LineFileは、DWARF行テーブルエントリによって参照されるソースファイルです。
+// LineFileは、DWARF行テーブルエントリーによって参照されるソースファイルです。
 type LineFile struct {
 	Name   string
 	Mtime  uint64
@@ -118,7 +118,7 @@ type LineFile struct {
 func (d *Data) LineReader(cu *Entry) (*LineReader, error)
 
 // Nextは、この行テーブルの次の行を*entryに設定し、次の行に移動します。
-// もうエントリがなく、行テーブルが適切に終了している場合、[io.EOF] を返します。
+// もうエントリーがなく、行テーブルが適切に終了している場合、[io.EOF] を返します。
 //
 // 行は常にentry.Addressの増加順に並んでいますが、entry.Lineは前後に移動する場合があります。
 func (r *LineReader) Next(entry *LineEntry) error
@@ -153,22 +153,22 @@ func (r *LineReader) Reset()
 //
 // コンパイルユニットのファイル名テーブルは固定されていません。Filesは、
 // 行テーブルの現在の位置に基づいてファイルテーブルを返します。
-// これにより、行テーブルの以前の位置のファイルテーブルよりもエントリが多く含まれる場合がありますが、
-// 既存のエントリは変更されません。
+// これにより、行テーブルの以前の位置のファイルテーブルよりもエントリーが多く含まれる場合がありますが、
+// 既存のエントリーは変更されません。
 func (r *LineReader) Files() []*LineFile
 
-// ErrUnknownPCは、LineReader.ScanPCが行テーブルのエントリによってカバーされていないPCを検出した場合に返されるエラーです。
+// ErrUnknownPCは、LineReader.ScanPCが行テーブルのエントリーによってカバーされていないPCを検出した場合に返されるエラーです。
 var ErrUnknownPC = errors.New("ErrUnknownPC")
 
 // SeekPCは、pcを含む [LineEntry] を*entryに設定し、
-// 行テーブルの次のエントリに位置を設定します。
+// 行テーブルの次のエントリーに位置を設定します。
 // 必要に応じて、pcを検索するために後方にシークします。
 //
-// pcがこの行テーブルのエントリによってカバーされていない場合、
+// pcがこの行テーブルのエントリーによってカバーされていない場合、
 // SeekPCは [ErrUnknownPC] を返します。この場合、*entryと最終的なシーク位置は未指定です。
 //
 // DWARF行テーブルは、順次前方スキャンのみを許可します。
 // したがって、最悪の場合、これには行テーブルのサイズに比例する時間がかかります。
-// 呼び出し側が繰り返し高速なPC検索を行いたい場合は、
+// 呼び出し元が繰り返し高速なPC検索を行いたい場合は、
 // 適切な行テーブルのインデックスを構築する必要があります。
 func (r *LineReader) SeekPC(pc uint64, entry *LineEntry) error

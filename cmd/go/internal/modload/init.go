@@ -11,6 +11,7 @@ import (
 	"github.com/shogo82148/std/sync"
 
 	"github.com/shogo82148/std/cmd/go/internal/modfetch"
+	"github.com/shogo82148/std/cmd/internal/par"
 
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/module"
@@ -31,14 +32,13 @@ var (
 	ExplicitWriteGoMod bool
 )
 
-// EnterModule resets MainModules and requirements to refer to just this one module.
-func EnterModule(ld *Loader, ctx context.Context, enterModroot string)
+// NewForModroot creates a new module loader in single-module mode for the module at
+// the given modroot..
+func NewForModroot(ctx context.Context, modroot string) *Loader
 
-// EnterWorkspace enters workspace mode from module mode, applying the updated requirements to the main
-// module to that module in the workspace. There should be no calls to any of the exported
-// functions of the modload package running concurrently with a call to EnterWorkspace as
-// EnterWorkspace will modify the global state they depend on in a non-thread-safe way.
-func EnterWorkspace(ld *Loader, ctx context.Context) (exit func(), err error)
+// NewForWorkspace creates a new loader for workspace mode from the given module mode loader ld,
+// applying ld's updated requirements to the main module to the corresponding module in the workspace.
+func (ld *Loader) NewForWorkspace(ctx context.Context) (*Loader, error)
 
 type MainModuleSet struct {
 	// versions are the module.Version values of each of the main modules.
@@ -155,6 +155,18 @@ const (
 // in go.mod, edit it before loading.
 func ModFile(ld *Loader) *modfile.File
 
+// MainModuleHasGoDirective reports whether the main module's go.mod file
+// declared a go directive as originally loaded from disk. It reads the parsed
+// module index, which preserves that original state, rather than the in-memory
+// go.mod, into which the go command synthesizes a version for a module that
+// omits one. It must therefore be called after the main module is loaded and
+// before WriteGoMod rewrites (and re-indexes) the file; afterward the index
+// reflects the rewritten go.mod instead.
+//
+// In workspace mode, or when there is not exactly one main module, it
+// conservatively reports true.
+func MainModuleHasGoDirective(ld *Loader) bool
+
 func BinDir(ld *Loader) string
 
 // InitWorkfile initializes the workFilePath variable for commands that
@@ -221,6 +233,17 @@ type Loader struct {
 	// disabled
 	workFilePath string
 	fetcher      *modfetch.Fetcher
+
+	// rawGoModSummaryCache is per-loader because reading a go.mod verifies it
+	// against this loader's go.sum files, recording the checksum as one to keep.
+	// A shared cache would let one loader's verification stand in for another's,
+	// leaving the second loader's go.sum missing the entry.
+	rawGoModSummaryCache *par.ErrCache[module.Version, *modFileSummary]
+
+	// PackageCache is a lookup cache for LoadImport,
+	// so that if we look up a package multiple times
+	// we return the same pointer each time.
+	packageCache map[string]any
 }
 
 func NewLoader() *Loader
@@ -228,6 +251,8 @@ func NewLoader() *Loader
 func NewDisabledState() *Loader
 
 func (ld *Loader) Fetcher() *modfetch.Fetcher
+
+func (ld *Loader) PackageCache() map[string]any
 
 // Init determines whether module mode is enabled, locates the root of the
 // current module (if any), sets environment variables for Git subprocesses, and
@@ -355,6 +380,10 @@ type WriteOpts struct {
 
 // WriteGoMod writes the current build list back to go.mod.
 func WriteGoMod(ld *Loader, ctx context.Context, opts WriteOpts) error
+
+// WriteTidyGoSum writes the checksums needed to reproduce the current module
+// graph and removes unneeded checksums.
+func WriteTidyGoSum(ld *Loader, ctx context.Context) error
 
 // UpdateGoModFromReqs returns a modified go.mod file using the current
 // requirements. It does not commit these changes to disk.

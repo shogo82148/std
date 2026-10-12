@@ -56,23 +56,41 @@ func ExampleGet() {
 	fmt.Printf("%s", body)
 }
 
-func ExampleFileServer() {
-	// シンプルな静的 Web サーバー:
-	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("/usr/share/doc"))))
+// シンプルな静的 Web サーバー。
+func ExampleFileServerFS() {
+	// os.Root は、/usr/share/doc の外部につながるシンボリックリンクをたどることを防ぎます。
+	root, err := os.OpenRoot("/usr/share/doc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := http.FileServerFS(root.FS())
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
 
-func ExampleFileServer_stripPrefix() {
-	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
-	// StripPrefix を使用して、FileServer がそれを見る前に
-	// リクエスト URL のパスを変更します。
-	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
+// ディスク上のディレクトリー (/usr/share/doc) を別の URL パス (/docs/) の下で提供します。
+func ExampleFileServerFS_stripPrefix() {
+	root, err := os.OpenRoot("/usr/share/doc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := http.FileServerFS(root.FS())
+
+	// StripPrefix を使用して、FileServerFS がパスを見る前に
+	// /docs/ プレフィックスを取り除きます。
+	http.Handle("GET /docs/", http.StripPrefix("/docs/", handler))
 }
 
 func ExampleStripPrefix() {
-	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
-	// StripPrefix を使用して、FileServer がそれを見る前に
-	// リクエスト URL のパスを変更します。
-	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
+	root, err := os.OpenRoot("/usr/share/doc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := http.FileServerFS(root.FS())
+
+	// ディスク上のディレクトリー (/usr/share/doc) を別の URL パス (/docs/) の下で提供するには、
+	// StripPrefix を使用して、FileServerFS がそれを見る前に
+	// リクエストを変更します。
+	http.Handle("GET /docs/", http.StripPrefix("/docs/", handler))
 }
 
 func ExampleServeMux_Handle() {
@@ -196,7 +214,7 @@ func ExampleProtocols_http1() {
 func ExampleProtocols_http1or2() {
 	t := http.DefaultTransport.(*http.Transport).Clone()
 
-	// Use either HTTP/1 and HTTP/2.
+	// Use either HTTP/1 or HTTP/2.
 	t.Protocols = new(http.Protocols)
 	t.Protocols.SetHTTP1(true)
 	t.Protocols.SetHTTP2(true)

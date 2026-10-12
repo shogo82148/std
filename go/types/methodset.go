@@ -10,7 +10,7 @@ package types
 // メソッドは [MethodVal] 選択であり、m.Obj().Id()によって昇順に並べられます。
 // MethodSetのゼロ値は使用準備完了の空のメソッドセットです。
 type MethodSet struct {
-	list []*Selection
+	list []methodSetEntry
 }
 
 func (s *MethodSet) String() string

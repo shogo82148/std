@@ -9,15 +9,15 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// DefaultQualityは、デフォルトの品質エンコーディングパラメータです。
+// DefaultQualityは、デフォルトの品質エンコーディングパラメーターです。
 const DefaultQuality = 75
 
-// Optionsは、エンコーディングパラメータです。
+// Optionsは、エンコーディングパラメーターです。
 // Qualityは1から100までの範囲で、高いほど良いです。
 type Options struct {
 	Quality int
 }
 
 // Encodeは、与えられたオプションでJPEG 4:2:0ベースラインフォーマットでImage mをwに書き込みます。
-// nilの *[Options] が渡された場合、デフォルトのパラメータが使用されます。
+// nilの *[Options] が渡された場合、デフォルトのパラメーターが使用されます。
 func Encode(w io.Writer, m image.Image, o *Options) error

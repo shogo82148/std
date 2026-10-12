@@ -4,7 +4,7 @@
 
 package syscall
 
-// A RawConn is a raw network connection.
+// RawConnは、生のネットワーク接続です。
 type RawConn interface {
 	Control(f func(fd uintptr)) error
 
@@ -13,8 +13,8 @@ type RawConn interface {
 	Write(f func(fd uintptr) (done bool)) error
 }
 
-// Conn is implemented by some types in the net and os packages to provide
-// access to the underlying file descriptor or handle.
+// Connは、netパッケージとosパッケージの一部の型によって実装され、
+// 基礎となるファイルディスクリプターまたはハンドルへのアクセスを提供します。
 type Conn interface {
 	SyscallConn() (RawConn, error)
 }

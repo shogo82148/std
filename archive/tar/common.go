@@ -24,12 +24,12 @@ var (
 	ErrInsecurePath    = errors.New("archive/tar: insecure file path")
 )
 
-// Type flags for Header.Typeflag.
+// Header.Typeflag のためのタイプフラグ。
 const (
 	// Type '0' は通常のファイルを示します。
 	TypeReg = '0'
 
-	// Deprecated: 非推奨：かわりにTypeRegを使用してください。
+	// Deprecated: 代わりにTypeRegを使用してください。
 	TypeRegA = '\x00'
 
 	// Type '1'から'6'は、ヘッダーのみのフラグであり、データ本体を持たない場合があります。
@@ -68,7 +68,7 @@ const (
 // いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
 // 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
 type Header struct {
-	// Typeflagはヘッダーエントリのタイプです。
+	// Typeflagはヘッダーエントリーのタイプです。
 	// ゼロ値は、Nameの末尾のスラッシュの有無に応じて、自動的にTypeRegまたはTypeDirに昇格します。
 	Typeflag byte
 
@@ -138,7 +138,7 @@ func (h *Header) FileInfo() fs.FileInfo
 
 // FileInfoHeaderは、fiから部分的に設定された [Header] を作成します。
 // fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
-// fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
+// fiがディレクトリーを記述している場合、名前にスラッシュが追加されます。
 //
 // fs.FileInfoのNameメソッドは、それが記述するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要があるかもしれません。
@@ -147,9 +147,9 @@ func (h *Header) FileInfo() fs.FileInfo
 // Header.GnameとHeader.Unameはインターフェースのメソッドによって提供されます。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
-// FileInfoNames extends [fs.FileInfo].
-// Passing an instance of this to [FileInfoHeader] permits the caller
-// to avoid a system-dependent name lookup by specifying the Uname and Gname directly.
+// FileInfoNamesは [fs.FileInfo] を拡張します。
+// これのインスタンスを [FileInfoHeader] に渡すと、呼び出し元はUnameとGnameを
+// 直接指定することで、システムに依存した名前の検索を回避できます。
 type FileInfoNames interface {
 	fs.FileInfo
 

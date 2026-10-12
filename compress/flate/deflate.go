@@ -44,13 +44,13 @@ func NewWriter(w io.Writer, level int) (*Writer, error)
 // テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
-// Writerは、書き込まれたデータを受け取り、そのデータの圧縮された形式を基になるWriterに書き込む。 ([NewWriter] を参照してください)。
+// Writerは、書き込まれたデータを受け取り、そのデータの圧縮された形式を基礎となるWriterに書き込む。 ([NewWriter] を参照してください)。
 type Writer struct {
 	d    compressor
 	dict []byte
 }
 
-// Writeは、wにデータを書き込み、その後データの圧縮形式を基になるライターに書き込みます。
+// Writeは、wにデータを書き込み、その後データの圧縮形式を基礎となるライターに書き込みます。
 func (w *Writer) Write(data []byte) (n int, err error)
 
 // Flushは、保留中のデータを基礎となるライターにフラッシュします。
@@ -59,10 +59,10 @@ func (w *Writer) Write(data []byte) (n int, err error)
 // パンディングのないデータでFlushを呼び出すと、 [Writer] は少なくとも4バイトの同期マーカーを出力します。
 // 基礎となるライターがエラーを返す場合、Flushはそのエラーを返します。
 //
-// zlibライブラリの用語では、FlushはZ_SYNC_FLUSHと等価です。
+// zlibライブラリーの用語では、FlushはZ_SYNC_FLUSHと同等です。
 func (w *Writer) Flush() error
 
-// Close は書き込みバッファをフラッシュしてクローズします。
+// Close は書き込みバッファーをフラッシュしてクローズします。
 func (w *Writer) Close() error
 
 // Reset はライターの状態を破棄し、dst と w のレベルおよび辞書を使って

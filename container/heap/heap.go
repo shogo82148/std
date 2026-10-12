@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージheapは、heap.Interfaceを実装する任意の型に対して
+// heapパッケージは、heap.Interfaceを実装する任意の型に対して
 // ヒープ操作を提供します。ヒープは、各ノードがその部分木における
 // 最小値ノードであるという性質を持つ木です。
 //
@@ -46,7 +46,7 @@ func Push(h Interface, x any)
 
 // Popはヒープから最小要素（Lessに従う）を取り出して返します。
 // 計算量は O(log n) です（n = h.Len()）。
-// Popは [Remove](h, 0) と等価です。
+// Popは [Remove](h, 0) と同等です。
 func Pop(h Interface) any
 
 // Removeはヒープのインデックスiにある要素を取り出して返します。
@@ -55,7 +55,7 @@ func Remove(h Interface, i int) any
 
 // Fixは、インデックスiの要素の値が変更された後にヒープ順序を再確立します。
 // インデックスiの要素の値を変更してからFixを呼び出すことは、
-// [Remove](h, i) を呼び出して新しい値をPushするのと等価ですが、
+// [Remove](h, i) を呼び出して新しい値をPushするのと同等ですが、
 // それより低コストです。
 // 計算量は O(log n) です（n = h.Len()）。
 func Fix(h Interface, i int)

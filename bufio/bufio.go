@@ -30,30 +30,30 @@ type Reader struct {
 	lastRuneSize int
 }
 
-// NewReaderSizeは、バッファの最低限のサイズが指定された新しい [Reader] を返します。
-// もし引数のio.Readerが既に十分なサイズの [Reader] であれば、それは基本となる [Reader] を返します。
+// NewReaderSizeは、バッファーの最低限のサイズが指定された新しい [Reader] を返します。
+// もし引数のio.Readerが既に十分なサイズの [Reader] であれば、それは基礎となる [Reader] を返します。
 func NewReaderSize(rd io.Reader, size int) *Reader
 
-// NewReaderはデフォルトサイズのバッファを持つ新しい [Reader] を返します。
+// NewReaderはデフォルトサイズのバッファーを持つ新しい [Reader] を返します。
 func NewReader(rd io.Reader) *Reader
 
-// Sizeはバイト単位での基礎バッファのサイズを返します。
+// Sizeはバイト単位での基礎バッファーのサイズを返します。
 func (b *Reader) Size() int
 
-// Resetはバッファに保持されたデータを破棄し、すべての状態をリセットし、
-// バッファリーダーをrから読み取るように切り替えます。
-// [Reader] のゼロ値に対してResetを呼び出すと、内部バッファがデフォルトのサイズに初期化されます。
+// Resetはバッファーに保持されたデータを破棄し、すべての状態をリセットし、
+// バッファーリーダーをrから読み取るように切り替えます。
+// [Reader] のゼロ値に対してResetを呼び出すと、内部バッファーがデフォルトのサイズに初期化されます。
 // b.Reset(b)（つまり、[Reader] を自身にリセットする）は何もしません。
 func (b *Reader) Reset(r io.Reader)
 
-// Peek returns the next n bytes without advancing the reader. The bytes stop
-// being valid at the next read call. If necessary, Peek will read more bytes
-// into the buffer in order to make n bytes available. If Peek returns fewer
-// than n bytes, it also returns an error explaining why the read is short.
-// The error is [ErrBufferFull] if n is larger than b's buffer size.
+// Peekはリーダーを進めずに次のnバイトを返します。返されたバイトは
+// 次の読み取り呼び出しで無効になります。必要に応じて、Peekはnバイトを
+// 利用可能にするためにバッファーにさらにバイトを読み込みます。Peekが
+// nバイト未満を返す場合、読み取りが不足した理由を説明するエラーも返します。
+// nがbのバッファーサイズより大きい場合、エラーは [ErrBufferFull] です。
 //
-// Calling Peek prevents a [Reader.UnreadByte] or [Reader.UnreadRune] call from succeeding
-// until the next read operation.
+// Peekを呼び出すと、次の読み取り操作まで [Reader.UnreadByte] や [Reader.UnreadRune] の
+// 呼び出しは成功しなくなります。
 func (b *Reader) Peek(n int) ([]byte, error)
 
 // Discard は次の n バイトをスキップし、スキップしたバイト数を返します。
@@ -86,16 +86,16 @@ func (b *Reader) ReadRune() (r rune, size int, err error)
 // UnreadRuneは最後のルーンを戻します。もし、 [Reader] に最も最近呼び出されたメソッドが [Reader.ReadRune] でない場合、 [Reader.UnreadRune] はエラーを返します。（この点で、 [Reader.UnreadByte] よりも厳格です。[Reader.UnreadByte] はどの読み取り操作からも最後のバイトを戻します。）
 func (b *Reader) UnreadRune() error
 
-// Bufferedは現在のバッファから読み取ることができるバイト数を返します。
+// Bufferedは現在のバッファーから読み取ることができるバイト数を返します。
 func (b *Reader) Buffered() int
 
-// ReadSliceは入力内の最初のデリミタの出現まで読み取り、バッファ内のバイトを指すスライスを返します。
+// ReadSliceは入力内の最初のデリミターの出現まで読み取り、バッファー内のバイトを指すスライスを返します。
 // バイトは次の読み取り時には無効になります。
-// ReadSliceがデリミタを見つける前にエラーに遭遇した場合、バッファ内のすべてのデータとエラー自体（通常はio.EOF）を返します。
-// バッファがデリミタなしで満杯になると、ReadSliceは [ErrBufferFull] エラーで失敗します。
+// ReadSliceがデリミターを見つける前にエラーに遭遇した場合、バッファー内のすべてのデータとエラー自体（通常はio.EOF）を返します。
+// バッファーがデリミターなしで満杯になると、ReadSliceは [ErrBufferFull] エラーで失敗します。
 // ReadSliceから返されるデータは次のI/O操作によって上書きされるため、ほとんどのクライアントは
 // [Reader.ReadBytes] またはReadStringを代わりに使用すべきです。
-// ReadSliceは、lineの終了がデリミタでない場合にのみerr！= nilを返します。
+// ReadSliceは、lineの終了がデリミターでない場合にのみerr！= nilを返します。
 func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 
 // ReadLineは低レベルの行読み取りプリミティブです。ほとんどの呼び出し元は、 [Reader.ReadBytes]('\n') または [Reader.ReadString]('\n') を使用するか、 [Scanner] を使用する必要があります。
@@ -105,17 +105,17 @@ func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 // ReadLineから返されるテキストには、行末の("\r\n"または"\n")は含まれません。入力が最後の行末で終わっている場合、特定の表示やエラーは与えられません。ReadLineの後に [Reader.UnreadByte] を呼び出すと、常に最後に読み取られたバイト（おそらく行末に属する文字）がアンリードされます。ただし、そのバイトがReadLineによって返された行の一部でない場合でもです。
 func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 
-// ReadBytesは入力内のデリミタの最初の出現まで読み取り、
-// データとデリミタを含むスライスを返します。
-// ReadBytesがデリミタを見つける前にエラーが発生した場合、
+// ReadBytesは入力内のデリミターの最初の出現まで読み取り、
+// データとデリミターを含むスライスを返します。
+// ReadBytesがデリミターを見つける前にエラーが発生した場合、
 // エラーが発生する前に読み取られたデータとエラー自体（通常はio.EOF）を返します。
-// Returned dataがデリミタで終わっていない場合、ReadBytesはerr != nilを返します。
+// Returned dataがデリミターで終わっていない場合、ReadBytesはerr != nilを返します。
 // 簡単な使用のためには、Scannerがより便利です。
 func (b *Reader) ReadBytes(delim byte) ([]byte, error)
 
-// ReadStringは、入力内で最初のデリミタが現れるまで読み込み、デリミタを含むデータの文字列を返します。
-// ReadStringがデリミタを見つける前にエラーに遭遇した場合、エラー自体（通常はio.EOF）とエラーが発生する前に読み取ったデータを返します。
-// ReadStringは、返されたデータの最後がデリミタで終わっていない場合、err != nilを返します。
+// ReadStringは、入力内で最初のデリミターが現れるまで読み込み、デリミターを含むデータの文字列を返します。
+// ReadStringがデリミターを見つける前にエラーに遭遇した場合、エラー自体（通常はio.EOF）とエラーが発生する前に読み取ったデータを返します。
+// ReadStringは、返されたデータの最後がデリミターで終わっていない場合、err != nilを返します。
 // 単純な使用法の場合は、Scannerがより便利です。
 func (b *Reader) ReadString(delim byte) (string, error)
 
@@ -127,7 +127,7 @@ func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 
 // Writerは [io.Writer] オブジェクトに対してバッファリングを行います。
 // [Writer] に書き込む際にエラーが発生した場合、以降のデータの受け入れや、 [Writer.Flush] メソッドの呼び出しはエラーを返します。
-// 全てのデータが書き込まれた後、クライアントは [Writer.Flush] メソッドを呼び出して、全てのデータが基になる [io.Writer] に転送されることを保証する必要があります。
+// 全てのデータが書き込まれた後、クライアントは [Writer.Flush] メソッドを呼び出して、全てのデータが基礎となる [io.Writer] に転送されることを保証する必要があります。
 type Writer struct {
 	err error
 	buf []byte
@@ -135,38 +135,38 @@ type Writer struct {
 	wr  io.Writer
 }
 
-// NewWriterSizeは、バッファのサイズが指定された最小値を持つ新しい [Writer] を返します。
-// 引数のio.Writerがすでに十分な大きさを持つ [Writer] である場合、基になる [Writer] を返します。
+// NewWriterSizeは、バッファーのサイズが指定された最小値を持つ新しい [Writer] を返します。
+// 引数のio.Writerがすでに十分な大きさを持つ [Writer] である場合、基礎となる [Writer] を返します。
 func NewWriterSize(w io.Writer, size int) *Writer
 
-// NewWriterは、バッファのデフォルトサイズを持つ新しい [Writer] を返します。
-// 引数のio.Writerが既に十分に大きなバッファサイズを持つ [Writer] である場合、基になる [Writer] を返します。
+// NewWriterは、バッファーのデフォルトサイズを持つ新しい [Writer] を返します。
+// 引数のio.Writerが既に十分に大きなバッファーサイズを持つ [Writer] である場合、基礎となる [Writer] を返します。
 func NewWriter(w io.Writer) *Writer
 
-// Sizeはバイト単位で下層のバッファーのサイズを返します。
+// Sizeはバイト単位で基礎となるバッファーのサイズを返します。
 func (b *Writer) Size() int
 
-// Resetは、フラッシュされていないバッファデータを破棄し、エラーをクリアし、出力をwにリセットします。
-// [Writer] のゼロ値に対してResetを呼び出すと、内部バッファがデフォルトのサイズに初期化されます。
+// Resetは、フラッシュされていないバッファーデータを破棄し、エラーをクリアし、出力をwにリセットします。
+// [Writer] のゼロ値に対してResetを呼び出すと、内部バッファーがデフォルトのサイズに初期化されます。
 // w.Reset(w)（つまり、[Writer] を自身にリセットすること）は何もしません。
 func (b *Writer) Reset(w io.Writer)
 
-// Flushはバッファされたデータを基になる [io.Writer] に書き込みます。
+// Flushはバッファーされたデータを基礎となる [io.Writer] に書き込みます。
 func (b *Writer) Flush() error
 
-// Available はバッファ内で未使用のバイト数を返します。
+// Available はバッファー内で未使用のバイト数を返します。
 func (b *Writer) Available() int
 
-// AvailableBufferは、b.Available() 容量の空のバッファを返します。
-// このバッファは追加されることを意図しており、
+// AvailableBufferは、b.Available() 容量の空のバッファーを返します。
+// このバッファーは追加されることを意図しており、
 // 直後の [Writer.Write] 呼び出しに渡されます。
-// このバッファは、b上の次の書き込み操作までの間のみ有効です。
+// このバッファーは、b上の次の書き込み操作までの間のみ有効です。
 func (b *Writer) AvailableBuffer() []byte
 
-// Bufferedは現在のバッファに書き込まれたバイト数を返します。
+// Bufferedは現在のバッファーに書き込まれたバイト数を返します。
 func (b *Writer) Buffered() int
 
-// Write は p の内容をバッファに書き込みます。
+// Write は p の内容をバッファーに書き込みます。
 // 書き込まれたバイト数を返します。
 // nn < len(p) の場合、短い書き込みの理由を説明するエラーも返ります。
 func (b *Writer) Write(p []byte) (nn int, err error)
@@ -183,10 +183,10 @@ func (b *Writer) WriteRune(r rune) (size int, err error)
 func (b *Writer) WriteString(s string) (int, error)
 
 // ReadFrom は [io.ReaderFrom] インターフェースを実装します。もし基礎となる書き込み先が ReadFrom メソッドをサポートしている場合、これは基礎となる ReadFrom を呼び出します。
-// バッファされたデータと基礎となる ReadFrom がある場合、これはバッファを埋めてから ReadFrom を呼び出します。
+// バッファーされたデータと基礎となる ReadFrom がある場合、これはバッファーを埋めてから ReadFrom を呼び出します。
 func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
 
-// ReadWriterは [Reader] と [Writer] へのポインタを保存します。
+// ReadWriterは [Reader] と [Writer] へのポインターを保存します。
 // [io.ReadWriter] を実装します。
 type ReadWriter struct {
 	*Reader

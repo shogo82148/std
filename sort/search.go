@@ -26,7 +26,7 @@ package sort
 // たとえば、昇順にソートされたスライス data があるとき、
 // Search(len(data), func(i int) bool { return data[i] >= 23 })
 // の呼び出しは data[i] >= 23 となる最小のインデックス i を返します。
-// 呼び出し側が 23 がスライス内に存在するかを調べたい場合は、
+// 呼び出し元が 23 がスライス内に存在するかを調べたい場合は、
 // data[i] == 23 を別途確認する必要があります。
 //
 // 降順にソートされたデータを探索する場合は、>= 演算子の代わりに
@@ -51,7 +51,7 @@ package sort
 //		fmt.Printf("0 から 100 までの整数を 1 つ選んでください。\n")
 //		answer := sort.Search(100, func(i int) bool {
 //			fmt.Printf("あなたの数は %d 以下ですか? ", i)
-//			fmt.Scanf("%s", &s)
+//			fmt.Scan(&s)
 //			return s != "" && s[0] == 'y'
 //		})
 //		fmt.Printf("あなたの数は %d です。\n", answer)
@@ -80,7 +80,7 @@ func Search(n int, f func(int) bool) int
 //	    return strings.Compare(target, x.At(i))
 //	})
 //	if found {
-//	    fmt.Printf("%s がエントリ %d で見つかりました\n", target, i)
+//	    fmt.Printf("%s がエントリー %d で見つかりました\n", target, i)
 //	} else {
 //	    fmt.Printf("%s は見つかりませんでした。挿入位置は %d です", target, i)
 //	}
@@ -104,11 +104,11 @@ func SearchFloat64s(a []float64, x float64) int
 // スライスは昇順にソートされている必要があります。
 func SearchStrings(a []string, x string) int
 
-// Searchはレシーバと x に [SearchInts] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchInts] を適用した結果を返します。
 func (p IntSlice) Search(x int) int
 
-// Searchはレシーバと x に [SearchFloat64s] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchFloat64s] を適用した結果を返します。
 func (p Float64Slice) Search(x float64) int
 
-// Searchはレシーバと x に [SearchStrings] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchStrings] を適用した結果を返します。
 func (p StringSlice) Search(x string) int

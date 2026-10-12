@@ -22,12 +22,8 @@ type Optab struct {
 	type_ int8
 	size  int8
 	param int16
-	flag  uint8
+	flag  uint16
 }
-
-const (
-	NOTUSETMP = 1 << iota
-)
 
 func IsAtomicInst(as obj.As) bool
 
@@ -77,6 +73,10 @@ func OP_IR(op uint32, i uint32, r2 uint32) uint32
 
 func OP_15I(op uint32, i uint32) uint32
 
+func OP_3RRR(op uint32, ca, fk, fj, fd uint32) uint32
+
+func OP_5IIRR(op uint32, index, imm, rj, rd uint32) uint32
+
 // i1 -> msb
 // r2 -> rj
 // i3 -> lsb
@@ -85,3 +85,9 @@ func OP_IRIR(op uint32, i1 uint32, r2 uint32, i3 uint32, r4 uint32) uint32
 
 // Encoding for the 'b' or 'bl' instruction.
 func OP_B_BL(op uint32, i uint32) uint32
+
+func OpCodeIR(a obj.As) uint32
+
+func OpCodeIRR(a obj.As) uint32
+
+func OpCodeRRR(a obj.As) uint32

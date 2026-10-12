@@ -44,7 +44,7 @@ func (f *File) Chown(uid, gid int) error
 func (f *File) Truncate(size int64) error
 
 // Syncはファイルの現在の内容を安定したストレージへコミットします。
-// 通常、これはファイルシステムのメモリ上のコピーをフラッシュし、
+// 通常、これはファイルシステムのメモリー上のコピーをフラッシュし、
 // 最近書き込まれたデータをディスクに書き込むことを意味しています。
 func (f *File) Sync() error
 
@@ -55,7 +55,7 @@ func (f *File) Sync() error
 // エラーが発生した場合、[*PathError] 型になります。
 func Chtimes(name string, atime time.Time, mtime time.Time) error
 
-// Chdirは現在の作業ディレクトリを指定されたディレクトリpathに変更します。
-// pathはディレクトリでなければなりません。
+// Chdirは現在の作業ディレクトリーを指定されたディレクトリーpathに変更します。
+// pathはディレクトリーでなければなりません。
 // エラーが発生した場合、[*PathError] の型で返されます。
 func (f *File) Chdir() error

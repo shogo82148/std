@@ -6,7 +6,7 @@ package syscall
 
 // Constants
 const (
-	// Invented values to support what package os expects.
+	// osパッケージが期待するものをサポートするために作られた値。
 	O_CREAT    = 0x02000
 	O_APPEND   = 0x00400
 	O_NOCTTY   = 0x00000
@@ -40,9 +40,8 @@ var (
 	ETIMEDOUT    = NewError("connection timed out")
 	EPLAN9       = NewError("not supported by plan 9")
 
-	// The following errors do not correspond to any
-	// Plan 9 system messages. Invented to support
-	// what package os and others expect.
+	// 次のエラーは、Plan 9のどのシステムメッセージにも対応していません。
+	// osパッケージなどが期待するものをサポートするために作られたものです。
 	EACCES       = NewError("access permission denied")
 	EAFNOSUPPORT = NewError("address family not supported by protocol")
 	ESPIPE       = NewError("illegal seek")

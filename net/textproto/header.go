@@ -11,7 +11,7 @@ type MIMEHeader map[string][]string
 // キーに関連付けられている既存の値に追記されます。
 func (h MIMEHeader) Add(key, value string)
 
-// Setは、キーに関連付けられたヘッダーエントリを単一の要素"value"に設定します。既存の値は置き換えられます。
+// Setは、キーに関連付けられたヘッダーエントリーを単一の要素"value"に設定します。既存の値は置き換えられます。
 func (h MIMEHeader) Set(key, value string)
 
 // Getは与えられたキーに関連付けられた最初の値を取得します。

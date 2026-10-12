@@ -35,14 +35,14 @@ func (a *TCPAddr) String() string
 //
 // ネットワークはTCPのネットワーク名である必要があります。
 //
-// アドレスパラメータのホストがリテラルIPアドレスでない場合や、
+// アドレスパラメーターのホストがリテラルIPアドレスでない場合や、
 // ポートがリテラルのポート番号でない場合、ResolveTCPAddrは
 // TCPエンドポイントのアドレスに解決します。
 // そうでなければ、アドレスをリテラルのIPアドレスとポート番号のペアとして解析します。
-// アドレスパラメータはホスト名を使用することもできますが、
+// アドレスパラメーターはホスト名を使用することもできますが、
 // ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
-// ネットワークとアドレスパラメータの詳細については、
+// ネットワークとアドレスパラメーターの詳細については、
 // [Dial] 関数の説明を参照してください。
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
@@ -55,38 +55,36 @@ type TCPConn struct {
 	conn
 }
 
-// KeepAliveConfig contains TCP keep-alive options.
+// KeepAliveConfigはTCPキープアライブのオプションを含みます。
 //
-// If the Idle, Interval, or Count fields are zero, a default value is chosen.
-// If a field is negative, the corresponding socket-level option will be left unchanged.
+// Idle、Interval、Countフィールドがゼロの場合、デフォルト値が選択されます。
+// フィールドが負の場合、対応するソケットレベルのオプションは変更されません。
 //
-// Note that prior to Windows 10 version 1709, neither setting Idle and Interval
-// separately nor changing Count (which is usually 10) is supported.
-// Therefore, it's recommended to set both Idle and Interval to non-negative values
-// in conjunction with a -1 for Count on those old Windows if you intend to customize
-// the TCP keep-alive settings.
-// By contrast, if only one of Idle and Interval is set to a non-negative value,
-// the other will be set to the system default value, and ultimately,
-// set both Idle and Interval to negative values if you want to leave them unchanged.
+// Windows 10バージョン1709より前では、IdleとIntervalを個別に設定することも、
+// Count（通常は10）を変更することもサポートされていないことに注意してください。
+// したがって、TCPキープアライブ設定をカスタマイズする場合は、それらの古いWindowsでは
+// IdleとIntervalの両方を非負の値に設定し、Countを-1にすることを推奨します。
+// 対照的に、IdleとIntervalの一方のみを非負の値に設定すると、もう一方は
+// システムのデフォルト値に設定されます。最終的に、それらを変更しないままにしたい場合は、
+// IdleとIntervalの両方を負の値に設定してください。
 //
-// Note that Solaris and its derivatives do not support setting Interval to a non-negative value
-// and Count to a negative value, or vice-versa.
+// Solarisとその派生OSは、Intervalを非負の値に設定してCountを負の値に設定すること、
+// またはその逆をサポートしていないことに注意してください。
 type KeepAliveConfig struct {
-	// If Enable is true, keep-alive probes are enabled.
+	// Enableがtrueの場合、キープアライブプローブが有効になります。
 	Enable bool
 
-	// Idle is the time that the connection must be idle before
-	// the first keep-alive probe is sent.
-	// If zero, a default value of 15 seconds is used.
+	// Idleは、最初のキープアライブプローブが送信される前に
+	// 接続がアイドル状態でなければならない時間です。
+	// ゼロの場合、デフォルト値の15秒が使用されます。
 	Idle time.Duration
 
-	// Interval is the time between keep-alive probes.
-	// If zero, a default value of 15 seconds is used.
+	// Intervalは、キープアライブプローブ間の時間です。
+	// ゼロの場合、デフォルト値の15秒が使用されます。
 	Interval time.Duration
 
-	// Count is the maximum number of keep-alive probes that
-	// can go unanswered before dropping a connection.
-	// If zero, a default value of 9 is used.
+	// Countは、接続を切断する前に応答がなくてもよいキープアライブプローブの最大数です。
+	// ゼロの場合、デフォルト値の9が使用されます。
 	Count int
 }
 
@@ -108,7 +106,7 @@ func (c *TCPConn) CloseRead() error
 // ほとんどの呼び出し元は Close を使用すべきです。
 func (c *TCPConn) CloseWrite() error
 
-// SetLingerは、まだ送信または確認待ちのデータがある接続に対してCloseの振る舞いを設定します。
+// SetLingerは、まだ送信または確認待ちのデータがある接続に対してCloseの動作を設定します。
 // sec < 0（デフォルト）の場合、オペレーティングシステムはバックグラウンドでデータの送信を完了します。
 // sec == 0の場合、オペレーティングシステムは未送信または確認待ちのデータを破棄します。
 // sec > 0の場合、データはsec < 0と同様にバックグラウンドで送信されます。
@@ -120,11 +118,11 @@ func (c *TCPConn) SetLinger(sec int) error
 // keep-aliveメッセージを送信するかどうかを設定します。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
-// SetKeepAlivePeriod sets the duration the connection needs to
-// remain idle before TCP starts sending keepalive probes.
+// SetKeepAlivePeriodは、TCPがキープアライブプローブの送信を開始する前に
+// 接続がアイドル状態を維持する必要がある期間を設定します。
 //
-// Note that calling this method on Windows prior to Windows 10 version 1709
-// will reset the KeepAliveInterval to the default system value, which is normally 1 second.
+// Windows 10バージョン1709より前のWindowsでこのメソッドを呼び出すと、
+// KeepAliveIntervalがシステムのデフォルト値（通常は1秒）にリセットされることに注意してください。
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
 // SetNoDelayは、パケットの送信を遅延させるかどうかを制御します。これにより、より少ないパケットで送信することが期待されます（Nagleのアルゴリズム）。デフォルト値はtrue（遅延なし）であり、Writeの後で可能な限りすぐにデータが送信されます。
@@ -139,7 +137,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error
 // Linuxでは、カーネルのバージョンがv5.16以上の場合、さらに条件が検証され、結果が改善されます。
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-// DialTCPはTCPネットワークのための [Dial] のように振る舞います。
+// DialTCPはTCPネットワークのための [Dial] のように動作します。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
 //
@@ -163,8 +161,8 @@ func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
 // AcceptTCPは次の着信呼び出しを受け入れ、新しい接続を返します。
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
-// Accept implements the Accept method in the [Listener] interface; it
-// waits for the next call and returns a generic [Conn].
+// Acceptは [Listener] インターフェースのAcceptメソッドを実装します。
+// 次の呼び出しを待機し、汎用的な [Conn] を返します。
 func (l *TCPListener) Accept() (Conn, error)
 
 // Close は TCP アドレスのリスニングを停止します。
@@ -184,10 +182,10 @@ func (l *TCPListener) SetDeadline(t time.Time) error
 // 終了した後、f を閉じる責任は呼び出し元にあります。
 // l を閉じても f には影響を与えませんし、f を閉じても l には影響を与えません。
 //
-// 返される os.File のファイルディスクリプタは、元の接続のものとは異なります。
-// この複製を使って元のプロパティを変更しようとしても、期待通りの効果があるとは限りません。
+// 返される os.File のファイルディスクリプターは、元の接続のものとは異なります。
+// この複製を使って元のプロパティーを変更しようとしても、期待通りの効果があるとは限りません。
 //
-// Windowsでは、返される os.File のファイルディスクリプタは
+// Windowsでは、返される os.File のファイルディスクリプターは
 // 他のプロセスでは使用できません。
 func (l *TCPListener) File() (f *os.File, err error)
 

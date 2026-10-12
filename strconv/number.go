@@ -9,174 +9,162 @@ import (
 	"github.com/shogo82148/std/internal/strconv"
 )
 
-// IntSize is the size in bits of an int or uint value.
+// IntSizeは、intまたはuint値のビット単位のサイズです。
 const IntSize = strconv.IntSize
 
-// ParseBool returns the boolean value represented by the string.
-// It accepts 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False.
-// Any other value returns an error.
+// ParseBoolは、文字列が表す真偽値を返します。
+// 1、t、T、TRUE、true、True、0、f、F、FALSE、false、Falseを受け付けます。
+// その他の値はエラーを返します。
 func ParseBool(str string) (bool, error)
 
-// FormatBool returns "true" or "false" according to the value of b.
+// FormatBoolは、bの値に応じて"true"または"false"を返します。
 func FormatBool(b bool) string
 
-// AppendBool appends "true" or "false", according to the value of b,
-// to dst and returns the extended buffer.
+// AppendBoolは、bの値に応じて"true"または"false"をdstに追加し、
+// 拡張されたバッファーを返します。
 func AppendBool(dst []byte, b bool) []byte
 
-// ParseComplex converts the string s to a complex number
-// with the precision specified by bitSize: 64 for complex64, or 128 for complex128.
-// When bitSize=64, the result still has type complex128, but it will be
-// convertible to complex64 without changing its value.
+// ParseComplexは、文字列sをbitSizeで指定された精度（complex64の場合は64、
+// complex128の場合は128）の複素数に変換します。
+// bitSize=64の場合、結果の型はcomplex128のままですが、値を変更せずに
+// complex64に変換できます。
 //
-// The number represented by s must be of the form N, Ni, or N±Ni, where N stands
-// for a floating-point number as recognized by [ParseFloat], and i is the imaginary
-// component. If the second N is unsigned, a + sign is required between the two components
-// as indicated by the ±. If the second N is NaN, only a + sign is accepted.
-// The form may be parenthesized and cannot contain any spaces.
-// The resulting complex number consists of the two components converted by ParseFloat.
+// sが表す数値は、N、Ni、またはN±Niの形式でなければなりません。ここでNは
+// [ParseFloat] が認識する浮動小数点数を表し、iは虚数成分です。
+// 2番目のNが符号なしの場合、±で示されるように2つの成分の間に+記号が必要です。
+// 2番目のNがNaNの場合、+記号のみが受け付けられます。
+// 形式は括弧で囲むことができ、スペースを含めることはできません。
+// 結果の複素数は、ParseFloatによって変換された2つの成分で構成されます。
 //
-// The errors that ParseComplex returns have concrete type [*NumError]
-// and include err.Num = s.
+// ParseComplexが返すエラーの具体的な型は [*NumError] であり、
+// err.Num = sを含みます。
 //
-// If s is not syntactically well-formed, ParseComplex returns err.Err = ErrSyntax.
+// sが構文的に正しくない場合、ParseComplexはerr.Err = ErrSyntaxを返します。
 //
-// If s is syntactically well-formed but either component is more than 1/2 ULP
-// away from the largest floating point number of the given component's size,
-// ParseComplex returns err.Err = ErrRange and c = ±Inf for the respective component.
+// sが構文的に正しいが、いずれかの成分が指定された成分のサイズの最大の浮動小数点数から
+// 1/2 ULP以上離れている場合、ParseComplexはerr.Err = ErrRangeと、
+// 該当する成分についてc = ±Infを返します。
 func ParseComplex(s string, bitSize int) (complex128, error)
 
-// ParseFloat converts the string s to a floating-point number
-// with the precision specified by bitSize: 32 for float32, or 64 for float64.
-// When bitSize=32, the result still has type float64, but it will be
-// convertible to float32 without changing its value.
+// ParseFloatは、文字列sをbitSizeで指定された精度（float32の場合は32、
+// float64の場合は64）の浮動小数点数に変換します。
+// bitSize=32の場合、結果の型はfloat64のままですが、値を変更せずに
+// float32に変換できます。
 //
-// ParseFloat accepts decimal and hexadecimal floating-point numbers
-// as defined by the Go syntax for [floating-point literals].
-// If s is well-formed and near a valid floating-point number,
-// ParseFloat returns the nearest floating-point number rounded
-// using IEEE754 unbiased rounding.
-// (Parsing a hexadecimal floating-point value only rounds when
-// there are more bits in the hexadecimal representation than
-// will fit in the mantissa.)
+// ParseFloatは、Goの[floating-point literals]の構文で定義された
+// 10進数および16進数の浮動小数点数を受け付けます。
+// sが正しい形式で有効な浮動小数点数に近い場合、ParseFloatは
+// IEEE754の偏りのない丸めを使用して丸められた最も近い浮動小数点数を返します。
+// （16進数の浮動小数点値の解析では、16進数表現に仮数部に収まるより多くの
+// ビットがある場合にのみ丸めが行われます。）
 //
-// The errors that ParseFloat returns have concrete type *NumError
-// and include err.Num = s.
+// ParseFloatが返すエラーの具体的な型は*NumErrorであり、
+// err.Num = sを含みます。
 //
-// If s is not syntactically well-formed, ParseFloat returns err.Err = ErrSyntax.
+// sが構文的に正しくない場合、ParseFloatはerr.Err = ErrSyntaxを返します。
 //
-// If s is syntactically well-formed but is more than 1/2 ULP
-// away from the largest floating point number of the given size,
-// ParseFloat returns f = ±Inf, err.Err = ErrRange.
+// sが構文的に正しいが、指定されたサイズの最大の浮動小数点数から
+// 1/2 ULP以上離れている場合、ParseFloatはf = ±Inf、err.Err = ErrRangeを返します。
 //
-// ParseFloat recognizes the string "NaN", and the (possibly signed) strings "Inf" and "Infinity"
-// as their respective special floating point values. It ignores case when matching.
+// ParseFloatは、文字列"NaN"、および（符号付きの可能性がある）文字列"Inf"と"Infinity"を
+// それぞれの特別な浮動小数点値として認識します。マッチングの際は大文字と小文字を区別しません。
 //
 // [floating-point literals]: https://go.dev/ref/spec#Floating-point_literals
 func ParseFloat(s string, bitSize int) (float64, error)
 
-// ParseUint is like [ParseInt] but for unsigned numbers.
+// ParseUintは [ParseInt] と同様ですが、符号なしの数値用です。
 //
-// A sign prefix is not permitted.
+// 符号の接頭辞は許可されません。
 func ParseUint(s string, base int, bitSize int) (uint64, error)
 
-// ParseInt interprets a string s in the given base (0, 2 to 36) and
-// bit size (0 to 64) and returns the corresponding value i.
+// ParseIntは、指定された基数（0、2から36）とビットサイズ（0から64）で
+// 文字列sを解釈し、対応する値iを返します。
 //
-// The string may begin with a leading sign: "+" or "-".
+// 文字列は先頭に符号"+"または"-"を付けることができます。
 //
-// If the base argument is 0, the true base is implied by the string's
-// prefix following the sign (if present): 2 for "0b", 8 for "0" or "0o",
-// 16 for "0x", and 10 otherwise. Also, for argument base 0 only,
-// underscore characters are permitted as defined by the Go syntax for
-// [integer literals].
+// base引数が0の場合、実際の基数は符号（存在する場合）に続く文字列の接頭辞によって
+// 暗黙的に決まります。"0b"の場合は2、"0"または"0o"の場合は8、"0x"の場合は16、
+// それ以外の場合は10です。また、base引数が0の場合に限り、Goの
+// [integer literals]の構文で定義されているアンダースコア文字が許可されます。
 //
-// The bitSize argument specifies the integer type
-// that the result must fit into. Bit sizes 0, 8, 16, 32, and 64
-// correspond to int, int8, int16, int32, and int64.
-// If bitSize is below 0 or above 64, an error is returned.
+// bitSize引数は、結果が収まらなければならない整数型を指定します。
+// ビットサイズ0、8、16、32、64は、それぞれint、int8、int16、int32、int64に対応します。
+// bitSizeが0未満または64を超える場合、エラーが返されます。
 //
-// The errors that ParseInt returns have concrete type [*NumError]
-// and include err.Num = s. If s is empty or contains invalid
-// digits, err.Err = [ErrSyntax] and the returned value is 0;
-// if the value corresponding to s cannot be represented by a
-// signed integer of the given size, err.Err = [ErrRange] and the
-// returned value is the maximum magnitude integer of the
-// appropriate bitSize and sign.
+// ParseIntが返すエラーの具体的な型は [*NumError] であり、
+// err.Num = sを含みます。sが空であるか無効な数字を含む場合、
+// err.Err = [ErrSyntax] となり、返される値は0です。
+// sに対応する値が指定されたサイズの符号付き整数で表現できない場合、
+// err.Err = [ErrRange] となり、返される値は適切なbitSizeと符号の
+// 絶対値が最大の整数です。
 //
 // [integer literals]: https://go.dev/ref/spec#Integer_literals
 func ParseInt(s string, base int, bitSize int) (i int64, err error)
 
-// Atoi is equivalent to ParseInt(s, 10, 0), converted to type int.
+// Atoiは、ParseInt(s, 10, 0)をint型に変換したものと同等です。
 func Atoi(s string) (int, error)
 
-// FormatComplex converts the complex number c to a string of the
-// form (a+bi) where a and b are the real and imaginary parts,
-// formatted according to the format fmt and precision prec.
+// FormatComplexは、複素数cを(a+bi)の形式の文字列に変換します。
+// ここでaとbは実部と虚部であり、書式fmtと精度precに従ってフォーマットされます。
 //
-// The format fmt and precision prec have the same meaning as in [FormatFloat].
-// It rounds the result assuming that the original was obtained from a complex
-// value of bitSize bits, which must be 64 for complex64 and 128 for complex128.
+// 書式fmtと精度precは [FormatFloat] と同じ意味を持ちます。
+// 元の値がbitSizeビットの複素数値から得られたものと仮定して結果を丸めます。
+// bitSizeはcomplex64の場合は64、complex128の場合は128でなければなりません。
 func FormatComplex(c complex128, fmt byte, prec, bitSize int) string
 
-// FormatFloat converts the floating-point number f to a string,
-// according to the format fmt and precision prec. It rounds the
-// result assuming that the original was obtained from a floating-point
-// value of bitSize bits (32 for float32, 64 for float64).
+// FormatFloatは、浮動小数点数fを書式fmtと精度precに従って文字列に変換します。
+// 元の値がbitSizeビット（float32の場合は32、float64の場合は64）の
+// 浮動小数点値から得られたものと仮定して結果を丸めます。
 //
-// The format fmt is one of
-//   - 'b' (-ddddp±ddd, a binary exponent),
-//   - 'e' (-d.dddde±dd, a decimal exponent),
-//   - 'E' (-d.ddddE±dd, a decimal exponent),
-//   - 'f' (-ddd.dddd, no exponent),
-//   - 'g' ('e' for large exponents, 'f' otherwise),
-//   - 'G' ('E' for large exponents, 'f' otherwise),
-//   - 'x' (-0xd.ddddp±ddd, a hexadecimal fraction and binary exponent), or
-//   - 'X' (-0Xd.ddddP±ddd, a hexadecimal fraction and binary exponent).
+// 書式fmtは次のいずれかです
+//   - 'b' (-ddddp±ddd、2進指数),
+//   - 'e' (-d.dddde±dd、10進指数),
+//   - 'E' (-d.ddddE±dd、10進指数),
+//   - 'f' (-ddd.dddd、指数なし),
+//   - 'g' (大きな指数の場合は'e'、それ以外は'f'),
+//   - 'G' (大きな指数の場合は'E'、それ以外は'f'),
+//   - 'x' (-0xd.ddddp±ddd、16進数の仮数と2進指数), または
+//   - 'X' (-0Xd.ddddP±ddd、16進数の仮数と2進指数).
 //
-// The precision prec controls the number of digits (excluding the exponent)
-// printed by the 'e', 'E', 'f', 'g', 'G', 'x', and 'X' formats.
-// For 'e', 'E', 'f', 'x', and 'X', it is the number of digits after the decimal point.
-// For 'g' and 'G' it is the maximum number of significant digits (trailing
-// zeros are removed).
-// The special precision -1 uses the smallest number of digits
-// necessary such that ParseFloat will return f exactly.
-// The exponent is written as a decimal integer;
-// for all formats other than 'b', it will be at least two digits.
+// 精度precは、'e'、'E'、'f'、'g'、'G'、'x'、'X'形式で出力される
+// 桁数（指数部は除く）を制御します。
+// 'e'、'E'、'f'、'x'、'X'では、小数点以下の桁数を表します。
+// 'g'と'G'では、有効数字の最大桁数を表します（末尾のゼロは削除されます）。
+// 特別な精度-1は、ParseFloatがfを正確に返すために必要な最小の桁数を使用します。
+// 指数は10進整数として書かれます。
+// 'b'以外のすべての形式では、少なくとも2桁になります。
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
-// AppendFloat appends the string form of the floating-point number f,
-// as generated by [FormatFloat], to dst and returns the extended buffer.
+// AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式を
+// dstに追加し、拡張されたバッファーを返します。
 func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte
 
-// FormatUint returns the string representation of i in the given base,
-// for 2 <= base <= 36. The result uses the lower-case letters 'a' to 'z'
-// for digit values >= 10.
+// FormatUintは、2 <= base <= 36の指定された基数でのiの文字列表現を返します。
+// 結果は、10以上の数字の値に小文字の'a'から'z'を使用します。
 func FormatUint(i uint64, base int) string
 
-// FormatInt returns the string representation of i in the given base,
-// for 2 <= base <= 36. The result uses the lower-case letters 'a' to 'z'
-// for digit values >= 10.
+// FormatIntは、2 <= base <= 36の指定された基数でのiの文字列表現を返します。
+// 結果は、10以上の数字の値に小文字の'a'から'z'を使用します。
 func FormatInt(i int64, base int) string
 
-// Itoa is equivalent to [FormatInt](int64(i), 10).
+// Itoaは [FormatInt](int64(i), 10)と同等です。
 func Itoa(i int) string
 
-// AppendInt appends the string form of the integer i,
-// as generated by [FormatInt], to dst and returns the extended buffer.
+// AppendIntは、[FormatInt] によって生成された整数iの文字列形式を
+// dstに追加し、拡張されたバッファーを返します。
 func AppendInt(dst []byte, i int64, base int) []byte
 
-// AppendUint appends the string form of the unsigned integer i,
-// as generated by [FormatUint], to dst and returns the extended buffer.
+// AppendUintは、[FormatUint] によって生成された符号なし整数iの文字列形式を
+// dstに追加し、拡張されたバッファーを返します。
 func AppendUint(dst []byte, i uint64, base int) []byte
 
-// ErrRange indicates that a value is out of range for the target type.
+// ErrRangeは、値が対象の型の範囲外であることを示します。
 var ErrRange = errors.New("value out of range")
 
-// ErrSyntax indicates that a value does not have the right syntax for the target type.
+// ErrSyntaxは、値が対象の型に対して正しい構文を持っていないことを示します。
 var ErrSyntax = errors.New("invalid syntax")
 
-// A NumError records a failed conversion.
+// NumErrorは失敗した変換を記録します。
 type NumError struct {
 	Func string
 	Num  string

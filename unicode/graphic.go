@@ -16,10 +16,10 @@ var PrintRanges = []*RangeTable{
 }
 
 // IsGraphicはUnicodeによってグラフィックとして定義されたルーンかどうかを報告します。
-// これには、カテゴリ [L]、[M]、[N]、[P]、[S]、[Zs] の文字が含まれます。
+// これには、カテゴリー [L]、[M]、[N]、[P]、[S]、[Zs] の文字が含まれます。
 func IsGraphic(r rune) bool
 
-// IsPrintは、Goによって印字可能として定義されているルーンかどうかを報告します。これには文字、マーク、数字、句読点、記号、およびASCIIスペース文字が含まれます。これはカテゴリ [L]、[M]、[N]、[P]、[S]、およびASCIIスペース文字と同じ分類です（ただし、唯一のスペース文字はASCIIスペース、U+0020です）。IsGraphicとは異なり、この区分にはASCIIスペース文字のみが含まれています。
+// IsPrintは、Goによって印字可能として定義されているルーンかどうかを報告します。これには文字、マーク、数字、句読点、記号、およびASCIIスペース文字が含まれます。これはカテゴリー [L]、[M]、[N]、[P]、[S]、およびASCIIスペース文字と同じ分類です（ただし、唯一のスペース文字はASCIIスペース、U+0020です）。IsGraphicとは異なり、この区分にはASCIIスペース文字のみが含まれています。
 func IsPrint(r rune) bool
 
 // IsOneOfは、ルーンがいずれかの範囲のメンバーであるかどうかを報告します。
@@ -30,7 +30,7 @@ func IsOneOf(ranges []*RangeTable, r rune) bool
 func In(r rune, ranges ...*RangeTable) bool
 
 // IsControlはルーンが制御文字であるかどうかを報告します。
-// [C] ([Other])のUnicodeカテゴリにはサロゲートなど、より多くのコードポイントが含まれています。
+// [C] ([Other])のUnicodeカテゴリーにはサロゲートなど、より多くのコードポイントが含まれています。
 // それらをテストするには [Is](C, r)を使用してください。
 func IsControl(r rune) bool
 
@@ -46,12 +46,12 @@ func IsNumber(r rune) bool
 // IsPunctはruneがUnicodeの句読点（カテゴリー [P]）であるかどうかを報告します。
 func IsPunct(r rune) bool
 
-// IsSpaceは、UnicodeのWhite Spaceプロパティによって定義された空白文字であるかどうかを報告します。
+// IsSpaceは、UnicodeのWhite Spaceプロパティーによって定義された空白文字であるかどうかを報告します。
 // これには、Latin-1スペースに次の文字が含まれます。
 //
 // '\t'、'\n'、'\v'、'\f'、'\r'、' '、U+0085（NEL）、U+00A0（NBSP）。
 //
-// スペーシング文字の他の定義は、カテゴリZおよびプロパティ [Pattern_White_Space] によって設定されています。
+// スペーシング文字の他の定義は、カテゴリーZおよびプロパティー [Pattern_White_Space] によって設定されています。
 func IsSpace(r rune) bool
 
 // IsSymbolはルーンが記号の文字であるかどうかを報告します。

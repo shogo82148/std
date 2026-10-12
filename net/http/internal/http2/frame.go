@@ -131,16 +131,29 @@ type Framer struct {
 	maxReadSize uint32
 	headerBuf   [frameHeaderLen]byte
 
-	// TODO: let getReadBuf be configurable, and use a less memory-pinning
-	// allocator in server.go to minimize memory pinned for many idle conns.
-	// Will probably also need to make frame invalidation have a hook too.
-	getReadBuf func(size uint32) []byte
-	readBuf    []byte
+	// readBuf is the buffer most recently returned by getReadBuf,
+	// reused for subsequent frames that fit in it. releaseReadBuf
+	// drops it before blocking to wait for a new frame header, so
+	// idle connections don't pin a frame-sized buffer.
+	readBuf []byte
+	// readBufP, if non-nil, is the pooled container holding readBuf's
+	// array, to be returned to readBufPool by releaseReadBuf. It is
+	// nil when readBuf is small (under maxIdleReadBufCap) and not
+	// worth pooling.
+	readBufP *[]byte
 
 	maxWriteSize uint32
 
-	w    io.Writer
+	w io.Writer
+	// wbuf is the frame currently being written, from startWrite's
+	// header through endWrite backfilling the length and writing it
+	// out. endWrite releases large buffers to writeBufPool so that
+	// idle connections don't pin a frame-sized buffer.
 	wbuf []byte
+	// wbufP, if non-nil, is the pooled container holding wbuf's array,
+	// to be returned to writeBufPool by endWrite. It is nil when wbuf
+	// is small (under maxIdleWriteBufCap) and not worth pooling.
+	wbufP *[]byte
 
 	// AllowIllegalWrites permits the Framer's Write methods to
 	// write frames that do not conform to the HTTP/2 spec. This

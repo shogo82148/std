@@ -5,7 +5,8 @@
 package main
 
 import (
-	"github.com/shogo82148/std/_gen/unify"
+	"github.com/shogo82148/std/simd/archsimd/_gen/simdgen/types"
+	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
 type Operation struct {
@@ -29,7 +30,20 @@ type Operation struct {
 	// In is the sequence of parameters to the Go method.
 	//
 	// For masked operations, this will have the mask operand appended.
-	In []Operand
+	In []types.Operand
+
+	// sveMergingPrefixed marks the MOVPRFX-prefixed variant of a merging
+	// predicated operation, built by [Operation.sveMergingPrefixedOp]. It exists
+	// only to give that variant a machine-op name of its own.
+	sveMergingPrefixed bool
+
+	// sveMergeSourceIn0 marks a merging predicated operation whose first input
+	// is the value the destination starts out holding, and which therefore has
+	// to share that input's register. Merging predication leaves the inactive
+	// lanes of the destination alone, so that value is an operand of the
+	// operation whether the instruction names it (a constructive one does, as
+	// ABS <Zd>, <Pg>/M, <Zn>) or a MOVPRFX has to put it there.
+	sveMergeSourceIn0 bool
 }
 
 func (o *Operation) IsMasked() bool
@@ -38,48 +52,6 @@ func (o *Operation) SkipMaskedMethod() bool
 
 func (o *Operation) DecodeUnified(v *unify.Value) error
 
+func (o *Operation) EncodeUnified() *unify.Value
+
 func (o *Operation) VectorWidth() int
-
-type Operand struct {
-	Class string
-
-	Go     *string
-	AsmPos int
-
-	Base     *string
-	ElemBits *int
-	Bits     *int
-
-	Const *string
-	// Optional immediate arg offsets. If this field is non-nil,
-	// This operand will be an immediate operand:
-	// The compiler will right-shift the user-passed value by ImmOffset and set it as the AuxInt
-	// field of the operation.
-	ImmOffset *string
-	ImmMax    *int
-	Name      *string
-	Lanes     *int
-	// TreatLikeAScalarOfSize means only the lower $TreatLikeAScalarOfSize bits of the vector
-	// is used, so at the API level we can make it just a scalar value of this size; Then we
-	// can overwrite it to a vector of the right size during intrinsics stage.
-	TreatLikeAScalarOfSize *int
-	// If non-nil, it means the [Class] field is overwritten here, right now this is used to
-	// overwrite the results of AVX2 compares to masks.
-	OverwriteClass *string
-	// If non-nil, it means the [Base] field is overwritten here. This field exist solely
-	// because Intel's XED data is inconsistent. e.g. VANDNP[SD] marks its operand int.
-	OverwriteBase *string
-	// If non-nil, it means the [ElementBits] field is overwritten. This field exist solely
-	// because Intel's XED data is inconsistent. e.g. AVX512 VPMADDUBSW marks its operand
-	// elemBits 16, which should be 8.
-	OverwriteElementBits *int
-	// For greg only, specifically VPEXTR[BW], their results are specified by Intel as 32 bits,
-	// but they really are 8/16 bits.
-	OverwriteBits *int
-	// FixedReg is the name of the fixed registers
-	FixedReg *string
-	// If non-nil, marks this vreg as a register list operand (for TBL/TBX).
-	// Currently only list number 0 is supported (we might need to teach regalloc handle register lists
-	// to support more than one register in the list).
-	ListNumber *int
-}

@@ -27,5 +27,5 @@ func JSEscapeString(s string) string
 func JSEscaper(args ...any) string
 
 // URLQueryEscaperは、その引数のテキスト表現のエスケープされた値を、
-// URLクエリに埋め込むのに適した形式で返します。
+// URLクエリーに埋め込むのに適した形式で返します。
 func URLQueryEscaper(args ...any) string

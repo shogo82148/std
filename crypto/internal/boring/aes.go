@@ -6,12 +6,15 @@
 
 package boring
 
-import (
-	"github.com/shogo82148/std/crypto/cipher"
-)
-
 var _ extraModes = (*aesCipher)(nil)
 
-func NewAESCipher(key []byte) (cipher.Block, error)
+func NewAESCipher(key []byte) (Block, error)
 
-func NewGCMTLS(c cipher.Block) (cipher.AEAD, error)
+const (
+	VersionTLS12 = 0x0303
+	VersionTLS13 = 0x0304
+)
+
+func NewGCMTLS(c Block) (AEAD, error)
+
+func NewGCMTLS13(c Block) (AEAD, error)

@@ -5,7 +5,7 @@
 package strings
 
 // Builderは、 [Builder.Write] メソッドを使用して効率的に文字列を構築するために使用されます。
-// メモリのコピーを最小限に抑えます。ゼロ値はすぐに使用できます。
+// メモリーのコピーを最小限に抑えます。ゼロ値はすぐに使用できます。
 // 非ゼロのBuilderをコピーしないでください。
 type Builder struct {
 	addr *Builder
@@ -34,18 +34,18 @@ func (b *Builder) Reset()
 // nが負の場合、Growはパニックを引き起こします。
 func (b *Builder) Grow(n int)
 
-// Writeは、pの内容をbのバッファに追加します。
+// Writeは、pの内容をbのバッファーに追加します。
 // Writeは常にlen(p)、nilを返します。
 func (b *Builder) Write(p []byte) (int, error)
 
-// WriteByteは、バイトcをbのバッファに追加します。
+// WriteByteは、バイトcをbのバッファーに追加します。
 // 返されるエラーは常にnilです。
 func (b *Builder) WriteByte(c byte) error
 
-// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをbのバッファに追加します。
+// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをbのバッファーに追加します。
 // 書き込まれたバイト数とnilエラーを返します。
 func (b *Builder) WriteRune(r rune) (int, error)
 
-// WriteStringは、sの内容をbのバッファに追加します。
+// WriteStringは、sの内容をbのバッファーに追加します。
 // sの長さとnilエラーを返します。
 func (b *Builder) WriteString(s string) (int, error)

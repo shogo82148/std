@@ -32,5 +32,5 @@ package strconv
 // 'b'以外のすべての形式では、指数部は少なくとも2桁になります。
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
-// AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式をdstに追加し、拡張されたバッファを返します。
+// AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式をdstに追加し、拡張されたバッファーを返します。
 func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte

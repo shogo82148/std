@@ -6,7 +6,7 @@
 zlibパッケージは、RFC 1950で指定されているように、zlib形式の圧縮データの読み書きを実装します。
 
 この実装は、読み取り中に解凍するフィルターと、書き込み中に圧縮するフィルターを提供します。
-たとえば、圧縮されたデータをバッファに書き込むには：
+たとえば、圧縮されたデータをバッファーに書き込むには：
 
 	var b bytes.Buffer
 	w := zlib.NewWriter(&b)
@@ -35,25 +35,25 @@ var (
 	ErrHeader = errors.New("zlib: invalid header")
 )
 
-// Resetter resets a ReadCloser returned by [NewReader] or [NewReaderDict]
-// to switch to a new underlying Reader. This permits reusing a ReadCloser
-// instead of allocating a new one.
+// Resetterは、[NewReader] または [NewReaderDict] によって返されたReadCloserをリセットし、
+// 新しい基礎となるReaderに切り替えます。これにより、新しいReadCloserを割り当てる代わりに
+// 再利用できます。
 type Resetter interface {
 	Reset(r io.Reader, dict []byte) error
 }
 
-// NewReader creates a new ReadCloser.
-// Reads from the returned ReadCloser read and decompress data from r.
-// If r does not implement [io.ByteReader], the decompressor may read more
-// data than necessary from r.
-// It is the caller's responsibility to call Close on the ReadCloser when done.
+// NewReaderは新しいReadCloserを作成します。
+// 返されたReadCloserからの読み取りは、rからデータを読み取って解凍します。
+// rが [io.ByteReader] を実装していない場合、解凍器はrから必要以上のデータを
+// 読み取る可能性があります。
+// 終了時にReadCloserのCloseを呼び出すのは呼び出し元の責任です。
 //
-// The [io.ReadCloser] returned by NewReader also implements [Resetter].
+// NewReaderによって返される [io.ReadCloser] は [Resetter] も実装しています。
 func NewReader(r io.Reader) (io.ReadCloser, error)
 
-// NewReaderDict is like [NewReader] but uses a preset dictionary.
-// NewReaderDict ignores the dictionary if the compressed data does not refer to it.
-// If the compressed data refers to a different dictionary, NewReaderDict returns [ErrDictionary].
+// NewReaderDictは [NewReader] と同様ですが、プリセット辞書を使用します。
+// 圧縮データが辞書を参照していない場合、NewReaderDictは辞書を無視します。
+// 圧縮データが別の辞書を参照している場合、NewReaderDictは [ErrDictionary] を返します。
 //
-// The ReadCloser returned by NewReaderDict also implements [Resetter].
+// NewReaderDictによって返されるReadCloserも [Resetter] を実装しています。
 func NewReaderDict(r io.Reader, dict []byte) (io.ReadCloser, error)

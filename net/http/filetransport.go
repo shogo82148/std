@@ -10,7 +10,7 @@ import (
 
 // NewFileTransportは、提供された [FileSystem] を提供する新しい [RoundTripper] を返します。
 // 返されたRoundTripperは、その入力リクエストのURLホストを無視します。また、リクエストの
-// 他のほとんどのプロパティも無視します。
+// 他のほとんどのプロパティーも無視します。
 //
 // NewFileTransport の典型的な使用例は、[Transport] に "file" プロトコルを登録することです。
 // 例:
@@ -22,13 +22,13 @@ import (
 //	...
 func NewFileTransport(fs FileSystem) RoundTripper
 
-// NewFileTransportFS returns a new [RoundTripper], serving the provided
-// file system fsys. The returned RoundTripper ignores the URL host in its
-// incoming requests, as well as most other properties of the
-// request. The files provided by fsys must implement [io.Seeker].
+// NewFileTransportFSは、提供されたファイルシステムfsysを提供する新しい [RoundTripper] を返します。
+// 返されたRoundTripperは、受信リクエストのURLホストや、リクエストのその他の
+// ほとんどのプロパティーを無視します。fsysが提供するファイルは [io.Seeker] を
+// 実装していなければなりません。
 //
-// The typical use case for NewFileTransportFS is to register the "file"
-// protocol with a [Transport], as in:
+// NewFileTransportFSの典型的な使用例は、次のように"file"プロトコルを
+// [Transport] に登録することです:
 //
 //	fsys := os.DirFS("/")
 //	t := &http.Transport{}

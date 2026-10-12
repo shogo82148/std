@@ -95,13 +95,13 @@ type Config struct {
 	// IgnoreFuncBodies が設定されている場合、関数の本体は型チェックされません。
 	IgnoreFuncBodies bool
 
-	// If FakeImportC is set, `import "C"` (for packages requiring Cgo)
-	// declares an empty "C" package and errors are omitted for qualified
-	// identifiers referring to package C (which won't find an object).
-	// This feature is intended for the standard library cmd/api tool.
+	// FakeImportCが設定されている場合、`import "C"`（Cgoを必要とするパッケージ用）は
+	// 空の"C"パッケージを宣言し、パッケージCを参照する修飾識別子
+	// （オブジェクトは見つかりません）に対するエラーは省略されます。
+	// この機能は標準ライブラリーのcmd/apiツール向けです。
 	//
-	// Caution: Effects may be unpredictable due to follow-on errors.
-	//          Do not use casually!
+	// 注意: 後続のエラーにより、影響が予測できない場合があります。
+	//          安易に使用しないでください！
 	FakeImportC bool
 
 	// go115UsesCgoが設定されている場合、型チェッカーはcmd/cgoを実行して生成された_cgo_gotypes.goファイルを
@@ -145,11 +145,11 @@ type Config struct {
 type Info struct {
 
 	// Typesは式をその型にマップし、定数式の値もマップします。無効な式は省略されます。
-	// （カッコで囲まれた）組み込み関数を示す識別子に対して、記録されるシグネチャは呼び出し側に特化されます：
+	// （カッコで囲まれた）組み込み関数を示す識別子に対して、記録されるシグネチャは呼び出し元に特化されます：
 	// 呼び出し結果が定数でない場合、記録される型は引数ごとのシグネチャとなります。それ以外の場合、記録される型は無効です。
 	//
 	// （カッコで囲まれた可能性のある）組み込み関数を示す識別子に対して、
-	// 記録されるシグネチャは呼び出し側に特化されます：
+	// 記録されるシグネチャは呼び出し元に特化されます：
 	// 呼び出し結果が定数でない場合、記録される型は
 	// 引数固有のシグネチャです。それ以外の場合、記録される型は
 	// 無効です。
@@ -157,7 +157,7 @@ type Info struct {
 	// Typesマップはすべての識別子の型を記録するのではなく、
 	// 任意の式が許可される場所に現れるもののみを記録します。
 	// 例えば：
-	// - セレクタ式x.fの識別子fは
+	// - セレクター式x.fの識別子fは
 	//   Selectionsマップにのみ見つかります；
 	// - 変数宣言'var z int'の識別子zは
 	//   Defsマップにのみ見つかります；
@@ -168,14 +168,14 @@ type Info struct {
 	// ノードには型が記録されません。この場合、ソースに
 	// 対応する構文的な関数型式が存在しないためです。
 	// 代わりに、関数型は対応する関数宣言の
-	// Defsマップエントリに見つかります。
+	// Defsマップエントリーに見つかります。
 	Types map[ast.Expr]TypeAndValue
 	// インスタンス変数は、ジェネリックな型や関数を指定する識別子を、その型引数とインスタンス化された型とのマッピングする。
 	//
 	// 例えば、T[int, string]という型のインスタンス化において、Tという識別子を[int, string]という型引数とインスタンス化された*Named型とのマッピングを行う。
 	// ジェネリックな関数func F[A any](A)が与えられた場合、Fという呼び出し式における識別子を推定された型引数[int]とインスタンス化された*Signatureにマッピングする。
 	//
-	// 不変条件: Instantiating Uses[id].Type() with Instances[id].TypeArgs は Instances[id].Type と等価な結果を返す。
+	// 不変条件: Instantiating Uses[id].Type() with Instances[id].TypeArgs は Instances[id].Type と同等の結果を返す。
 	Instances map[*ast.Ident]Instance
 
 	// Defsは識別子を定義するオブジェクト（パッケージ名、ドットインポートの"."、ブランクの"_"識別子を含む）にマップします。
@@ -184,7 +184,7 @@ type Info struct {
 	// 埋め込まれたフィールドの場合、Defsはフィールド*Varを返します。
 	//
 	// 不正な型のコードでは、同じ名前の重複した宣言などで、
-	// Defsは宣言する識別子のエントリを欠く場合があります。
+	// Defsは宣言する識別子のエントリーを欠く場合があります。
 	//
 	// 不変条件: Defs[id] == nil || Defs[id].Pos() == id.Pos()
 	Defs map[*ast.Ident]Object
@@ -203,10 +203,10 @@ type Info struct {
 	//
 	//     *ast.ImportSpec    名前変更のないimportの場合は*PkgName
 	//     *ast.CaseClause    typeスイッチの各case節（デフォルトを含む）ごとのtype固有の*Var
-	//     *ast.Field         匿名パラメータ *Var（無名の結果を含む）
+	//     *ast.Field         匿名パラメーター *Var（無名の結果を含む）
 	Implicits map[ast.Node]Object
 
-	// Selectionsはセレクタ式（修飾子を除く）をその対応する選択肢にマッピングします。
+	// Selectionsはセレクター式（修飾子を除く）をその対応する選択肢にマッピングします。
 	Selections map[*ast.SelectorExpr]*Selection
 
 	// Scopesは、ast.Nodesをそれらが定義するスコープにマッピングします。パッケージスコープは特定のノードではなく、
@@ -218,10 +218,10 @@ type Info struct {
 	// パッケージレベルの関数はパッケージスコープで宣言されますが、関数スコープは関数宣言を含むファイルの
 	// ファイルスコープに埋め込まれています。
 	//
-	// 関数のScopeには、型パラメータ、パラメータ、名前付き結果の宣言、および
-	// ボディブロックのローカル宣言が含まれます。
+	// 関数のScopeには、型パラメーター、パラメーター、名前付き結果の宣言、および
+	// ボディーブロックのローカル宣言が含まれます。
 	// それは関数の構文（[*ast.FuncDecl]または[*ast.FuncLit]）の完全な範囲と一致します。
-	// Scopesマッピングには、関数ボディ（[*ast.BlockStmt]）のエントリは含まれていません。
+	// Scopesマッピングには、関数ボディー（[*ast.BlockStmt]）のエントリーは含まれていません。
 	// 関数のスコープは[*ast.FuncType]に関連付けられています。
 	//
 	// 以下のノードタイプがScopesに表示される可能性があります：
@@ -242,11 +242,11 @@ type Info struct {
 	// InitOrderはパッケージレベルの初期化子のリストであり、実行する必要がある順序で並んでいます。初期化依存関係に関連する変数を参照する初期化子は、トポロジカル順序で表示されます。他の初期化子はソース順序で表示されます。初期化式を持たない変数は、このリストに表示されません。
 	InitOrder []*Initializer
 
-	// FileVersions maps a file to its Go version string.
-	// If the file doesn't specify a version, the reported
-	// string is Config.GoVersion.
-	// Version strings begin with “go”, like “go1.21”, and
-	// are suitable for use with the [go/version] package.
+	// FileVersionsは、ファイルをそのGoバージョン文字列にマッピングします。
+	// ファイルがバージョンを指定していない場合、報告される文字列は
+	// Config.GoVersionです。
+	// バージョン文字列は“go1.21”のように“go”で始まり、
+	// [go/version] パッケージで使用するのに適しています。
 	FileVersions map[*ast.File]string
 }
 

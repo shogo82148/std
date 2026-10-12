@@ -9,4 +9,7 @@ require (
 	golang.org/x/telemetry v0.0.0-20240319204737-f4db1c7d8e43
 )
 
-require golang.org/x/sys v0.45.0 // indirect
+require (
+	golang.org/x/crypto v0.51.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+)

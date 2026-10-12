@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージlistは双方向連結リストを実装します。
+// listパッケージは双方向連結リストを実装します。
 //
 // リストを反復するには（l は *List）:
 //
@@ -13,7 +13,7 @@ package list
 
 // Elementは連結リストの要素です。
 type Element struct {
-	// 要素からなる双方向連結リストにおける次および前のポインタです。
+	// 要素からなる双方向連結リストにおける次および前のポインターです。
 	// 実装を簡単にするため、内部的にはリスト l はリングとして実装され、
 	// &l.root は最後の要素（l.Back()）の次要素であると同時に、
 	// 最初の要素（l.Front()）の前要素でもあります。

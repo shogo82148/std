@@ -10,19 +10,19 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// ForkLock is not used on plan9.
+// ForkLockはplan9では使用されません。
 var ForkLock sync.RWMutex
 
-// StringSlicePtr converts a slice of strings to a slice of pointers
-// to NUL-terminated byte arrays. If any string contains a NUL byte
-// this function panics instead of returning an error.
+// StringSlicePtrは、文字列のスライスをNUL終端されたバイト配列への
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// この関数はエラーを返す代わりにパニックを引き起こします。
 //
-// Deprecated: Use SlicePtrFromStrings instead.
+// Deprecated: 代わりにSlicePtrFromStringsを使用してください。
 func StringSlicePtr(ss []string) []*byte
 
-// SlicePtrFromStrings converts a slice of strings to a slice of
-// pointers to NUL-terminated byte arrays. If any string contains
-// a NUL byte, it returns (nil, [EINVAL]).
+// SlicePtrFromStringsは、文字列のスライスをNUL終端されたバイト配列への
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// (nil, [EINVAL])を返します。
 func SlicePtrFromStrings(ss []string) ([]*byte, error)
 
 // name of the directory containing names and control files for all open file descriptors
@@ -39,18 +39,16 @@ type SysProcAttr struct {
 	Rfork int
 }
 
-// Combination of fork and exec, careful to be thread safe.
+// forkとexecの組み合わせで、スレッドセーフになるよう注意しています。
 func ForkExec(argv0 string, argv []string, attr *ProcAttr) (pid int, err error)
 
-// StartProcess wraps [ForkExec] for package os.
+// StartProcessは、osパッケージのために [ForkExec] をラップします。
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)
 
 // Ordinary exec.
 func Exec(argv0 string, argv []string, envv []string) (err error)
 
-// WaitProcess waits until the pid of a
-// running process is found in the queue of
-// wait messages. It is used in conjunction
-// with [ForkExec]/[StartProcess] to wait for a
-// running process to exit.
+// WaitProcessは、実行中のプロセスのpidがwaitメッセージのキューで
+// 見つかるまで待機します。これは [ForkExec]/[StartProcess] と組み合わせて、
+// 実行中のプロセスの終了を待つために使用されます。
 func WaitProcess(pid int, w *Waitmsg) (err error)

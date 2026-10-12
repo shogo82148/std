@@ -11,5 +11,5 @@ const (
 	PathListSeparator = ':'
 )
 
-// IsPathSeparator は c がディレクトリの区切り文字であるかどうかを報告します。
+// IsPathSeparator は c がディレクトリーの区切り文字であるかどうかを報告します。
 func IsPathSeparator(c uint8) bool

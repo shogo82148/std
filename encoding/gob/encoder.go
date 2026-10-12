@@ -11,7 +11,7 @@ import (
 )
 
 // Encoderは、接続の他方に対する型とデータ情報の送信を管理します。
-// 複数のgoroutineが同時に使用しても安全です。
+// 複数のゴルーチンが同時に使用しても安全です。
 type Encoder struct {
 	mutex      sync.Mutex
 	w          []io.Writer
@@ -22,15 +22,15 @@ type Encoder struct {
 	err        error
 }
 
-// NewEncoderは、[io.Writer] 上で送信する新しいエンコーダを返します。
+// NewEncoderは、[io.Writer] 上で送信する新しいエンコーダーを返します。
 func NewEncoder(w io.Writer) *Encoder
 
 // Encodeは、空のインターフェース値で表されるデータ項目を送信します。
 // 必要なすべての型情報が最初に送信されることを保証します。
-// nilポインタをEncoderに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
+// nilポインターをEncoderに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
 func (enc *Encoder) Encode(e any) error
 
 // EncodeValueは、リフレクション値によって表されるデータ項目を送信します。
 // 必要なすべての型情報が最初に送信されることを保証します。
-// nilポインタをEncodeValueに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
+// nilポインターをEncodeValueに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
 func (enc *Encoder) EncodeValue(value reflect.Value) error

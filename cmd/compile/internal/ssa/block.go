@@ -5,6 +5,7 @@
 package ssa
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/block"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
@@ -21,7 +22,7 @@ type Block struct {
 	CPUfeatures CPUfeatures
 
 	// The kind of block this is.
-	Kind BlockKind
+	Kind block.BlockKind
 
 	// Likely direction for branches.
 	// If BranchLikely, Succs[0] is the most likely branch taken.
@@ -68,10 +69,38 @@ type Block struct {
 	Func *Func
 
 	// Storage for Succs, Preds and Values.
-	succstorage [2]Edge
-	predstorage [4]Edge
-	valstorage  [9]*Value
+	Succstorage [2]Edge
+	Predstorage [4]Edge
+	Valstorage  [9]*Value
 }
+
+const (
+	BranchUnlikely = BranchPrediction(-1)
+	BranchUnknown  = BranchPrediction(0)
+	BranchLikely   = BranchPrediction(+1)
+)
+
+type BranchPrediction int8
+
+const (
+	CPUNone CPUfeatures = 0
+	CPUAll  CPUfeatures = ^CPUfeatures(0)
+	CPUavx  CPUfeatures = 1 << iota
+	CPUavx2
+	CPUavxvnni
+	CPUavx512
+	CPUbitalg
+	CPUgfni
+	CPUvbmi
+	CPUvbmi2
+	CPUvpopcntdq
+	CPUavx512vnni
+
+	CPUneon
+	CPUsve2
+)
+
+type CPUfeatures uint32
 
 // Edge represents a CFG edge.
 // Example edges for b branching to either c or d.
@@ -98,22 +127,34 @@ type Block struct {
 // means x is chosen if k is true.
 type Edge struct {
 	// block edge goes to (in a Succs list) or from (in a Preds list)
-	b *Block
+	B *Block
 	// index of reverse edge.  Invariant:
 	//   e := x.Succs[idx]
-	//   e.b.Preds[e.i] = Edge{x,idx}
+	//   e.b.Preds[e.I] = Edge{x,idx}
 	// and similarly for predecessors.
-	i int
+	I int
 }
+
+const (
+	// These values are arranged in what seems to be order of increasing alignment importance.
+	// Currently only a few are relevant.  Implicitly, they are all in a loop.
+	HotNotFlowIn Hotness = 1 << iota
+	HotInitial
+	HotPgo
+
+	HotNot                 = 0
+	HotInitialNotFlowIn    = HotInitial | HotNotFlowIn
+	HotPgoInitial          = HotPgo | HotInitial
+	HotPgoInitialNotFLowIn = HotPgo | HotInitial | HotNotFlowIn
+)
+
+type Hotness int8
 
 func (e Edge) Block() *Block
 
 func (e Edge) Index() int
 
 func (e Edge) String() string
-
-// BlockKind is the kind of SSA block.
-type BlockKind uint8
 
 // short form print
 func (b *Block) String() string
@@ -153,10 +194,64 @@ func (b *Block) CopyControls(from *Block)
 // Reset sets the block to the provided kind and clears all the blocks control
 // and auxiliary values. Other properties of the block, such as its successors,
 // predecessors and values are left unmodified.
-func (b *Block) Reset(kind BlockKind)
+func (b *Block) Reset(kind block.BlockKind)
+
+// ResetWithControl resets b and adds control v.
+// It is equivalent to b.Reset(kind); b.AddControl(v),
+// except that it is one call instead of two and avoids a bounds check.
+// It is intended for use by rewrite rules, where this matters.
+func (b *Block) ResetWithControl(kind block.BlockKind, v *Value)
+
+// ResetWithControl2 resets b and adds controls v and w.
+// It is equivalent to b.Reset(kind); b.AddControl(v); b.AddControl(w),
+// except that it is one call instead of three and avoids two bounds checks.
+// It is intended for use by rewrite rules, where this matters.
+func (b *Block) ResetWithControl2(kind block.BlockKind, v, w *Value)
+
+// TruncateValues truncates b.Values at the ith element, zeroing subsequent elements.
+// The values in b.Values after i must already have had their args reset,
+// to maintain correct value uses counts.
+func (b *Block) TruncateValues(i int)
 
 // AddEdgeTo adds an edge from block b to block c.
 func (b *Block) AddEdgeTo(c *Block)
+
+// RemovePred removes the ith input edge from b.
+// It is the responsibility of the caller to remove
+// the corresponding successor edge, and adjust any
+// phi values by calling b.removePhiArg(v, i).
+func (b *Block) RemovePred(i int)
+
+// RemoveSucc removes the ith output edge from b.
+// It is the responsibility of the caller to remove
+// the corresponding predecessor edge.
+// Note that this potentially reorders successors of b, so it
+// must be used very carefully.
+func (b *Block) RemoveSucc(i int)
+
+func (b *Block) SwapSuccessors()
+
+// Swaps b.Succs[x] and b.Succs[y].
+func (b *Block) SwapSuccessorsByIdx(x, y int)
+
+// RemovePhiArg removes the ith arg from phi.
+// It must be called after calling b.removePred(i) to
+// adjust the corresponding phi value of the block:
+//
+// b.removePred(i)
+// for _, v := range b.Values {
+//
+//	if v.Op != OpPhi {
+//	    continue
+//	}
+//	b.RemovePhiArg(v, i)
+//
+// }
+func (b *Block) RemovePhiArg(phi *Value, i int)
+
+// UniquePred returns the predecessor of b, if there is exactly one.
+// Returns nil otherwise.
+func (b *Block) UniquePred() *Block
 
 // LackingPos indicates whether b is a block whose position should be inherited
 // from its successors.  This is true if all the values within it have unreliable positions
@@ -166,51 +261,15 @@ func (b *Block) LackingPos() bool
 
 func (b *Block) AuxIntString() string
 
+// LikelyBranch reports whether block b is the likely branch of all of its predecessors.
+func (b *Block) LikelyBranch() bool
+
 func (b *Block) Logf(msg string, args ...any)
+
 func (b *Block) Log() bool
+
 func (b *Block) Fatalf(msg string, args ...any)
 
-type BranchPrediction int8
-
-const (
-	BranchUnlikely = BranchPrediction(-1)
-	BranchUnknown  = BranchPrediction(0)
-	BranchLikely   = BranchPrediction(+1)
-)
-
-type Hotness int8
-
-const (
-	// These values are arranged in what seems to be order of increasing alignment importance.
-	// Currently only a few are relevant.  Implicitly, they are all in a loop.
-	HotNotFlowIn Hotness = 1 << iota
-	HotInitial
-	HotPgo
-
-	HotNot                 = 0
-	HotInitialNotFlowIn    = HotInitial | HotNotFlowIn
-	HotPgoInitial          = HotPgo | HotInitial
-	HotPgoInitialNotFLowIn = HotPgo | HotInitial | HotNotFlowIn
-)
-
-type CPUfeatures uint32
-
-const (
-	CPUNone CPUfeatures = 0
-	CPUAll  CPUfeatures = ^CPUfeatures(0)
-	CPUavx  CPUfeatures = 1 << iota
-	CPUavx2
-	CPUavxvnni
-	CPUavx512
-	CPUbitalg
-	CPUgfni
-	CPUvbmi
-	CPUvbmi2
-	CPUvpopcntdq
-	CPUavx512vnni
-
-	CPUneon
-	CPUsve2
-)
+func (f CPUfeatures) HasFeature(x CPUfeatures) bool
 
 func (f CPUfeatures) String() string

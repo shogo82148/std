@@ -10,7 +10,7 @@ import (
 )
 
 // Archiveは、書き込むためのアーカイブを表します：ファイルの集合体です。
-// ディレクトリはファイルに含まれており、明示的にリストされていません。
+// ディレクトリーはファイルに含まれており、明示的にリストされていません。
 type Archive struct {
 	Files []File
 }
@@ -27,7 +27,7 @@ type File struct {
 // Infoはファイルに関するFileInfoを返します。tar.FileInfoHeaderやzip.FileInfoHeaderと組み合わせて使用します。
 func (f *File) Info() fs.FileInfo
 
-// NewArchiveはディレクトリdirに含まれるすべてのファイルを含む新しいアーカイブを返します。
+// NewArchiveはディレクトリーdirに含まれるすべてのファイルを含む新しいアーカイブを返します。
 // アーカイブはAddやFilterなどのメソッドを使って後から修正することができます。
 func NewArchive(dir string) (*Archive, error)
 

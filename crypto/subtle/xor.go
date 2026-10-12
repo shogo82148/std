@@ -8,8 +8,8 @@ package subtle
 // dstに書き込まれたバイト数nを返します。
 //
 // dstの長さが少なくともnでない場合、
-// XORBytesはdstに何も書き込まずにパニックします。
+// XORBytesはdstに何も書き込まずにパニックを引き起こします。
 //
 // dstとxまたはyは完全に重複するか全く重複しないかのいずれかである必要があり、
-// そうでない場合XORBytesはパニックすることがあります。
+// そうでない場合XORBytesはパニックを引き起こすことがあります。
 func XORBytes(dst, x, y []byte) int

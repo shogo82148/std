@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージcmpは、順序付けられた値を比較するための型と関数に関連するものを提供します。
+// cmpパッケージは、順序付けられた値を比較するための型と関数に関連するものを提供します。
 package cmp
 
 // Ordered < <= >= >演算子をサポートする任意の順序付けられた型を許可する制約です。

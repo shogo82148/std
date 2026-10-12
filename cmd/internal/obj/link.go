@@ -532,6 +532,18 @@ const (
 
 	// LinknameStd indicates this is a go:linknamestd'd symbol.
 	AttrLinknameStd
+
+	// WeakDef indicates that this definition of a dupok symbol is to be
+	// used only if no other object defines the symbol without it. The
+	// compiler marks the type descriptor of a noalg type this way: it
+	// describes the same type as the descriptor emitted by a package that
+	// does need the type's hash and equality algorithms, but it leaves
+	// those out, so the other one has to win. See reflectdata.writeType.
+	AttrWeakDef
+
+	// Unnumbered indicates the symbol was not numbered when writing
+	// export data. It's used to check that it wouldn't be numbered later.
+	AttrUnnumbered
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -552,6 +564,7 @@ func (a *Attribute) UsedInIface() bool
 func (a *Attribute) ContentAddressable() bool
 func (a *Attribute) ABIWrapper() bool
 func (a *Attribute) IsPcdata() bool
+func (a *Attribute) WeakDef() bool
 func (a *Attribute) IsPkgInit() bool
 func (a *Attribute) IsLinkname() bool
 func (a *Attribute) IsLinknameStd() bool
@@ -676,6 +689,9 @@ type Link struct {
 	// symbol reference in the object file.
 	pkgIdx map[string]int32
 
+	// By the time we do symbol numbering we should have saved each symbol in either predefs or unnumbered.
+	predefs      []*LSym
+	unnumbered   []*LSym
 	defs         []*LSym
 	hashed64defs []*LSym
 	hasheddefs   []*LSym

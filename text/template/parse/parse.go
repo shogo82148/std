@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージparseは、text/templateおよびhtml/templateで定義されているテンプレートのパースツリーを構築します。
+// parseパッケージは、text/templateおよびhtml/templateで定義されているテンプレートの解析ツリーを構築します。
 // クライアントは、一般的な使用を目的としていない共有内部データ構造を提供するこのパッケージではなく、
 // それらのパッケージを使用してテンプレートを構築する必要があります。
 package parse
 
-// Tree is the representation of a single parsed template.
+// Treeは、単一の解析されたテンプレートの表現です。
 type Tree struct {
 	Name      string
 	ParseName string
@@ -29,7 +29,7 @@ type Tree struct {
 	rightDelim string
 }
 
-// Mode値はフラグのセット（または0）です。Modeはパーサの動作を制御します。
+// Mode値はフラグのセット（または0）です。Modeはパーサーの動作を制御します。
 type Mode uint
 
 const (
@@ -37,7 +37,7 @@ const (
 	SkipFuncCheck
 )
 
-// Copyは [Tree] のコピーを返します。パース状態は破棄されます。
+// Copyは [Tree] のコピーを返します。解析状態は破棄されます。
 func (t *Tree) Copy() *Tree
 
 // Parseは、引数の文字列で記述されたテンプレートを解析することで作成された、
@@ -46,16 +46,16 @@ func (t *Tree) Copy() *Tree
 // エラーと共に空のマップが返されます。
 func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)
 
-// Newは、指定された名前を持つ新しいパースツリーを割り当てます。
+// Newは、指定された名前を持つ新しい解析ツリーを割り当てます。
 func New(name string, funcs ...map[string]any) *Tree
 
 // ErrorContextは、入力テキスト内のノードの位置のテキスト表現を返します。
-// 受信者は、ノードが内部にツリーへのポインタを持っていない場合にのみ使用されます。
+// 受信者は、ノードが内部にツリーへのポインターを持っていない場合にのみ使用されます。
 // これは古いコードで発生する可能性があります。
 func (t *Tree) ErrorContext(n Node) (location, context string)
 
 // Parseは、テンプレート定義文字列を解析して、テンプレートの実行用の表現を構築します。
-// アクションデリミタ文字列のいずれかが空の場合、デフォルト（"{{"または"}}"）が使用されます。
+// アクションデリミター文字列のいずれかが空の場合、デフォルト（"{{"または"}}"）が使用されます。
 // 埋め込まれたテンプレート定義は、treeSetマップに追加されます。
 func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]any) (tree *Tree, err error)
 

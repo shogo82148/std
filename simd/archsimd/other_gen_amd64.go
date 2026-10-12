@@ -4,401 +4,497 @@
 
 package archsimd
 
-// BroadcastInt8x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt8x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt8x16(x int8) Int8x16
+func BroadcastInt8x16(x int8) (z Int8x16)
 
-// BroadcastInt16x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt16x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt16x8(x int16) Int16x8
+func BroadcastInt16x8(x int16) (z Int16x8)
 
-// BroadcastInt32x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt32x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt32x4(x int32) Int32x4
+func BroadcastInt32x4(x int32) (z Int32x4)
 
-// BroadcastInt64x2 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt64x2 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt64x2(x int64) Int64x2
+func BroadcastInt64x2(x int64) (z Int64x2)
 
-// BroadcastUint8x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint8x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint8x16(x uint8) Uint8x16
+func BroadcastUint8x16(x uint8) (z Uint8x16)
 
-// BroadcastUint16x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint16x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint16x8(x uint16) Uint16x8
+func BroadcastUint16x8(x uint16) (z Uint16x8)
 
-// BroadcastUint32x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint32x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint32x4(x uint32) Uint32x4
+func BroadcastUint32x4(x uint32) (z Uint32x4)
 
-// BroadcastUint64x2 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint64x2 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint64x2(x uint64) Uint64x2
+func BroadcastUint64x2(x uint64) (z Uint64x2)
 
-// BroadcastFloat32x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat32x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastFloat32x4(x float32) Float32x4
+func BroadcastFloat32x4(x float32) (z Float32x4)
 
-// BroadcastFloat64x2 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat64x2 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastFloat64x2(x float64) Float64x2
+func BroadcastFloat64x2(x float64) (z Float64x2)
 
-// BroadcastInt8x32 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt8x32 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt8x32(x int8) Int8x32
+func BroadcastInt8x32(x int8) (z Int8x32)
 
-// BroadcastInt16x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt16x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt16x16(x int16) Int16x16
+func BroadcastInt16x16(x int16) (z Int16x16)
 
-// BroadcastInt32x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt32x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt32x8(x int32) Int32x8
+func BroadcastInt32x8(x int32) (z Int32x8)
 
-// BroadcastInt64x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt64x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastInt64x4(x int64) Int64x4
+func BroadcastInt64x4(x int64) (z Int64x4)
 
-// BroadcastUint8x32 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint8x32 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint8x32(x uint8) Uint8x32
+func BroadcastUint8x32(x uint8) (z Uint8x32)
 
-// BroadcastUint16x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint16x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint16x16(x uint16) Uint16x16
+func BroadcastUint16x16(x uint16) (z Uint16x16)
 
-// BroadcastUint32x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint32x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint32x8(x uint32) Uint32x8
+func BroadcastUint32x8(x uint32) (z Uint32x8)
 
-// BroadcastUint64x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint64x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastUint64x4(x uint64) Uint64x4
+func BroadcastUint64x4(x uint64) (z Uint64x4)
 
-// BroadcastFloat32x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat32x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastFloat32x8(x float32) Float32x8
+func BroadcastFloat32x8(x float32) (z Float32x8)
 
-// BroadcastFloat64x4 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat64x4 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX2
-func BroadcastFloat64x4(x float64) Float64x4
+func BroadcastFloat64x4(x float64) (z Float64x4)
 
-// BroadcastInt8x64 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt8x64 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512BW
-func BroadcastInt8x64(x int8) Int8x64
+func BroadcastInt8x64(x int8) (z Int8x64)
 
-// BroadcastInt16x32 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt16x32 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512BW
-func BroadcastInt16x32(x int16) Int16x32
+func BroadcastInt16x32(x int16) (z Int16x32)
 
-// BroadcastInt32x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt32x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastInt32x16(x int32) Int32x16
+func BroadcastInt32x16(x int32) (z Int32x16)
 
-// BroadcastInt64x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastInt64x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastInt64x8(x int64) Int64x8
+func BroadcastInt64x8(x int64) (z Int64x8)
 
-// BroadcastUint8x64 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint8x64 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512BW
-func BroadcastUint8x64(x uint8) Uint8x64
+func BroadcastUint8x64(x uint8) (z Uint8x64)
 
-// BroadcastUint16x32 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint16x32 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512BW
-func BroadcastUint16x32(x uint16) Uint16x32
+func BroadcastUint16x32(x uint16) (z Uint16x32)
 
-// BroadcastUint32x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint32x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastUint32x16(x uint32) Uint32x16
+func BroadcastUint32x16(x uint32) (z Uint32x16)
 
-// BroadcastUint64x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastUint64x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastUint64x8(x uint64) Uint64x8
+func BroadcastUint64x8(x uint64) (z Uint64x8)
 
-// BroadcastFloat32x16 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat32x16 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastFloat32x16(x float32) Float32x16
+func BroadcastFloat32x16(x float32) (z Float32x16)
 
-// BroadcastFloat64x8 returns a vector with the input
-// x assigned to all elements of the output.
+// BroadcastFloat64x8 returns a vector with the input x assigned to all elements of the
+// result.
 //
 // Emulated, CPU Feature: AVX512F
-func BroadcastFloat64x8(x float64) Float64x8
+func BroadcastFloat64x8(x float64) (z Float64x8)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int8x16) ToMask() (to Mask8x16)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int8x16) ToMask() (z Mask8x16)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int16x8) ToMask() (to Mask16x8)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int16x8) ToMask() (z Mask16x8)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int32x4) ToMask() (to Mask32x4)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int32x4) ToMask() (z Mask32x4)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int64x2) ToMask() (to Mask64x2)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int64x2) ToMask() (z Mask64x2)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int8x32) ToMask() (to Mask8x32)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int8x32) ToMask() (z Mask8x32)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int16x16) ToMask() (to Mask16x16)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int16x16) ToMask() (z Mask16x16)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int32x8) ToMask() (to Mask32x8)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int32x8) ToMask() (z Mask32x8)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int64x4) ToMask() (to Mask64x4)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int64x4) ToMask() (z Mask64x4)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int8x64) ToMask() (to Mask8x64)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int8x64) ToMask() (z Mask8x64)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int16x32) ToMask() (to Mask16x32)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int16x32) ToMask() (z Mask16x32)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int32x16) ToMask() (to Mask32x16)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int32x16) ToMask() (z Mask32x16)
 
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Int64x8) ToMask() (to Mask64x8)
+// ToMask returns a mask indicating which elements of x are non-zero.
+//
+//	z[i] = x[i] != 0
+func (x Int64x8) ToMask() (z Mask64x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int8x16) Not() Int8x16
+func (x Int8x16) Not() (z Int8x16)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int8x16) Neg() Int8x16
+func (x Int8x16) Neg() (z Int8x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int16x8) Not() Int16x8
+func (x Int16x8) Not() (z Int16x8)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int16x8) Neg() Int16x8
+func (x Int16x8) Neg() (z Int16x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int32x4) Not() Int32x4
+func (x Int32x4) Not() (z Int32x4)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int32x4) Neg() Int32x4
+func (x Int32x4) Neg() (z Int32x4)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int64x2) Not() Int64x2
+func (x Int64x2) Not() (z Int64x2)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Int64x2) Neg() Int64x2
+func (x Int64x2) Neg() (z Int64x2)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int8x32) Not() Int8x32
+func (x Int8x32) Not() (z Int8x32)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int8x32) Neg() Int8x32
+func (x Int8x32) Neg() (z Int8x32)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int16x16) Not() Int16x16
+func (x Int16x16) Not() (z Int16x16)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int16x16) Neg() Int16x16
+func (x Int16x16) Neg() (z Int16x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int32x8) Not() Int32x8
+func (x Int32x8) Not() (z Int32x8)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int32x8) Neg() Int32x8
+func (x Int32x8) Neg() (z Int32x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int64x4) Not() Int64x4
+func (x Int64x4) Not() (z Int64x4)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Int64x4) Neg() Int64x4
+func (x Int64x4) Neg() (z Int64x4)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int8x64) Not() Int8x64
+func (x Int8x64) Not() (z Int8x64)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int8x64) Neg() Int8x64
+func (x Int8x64) Neg() (z Int8x64)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int16x32) Not() Int16x32
+func (x Int16x32) Not() (z Int16x32)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int16x32) Neg() Int16x32
+func (x Int16x32) Neg() (z Int16x32)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int32x16) Not() Int32x16
+func (x Int32x16) Not() (z Int32x16)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int32x16) Neg() Int32x16
+func (x Int32x16) Neg() (z Int32x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int64x8) Not() Int64x8
+func (x Int64x8) Not() (z Int64x8)
 
-// Neg returns the element-wise negation of x.
+// Neg returns the elementwise negation of x.
+//
+//	z[i] = -x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Int64x8) Neg() Int64x8
+func (x Int64x8) Neg() (z Int64x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Uint8x16) Not() Uint8x16
+func (x Uint8x16) Not() (z Uint8x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Uint16x8) Not() Uint16x8
+func (x Uint16x8) Not() (z Uint16x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Uint32x4) Not() Uint32x4
+func (x Uint32x4) Not() (z Uint32x4)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
-func (x Uint64x2) Not() Uint64x2
+func (x Uint64x2) Not() (z Uint64x2)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Uint8x32) Not() Uint8x32
+func (x Uint8x32) Not() (z Uint8x32)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Uint16x16) Not() Uint16x16
+func (x Uint16x16) Not() (z Uint16x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Uint32x8) Not() Uint32x8
+func (x Uint32x8) Not() (z Uint32x8)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
-func (x Uint64x4) Not() Uint64x4
+func (x Uint64x4) Not() (z Uint64x4)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Uint8x64) Not() Uint8x64
+func (x Uint8x64) Not() (z Uint8x64)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Uint16x32) Not() Uint16x32
+func (x Uint16x32) Not() (z Uint16x32)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Uint32x16) Not() Uint32x16
+func (x Uint32x16) Not() (z Uint32x16)
 
-// Not returns the bitwise complement of x.
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
-func (x Uint64x8) Not() Uint64x8
+func (x Uint64x8) Not() (z Uint64x8)
 
 // String returns a string representation of SIMD vector x.
 func (x Int8x16) String() string
@@ -526,182 +622,128 @@ func (x Mask32x16) String() string
 // String returns a string representation of SIMD mask x.
 func (x Mask64x8) String() string
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int16x8) RotateAllLeft(dist uint64) Int16x8
+func (x Uint16x8) RotateAllLeft(shift uint64) (z Uint16x8)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int16x8) RotateAllRight(dist uint64) Int16x8
+func (x Uint16x8) RotateAllRight(shift uint64) (z Uint16x8)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int32x4) RotateAllLeft(dist uint64) Int32x4
+func (x Uint32x4) RotateAllLeft(shift uint64) (z Uint32x4)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int32x4) RotateAllRight(dist uint64) Int32x4
+func (x Uint32x4) RotateAllRight(shift uint64) (z Uint32x4)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int64x2) RotateAllLeft(dist uint64) Int64x2
+func (x Uint64x2) RotateAllLeft(shift uint64) (z Uint64x2)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int64x2) RotateAllRight(dist uint64) Int64x2
+func (x Uint64x2) RotateAllRight(shift uint64) (z Uint64x2)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int16x16) RotateAllLeft(dist uint64) Int16x16
+func (x Uint16x16) RotateAllLeft(shift uint64) (z Uint16x16)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int16x16) RotateAllRight(dist uint64) Int16x16
+func (x Uint16x16) RotateAllRight(shift uint64) (z Uint16x16)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int32x8) RotateAllLeft(dist uint64) Int32x8
+func (x Uint32x8) RotateAllLeft(shift uint64) (z Uint32x8)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int32x8) RotateAllRight(dist uint64) Int32x8
+func (x Uint32x8) RotateAllRight(shift uint64) (z Uint32x8)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int64x4) RotateAllLeft(dist uint64) Int64x4
+func (x Uint64x4) RotateAllLeft(shift uint64) (z Uint64x4)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int64x4) RotateAllRight(dist uint64) Int64x4
+func (x Uint64x4) RotateAllRight(shift uint64) (z Uint64x4)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int16x32) RotateAllLeft(dist uint64) Int16x32
+func (x Uint16x32) RotateAllLeft(shift uint64) (z Uint16x32)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int16x32) RotateAllRight(dist uint64) Int16x32
+func (x Uint16x32) RotateAllRight(shift uint64) (z Uint16x32)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int32x16) RotateAllLeft(dist uint64) Int32x16
+func (x Uint32x16) RotateAllLeft(shift uint64) (z Uint32x16)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int32x16) RotateAllRight(dist uint64) Int32x16
+func (x Uint32x16) RotateAllRight(shift uint64) (z Uint32x16)
 
-// RotateAllLeft rotates all elements left by the specified amount
+// RotateAllLeft rotates each element of x left by shift bits.
+//
+//	z[i] = rotateLeft(x[i], shift)
 //
 // Emulated
-func (x Int64x8) RotateAllLeft(dist uint64) Int64x8
+func (x Uint64x8) RotateAllLeft(shift uint64) (z Uint64x8)
 
-// RotateAllRight rotates all elements right by the specified amount
+// RotateAllRight rotates each element of x right by shift bits.
+//
+//	z[i] = rotateRight(x[i], shift)
 //
 // Emulated
-func (x Int64x8) RotateAllRight(dist uint64) Int64x8
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint16x8) RotateAllLeft(dist uint64) Uint16x8
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint16x8) RotateAllRight(dist uint64) Uint16x8
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint32x4) RotateAllLeft(dist uint64) Uint32x4
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint32x4) RotateAllRight(dist uint64) Uint32x4
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint64x2) RotateAllLeft(dist uint64) Uint64x2
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint16x16) RotateAllLeft(dist uint64) Uint16x16
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint16x16) RotateAllRight(dist uint64) Uint16x16
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint32x8) RotateAllLeft(dist uint64) Uint32x8
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint32x8) RotateAllRight(dist uint64) Uint32x8
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint64x4) RotateAllLeft(dist uint64) Uint64x4
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint64x4) RotateAllRight(dist uint64) Uint64x4
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint16x32) RotateAllLeft(dist uint64) Uint16x32
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint16x32) RotateAllRight(dist uint64) Uint16x32
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint32x16) RotateAllLeft(dist uint64) Uint32x16
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint32x16) RotateAllRight(dist uint64) Uint32x16
-
-// RotateAllLeft rotates all elements left by the specified amount
-//
-// Emulated
-func (x Uint64x8) RotateAllLeft(dist uint64) Uint64x8
-
-// RotateAllRight rotates all elements right by the specified amount
-//
-// Emulated
-func (x Uint64x8) RotateAllRight(dist uint64) Uint64x8
+func (x Uint64x8) RotateAllRight(shift uint64) (z Uint64x8)

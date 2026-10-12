@@ -7,10 +7,6 @@
 // およびNIST Special Publication 800-38Aを参照してください。
 package cipher
 
-// A Block represents an implementation of block cipher
-// using a given key. It provides the capability to encrypt
-// or decrypt individual blocks. The mode implementations
-// extend that capability to streams of blocks.
 // ブロックは与えられた鍵を使用したブロック暗号の実装を表します。個々のブロックを暗号化または復号する機能を提供します。モードの実装は、ブロックのストリームにこの機能を拡張します。
 type Block interface {
 	BlockSize() int
@@ -32,9 +28,9 @@ type BlockMode interface {
 	CryptBlocks(dst, src []byte)
 }
 
-// AEAD is a cipher mode providing authenticated encryption with associated
-// data. For a description of the methodology, see
-// https://en.wikipedia.org/wiki/Authenticated_encryption.
+// AEADは関連データ付き認証付き暗号を提供する暗号モードです。
+// 手法の説明については、
+// https://en.wikipedia.org/wiki/Authenticated_encryption を参照してください。
 type AEAD interface {
 	NonceSize() int
 

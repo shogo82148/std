@@ -28,7 +28,7 @@ type PKCS1v15DecryptOptions struct {
 // 指定されたメッセージを暗号化します。メッセージの長さは、公開モジュラスの
 // 長さから11バイトを引いた長さ以下である必要があります。
 //
-// randomパラメータは、同じメッセージを2回暗号化しても同じ暗号文にならない
+// randomパラメーターは、同じメッセージを2回暗号化しても同じ暗号文にならない
 // ようにするためのエントロピーソースとして使用されます。Go 1.26以降、
 // 安全なランダムバイトソースが常に使用され、GODEBUG=cryptocustomrand=1が
 // 設定されない限りReaderは無視されます。この設定は将来のGoリリースで削除されます。
@@ -42,7 +42,7 @@ type PKCS1v15DecryptOptions struct {
 func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, error)
 
 // DecryptPKCS1v15は、RSAとPKCS #1 v1.5のパディングスキームを使用して
-// 平文を復号化します。randomパラメータは旧式であり無視されます。nilでも構いません。
+// 平文を復号化します。randomパラメーターは旧式であり無視されます。nilでも構いません。
 //
 // Deprecated: PKCS #1 v1.5暗号化は危険であり、使用すべきではありません。
 // この関数がエラーを返すかどうかによって秘密情報が開示されます。
@@ -54,7 +54,7 @@ func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, erro
 // [draft-irtf-cfrg-rsa-guidance-05]: https://www.ietf.org/archive/id/draft-irtf-cfrg-rsa-guidance-05.html#name-rationale
 func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]byte, error)
 
-// DecryptPKCS1v15SessionKeyは、RSAとPKCS #1 v1.5のパディングスキームを使用してセッションキーを復号化します。randomパラメータは旧式であり、無視されることがあります。nilでも構いません。
+// DecryptPKCS1v15SessionKeyは、RSAとPKCS #1 v1.5のパディングスキームを使用してセッションキーを復号化します。randomパラメーターは旧式であり、無視されることがあります。nilでも構いません。
 // DecryptPKCS1v15SessionKeyは、暗号文の長さが正しくない場合や、暗号文が公開モジュラスよりも大きい場合にエラーを返します。それ以外の場合はエラーは返されません。パディングが有効な場合、結果の平文メッセージはkeyにコピーされます。そうでない場合、keyは変更されません。これらの代替は一定時間内に発生します。この関数の使用者は、事前にランダムなセッションキーを生成し、その値でプロトコルを継続することが意図されています。
 // セッションキーが小さすぎる場合、攻撃者による総当たり攻撃が可能になる場合があります。攻撃者がそれを行えば、ランダムな値が使用されたかどうか（同じ暗号文に対しては異なる値になるため）と、したがってパディングが正しいかどうかを学ぶことができます。これはまた、この関数の目的を阻害します。少なくとも16バイトのキーを使用することで、この攻撃に対して保護されます。
 // このメソッドは、RFC 3218 Section 2.3.2 で説明されているBleichenbacher選択暗号文攻撃[0]に対する保護を実装しています。これらの保護は、Bleichenbacher攻撃を非常に困難にしますが、保護はDecryptPKCS1v15SessionKeyを使用するプロトコルの残りの部分がこれらの考慮事項に基づいて設計されている場合にのみ効果的です。特に、復号化されたセッションキーを使用する後続の操作が、キーに関する情報（たとえば、静的なキーかランダムキーか）を漏洩させる場合、これらの緩和策は無効になります。このメソッドは非常に注意して使用する必要があり、通常は既存のプロトコル（TLSなど）との互換性のために絶対に必要な場合にのみ使用するべきです。

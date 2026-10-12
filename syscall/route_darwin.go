@@ -4,10 +4,10 @@
 
 package syscall
 
-// InterfaceMulticastAddrMessage represents a routing message
-// containing network interface address entries.
+// InterfaceMulticastAddrMessageは、ネットワークインターフェースのアドレスエントリーを
+// 含むルーティングメッセージを表します。
 //
-// Deprecated: Use golang.org/x/net/route instead.
+// Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type InterfaceMulticastAddrMessage struct {
 	Header IfmaMsghdr2
 	Data   []byte

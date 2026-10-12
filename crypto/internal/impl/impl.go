@@ -31,4 +31,6 @@ func List(pkg string) []string
 // It returns whether the selected implementation is available.
 func Select(pkg, name string) bool
 
+// Reset restores every implementation registered for the given package to its
+// initial availability.
 func Reset(pkg string)

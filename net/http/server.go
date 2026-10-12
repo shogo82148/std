@@ -23,7 +23,7 @@ import (
 // HTTPサーバーで使用されるエラー。
 var (
 	// ErrBodyNotAllowedは、HTTPメソッドまたはレスポンスコードが
-	// ボディを許可しない場合に、ResponseWriter.Writeの呼び出しで
+	// ボディーを許可しない場合に、ResponseWriter.Writeの呼び出しで
 	// 返されます。
 	ErrBodyNotAllowed = internal.ErrBodyNotAllowed
 
@@ -49,11 +49,11 @@ var (
 // [ResponseWriter]に書き込んだ後に [Request.Body] から読み取ることができない場合があります。
 // 注意深いハンドラーは、最初に [Request.Body] を読み取り、その後に応答する必要があります。
 //
-// ボディを読み取る以外の場合、ハンドラーは提供されたRequestを変更してはいけません。
+// ボディーを読み取る以外の場合、ハンドラーは提供されたRequestを変更してはいけません。
 //
-// ServeHTTPがパニックを起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
+// ServeHTTPがパニックを引き起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
 // サーバーはパニックを回復し、サーバーエラーログにスタックトレースを記録し、ネットワーク接続を閉じるか、HTTP/2 RST_STREAMを送信します。
-// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを発生させることで、ハンドラーを中止できます。
+// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを引き起こすことで、ハンドラーを中止できます。
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -74,7 +74,7 @@ type ResponseWriter interface {
 // デフォルトのHTTP/1.xおよびHTTP/2 [ResponseWriter] 実装は [Flusher] をサポートしていますが、ResponseWriterラッパーはサポートしていない場合があります。
 // ハンドラーは常にランタイムでこの機能をテストする必要があります。
 //
-// FlushをサポートするResponseWriterであっても、クライアントがHTTPプロキシを介して接続されている場合、
+// FlushをサポートするResponseWriterであっても、クライアントがHTTPプロキシーを介して接続されている場合、
 // バッファリングされたデータがレスポンスが完了するまでクライアントに到達しない場合があります。
 type Flusher interface {
 	Flush()
@@ -112,7 +112,7 @@ var (
 )
 
 // TrailerPrefixは、[ResponseWriter.Header] マップのキーに対するマジックプレフィックスで、
-// 存在する場合は、マップエントリが実際にはレスポンストレーラーであることを示します。
+// 存在する場合は、マップエントリーが実際にはレスポンストレーラーであることを示します。
 // プレフィックスは、ServeHTTP呼び出しが終了し、値がトレーラーに送信された後に削除されます。
 //
 // このメカニズムは、ヘッダーが書き込まれる前には不明なトレーラーにのみ使用することができます。
@@ -143,11 +143,11 @@ var _ closeWriter = (*net.TCPConn)(nil)
 
 // ErrAbortHandlerは、ハンドラーを中止するための番兵パニック値です。
 // ServeHTTPで発生したパニックはどれもクライアントへの応答を中止しますが、
-// ErrAbortHandlerでパニックすると、サーバーのエラーログへのスタック
+// ErrAbortHandlerでパニックを引き起こすと、サーバーのエラーログへのスタック
 // トレースの記録も抑制されます。
 var ErrAbortHandler = internal.ErrAbortHandler
 
-// HandlerFunc型は、HTTPハンドラーとして通常の関数を使用できるようにするためのアダプタです。
+// HandlerFunc型は、HTTPハンドラーとして通常の関数を使用できるようにするためのアダプターです。
 // fが適切なシグネチャを持つ関数である場合、HandlerFunc(f)はfを呼び出す [Handler] です。
 type HandlerFunc func(ResponseWriter, *Request)
 
@@ -262,7 +262,7 @@ func RedirectHandler(url string, code int) Handler
 //
 // # Trailing-slash redirection
 //
-// 末尾スラッシュまたは "..." ワイルドカードを使用して登録されたサブツリーのハンドラを持つ [ServeMux] を考えてみてください。
+// 末尾スラッシュまたは "..." ワイルドカードを使用して登録されたサブツリーのハンドラーを持つ [ServeMux] を考えてみてください。
 // ServeMuxが末尾スラッシュのないサブツリールートのリクエストを受信した場合、
 // 末尾スラッシュを追加してリクエストをリダイレクトします。
 // この動作は、末尾スラッシュまたは "..." ワイルドカードを使用しないパスの別個の登録によって上書きできます。
@@ -324,29 +324,29 @@ var DefaultServeMux = &defaultServeMux
 // 設定しないため、r.PathValueは常に空文字列を返します。
 func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
-// ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラにリクエストをディスパッチします。
+// ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラーにリクエストをディスパッチします。
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
 // Handleは、指定されたパターンのハンドラーを登録します。
-// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを起こします。
+// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを引き起こします。
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
-// HandleFuncは、指定されたパターンのハンドラ関数を登録します。
-// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを起こします。
+// HandleFuncは、指定されたパターンのハンドラー関数を登録します。
+// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを引き起こします。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Handleは、[DefaultServeMux]に指定されたパターンのハンドラを登録します。
+// Handleは、[DefaultServeMux]に指定されたパターンのハンドラーを登録します。
 // [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
 func Handle(pattern string, handler Handler)
 
-// HandleFuncは、[DefaultServeMux]に指定されたパターンのハンドラ関数を登録します。
+// HandleFuncは、[DefaultServeMux]に指定されたパターンのハンドラー関数を登録します。
 // [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// ハンドラーは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // HTTP/2 support は、Listener が [*tls.Conn] 接続、または *tls.Conn と同じ ConnectionState
 // メソッドを実装する接続を返し、かつ接続状態が ALPN によってネゴシエートされた「h2」
@@ -355,10 +355,10 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 // Serveは常にnilでないエラーを返します。
 func Serve(l net.Listener, handler Handler) error
 
-// ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// ハンドラーは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // さらに、サーバーの証明書と対応する秘密鍵を含むファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
@@ -366,7 +366,7 @@ func Serve(l net.Listener, handler Handler) error
 // ServeTLSは常にnilでないエラーを返します。
 func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 
-// Serverは、HTTPサーバーを実行するためのパラメータを定義します。
+// Serverは、HTTPサーバーを実行するためのパラメーターを定義します。
 // Serverのゼロ値は有効な構成です。
 type Server struct {
 	// Addrは、サーバーがリッスンするためのTCPアドレスをオプションで指定します。
@@ -386,24 +386,24 @@ type Server struct {
 	// SetSessionTicketKeysを使用するには、TLSリスナーを使用してServer.Serveを使用します。
 	TLSConfig *tls.Config
 
-	// ReadTimeoutは、ボディを含むリクエスト全体を読み取るための最大時間です。
+	// ReadTimeoutは、ボディーを含むリクエスト全体を読み取るための最大時間です。
 	// ゼロまたは負の値はタイムアウトがないことを意味します。
 	//
-	// ReadTimeoutは、ハンドラが各リクエストボディの許容可能な締め切りまたはアップロードレートを決定することを許可しないため、
+	// ReadTimeoutは、ハンドラーが各リクエストボディーの許容可能な締め切りまたはアップロードレートを決定することを許可しないため、
 	// 大抵のユーザーはReadHeaderTimeoutを使用することを好むでしょう。
 	// 両方を使用することもできます。
 	ReadTimeout time.Duration
 
-	// ReadHeaderTimeoutは、リクエストヘッダを読み取るために許される時間です。
-	// ヘッダを読み取った後、接続の読み取りデッドラインはリセットされ、
-	// ハンドラは本文にとって何が遅すぎると考えられるかを決定できます。
+	// ReadHeaderTimeoutは、リクエストヘッダーを読み取るために許される時間です。
+	// ヘッダーを読み取った後、接続の読み取り期限はリセットされ、
+	// ハンドラーは本文にとって何が遅すぎると考えられるかを決定できます。
 	// もしゼロならば、ReadTimeoutの値が使用されます。
 	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
 	ReadHeaderTimeout time.Duration
 
 	// WriteTimeoutは、レスポンスの書き込みがタイムアウトする前の最大時間です。
 	// 新しいリクエストヘッダーが読み取られるたびにリセットされます。
-	// ReadTimeoutと同様に、ハンドラがリクエストごとに決定を下すことを許可しません。
+	// ReadTimeoutと同様に、ハンドラーがリクエストごとに決定を下すことを許可しません。
 	// ゼロまたは負の値はタイムアウトがないことを意味します。
 	WriteTimeout time.Duration
 
@@ -413,7 +413,7 @@ type Server struct {
 	IdleTimeout time.Duration
 
 	// MaxHeaderBytesは、リクエストヘッダーのキーと値、およびリクエストラインを解析するためにサーバーが読み取ることができる最大バイト数を制御します。
-	// リクエストボディのサイズには影響しません。
+	// リクエストボディーのサイズには影響しません。
 	// ゼロの場合、DefaultMaxHeaderBytesが使用されます。
 	MaxHeaderBytes int
 
@@ -422,7 +422,9 @@ type Server struct {
 	// ゼロの場合、DefaultMaxHeaderValueCountが使用されます。
 	// 1つのヘッダー行内でカンマ区切りになっている値は1回として数えられますが、
 	// 複数のヘッダー行として送信された値は複数回として数えられることに
-	// 注意してください。
+	// 注意してください。ただし、Trailerヘッダーは例外で、そのカンマ区切りの値は
+	// それぞれ個別に数えられます。これは、各値が後で個別のトレーラーヘッダー行として
+	// 受信されることが想定されているためです。
 	MaxHeaderValueCount int
 
 	// TLSNextProtoは、ALPNによるプロトコルアップグレードが発生したときに、
@@ -441,7 +443,7 @@ type Server struct {
 	// 詳細については、ConnState型と関連する定数を参照してください。
 	ConnState func(net.Conn, ConnState)
 
-	// ErrorLogは、接続の受け入れ時のエラー、ハンドラの予期しない動作、および
+	// ErrorLogは、接続の受け入れ時のエラー、ハンドラーの予期しない動作、および
 	// FileSystemの基礎となるエラーに対するオプションのロガーを指定します。
 	// nilの場合、ログはlogパッケージの標準ロガーを使用して行われます。
 	ErrorLog *log.Logger
@@ -456,29 +458,28 @@ type Server struct {
 	// 提供されたctxはBaseContextから派生し、ServerContextKeyの値を持ちます。
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
-	// HTTP2 configures HTTP/2 connections.
+	// HTTP2はHTTP/2接続を設定します。
 	HTTP2 *HTTP2Config
 
-	// Protocols is the set of protocols accepted by the server.
+	// Protocolsは、サーバーが受け入れるプロトコルのセットです。
 	//
-	// If Protocols includes UnencryptedHTTP2, the server will accept
-	// unencrypted HTTP/2 connections. The server can serve both
-	// HTTP/1 and unencrypted HTTP/2 on the same address and port.
+	// ProtocolsがUnencryptedHTTP2を含む場合、サーバーは暗号化されていない
+	// HTTP/2接続を受け入れます。サーバーは同じアドレスとポートで
+	// HTTP/1と暗号化されていないHTTP/2の両方を提供できます。
 	//
-	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
-	// If TLSNextProto is non-nil and does not contain an "h2" entry,
-	// the default is HTTP/1 only.
+	// Protocolsがnilの場合、デフォルトは通常HTTP/1とHTTP/2です。
+	// TLSNextProtoがnilでなく、"h2"エントリーを含まない場合、
+	// デフォルトはHTTP/1のみです。
 	Protocols *Protocols
 
-	// DisableClientPriority specifies whether client-specified priority, as
-	// specified in RFC 9218, should be respected or not.
+	// DisableClientPriorityは、RFC 9218で規定されているクライアント指定の優先度を
+	// 尊重するかどうかを指定します。
 	//
-	// This field only takes effect if using HTTP/2, and if no custom write
-	// scheduler is defined for the HTTP/2 server. Otherwise, this field is a
-	// no-op.
+	// このフィールドは、HTTP/2を使用していて、HTTP/2サーバーにカスタムの
+	// 書き込みスケジューラーが定義されていない場合にのみ有効です。それ以外の場合、
+	// このフィールドは何もしません。
 	//
-	// If set to true, requests will be served in a round-robin manner, without
-	// prioritization.
+	// trueに設定すると、リクエストは優先順位付けなしにラウンドロビン方式で処理されます。
 	DisableClientPriority bool
 
 	inShutdown atomic.Bool
@@ -494,7 +495,7 @@ type Server struct {
 	h2            *http2Server
 	h2Config      http2ExternalServerConfig
 	h2IdleTimeout time.Duration
-	h3            *http3ServerHandler
+	h3Server      http3Server
 
 	listenerGroup sync.WaitGroup
 }
@@ -541,7 +542,7 @@ const (
 	StateNew ConnState = iota
 
 	// StateActiveは、1バイト以上のリクエストを読み取った接続を表します。
-	// StateActiveのServer.ConnStateフックは、リクエストがハンドラに入る前に発生し、
+	// StateActiveのServer.ConnStateフックは、リクエストがハンドラーに入る前に発生し、
 	// リクエストが処理されるまで再び発生しません。
 	// リクエストが処理された後、状態はStateClosed、StateHijacked、またはStateIdleに移行します。
 	// HTTP/2の場合、StateActiveはゼロから1つのアクティブなリクエストに移行するときに発生し、
@@ -565,10 +566,10 @@ const (
 
 func (c ConnState) String() string
 
-// AllowQuerySemicolonsは、URLクエリ内のエスケープされていないセミコロンをアンパサンドに変換し、ハンドラhを呼び出すハンドラを返します。
+// AllowQuerySemicolonsは、URLクエリー内のエスケープされていないセミコロンをアンパサンドに変換し、ハンドラーhを呼び出すハンドラーを返します。
 //
-// これにより、Go 1.17以前のクエリパラメータをセミコロンとアンパサンドの両方で分割する動作が復元されます（golang.org/issue/25192 を参照）。
-// ただし、この動作は多くのプロキシと一致せず、不一致がセキュリティ上の問題を引き起こす可能性があります。
+// これにより、Go 1.17以前のクエリーパラメーターをセミコロンとアンパサンドの両方で分割する動作が復元されます（golang.org/issue/25192 を参照）。
+// ただし、この動作は多くのプロキシーと一致せず、不一致がセキュリティー上の問題を引き起こす可能性があります。
 //
 // AllowQuerySemicolonsは、[Request.ParseForm] が呼び出される前に呼び出す必要があります。
 func AllowQuerySemicolons(h Handler) Handler
@@ -586,8 +587,8 @@ func (srv *Server) ListenAndServe() error
 // ErrServerClosedは、[Server.Shutdown] または [Server.Close] の呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
 var ErrServerClosed = errors.New("http: Server closed")
 
-// Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
+// Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはリクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
 //
 // Listenerが [*tls.Conn] 接続を返し、TLS Config.NextProtosで「h2」が構成されている場合、HTTP/2サポートが有効になります。
 //
@@ -595,8 +596,8 @@ var ErrServerClosed = errors.New("http: Server closed")
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
 func (srv *Server) Serve(l net.Listener) error
 
-// ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
+// ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスゴルーチンを作成します。
+// サービスゴルーチンはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
 //
 // サーバー用の証明書と一致する秘密鍵を含むファイルを提供する必要があります。これは、[Server] の
 // TLSConfig.Certificates、TLSConfig.GetCertificate、または
@@ -615,7 +616,7 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 // [Serve] を呼び出して着信接続のリクエストを処理します。
 // 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// ハンドラーは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // ListenAndServeは常に非nilのエラーを返します。
 func ListenAndServe(addr string, handler Handler) error
@@ -642,8 +643,8 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // TimeoutHandlerは、指定された時間制限でhを実行する [Handler] を返します。
 //
 // 新しいHandlerは、各リクエストを処理するためにh.ServeHTTPを呼び出しますが、
-// 呼び出しがその時間制限を超えて実行されると、ハンドラは503 Service Unavailableエラーと
-// そのボディ内の指定されたメッセージで応答します。
+// 呼び出しがその時間制限を超えて実行されると、ハンドラーは503 Service Unavailableエラーと
+// そのボディー内の指定されたメッセージで応答します。
 // （もしmsgが空であれば、適切なデフォルトメッセージが送信されます。）
 // そのようなタイムアウトの後、hによるその [ResponseWriter] への書き込みは
 // [ErrHandlerTimeout] を返します。
@@ -652,8 +653,8 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // [Hijacker] または [Flusher] インターフェースはサポートしません。
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
-// ErrHandlerTimeout is returned on [ResponseWriter] Write calls
-// in handlers which have timed out.
+// ErrHandlerTimeoutは、タイムアウトしたハンドラー内での [ResponseWriter] の
+// Write呼び出しで返されます。
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
 var _ Pusher = (*timeoutWriter)(nil)

@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Decoderは生のJSONトークンや値をストリームでデコードするためのデコーダです。
+// Decoderは生のJSONトークンや値をストリームでデコードするためのデコーダーです。
 // トップレベルのJSON値のストリームを読み取るために使用されます。
 // 各値は任意の空白文字で区切られています。
 //
@@ -19,7 +19,7 @@ import (
 //
 //	{"name":"value","array":[null,false,true,3.14159],"object":{"k":"v"}}
 //
-// は、以下の呼び出しでパースできます（簡略化のためエラー処理は省略しています）:
+// は、以下の呼び出しで解析できます（簡略化のためエラー処理は省略しています）:
 //
 //	d.ReadToken() // {
 //	d.ReadToken() // "name"
@@ -43,19 +43,19 @@ type Decoder struct {
 	s decoderState
 }
 
-// NewDecoderは、rから読み込む新しいストリーミングデコーダを構築します。
+// NewDecoderは、rから読み込む新しいストリーミングデコーダーを構築します。
 //
-// rが [bytes.Buffer] の場合、デコーダは中間バッファに内容をコピーせず、直接バッファからパースします。
-// デコーダの使用中にバッファへ追加の書き込みを行ってはいけません。
+// rが [bytes.Buffer] の場合、デコーダーは中間バッファーに内容をコピーせず、直接バッファーから解析します。
+// デコーダーの使用中にバッファーへ追加の書き込みを行ってはいけません。
 func NewDecoder(r io.Reader, opts ...Options) *Decoder
 
-// Resetはデコーダをリセットし、新たにrから読み込み、
+// Resetはデコーダーをリセットし、新たにrから読み込み、
 // 指定されたオプションで構成します。Resetは
 // [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom] メソッドに渡された
 // Decoderや [encoding/json/v2.UnmarshalFromFunc] 関数に渡されたDecoderに対して呼び出してはいけません。
 func (d *Decoder) Reset(r io.Reader, opts ...Options)
 
-// Options は、デコーダの構築に使用されたオプションを返します。
+// Options は、デコーダーの構築に使用されたオプションを返します。
 // さらに、[encoding/json/v2.UnmarshalDecode] 呼び出しに渡された
 // セマンティックなオプションを含む場合があります。
 //
@@ -67,11 +67,11 @@ func (d *Decoder) Options() Options
 // PeekKindは次のトークン種別を取得しますが、読み取り位置は進めません。
 //
 // エラーが発生した場合は [KindInvalid] を返します。そのようなエラーは次の読み取り呼び出しまで
-// キャッシュされ、最終的にPeekKind呼び出しの後に読み取り呼び出しを続けることは呼び出し側の責任です。
+// キャッシュされ、最終的にPeekKind呼び出しの後に読み取り呼び出しを続けることは呼び出し元の責任です。
 func (d *Decoder) PeekKind() Kind
 
-// SkipValueは、[Decoder.ReadValue] を呼び出して結果を破棄するのと意味的に同等ですが、
-// 結果全体を保持するためにメモリを無駄に消費しません。
+// SkipValue は [Decoder.ReadValue] を呼び、その結果を破棄することと意味的に同等です。
+// ただし、結果全体を保持しようとしてメモリーを浪費することはありません。
 func (d *Decoder) SkipValue() error
 
 // ReadTokenは次の [Token] を読み取り、読み取り位置を進めます。
@@ -85,35 +85,37 @@ func (d *Decoder) ReadToken() (Token, error)
 //
 // 返される値は次のPeek、Read、Skip呼び出しまでのみ有効であり、
 // Decoderの使用中に値を変更してはいけません。
-// デコーダが現在オブジェクトや配列の終了トークン位置にある場合、
+// デコーダーが現在オブジェクトや配列の終了トークン位置にある場合、
 // [SyntacticError] を報告し、内部状態は変更されません。
 // これ以上値がない場合は [io.EOF] を返します。
 func (d *Decoder) ReadValue() (Value, error)
 
-// InputOffsetは現在の入力バイトオフセットを返します。これは直前に返されたトークンまたは値の直後の次のバイト位置を示します。
-// 実際に基礎となる [io.Reader] から読み込まれたバイト数は、内部バッファリングの影響でこのオフセットより多い場合があります。
+// InputOffset は現在の入力バイトオフセットを返します。
+// これは、直近に返されたトークンまたは値の直後の次のバイト位置を示します。
+// 基礎となる [io.Reader] から実際に読み込まれたバイト数は、
+// 内部バッファリングにより、このオフセットより多い場合があります。
 func (d *Decoder) InputOffset() int64
 
-// UnreadBufferは、未読バッファに残っているデータを返します。
-// このデータには0バイト以上が含まれる可能性があります。
+// UnreadBuffer は、未読バッファーに残っているデータを返します。
+// これは 0 バイト以上のデータを含み得ます。
 // これは入力 [io.Reader] からすでに消費されたデータですが、
-// まだ [Decoder.ReadToken] または [Decoder.ReadValue] の呼び出しでは読み取られていません。
-// JSON文法に従ってまだ検証されていないため、
-// 有効なJSONを構成しないバイトを含む可能性があります。
-// バッファリングされるデータ量の正確な値はDecoderの実装詳細であり、
+// まだ [Decoder.ReadToken] または [Decoder.ReadValue] の呼び出しでは読まれていません。
+// JSON 文法に従ってまだ検証されていないため、
+// 有効な JSON を構成しないバイトを含む可能性があります。
+// バッファリングされるデータ量の正確な値は Decoder の実装詳細であり、
 // 時間とともに変わる可能性があります。
 //
 // 最後に読み取られたJSONトークンまたは値の後に続くバイト列全体を得るには、
-// このバッファと入力Readerの残りを連結する責任は呼び出し側にあります。
+// このバッファーと入力Readerの残りを連結する責任は呼び出し元にあります。
 //
-// 返されたバッファは、Decoderを使い続けている間は変更してはいけません。
-// バッファ内容は次のPeek、Read、Skip呼び出しまで有効です。
+// 返されたバッファーは、Decoderを使い続けている間は変更してはいけません。
+// バッファー内容は次のPeek、Read、Skip呼び出しまで有効です。
 func (d *Decoder) UnreadBuffer() []byte
 
-// StackDepthは、読み取ったJSONデータに対する状態機械の深さを返します。
-// スタック上の各レベルは、ネストしたJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンに遭遇するたびにインクリメントされ、
-// [EndObject] または [EndArray] トークンに遭遇するたびにデクリメントされます。
+// StackDepth は、すでに読み取られたJSONデータに対する状態機械の深さを返します。
+// スタックの各レベルは、入れ子になったJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンが出現するたびに増加し、
+// [EndObject] または [EndArray] トークンが出現するたびに減少します。
 //
 // オブジェクトや配列の内側にいない場合、StackDepthは0を返します。
 // 具体的には、まだトークンを何も読んでいないとき、
@@ -144,11 +146,11 @@ func (d *Decoder) StackDepth() int
 //   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
 //   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
-// また、これまでにデコードされたそのJSONオブジェクトまたは配列の長さも報告します。
+// また、このJSONオブジェクトまたは配列の、これまでにデコードされた長さも報告します。
 // JSONオブジェクト内の各名前と値は個別に数えられるため、
 // 実際のメンバー数は長さの半分になります。
 // 完全なJSONオブジェクトは偶数の長さでなければなりません。
 func (d *Decoder) StackIndex(i int) (Kind, int64)
 
-// StackPointerは、直近に読み取った値へのJSONポインタ（RFC 6901）を返します。
+// StackPointerは、直近に読み取った値へのJSONポインター（RFC 6901）を返します。
 func (d *Decoder) StackPointer() Pointer

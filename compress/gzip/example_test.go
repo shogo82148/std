@@ -133,11 +133,11 @@ func ExampleReader_Multistream() {
 func Example_compressingReader() {
 
 	// これは圧縮リーダーを書く例です。
-	// これは、HTTPクライアントのリクエストボディに使用することができます。
+	// これは、HTTPクライアントのリクエストボディーに使用することができます。
 
 	const testdata = "the data to be compressed"
 
-	// このHTTPハンドラはテスト用です。
+	// このHTTPハンドラーはテスト用です。
 	handler := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		zr, err := gzip.NewReader(req.Body)
 		if err != nil {

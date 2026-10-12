@@ -285,6 +285,39 @@ var RISCV64DWARFRegisters = map[int16]int16{
 	REG_F29: 61,
 	REG_F30: 62,
 	REG_F31: 63,
+
+	REG_V0:  96,
+	REG_V1:  97,
+	REG_V2:  98,
+	REG_V3:  99,
+	REG_V4:  100,
+	REG_V5:  101,
+	REG_V6:  102,
+	REG_V7:  103,
+	REG_V8:  104,
+	REG_V9:  105,
+	REG_V10: 106,
+	REG_V11: 107,
+	REG_V12: 108,
+	REG_V13: 109,
+	REG_V14: 110,
+	REG_V15: 111,
+	REG_V16: 112,
+	REG_V17: 113,
+	REG_V18: 114,
+	REG_V19: 115,
+	REG_V20: 116,
+	REG_V21: 117,
+	REG_V22: 118,
+	REG_V23: 119,
+	REG_V24: 120,
+	REG_V25: 121,
+	REG_V26: 122,
+	REG_V27: 123,
+	REG_V28: 124,
+	REG_V29: 125,
+	REG_V30: 126,
+	REG_V31: 127,
 }
 
 // Prog.Mark flags.
@@ -1453,6 +1486,37 @@ const (
 	AVCLMULHVV
 	AVCLMULHVX
 
+	// 33.2.4: Vector GCM/GMAC (Zvkg)
+	AVGHSHVV
+	AVGMULVV
+
+	// 33.2.5: NIST Suite: Vector AES Block Cipher (Zvkned)
+	AVAESEFVV
+	AVAESEFVS
+	AVAESEMVV
+	AVAESEMVS
+	AVAESDFVV
+	AVAESDFVS
+	AVAESDMVV
+	AVAESDMVS
+	AVAESKF1VI
+	AVAESKF2VI
+	AVAESZVS
+
+	// 33.2.6: NIST Suite: Vector SHA-2 Secure Hash (Zvknh[ab])
+	AVSHA2MSVV
+	AVSHA2CHVV
+	AVSHA2CLVV
+
+	// 33.2.7: ShangMi Suite: SM4 Block Cipher (Zvksed)
+	AVSM4KVI
+	AVSM4RVV
+	AVSM4RVS
+
+	// 33.2.8: ShangMi Suite: SM3 Secure Hash (Zvksh)
+	AVSM3MEVV
+	AVSM3CVI
+
 	// 3.3.1: Environment Call and Breakpoint
 	AECALL
 	ASCALL
@@ -1545,6 +1609,10 @@ const (
 	// End marker
 	ALAST
 )
+
+// RoundingModeSuffix returns the Scond value for an explicitly encoded
+// floating-point rounding mode.
+func RoundingModeSuffix(rm uint8) uint8
 
 const (
 	RM_RNE uint8 = iota

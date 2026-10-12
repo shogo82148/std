@@ -12,7 +12,7 @@ import (
 // Evalは、パッケージpkg内の位置posで評価された式exprの型と、定数であれば値を返します。
 // これは、提供されたファイルセットに対して完全な位置情報を持つASTを型チェックして導出したpkgに関連している必要があります。
 //
-// fset、pkg、およびposのパラメータの意味は [CheckExpr] と同じです。exprが正常にパースできないか、結果のexpr ASTが型チェックできない場合はエラーが返されます。
+// fset、pkg、およびposのパラメーターの意味は [CheckExpr] と同じです。exprが正常に解析できないか、結果のexpr ASTが型チェックできない場合はエラーが返されます。
 func Eval(fset *token.FileSet, pkg *Package, pos token.Pos, expr string) (_ TypeAndValue, err error)
 
 // CheckExprは、式exprがパッケージpkgの位置posに現れたかのように型チェックを行います。

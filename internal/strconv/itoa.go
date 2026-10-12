@@ -15,10 +15,10 @@ func FormatInt(i int64, base int) string
 // Itoaは、[FormatInt](int64(i), 10)と同等です。
 func Itoa(i int) string
 
-// AppendIntは、[FormatInt] によって生成された整数iの文字列形式をdstに追加し、拡張されたバッファを返します。
+// AppendIntは、[FormatInt] によって生成された整数iの文字列形式をdstに追加し、拡張されたバッファーを返します。
 func AppendInt(dst []byte, i int64, base int) []byte
 
-// AppendUintは、[FormatUint] によって生成された符号なし整数iの文字列形式をdstに追加し、拡張されたバッファを返します。
+// AppendUintは、[FormatUint] によって生成された符号なし整数iの文字列形式をdstに追加し、拡張されたバッファーを返します。
 func AppendUint(dst []byte, i uint64, base int) []byte
 
 // RuntimeFormatBase10 formats u into the tail of a

@@ -19,7 +19,7 @@ type Header map[string][]string
 // キーは大文字小文字を区別せず、[CanonicalHeaderKey] によって正規化されます。
 func (h Header) Add(key, value string)
 
-// Setは、キーに関連付けられたヘッダーエントリを単一の要素値に設定します。
+// Setは、キーに関連付けられたヘッダーエントリーを単一の要素値に設定します。
 // キーに関連付けられた既存の値を置き換えます。
 // キーは大文字小文字を区別せず、[textproto.CanonicalMIMEHeaderKey] によって正規化されます。
 // 非正規のキーを使用するには、直接マップに割り当ててください。

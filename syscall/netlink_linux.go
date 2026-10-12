@@ -6,34 +6,33 @@
 
 package syscall
 
-// NetlinkRouteRequest represents a request message to receive routing
-// and link states from the kernel.
+// NetlinkRouteRequestは、カーネルからルーティングとリンクの状態を受信するための
+// リクエストメッセージを表します。
 type NetlinkRouteRequest struct {
 	Header NlMsghdr
 	Data   RtGenmsg
 }
 
-// NetlinkRIB returns routing information base, as known as RIB, which
-// consists of network facility information, states and parameters.
+// NetlinkRIBは、ネットワーク機能の情報、状態、パラメーターで構成される
+// ルーティング情報ベース（RIBとも呼ばれる）を返します。
 func NetlinkRIB(proto, family int) ([]byte, error)
 
-// NetlinkMessage represents a netlink message.
+// NetlinkMessageは、netlinkメッセージを表します。
 type NetlinkMessage struct {
 	Header NlMsghdr
 	Data   []byte
 }
 
-// ParseNetlinkMessage parses b as an array of netlink messages and
-// returns the slice containing the NetlinkMessage structures.
+// ParseNetlinkMessageは、bをnetlinkメッセージの配列として解析し、
+// NetlinkMessage構造体を含むスライスを返します。
 func ParseNetlinkMessage(b []byte) ([]NetlinkMessage, error)
 
-// NetlinkRouteAttr represents a netlink route attribute.
+// NetlinkRouteAttrは、netlinkのルート属性を表します。
 type NetlinkRouteAttr struct {
 	Attr  RtAttr
 	Value []byte
 }
 
-// ParseNetlinkRouteAttr parses m's payload as an array of netlink
-// route attributes and returns the slice containing the
-// NetlinkRouteAttr structures.
+// ParseNetlinkRouteAttrは、mのペイロードをnetlinkのルート属性の配列として
+// 解析し、NetlinkRouteAttr構造体を含むスライスを返します。
 func ParseNetlinkRouteAttr(m *NetlinkMessage) ([]NetlinkRouteAttr, error)

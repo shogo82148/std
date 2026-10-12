@@ -5,7 +5,7 @@
 /*
 peパッケージは、PE（Microsoft Windows Portable Executable）ファイルへのアクセスを実装します。
 
-# セキュリティ
+# Security
 
 このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
 https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
@@ -31,7 +31,7 @@ type File struct {
 	closer io.Closer
 }
 
-// Openは、[os.Open] を使用して指定されたファイルを開き、それをPEバイナリとして使用するための準備をします。
+// Openは、[os.Open] を使用して指定されたファイルを開き、それをPEバイナリーとして使用するための準備をします。
 func Open(name string) (*File, error)
 
 // Closeは、[File] を閉じます。
@@ -39,7 +39,7 @@ func Open(name string) (*File, error)
 // Closeは何も影響を与えません。
 func (f *File) Close() error
 
-// NewFileは、基礎となるリーダーでPEバイナリにアクセスするための新しいFileを作成します。
+// NewFileは、基礎となるリーダーでPEバイナリーにアクセスするための新しいFileを作成します。
 func NewFile(r io.ReaderAt) (*File, error)
 
 // Sectionは、指定された名前の最初のセクションを返します。そのような
@@ -58,13 +58,13 @@ type ImportDirectory struct {
 	dll string
 }
 
-// ImportedSymbolsは、動的ロード時に他のライブラリによって満たされることが期待されている、
-// バイナリfが参照しているすべてのシンボルの名前を返します。
+// ImportedSymbolsは、動的ロード時に他のライブラリーによって満たされることが期待されている、
+// バイナリーfが参照しているすべてのシンボルの名前を返します。
 // それは弱いシンボルを返しません。
 func (f *File) ImportedSymbols() ([]string, error)
 
-// ImportedLibrariesは、動的リンク時にバイナリとリンクされることが期待されている、
-// バイナリfが参照しているすべてのライブラリの名前を返します。
+// ImportedLibrariesは、動的リンク時にバイナリーとリンクされることが期待されている、
+// バイナリーfが参照しているすべてのライブラリーの名前を返します。
 func (f *File) ImportedLibraries() ([]string, error)
 
 // FormatErrorは使用されていません。

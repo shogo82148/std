@@ -182,7 +182,7 @@
 package runtime
 
 // StartTraceは現在のプロセスのトレースを有効にします。
-// トレース中はデータがバッファされ、[ReadTrace] を介して利用可能です。
+// トレース中はデータがバッファーされ、[ReadTrace] を介して利用可能です。
 // トレースが既に有効化されている場合、StartTraceはエラーを返します。
 // ほとんどのクライアントは [runtime/trace] パッケージや [testing] パッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
 func StartTrace() error
@@ -191,6 +191,6 @@ func StartTrace() error
 // StopTraceは、トレースのすべての読み取りが完了するまで戻りません。
 func StopTrace()
 
-// ReadTrace はバイナリ追跡データの次のチャンクを返します。データが利用可能になるまでブロックされます。もし追跡がオフになっており、オンの間に蓄積されたデータがすべて返された場合、ReadTrace は nil を返します。呼び出し元は、再度 ReadTrace を呼び出す前に返されたデータをコピーする必要があります。
-// ReadTrace は一度に1つの goroutine から呼び出す必要があります。
+// ReadTrace はバイナリー追跡データの次のチャンクを返します。データが利用可能になるまでブロックされます。もし追跡がオフになっており、オンの間に蓄積されたデータがすべて返された場合、ReadTrace は nil を返します。呼び出し元は、再度 ReadTrace を呼び出す前に返されたデータをコピーする必要があります。
+// ReadTrace は一度に1つのゴルーチンから呼び出す必要があります。
 func ReadTrace() []byte

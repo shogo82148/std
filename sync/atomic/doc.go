@@ -3,13 +3,13 @@
 // license that can be found in the LICENSE file.
 
 // atomicパッケージは、同期アルゴリズムの実装に役立つ
-// 低レベルのアトミックメモリプリミティブを提供します。
+// 低レベルのアトミックメモリープリミティブを提供します。
 //
 // これらの関数は、正しく使用するためには非常に注意が必要です。
 // 特別な低レベルのアプリケーションを除き、同期はチャネルや[sync]パッケージの機能を
 // 使用して行う方が良いです。
-// メモリを共有するために通信を行い、
-// メモリを共有するために通信を行わないでください。
+// メモリーを共有するために通信を行い、
+// メモリーを共有するために通信を行わないでください。
 //
 // SwapT関数によって実装されるスワップ操作は、アトミックの
 // 相当するものです：
@@ -39,13 +39,13 @@
 // [the Go memory model] の用語では、アトミック操作Aの効果が
 // アトミック操作Bによって観察される場合、AはBの前に「同期する」。
 // さらに、プログラムで実行されるすべてのアトミック操作は、
-// あたかも一貫した順序で実行されるかのように振る舞います。
+// あたかも一貫した順序で実行されるかのように動作します。
 // この定義は、C++の一貫性のあるアトミックとJavaのvolatile変数と
 // 同じセマンティクスを提供します。
 //
-// Only a few integer sizes are supported: on many architectures,
-// atomic operations on non-word-sized integers are inefficient or
-// infeasible. For example, a [Bool] may be larger than a built-in bool.
+// サポートされている整数のサイズはわずかです。多くのアーキテクチャでは、
+// ワードサイズでない整数に対するアトミック操作は非効率であるか、実現不可能です。
+// 例えば、 [Bool] は組み込みのboolよりも大きい場合があります。
 //
 // [the Go memory model]: https://go.dev/ref/mem
 package atomic

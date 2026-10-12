@@ -10,7 +10,6 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/mime/multipart"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/http/internal"
 	"github.com/shogo82148/std/net/textproto"
@@ -128,7 +127,6 @@ type ServerRequest struct {
 	RemoteAddr    string
 	RequestURI    string
 	TLS           *tls.ConnectionState
-	MultipartForm *multipart.Form
 }
 
 // ConnState is identical to net/http.ConnState.

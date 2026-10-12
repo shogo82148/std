@@ -6,7 +6,8 @@
 
 package jsontext
 
-// SyntacticErrorは、文法に従ってJSONをエンコードまたはデコードする際に発生した構文エラーの説明です。
+// SyntacticError は、JSONの文法に従ってエンコードまたはデコードする際に
+// 発生したエラーの説明です。
 //
 // このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SyntacticError struct {
@@ -15,7 +16,7 @@ type SyntacticError struct {
 
 	// ByteOffsetは、このバイトオフセット位置以降でエラーが発生したことを示します。
 	ByteOffset int64
-	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を用いて、
+	// JSONPointerは、RFC 6901で定義されたJSONポインター表記を用いて、
 	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer Pointer
 

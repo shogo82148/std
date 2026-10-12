@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package hkdf は RFC 5869 で定義されたHMAC ベースの抽出・展開鍵導出
+// hkdfパッケージは RFC 5869 で定義されたHMAC ベースの抽出・展開鍵導出
 // 関数 (HKDF) を実装します。
 //
 // HKDF は、限定的な入力鍵材を 1 つ以上の暗号学的に強い秘密鍵に

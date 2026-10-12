@@ -8,12 +8,12 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-// NewMultiHandler creates a [MultiHandler] with the given Handlers.
+// NewMultiHandlerは、指定されたHandlerを持つ [MultiHandler] を作成します。
 func NewMultiHandler(handlers ...Handler) *MultiHandler
 
-// MultiHandler is a [Handler] that invokes all the given Handlers.
-// Its Enabled method reports whether any of the handlers' Enabled methods return true.
-// Its Handle, WithAttrs and WithGroup methods call the corresponding method on each of the enabled handlers.
+// MultiHandlerは、指定されたすべてのHandlerを呼び出す [Handler] です。
+// そのEnabledメソッドは、いずれかのハンドラーのEnabledメソッドがtrueを返すかどうかを報告します。
+// そのHandle、WithAttrs、WithGroupメソッドは、有効な各ハンドラーの対応するメソッドを呼び出します。
 type MultiHandler struct {
 	multi []Handler
 }

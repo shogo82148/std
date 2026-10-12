@@ -134,7 +134,7 @@ func (t Time) GoString() string
 // [Time.Format] の実行可能な例は、レイアウト文字列の詳細な動作を示しており、参考になります。
 func (t Time) Format(layout string) string
 
-// AppendFormatは [Time.Format] と似ていますが、テキスト表現をbに追加し、拡張されたバッファを返します。
+// AppendFormatは [Time.Format] と似ていますが、テキスト表現をbに追加し、拡張されたバッファーを返します。
 func (t Time) AppendFormat(b []byte, layout string) []byte
 
 // ParseErrorは時間文字列を解析する際の問題を記述します。

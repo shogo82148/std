@@ -7,7 +7,7 @@
 
 package types
 
-// ポインタはポインタ型を表します。
+// ポインターはポインター型を表します。
 type Pointer struct {
 	base Type
 }
@@ -15,7 +15,7 @@ type Pointer struct {
 // NewPointerは、指定された要素（ベース）タイプの新しいポインタータイプを返します。
 func NewPointer(elem Type) *Pointer
 
-// Elemは与えられたポインタpの要素の型を返します。
+// Elemは与えられたポインターpの要素の型を返します。
 func (p *Pointer) Elem() Type
 
 func (p *Pointer) Underlying() Type

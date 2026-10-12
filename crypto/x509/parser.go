@@ -6,7 +6,7 @@ package x509
 
 // ParseCertificateは与えられたASN.1 DERデータから単一の証明書を解析します。
 //
-// Go 1.23より前では、ParseCertificateは負のシリアル番号を持つ証明書を受け入れました。この挙動は、
+// Go 1.23より前では、ParseCertificateは負のシリアル番号を持つ証明書を受け入れました。この動作は、
 // GODEBUG環境変数に"x509negativeserial=1"を含めることで復元できます。
 func ParseCertificate(der []byte) (*Certificate, error)
 
@@ -14,5 +14,5 @@ func ParseCertificate(der []byte) (*Certificate, error)
 // 証明書は、間にパディングがない形式で連結されている必要があります。
 func ParseCertificates(der []byte) ([]*Certificate, error)
 
-// ParseRevocationListは、与えられたASN.1 DERデータからX509 v2 [Certificate] 失効リストをパースします。
+// ParseRevocationListは、与えられたASN.1 DERデータからX509 v2 [Certificate] 失効リストを解析します。
 func ParseRevocationList(der []byte) (*RevocationList, error)

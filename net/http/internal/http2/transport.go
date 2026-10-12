@@ -14,6 +14,7 @@ import (
 
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 
 	"golang.org/x/net/http2/hpack"
@@ -25,7 +26,7 @@ import (
 // for concurrent use by multiple goroutines.
 type Transport struct {
 	t1       TransportConfig
-	connPool noDialClientConnPool
+	connPool *clientConnPool
 	*transportTestHooks
 }
 
@@ -39,7 +40,7 @@ type ClientConn struct {
 	t             *Transport
 	tconn         net.Conn
 	tlsState      *tls.ConnectionState
-	atomicReused  uint32
+	reused        atomic.Bool
 	singleUse     bool
 	getConnCalled bool
 
@@ -52,7 +53,7 @@ type ClientConn struct {
 
 	mu               sync.Mutex
 	cond             *sync.Cond
-	flow             outflow
+	flow             connOutflow
 	inflow           inflow
 	doNotReuse       bool
 	closing          bool
@@ -76,7 +77,6 @@ type ClientConn struct {
 	maxConcurrentStreams        uint32
 	peerMaxHeaderListSize       uint64
 	peerMaxHeaderTableSize      uint32
-	initialWindowSize           uint32
 	initialStreamRecvWindowSize int32
 	readIdleTimeout             time.Duration
 	pingTimeout                 time.Duration
@@ -132,19 +132,7 @@ type ClientConn struct {
 
 var ErrNoCachedConn error = noCachedConnError{}
 
-// RoundTripOpt are options for the Transport.RoundTripOpt method.
-type RoundTripOpt struct {
-	// OnlyCachedConn controls whether RoundTripOpt may
-	// create a new TCP connection. If set true and
-	// no cached connection is available, RoundTripOpt
-	// will return ErrNoCachedConn.
-	OnlyCachedConn bool
-}
-
 func (t *Transport) RoundTrip(req *ClientRequest) (*ClientResponse, error)
-
-// RoundTripOpt is like RoundTrip, but takes options.
-func (t *Transport) RoundTripOpt(req *ClientRequest, opt RoundTripOpt) (*ClientResponse, error)
 
 func (t *Transport) IdleConnStrsForTesting() []string
 

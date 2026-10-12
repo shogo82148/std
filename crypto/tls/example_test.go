@@ -61,7 +61,7 @@ TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 
 func ExampleConfig_keyLogWriter() {
 	// ネットワークトラフィックのキャプチャを復号してTLSアプリケーションをデバッグします。
-	// 警告: KeyLogWriter の使用はセキュリティを損なうため、
+	// 警告: KeyLogWriter の使用はセキュリティーを損なうため、
 	// デバッグ目的でのみ使用してください。
 
 	server := httptest.NewUnstartedServer(http.HandlerFunc(
@@ -192,7 +192,7 @@ func ExampleConfig_verifyConnection() {
 	// サーバーサイドの設定。
 	_ = &tls.Config{
 
-		// クライアント証明書を要求する（VerifyConnection は引き続き実行され、cs.PeerCertificates[0] にアクセスできなくなるとパニックする)が、デフォルトの検証子で検証しない。これにより VerifyConnection は無効になりません。
+		// クライアント証明書を要求する（VerifyConnection は引き続き実行され、cs.PeerCertificates[0] にアクセスできなくなるとパニックを引き起こす)が、デフォルトの検証子で検証しない。これにより VerifyConnection は無効になりません。
 		ClientAuth: tls.RequireAnyClientCert,
 		VerifyConnection: func(cs tls.ConnectionState) error {
 			opts := x509.VerifyOptions{

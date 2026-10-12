@@ -8,28 +8,27 @@
 
 package syscall
 
-// CmsgLen returns the value to store in the Len field of the [Cmsghdr]
-// structure, taking into account any necessary alignment.
+// CmsgLenは、必要なアライメントを考慮して、[Cmsghdr] 構造体のLenフィールドに
+// 格納する値を返します。
 func CmsgLen(datalen int) int
 
-// CmsgSpace returns the number of bytes an ancillary element with
-// payload of the passed data length occupies.
+// CmsgSpaceは、渡されたデータ長のペイロードを持つ補助要素が
+// 占めるバイト数を返します。
 func CmsgSpace(datalen int) int
 
-// SocketControlMessage represents a socket control message.
+// SocketControlMessageは、ソケット制御メッセージを表します。
 type SocketControlMessage struct {
 	Header Cmsghdr
 	Data   []byte
 }
 
-// ParseSocketControlMessage parses b as an array of socket control
-// messages.
+// ParseSocketControlMessageは、bをソケット制御メッセージの配列として解析します。
 func ParseSocketControlMessage(b []byte) ([]SocketControlMessage, error)
 
-// UnixRights encodes a set of open file descriptors into a socket
-// control message for sending to another process.
+// UnixRightsは、開いているファイルディスクリプターの集合を、
+// 別のプロセスに送信するためのソケット制御メッセージにエンコードします。
 func UnixRights(fds ...int) []byte
 
-// ParseUnixRights decodes a socket control message that contains an
-// integer array of open file descriptors from another process.
+// ParseUnixRightsは、別のプロセスからの開いているファイルディスクリプターの
+// 整数配列を含むソケット制御メッセージをデコードします。
 func ParseUnixRights(m *SocketControlMessage) ([]int, error)

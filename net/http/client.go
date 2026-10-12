@@ -60,7 +60,7 @@ type Client struct {
 	Jar CookieJar
 
 	// Timeoutは、このClientによって行われるリクエストのタイムアウト時間を指定します。
-	// タイムアウトには、接続時間、リダイレクト、レスポンスボディの読み取りなどが含まれます。
+	// タイムアウトには、接続時間、リダイレクト、レスポンスボディーの読み取りなどが含まれます。
 	// Get、Head、Post、またはDoが返却された後でも、タイマーは実行し続け、
 	// Response.Bodyの読み取りを中断します。
 	//
@@ -68,10 +68,6 @@ type Client struct {
 	//
 	// Clientは、RequestのContextが終了した場合と同様に、
 	// ベースとなるTransportへのリクエストをキャンセルします。
-	//
-	// 互換性のために、ClientはTransportにCancelRequestメソッドも使用しますが、
-	// 新しいRoundTripperの実装はCancelRequestではなく、
-	// リクエストのContextを使用してキャンセルするべきです。
 	Timeout time.Duration
 }
 
@@ -137,7 +133,7 @@ func Get(url string) (resp *Response, err error)
 func (c *Client) Get(url string) (resp *Response, err error)
 
 // ErrUseLastResponseは、Client.CheckRedirectフックによって返され、リダイレクトの処理方法を制御するために使用できます。
-// これが返されると、次のリクエストは送信されず、最も最近のレスポンスがそのボディが閉じられていない状態で返されます。
+// これが返されると、次のリクエストは送信されず、最も最近のレスポンスがそのボディーが閉じられていない状態で返されます。
 var ErrUseLastResponse = errors.New("net/http: use last response")
 
 // DoはHTTPリクエストを送信し、クライアントの設定したポリシー（リダイレクト、クッキー、認証など）に従ってHTTPレスポンスを返します。
@@ -158,11 +154,11 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // 通常、Doの代わりに [Get]、[Post]、または [PostForm] が使用されます。
 //
-// サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、[Request.GetBody] 関数が定義されている場合、元のHTTPメソッドとボディを保持します。[NewRequest] 関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
+// サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディーがない後続のリクエストを引き起こします。307または308のリダイレクトは、[Request.GetBody] 関数が定義されている場合、元のHTTPメソッドとボディーを保持します。[NewRequest] 関数は、一般的な標準ライブラリーボディータイプのGetBodyを自動的に設定します。
 //
-// [Client] のリダイレクト挙動は、WHATWG Fetch標準には従っていない点に
+// [Client] のリダイレクト動作は、WHATWG Fetch標準には従っていない点に
 // 注意してください。これは、確立された標準が存在する前に実装されたためです。
-// そのため、現代的な基準では [Client] は比較的寛容な挙動を示します。
+// そのため、現代的な基準では [Client] は比較的寛容な動作を示します。
 // たとえば、サブドメインへのリダイレクトや、同一ホスト上で異なるスキームへの
 // リダイレクトでも、機密ヘッダーが保持されます。
 //
@@ -198,7 +194,7 @@ func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 // リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
-// PostFormは、データのキーと値がURLエンコードされたリクエストボディとして指定されたURLにPOSTを発行します。
+// PostFormは、データのキーと値がURLエンコードされたリクエストボディーとして指定されたURLにPOSTを発行します。
 //
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
 // 他のヘッダーを設定するには、[NewRequest] とDefaultClient.Doを使用します。
@@ -213,7 +209,7 @@ func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, 
 // 指定された [context.Context] でリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
 func PostForm(url string, data url.Values) (resp *Response, err error)
 
-// PostForm関数は、指定されたデータのキーと値のペアをリクエストボディにエンコードして、URLにPOSTリクエストを送信します。
+// PostForm関数は、指定されたデータのキーと値のペアをリクエストボディーにエンコードして、URLにPOSTリクエストを送信します。
 //
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
 // 他のヘッダーを設定するには、[NewRequest] と [Client.Do] を使用します。

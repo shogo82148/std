@@ -11,11 +11,11 @@ import (
 )
 
 // MakeDotArgs package all the arguments that match a ... T parameter into a []T.
-func MakeDotArgs(pos src.XPos, typ *types.Type, args []ir.Node) ir.Node
+func MakeDotArgs(curfunc *ir.Func, pos src.XPos, typ *types.Type, args []ir.Node) ir.Node
 
 // FixVariadicCall rewrites calls to variadic functions to use an
 // explicit ... argument if one is not already present.
-func FixVariadicCall(call *ir.CallExpr)
+func FixVariadicCall(curfunc *ir.Func, call *ir.CallExpr)
 
 // FixMethodCall rewrites a method call t.M(...) into a function call T.M(t, ...).
 func FixMethodCall(call *ir.CallExpr)

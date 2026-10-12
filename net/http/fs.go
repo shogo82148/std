@@ -12,19 +12,27 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Dirは、特定のディレクトリツリーに制限されたネイティブファイルシステムを使用して [FileSystem] を実装します。
+// Dirは、ローカルファイルシステムを使用して [FileSystem] を実装します。
+// ほとんどのユーザーは、Dirではなく、[os.Root] とともに [FileServerFS] を使用することを推奨します。
 //
-// [FileSystem.Open] メソッドは'/'で区切られたパスを取りますが、Dirの文字列値はURLではなくネイティブファイルシステム上のディレクトリーパスであるため、[filepath.Separator] で区切られます。これは必ずしも'/'ではありません。
-//
-// Dirは、機密ファイルやディレクトリを公開する可能性があります。Dirは、ディレクトリツリーから外部を指すシンボリックリンクを追跡します。これは、ユーザーが任意のシンボリックリンクを作成できるディレクトリからサービスを提供する場合に特に危険です。Dirは、ピリオドで始まるファイルやディレクトリにもアクセスを許可します。これには、.gitのような機密ディレクトリや.htpasswdのような機密ファイルが含まれます。ピリオドで始まるファイルを除外するには、ファイル/ディレクトリをサーバーから削除するか、カスタムFileSystem実装を作成してください。
-//
+// Dirの文字列値は、提供するローカルディレクトリーのパスを指定します。
 // 空のDirは"."として扱われます。
+//
+// Dirは、ディレクトリーの外部を指すリンクを含め、シンボリックリンクをたどります。
+//
+// Dirは、ドットで始まるファイルも提供します。これにより、.gitのような機密ディレクトリーや
+// .htpasswordのような機密ファイルが公開される可能性があります。
+//
+// [os.Root] を使用してディレクトリーへのアクセスを制限する例や、
+// ドットで始まるファイルを隠す例については、[FileServerFS] を参照してください。
 type Dir string
 
-// Openは、[os.Open] を使用して、ディレクトリdにルートされ、相対的なファイルを読み取るために [FileSystem] を実装します。
+// Openは、[os.Open] を使用して、ディレクトリーdにルートされ、相対的なファイルを読み取るために [FileSystem] を実装します。
 func (d Dir) Open(name string) (File, error)
 
 // FileSystemは、名前付きファイルのコレクションへのアクセスを実装します。
+// ほとんどのユーザーは、FileSystemではなく [FileServerFS] を使用することを推奨します。
+//
 // ファイルパスの要素は、ホストオペレーティングシステムの規約に関係なく、スラッシュ（'/'、U+002F）で区切られます。
 // FileSystemを [Handler] に変換するには、[FileServer] 関数を参照してください。
 //
@@ -34,9 +42,10 @@ type FileSystem interface {
 	Open(name string) (File, error)
 }
 
-// [FileSystem] のOpenメソッドによって返され、[FileServer] 実装によって提供されるファイルです。
+// [FileSystem] のOpenメソッドによって返されるファイルです。
+// ほとんどのユーザーは、FileSystemではなく [FileServerFS] を使用することを推奨します。
 //
-// メソッドは、 [*os.File] と同じ動作をする必要があります。
+// Fileのメソッドは、[*os.File] のメソッドと同じように動作します。
 type File interface {
 	io.Closer
 	io.Reader
@@ -70,10 +79,10 @@ type File interface {
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
 // ServeFileは、指定された名前の
-// ファイルまたはディレクトリの内容でリクエストに応答します。
+// ファイルまたはディレクトリーの内容でリクエストに応答します。
 //
-// 提供されたファイル名またはディレクトリ名が相対パスの場合、それは
-// 現在のディレクトリに対して相対的に解釈され、親ディレクトリに昇格することができます。
+// 提供されたファイル名またはディレクトリー名が相対パスの場合、それは
+// 現在のディレクトリーに対して相対的に解釈され、親ディレクトリーに昇格することができます。
 // 提供された名前がユーザー入力から構築されている場合、[ServeFile] を呼び出す前に
 // サニタイズする必要があります。
 //
@@ -87,11 +96,11 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // パスを変更するか、[ServeContent] を使用します。
 //
 // それらの2つの特殊なケースの外では、ServeFileは
-// r.URL.Pathを使用して提供するファイルやディレクトリを選択しません。
-// 名前引数で提供されたファイルやディレクトリのみが使用されます。
+// r.URL.Pathを使用して提供するファイルやディレクトリーを選択しません。
+// 名前引数で提供されたファイルやディレクトリーのみが使用されます。
 func ServeFile(w ResponseWriter, r *Request, name string)
 
-// ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
+// ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリーの内容でリクエストに応答します。
 // fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
 //
 // 提供された名前がユーザー入力から構築されている場合、
@@ -103,31 +112,32 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 // もう1つの特別な場合として、ServeFileFSはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
 // そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
 //
-// これら2つの特別な場合以外では、ServeFileFSはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
-// 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
+// これら2つの特別な場合以外では、ServeFileFSはファイルまたはディレクトリーを選択するためにr.URL.Pathを使用しません。
+// 名前引数で提供されたファイルまたはディレクトリーのみが使用されます。
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
 // FSはfsysを [FileSystem] の実装に変換します。
 // これは [FileServer] と [NewFileTransport] で使用するためのものです。
 // fsysによって提供されるファイルは [io.Seeker] を実装しなければなりません。
+//
+// ほとんどのユーザーは、代わりに [FileServerFS] を使用すべきです。
 func FS(fsys fs.FS) FileSystem
 
 // FileServerは、ルートでルートされたファイルシステムの内容でHTTPリクエストを処理するハンドラーを返します。
+// ほとんどのユーザーは、代わりに [FileServerFS] を使用すべきです。
 //
 // 特別な場合として、返されたファイルサーバーは、"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
-//
-// オペレーティングシステムのファイルシステム実装を使用するには、[http.Dir] を使用してください。
-//
-//	http.Handle("/", http.FileServer(http.Dir("/tmp")))
-//
-// [fs.FS] の実装を使用するには、代わりに [http.FileServerFS] を使用します。
 func FileServer(root FileSystem) Handler
 
-// FileServerFSは、ファイルシステムfsysの内容でHTTPリクエストを処理するハンドラを返します。
+// FileServerFSは、ファイルシステムfsysの内容でHTTPリクエストを処理するハンドラーを返します。
 // fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
 //
 // 特別なケースとして、返されたファイルサーバーは、"/index.html"で終わる任意のリクエストを、
 // 最後の"index.html"なしの同じパスにリダイレクトします。
 //
-//	http.Handle("/", http.FileServerFS(fsys))
-func FileServerFS(root fs.FS) Handler
+// FileServer serves all files contained within the [fs.FS].
+// The examples demonstrate safely serving a local directory
+// while blocking symlinks that lead outside the directory,
+// and serving a local directory while hiding files that
+// start with a dot such as ".git" and ".htpassword".
+func FileServerFS(fsys fs.FS) Handler

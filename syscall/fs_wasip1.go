@@ -95,7 +95,7 @@ type Stat_t struct {
 
 	Mode int
 
-	// Uid and Gid are always zero on wasip1 platforms
+	// wasip1プラットフォームでは、UidとGidは常にゼロです
 	Uid uint32
 	Gid uint32
 }

@@ -84,10 +84,25 @@ type Conn struct {
 	clientProtocol string
 
 	// 入力/出力
-	in, out   halfConn
-	rawInput  bytes.Buffer
-	input     bytes.Reader
-	hand      bytes.Buffer
+	in, out halfConn
+	// rawInputは、レコードヘッダーから始まる生の入力を保持します。
+	// 入力がバッファリングされていないときはnilで、その場合バッファーは
+	// rawInputPoolに返却されており、Readでアイドル状態の接続が
+	// レコードサイズのバッファーを保持し続けないようになっています。
+	// readFromUntilによって、必要になったときにプールから再取得されます。
+	rawInput *bytes.Buffer
+	// smallInputは、rawInputがrawInputPoolに返却された後、
+	// レコードヘッダーを待つ間にrawInputとして使われる小さなバッファーです。
+	// readFromUntilによって必要になったときに割り当てられ、
+	// その後は接続が存続する間保持されます。
+	smallInput *bytes.Buffer
+	// inputは、rawInput.Nextから得られた、読み取り待ちのアプリケーションデータを保持します。
+	input bytes.Reader
+	// handは、読み取り待ちのハンドシェイクデータを保持します。
+	// ハンドシェイクデータがバッファリングされていないときはnilで、その場合
+	// バッファーはhandPoolに返却されています。アクセスするには
+	// handBufとhandLenを使用してください。
+	hand      *bytes.Buffer
 	buffering bool
 	sendBuf   []byte
 
@@ -126,16 +141,16 @@ func (c *Conn) SetReadDeadline(t time.Time) error
 // 書き込みがタイムアウトした後、TLSの状態が壊れるため、以降の書き込みは同じエラーを返します。
 func (c *Conn) SetWriteDeadline(t time.Time) error
 
-// NetConnはcによってラップされた基になる接続を返します。
+// NetConnはcによってラップされた基礎となる接続を返します。
 // ただし、この接続に直接書き込みまたは読み込みを行うと、TLSセッションが破損することに注意してください。
 func (c *Conn) NetConn() net.Conn
 
-// RecordHeaderError は、TLS レコードヘッダが無効な場合に返されます。
+// RecordHeaderError は、TLS レコードヘッダーが無効な場合に返されます。
 type RecordHeaderError struct {
 	// Msgはエラーを説明する人が読みやすい文字列を含んでいます。
 	Msg string
 
-	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダの5バイトが含まれています。
+	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダーの5バイトが含まれています。
 	RecordHeader [5]byte
 
 	// Connは、クライアントが初期ハンドシェイクを送信しているが、TLSのように見えない場合の基礎となるnet.Connを提供します。
@@ -156,7 +171,7 @@ func (c *Conn) Write(b []byte) (int, error)
 // Readは接続からデータを読み込みます。
 //
 // [Conn.Handshake] を呼び出すため、ハンドシェイクがまだ完了していない場合、
-// Readが呼び出される前にReadと [Conn.Write] の両方にデッドラインを設定する必要があります
+// Readが呼び出される前にReadと [Conn.Write] の両方に期限を設定する必要があります
 // 無制限のブロッキングを防ぐためです。
 // [Conn.SetDeadline] 、 [Conn.SetReadDeadline] 、および [Conn.SetWriteDeadline] を参照してください。
 func (c *Conn) Read(b []byte) (int, error)

@@ -4,8 +4,8 @@
 
 package fs
 
-// ReadLinkFS is the interface implemented by a file system
-// that supports reading symbolic links.
+// ReadLinkFSは、シンボリックリンクの読み取りをサポートするファイルシステムによって
+// 実装されるインターフェースです。
 type ReadLinkFS interface {
 	FS
 
@@ -14,14 +14,14 @@ type ReadLinkFS interface {
 	Lstat(name string) (FileInfo, error)
 }
 
-// ReadLink returns the destination of the named symbolic link.
+// ReadLinkは、指定されたシンボリックリンクのリンク先を返します。
 //
-// If fsys does not implement [ReadLinkFS], then ReadLink returns an error.
+// fsysが [ReadLinkFS] を実装していない場合、ReadLinkはエラーを返します。
 func ReadLink(fsys FS, name string) (string, error)
 
-// Lstat returns a [FileInfo] describing the named file.
-// If the file is a symbolic link, the returned [FileInfo] describes the symbolic link.
-// Lstat makes no attempt to follow the link.
+// Lstatは、指定されたファイルを記述する [FileInfo] を返します。
+// ファイルがシンボリックリンクの場合、返される [FileInfo] はシンボリックリンクを記述します。
+// Lstatはリンクをたどろうとはしません。
 //
-// If fsys does not implement [ReadLinkFS], then Lstat is identical to [Stat].
+// fsysが [ReadLinkFS] を実装していない場合、Lstatは [Stat] と同じです。
 func Lstat(fsys FS, name string) (FileInfo, error)

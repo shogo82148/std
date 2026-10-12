@@ -18,6 +18,7 @@ var ErrProcessDone = errors.New("os: process already finished")
 
 // Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
+	// PidはオペレーティングシステムのプロセスIDです。
 	Pid int
 
 	// state contains the atomic process state.
@@ -44,14 +45,14 @@ type Process struct {
 // ProcAttrはStartProcessによって開始される新しいプロセスに適用される属性を保持します。
 type ProcAttr struct {
 
-	// Dir が空でない場合、子プロセスを作成する前にディレクトリに変更します。
+	// Dir が空でない場合、子プロセスを作成する前にディレクトリーに変更します。
 	Dir string
 
 	// もしEnvがnilでない場合、それは新しいプロセスの環境変数をEnvironによって返される形式で指定します。
 	// もしEnvがnilである場合、Environの結果が使用されます。
 	Env []string
 
-	// Filesは新しいプロセスに引き継がれるオープンファイルを指定します。最初の3つのエントリは標準入力、標準出力、標準エラーに対応します。実装は、基になるオペレーティングシステムに応じて、追加のエントリをサポートすることがあります。nilのエントリは、そのファイルがプロセスの開始時に閉じられることを意味します。
+	// Filesは新しいプロセスに引き継がれるオープンファイルを指定します。最初の3つのエントリーは標準入力、標準出力、標準エラーに対応します。実装は、基礎となるオペレーティングシステムに応じて、追加のエントリーをサポートすることがあります。nilのエントリーは、そのファイルがプロセスの開始時に閉じられることを意味します。
 	// Unixシステムでは、StartProcessはこれらのFile値をブロッキングモードに変更します。つまり、SetDeadlineは動作しなくなり、Closeを呼び出してもReadまたはWriteが中断されません。
 	Files []*File
 
@@ -86,7 +87,7 @@ func FindProcess(pid int) (*Process, error)
 // StartProcessは、name、argv、attrで指定されたプログラム、引数、属性で新しいプロセスを開始します。
 // argvスライスは新しいプロセスで [os.Args] になるため、通常はプログラム名で始まります。
 //
-// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
+// 呼び出し元のゴルーチンが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
 //
 // StartProcessは低レベルなインターフェースです。[os/exec] パッケージはより高レベルなインターフェースを提供します。
 //

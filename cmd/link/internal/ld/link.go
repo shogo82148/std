@@ -61,8 +61,9 @@ type Link struct {
 	ErrorReporter
 	ArchSyms
 
-	outSem chan int
-	Out    *OutBuf
+	outSem   chan int
+	Out      *OutBuf
+	OutDWARF *OutBuf
 
 	version int
 
@@ -87,7 +88,8 @@ type Link struct {
 	PackageFile  map[string]string
 	PackageShlib map[string]string
 
-	tramps []loader.Sym
+	tramps           []loader.Sym
+	dwarfTrampolines []dwarfTrampoline
 
 	compUnits []*sym.CompilationUnit
 	runtimeCU *sym.CompilationUnit

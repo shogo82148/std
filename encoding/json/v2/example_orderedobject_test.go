@@ -42,9 +42,10 @@ func Example_orderedObject() {
 		log.Fatalf("roundtrip mismatch: got %v, want %v", got, want)
 	}
 
-	// シリアライズされたJSONオブジェクトを表示します。
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {

@@ -17,3 +17,16 @@ const Enabled = available
 // This definition allows us to avoid importing math/big.
 // Conversion between BigInt and *big.Int is in crypto/internal/boring/bbig.
 type BigInt []uint
+
+type Block interface {
+	BlockSize() int
+	Encrypt(dst, src []byte)
+	Decrypt(dst, src []byte)
+}
+
+type AEAD interface {
+	NonceSize() int
+	Overhead() int
+	Seal(dst, nonce, plaintext, additionalData []byte) []byte
+	Open(dst, nonce, ciphertext, additionalData []byte) ([]byte, error)
+}

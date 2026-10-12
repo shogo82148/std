@@ -22,7 +22,7 @@ import (
 //	err := ...
 //	serr, ok := errors.AsType[*json.SemanticError](err)
 //	if ok && serr.Err == json.ErrUnknownName {
-//		ptr := serr.JSONPointer // 未知の名前へのJSONポインタ
+//		ptr := serr.JSONPointer // 未知の名前へのJSONポインター
 //		name := ptr.LastToken() // 未知の名前自体
 //		...
 //	}
@@ -30,7 +30,8 @@ import (
 // このエラーは [RejectUnknownMembers] がtrueの場合のみ返されます。
 var ErrUnknownName = errors.New("unknown object member name")
 
-// SemanticErrorは、JSONデータをGoデータへ、またはその逆へ意味付けする際のエラーを表します。
+// SemanticError は、JSON データを Go のデータとして解釈する際の意味や、
+// その逆の変換における意味の決定に失敗したエラーを表します。
 //
 // このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SemanticError struct {
@@ -41,7 +42,7 @@ type SemanticError struct {
 
 	// ByteOffsetは、このバイトオフセット位置以降でエラーが発生したことを示します。
 	ByteOffset int64
-	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を使って
+	// JSONPointerは、RFC 6901で定義されたJSONポインター表記を使って
 	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer jsontext.Pointer
 
@@ -53,7 +54,7 @@ type SemanticError struct {
 	// GoTypeは、処理できなかったGoの型を示します。
 	GoType reflect.Type
 
-	// Errは、根本的なエラーです。
+	// Errは、基礎となるエラーです。
 	Err error
 }
 

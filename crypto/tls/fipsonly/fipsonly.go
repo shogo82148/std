@@ -4,11 +4,11 @@
 
 //go:build boringcrypto
 
-// Package fipsonly restricts all TLS configuration to FIPS-approved settings.
+// fipsonlyパッケージは、すべてのTLS設定をFIPS承認済みの設定に制限します。
 //
-// The effect is triggered by importing the package anywhere in a program, as in:
+// この効果は、次のようにプログラム内のどこかでパッケージをインポートすることで発動します:
 //
 //	import _ "crypto/tls/fipsonly"
 //
-// This package only exists when using Go compiled with GOEXPERIMENT=boringcrypto.
+// このパッケージは、GOEXPERIMENT=boringcryptoでコンパイルされたGoを使用する場合にのみ存在します。
 package fipsonly

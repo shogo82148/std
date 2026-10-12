@@ -130,14 +130,14 @@ type DocLink struct {
 
 // Parserはドキュメントコメントのパーサーです。
 // 構造体のフィールドは、[Parser.Parse] を呼び出す前に埋めることで、
-// パースプロセスの詳細をカスタマイズすることができます。
+// 解析プロセスの詳細をカスタマイズすることができます。
 type Parser struct {
 
 	// WordsはGo言語の識別子に対応する単語のマップであり、斜体にする必要があり、
 	// かつ可能であればリンクも作成します。
 	// もしWords[w]が空の文字列であれば、単語wは斜体にのみなります。
 	// そうでなければ、Words[w]をリンクターゲットとしてリンクが作成されます。
-	// Wordsは[go/doc.ToHTML]のwordsパラメータに対応します。
+	// Wordsは[go/doc.ToHTML]のwordsパラメーターに対応します。
 	Words map[string]string
 
 	// LookupPackageはパッケージ名をインポートパスに変換する。
@@ -150,7 +150,7 @@ type Parser struct {
 	// LookupPackage(name)がok == falseを返す場合、
 	//[name]（または[name.Sym]または[name.Sym.Method]）
 	//はドキュメントへのリンクと見なされないが、
-	// nameが標準ライブラリ内のパッケージの完全な（ただし要素が1つだけの）インポートパスである場合、
+	// nameが標準ライブラリー内のパッケージの完全な（ただし要素が1つだけの）インポートパスである場合、
 	//[math]や[io.Reader]のように
 	//例外として扱われる。 LookupPackageはそれらの名前に対しても呼び出されるため、
 	//同じパッケージ名の他のパッケージのインポートを参照することができる。
@@ -169,14 +169,14 @@ type Parser struct {
 }
 
 // DefaultLookupPackageは、[Parser.LookupPackage] がnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
-// これは、単一要素のインポートパスを持つ標準ライブラリのパッケージ名を認識します。
+// これは、単一要素のインポートパスを持つ標準ライブラリーのパッケージ名を認識します。
 // それ以外の場合は、名前を付けることができません。
 //
 // ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
-// Parse parses the doc comment text and returns the *[Doc] form.
-// Comment markers (/* // and */) in the text must have already been removed.
+// Parseはドキュメントコメントのテキストを解析し、*[Doc] 形式を返します。
+// テキスト内のコメントマーカー（/* // および */）は事前に取り除かれている必要があります。
 func (p *Parser) Parse(text string) *Doc
 
 const (

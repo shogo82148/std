@@ -24,7 +24,7 @@ const (
 	CHAR
 	STRING
 
-	// オペレータと区切り文字
+	// オペレーターと区切り文字
 	ADD
 	SUB
 	MUL
@@ -123,17 +123,14 @@ func (tok Token) String() string
 
 // 優先順位ベースの式の解析のための定数のセット。
 // 非演算子は最低の優先度を持ち、1から始まる演算子が続きます。
-// 最高の優先度はセレクタ、インデックス、その他の演算子や区切り記号トークンのための「キャッチオール」優先度として機能します。
+// 最高の優先度はセレクター、インデックス、その他の演算子や区切り記号トークンのための「キャッチオール」優先度として機能します。
 const (
 	LowestPrec  = 0
 	UnaryPrec   = 6
 	HighestPrec = 7
 )
 
-// Precedence returns the operator precedence of the binary
-// operator op. If op is not a binary operator, the result
-// is LowestPrecedence.
-// Precedenceは、バイナリ演算子opの演算子の優先度を返します。opがバイナリ演算子でない場合、結果はLowestPrecedenceになります。
+// Precedenceは、バイナリー演算子opの演算子の優先度を返します。opがバイナリー演算子でない場合、結果はLowestPrecedenceになります。
 func (op Token) Precedence() int
 
 // Lookupは識別子をキーワードトークンまたは [IDENT]（キーワードでない場合）にマップします。

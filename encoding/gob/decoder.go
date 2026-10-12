@@ -29,7 +29,7 @@ type Decoder struct {
 	ignoreDepth int
 }
 
-// NewDecoderは、[io.Reader] から読み取る新しいデコーダを返します。
+// NewDecoderは、[io.Reader] から読み取る新しいデコーダーを返します。
 // もしrが [io.ByteReader] も実装していない場合、それは [bufio.Reader] でラップされます。
 func NewDecoder(r io.Reader) *Decoder
 
@@ -37,7 +37,7 @@ func NewDecoder(r io.Reader) *Decoder
 // 空のインターフェース値で表されるデータに格納します。
 // もしeがnilの場合、値は破棄されます。それ以外の場合、
 // eの下にある値は、受け取った次のデータ項目の
-// 正しい型へのポインタでなければなりません。
+// 正しい型へのポインターでなければなりません。
 // 入力がEOFにある場合、Decodeは [io.EOF] を返し、
 // eを変更しません。
 func (dec *Decoder) Decode(e any) error
@@ -45,7 +45,7 @@ func (dec *Decoder) Decode(e any) error
 // DecodeValueは、入力ストリームから次の値を読み取ります。
 // もしvがゼロのreflect.Value（v.Kind() == Invalid）の場合、DecodeValueは値を破棄します。
 // それ以外の場合、値はvに格納されます。その場合、vは
-// 非nilのデータへのポインタを表すか、または代入可能なreflect.Value（v.CanSet()）でなければなりません。
+// 非nilのデータへのポインターを表すか、または代入可能なreflect.Value（v.CanSet()）でなければなりません。
 // 入力がEOFにある場合、DecodeValueは [io.EOF] を返し、
 // vを変更しません。
 func (dec *Decoder) DecodeValue(v reflect.Value) error

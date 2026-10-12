@@ -55,6 +55,7 @@ package regexp
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/regexp/syntax"
 )
 
@@ -93,7 +94,7 @@ func (re *Regexp) String() string
 // Copyは、異なる [Regexp.Longest] 設定で2つのコピーを作成する必要がある場合には依然適切かもしれません。
 func (re *Regexp) Copy() *Regexp
 
-// Compileは正規表現をパースし、成功した場合には、
+// Compileは正規表現を解析し、成功した場合には、
 // テキストと照合するために使用できる [Regexp] オブジェクトを返します。
 //
 // テキストと照合する際、正規表現は入力のなるべく早い位置（最も左端）から一致し、
@@ -118,11 +119,11 @@ func CompilePOSIX(expr string) (*Regexp, error)
 // このメソッドは [Regexp] を修正するため、他のメソッドと同時に呼び出すことはできません。
 func (re *Regexp) Longest()
 
-// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックします。
+// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化が簡素化されます。
 func MustCompile(str string) *Regexp
 
-// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはpanicを発生させます。
+// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化を簡素化します。
 func MustCompilePOSIX(str string) *Regexp
 
@@ -156,15 +157,15 @@ func (re *Regexp) MatchString(s string) bool
 func (re *Regexp) Match(b []byte) bool
 
 // MatchReaderは、[io.RuneReader] によって返されるテキストに正規表現パターンの一致があるかどうかを報告します。
-// より複雑なクエリには [Compile] と完全な [Regexp] インターフェイスを使用する必要があります。
+// より複雑なクエリーには [Compile] と完全な [Regexp] インターフェイスを使用する必要があります。
 func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 
 // MatchStringは、文字列sが正規表現パターンに一致するものを含んでいるかどうかを報告します。
-// より複雑なクエリを行う場合は、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
+// より複雑なクエリーを行う場合は、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
 func MatchString(pattern string, s string) (matched bool, err error)
 
 // Matchは、バイトスライス b が正規表現パターンのいずれかに一致するかどうかを報告します。
-// より複雑なクエリには、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
+// より複雑なクエリーには、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
 func Match(pattern string, b []byte) (matched bool, err error)
 
 // ReplaceAllStringは、srcの [Regexp] にマッチする箇所を置換文字列replで置き換えたsrcのコピーを返します。repl内では、 [Regexp.Expand] と同様に$記号が解釈されます。例えば、$1は最初のサブマッチのテキストを表します。
@@ -173,7 +174,7 @@ func (re *Regexp) ReplaceAllString(src, repl string) string
 // ReplaceAllLiteralStringはsrcのコピーを返し、 [Regexp] の一致部分を置換文字列replで置き換えます。置換replは直接代入され、 [Regexp.Expand] を使用しません。
 func (re *Regexp) ReplaceAllLiteralString(src, repl string) string
 
-// ReplaceAllStringFuncは、srcのすべての [Regexp] の一致箇所を、関数replが適用された一致した部分文字列の返り値に置き換えたコピーを返します。replによって返される置換文字列は、 [Regexp.Expand] を使用せずに直接代入されます。
+// ReplaceAllStringFuncは、srcのすべての [Regexp] の一致箇所を、関数replが適用された一致した部分文字列の戻り値に置き換えたコピーを返します。replによって返される置換文字列は、 [Regexp.Expand] を使用せずに直接代入されます。
 func (re *Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
 
 // ReplaceAllは、 [Regexp] の一致した箇所を置換テキストreplで置き換えたsrcのコピーを返します。repl内の$記号は [Regexp.Expand] と同様に解釈されます。つまり、$1は最初のサブマッチのテキストを表します。
@@ -246,9 +247,41 @@ func (re *Regexp) FindStringSubmatchIndex(s string) []int
 // これは返されたマッチを超えて読み込むことも含まれます。
 func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
 
+// Allはbにおけるreのすべてのマッチを返します。
+func (re *Regexp) All(b []byte) iter.Seq[[]byte]
+
+// AllStringはsにおけるreのすべてのマッチを返します。
+func (re *Regexp) AllString(s string) iter.Seq[string]
+
+// AllIndexはbにおけるreのすべてのマッチの位置を返します。
+func (re *Regexp) AllIndex(b []byte) iter.Seq[[]int]
+
+// AllStringIndexはsにおけるreのすべてのマッチの位置を返します。
+func (re *Regexp) AllStringIndex(s string) iter.Seq[[]int]
+
+// AllSubmatchは、サブマッチの位置を含め、bにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はm[0]、
+// 最初のサブマッチはm[1]、以下同様です。
+func (re *Regexp) AllSubmatch(b []byte) iter.Seq[[][]byte]
+
+// AllStringSubmatchは、サブマッチの位置を含め、sにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、m[0]はマッチ全体、
+// m[1]は最初のサブマッチ、以下同様です。
+func (re *Regexp) AllStringSubmatch(s string) iter.Seq[[]string]
+
+// AllSubmatchIndexは、サブマッチの位置を含め、bにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はb[m[0]:m[1]]、
+// 最初のサブマッチはb[m[2]:m[3]]、以下同様です。
+func (re *Regexp) AllSubmatchIndex(b []byte) iter.Seq[[]int]
+
+// AllStringSubmatchIndexは、サブマッチの位置を含め、sにおけるreのすべてのマッチの位置を返します。
+// 返される各マッチmにおいて、マッチ全体はs[m[0]:m[1]]、
+// 最初のサブマッチはs[m[2]:m[3]]、以下同様です。
+func (re *Regexp) AllStringSubmatchIndex(s string) iter.Seq[[]int]
+
 // FindAllはbでreのすべてのマッチを返します。
 // n >= 0の場合、FindAllは最大でnのマッチを返します。
-// 同等のイテレーター形式については、[Regexp.All]を参照してください。
+// 同等のイテレーター形式については、[Regexp.All] を参照してください。
 func (re *Regexp) FindAll(b []byte, n int) [][]byte
 
 // FindAllStringはsでreのすべてのマッチを返します。
@@ -296,13 +329,16 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
 //
 // テンプレート中では、変数は$nameまたは${name}の形式の部分文字列で示されます。nameは非空の文字、数字、アンダースコアの連続です。$1のような純粋な数字の名前は、対応するインデックスのサブマッチを参照します。その他の名前は、(?P<name>...)構文で名前付きのキャプチャ括弧を参照します。範囲外またはマッチしないインデックスの参照または正規表現に存在しない名前は、空のスライスで置き換えられます。
 //
-// $name形式では、nameは可能な限り長くなります：$1xは${1x}ではなく${1}xと等価です。また、$10は${10}ではなく${1}0と等価です。
+// $name形式では、nameは可能な限り長くなります：$1xは${1x}ではなく${1}xと同等です。また、$10は${10}ではなく${1}0と同等です。
 // 出力にリテラルの$を挿入するには、テンプレートで$$を使用してください。
 func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte
 
 // ExpandStringは、 [Regexp.Expand] と同様にテンプレートとソースが文字列の場合に使用します。
 // 割り当てに対する制御を呼び出し元のコードに提供するために、バイトスライスに追加して返します。
 func (re *Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
+
+// SplitSeqは、式で区切られたsの部分文字列に対するイテレーターを返します。
+func (re *Regexp) SplitSeq(s string) iter.Seq[string]
 
 // Splitは式で区切られたs内の部分文字列にスライスし、
 // それらの式のマッチ間の部分文字列のスライスを返します。
@@ -315,7 +351,7 @@ func (re *Regexp) ExpandString(dst []byte, template string, src string, match []
 //	s := regexp.MustCompile("a*").Split("abaabaccadaaae", 5)
 //	// s: ["", "b", "b", "c", "cadaaae"]
 //
-// countパラメータによって返す部分文字列の数が決まります:
+// countパラメーターによって返す部分文字列の数が決まります:
 //
 //   - n > 0: 最大でn個の部分文字列を返します。最後の部分文字列は分割されなかった残りの部分です。
 //   - n == 0: 結果はnil（部分文字列なし）です。
