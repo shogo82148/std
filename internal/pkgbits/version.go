@@ -1,4 +1,4 @@
-// Copyright 2021 The Go Authors. All rights reserved.
+// Copyright 2024 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -36,6 +36,10 @@ const (
 
 	// V4: encodes generic methods as standalone function objects
 	V4
+
+	// V5: encodes the index of methods to preserve relative order
+	// of nongeneric and generic methods (go.dev/issue/81188).
+	V5
 )
 
 // Field denotes a unit of data in the serialized unified IR bitstream.
@@ -73,6 +77,10 @@ const (
 
 	// Generic methods may appear as standalone function objects.
 	GenericMethods
+
+	// Method index is encoded to preserve relative order of
+	// nongeneric and generic methods.
+	PreserveMethodOrder
 )
 
 // Has reports whether field f is present in a bitstream at version v.
