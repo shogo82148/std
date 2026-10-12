@@ -21,7 +21,7 @@ const (
 )
 
 // Writerは書き込まれたデータを受け取り、そのデータの圧縮された形式を
-// 基になるライターに書き込みます（[NewWriter] を参照）。
+// 基礎となるライターに書き込みます（[NewWriter] を参照）。
 type Writer struct {
 	w           io.Writer
 	level       int
@@ -67,14 +67,14 @@ func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
 // 初期状態と同等にしますが、代わりにwに書き込みます。
 func (z *Writer) Reset(w io.Writer)
 
-// Writeはpの圧縮された形式を基になる [io.Writer] に書き込みます。
+// Writeはpの圧縮された形式を基礎となる [io.Writer] に書き込みます。
 // 圧縮されたバイトは、[Writer] が閉じられるか
 // 明示的にフラッシュされるまで必ずしもフラッシュされません。
 func (z *Writer) Write(p []byte) (n int, err error)
 
-// Flushは、Writerをその基になる [io.Writer] にフラッシュします。
+// Flushは、Writerをその基礎となる [io.Writer] にフラッシュします。
 func (z *Writer) Flush() error
 
-// Closeは、Writerを閉じ、書き込まれていないデータを基になる [io.Writer] にフラッシュしますが、
-// 基になる [io.Writer] を閉じません。
+// Closeは、Writerを閉じ、書き込まれていないデータを基礎となる [io.Writer] にフラッシュしますが、
+// 基礎となる [io.Writer] を閉じません。
 func (z *Writer) Close() error

@@ -98,7 +98,7 @@ import (
 type Error struct {
 	// Nameは、エラーが発生したファイル名です。
 	Name string
-	// Errは、基になるエラーです。
+	// Errは、基礎となるエラーです。
 	Err error
 }
 

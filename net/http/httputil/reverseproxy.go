@@ -54,7 +54,7 @@ func (r *ProxyRequest) SetXForwarded()
 
 // ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシーするHTTPハンドラーです。
 //
-// 1xxレスポンスは、基盤となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
+// 1xxレスポンスは、基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
 //
 // ホップバイホップヘッダー（RFC 9110のセクション7.6.1参照）、
 // Connection、Proxy-Connection、Keep-Alive、Proxy-Authenticate、

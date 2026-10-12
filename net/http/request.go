@@ -381,7 +381,7 @@ func (r *Request) SetBasicAuth(username, password string)
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
 // MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディーのサイズを制限するために使用されます。
-// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して [*MaxBytesError] 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
+// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して [*MaxBytesError] 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基礎となるリーダーを閉じます。
 //
 // MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、[ResponseWriter] に制限に達した後に接続を閉じるように指示します。
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser

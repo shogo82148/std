@@ -57,7 +57,7 @@ var (
 	Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
 )
 
-// オープンファイル時に基になるシステムのものをラップするフラグ。すべてのフラグが与えられたシステム上で実装されているわけではありません。
+// オープンファイル時に基礎となるシステムのものをラップするフラグ。すべてのフラグが与えられたシステム上で実装されているわけではありません。
 const (
 	// O_RDONLY、O_WRONLY、またはO_RDWRのいずれかを指定する必要があります。
 	O_RDONLY int = syscall.O_RDONLY

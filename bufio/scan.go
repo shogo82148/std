@@ -67,7 +67,7 @@ func NewScanner(r io.Reader) *Scanner
 func (s *Scanner) Err() error
 
 // BytesはScanの呼び出しによって生成された最新のトークンを返します。
-// 基になる配列は、後続の [Scanner.Scan] の呼び出しによって上書きされる可能性があります。
+// 基礎となる配列は、後続の [Scanner.Scan] の呼び出しによって上書きされる可能性があります。
 // メモリー確保は行われません。
 func (s *Scanner) Bytes() []byte
 

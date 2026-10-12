@@ -76,15 +76,15 @@ func (z *Reader) Reset(r io.Reader) error
 // 動作を無効にすることは、個々のgzipデータストリームを識別するファイル形式を読み込む場合や、
 // gzipデータストリームと他のデータストリームを混在させるファイル形式を読み込む場合に便利です。
 // このモードでは、 [Reader] がデータストリームの終端に達した場合、 [Reader.Read] は [io.EOF] を返します。
-// 基底のリーダーは [io.ByteReader] を実装している必要があり、gzipストリームの直後に位置を残しておくようになります。
+// 基礎となるリーダーは [io.ByteReader] を実装している必要があり、gzipストリームの直後に位置を残しておくようになります。
 // 次のストリームを開始するには、z.Reset（r）を呼び出した後にz.Multistream(false)を呼び出します。
 // 次のストリームが存在しない場合、z.Reset（r）は [io.EOF] を返します。
 func (z *Reader) Multistream(ok bool)
 
-// Readは [io.Reader] を実装し、基になるリーダーから非圧縮バイトを読み取ります。
+// Readは [io.Reader] を実装し、基礎となるリーダーから非圧縮バイトを読み取ります。
 func (z *Reader) Read(p []byte) (n int, err error)
 
-// Closeは [Reader] を閉じます。基になるリーダーは閉じません。
+// Closeは [Reader] を閉じます。基礎となるリーダーは閉じません。
 // GZIPチェックサムを検証するには、リーダーは
 // [io.EOF] まで完全に消費される必要があります。
 func (z *Reader) Close() error

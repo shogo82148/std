@@ -17,9 +17,9 @@ import (
 //
 //	type S struct { ... }
 //
-// は、基底型が構造体である定義された型を作成し、
+// は、基礎となる型が構造体である定義された型を作成し、
 // この型を [TypeName] であるオブジェクトSにバインドします。
-// 基底型にアクセスするには [Named.Underlying] を使用してください。
+// 基礎となる型にアクセスするには [Named.Underlying] を使用してください。
 // オブジェクトSを取得するには [Named.Obj] を使用してください。
 //
 // 型エイリアス（Go 1.9）以前では、仕様は定義された型を「名前付き型」と呼んでいました。
@@ -44,7 +44,7 @@ type Named struct {
 	// メソッドは最初にアクセスされたときに個別に展開されます。
 	methods []*Func
 
-	// loaderは型パラメーター、基底型、およびメソッドを遅延読み込みするために提供されるかもしれません。
+	// loaderは型パラメーター、基礎となる型、およびメソッドを遅延読み込みするために提供されるかもしれません。
 	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
 }
 
@@ -91,7 +91,7 @@ func (t *Named) NumMethods() int
 // 依存してはいけません。
 func (t *Named) Method(i int) *Func
 
-// SetUnderlyingは基底型を設定し、tを完了としてマークします。
+// SetUnderlyingは基礎となる型を設定し、tを完了としてマークします。
 // tは型引数を持っていてはいけません。
 func (t *Named) SetUnderlying(u Type)
 
@@ -101,7 +101,7 @@ func (t *Named) SetUnderlying(u Type)
 func (t *Named) AddMethod(m *Func)
 
 // Underlyingは名前付き型tの [underlying type] を返し、すべての
-// 転送宣言を解決します。基底型は決してNamed、TypeParam、または
+// 転送宣言を解決します。基礎となる型は決してNamed、TypeParam、または
 // Alias型ではありません。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.

@@ -31,7 +31,7 @@ type Reader struct {
 }
 
 // NewReaderSizeは、バッファーの最低限のサイズが指定された新しい [Reader] を返します。
-// もし引数のio.Readerが既に十分なサイズの [Reader] であれば、それは基本となる [Reader] を返します。
+// もし引数のio.Readerが既に十分なサイズの [Reader] であれば、それは基礎となる [Reader] を返します。
 func NewReaderSize(rd io.Reader, size int) *Reader
 
 // NewReaderはデフォルトサイズのバッファーを持つ新しい [Reader] を返します。
@@ -127,7 +127,7 @@ func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 
 // Writerは [io.Writer] オブジェクトに対してバッファリングを行います。
 // [Writer] に書き込む際にエラーが発生した場合、以降のデータの受け入れや、 [Writer.Flush] メソッドの呼び出しはエラーを返します。
-// 全てのデータが書き込まれた後、クライアントは [Writer.Flush] メソッドを呼び出して、全てのデータが基になる [io.Writer] に転送されることを保証する必要があります。
+// 全てのデータが書き込まれた後、クライアントは [Writer.Flush] メソッドを呼び出して、全てのデータが基礎となる [io.Writer] に転送されることを保証する必要があります。
 type Writer struct {
 	err error
 	buf []byte
@@ -136,14 +136,14 @@ type Writer struct {
 }
 
 // NewWriterSizeは、バッファーのサイズが指定された最小値を持つ新しい [Writer] を返します。
-// 引数のio.Writerがすでに十分な大きさを持つ [Writer] である場合、基になる [Writer] を返します。
+// 引数のio.Writerがすでに十分な大きさを持つ [Writer] である場合、基礎となる [Writer] を返します。
 func NewWriterSize(w io.Writer, size int) *Writer
 
 // NewWriterは、バッファーのデフォルトサイズを持つ新しい [Writer] を返します。
-// 引数のio.Writerが既に十分に大きなバッファーサイズを持つ [Writer] である場合、基になる [Writer] を返します。
+// 引数のio.Writerが既に十分に大きなバッファーサイズを持つ [Writer] である場合、基礎となる [Writer] を返します。
 func NewWriter(w io.Writer) *Writer
 
-// Sizeはバイト単位で下層のバッファーのサイズを返します。
+// Sizeはバイト単位で基礎となるバッファーのサイズを返します。
 func (b *Writer) Size() int
 
 // Resetは、フラッシュされていないバッファーデータを破棄し、エラーをクリアし、出力をwにリセットします。
@@ -151,7 +151,7 @@ func (b *Writer) Size() int
 // w.Reset(w)（つまり、[Writer] を自身にリセットすること）は何もしません。
 func (b *Writer) Reset(w io.Writer)
 
-// Flushはバッファーされたデータを基になる [io.Writer] に書き込みます。
+// Flushはバッファーされたデータを基礎となる [io.Writer] に書き込みます。
 func (b *Writer) Flush() error
 
 // Available はバッファー内で未使用のバイト数を返します。

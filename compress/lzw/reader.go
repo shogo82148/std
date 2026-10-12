@@ -66,7 +66,7 @@ type Reader struct {
 	toRead []byte
 }
 
-// Readは[io.Reader]を実装し、基になるリーダーから非圧縮バイトを読み取ります。
+// Readは[io.Reader]を実装し、基礎となるリーダーから非圧縮バイトを読み取ります。
 func (r *Reader) Read(b []byte) (int, error)
 
 // Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
@@ -84,5 +84,5 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // [2,8]の範囲でなければならず、通常は8です。これは圧縮時に
 // 使用されたlitWidthと等しくなければなりません。
 //
-// 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
+// 返された [io.ReadCloser] の基礎となる型は、*[Reader] であることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser

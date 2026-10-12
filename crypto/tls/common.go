@@ -233,7 +233,7 @@ type ClientHelloInfo struct {
 	// Extensionsは、クライアントがClientHelloで提示した拡張機能のIDをリストします。
 	Extensions []uint16
 
-	// Connは接続の基盤となるnet.Connです。この接続から読み取ったり、
+	// Connは接続の基礎となるnet.Connです。この接続から読み取ったり、
 	// この接続に書き込んだりしないでください。そうするとTLS
 	// 接続が失敗します。
 	Conn net.Conn

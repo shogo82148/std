@@ -41,7 +41,7 @@ func (t *TypeParam) Constraint() Type
 func (t *TypeParam) SetConstraint(bound Type)
 
 // Underlyingは型パラメーターtの [underlying type] を返します。これは
-// その制約の基底型です。この型は常にインターフェースです。
+// その制約の基礎となる型です。この型は常にインターフェースです。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *TypeParam) Underlying() Type

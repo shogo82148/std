@@ -9,7 +9,7 @@ import (
 )
 
 // WriterはLZWコンプレッサーです。データの圧縮形式を
-// 下層のライターに書き込みます（ [NewWriter] を参照）。
+// 基礎となるライターに書き込みます（ [NewWriter] を参照）。
 type Writer struct {
 	// wは圧縮バイトが書き込まれるライターです。
 	w writer
@@ -38,10 +38,10 @@ type Writer struct {
 	table [tableSize]uint32
 }
 
-// Writeはpの圧縮された表現をwの基になるライターに書き込みます。
+// Writeはpの圧縮された表現をwの基礎となるライターに書き込みます。
 func (w *Writer) Write(p []byte) (n int, err error)
 
-// Closeは [Writer] を閉じ、保留中の出力をフラッシュします。wの基になるライターは閉じません。
+// Closeは [Writer] を閉じ、保留中の出力をフラッシュします。wの基礎となるライターは閉じません。
 func (w *Writer) Close() error
 
 // Resetは [Writer] の状態をクリアし、新しい [Writer] として再利用できるようにします。
@@ -53,5 +53,5 @@ func (w *Writer) Reset(dst io.Writer, order Order, litWidth int)
 // リテラルコードに使用するビット数であるlitWidthは、範囲[2,8]内でなければなりませんが、通常は8です。
 // 入力バイトは1<<litWidth未満でなければなりません。
 //
-// 返された [io.WriteCloser] の基になる型が [*Writer] であることが保証されます。
+// 返された [io.WriteCloser] の基礎となる型が [*Writer] であることが保証されます。
 func NewWriter(w io.Writer, order Order, litWidth int) io.WriteCloser

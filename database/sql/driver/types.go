@@ -81,8 +81,8 @@ func IsScanValue(v any) bool
 //
 // DefaultParameterConverterは、引数がIsValue(arg)を満たす場合はその引数を直接返します。
 // そうでない場合、引数が [Valuer] を実装している場合はそのValueメソッドを使用して [Value] を返します。
-// 代替として、提供された引数の基底の型を使用して [Value] に変換します。
-// 基底の整数型はint64に変換され、浮動小数点数はfloat64に変換され、bool型、string型、および[]byte型はそれ自体に変換されます。
+// 代替として、提供された引数の基礎となる型を使用して [Value] に変換します。
+// 基礎となる整数型はint64に変換され、浮動小数点数はfloat64に変換され、bool型、string型、および[]byte型はそれ自体に変換されます。
 // 引数がnilポインターの場合、 defaultConverter.ConvertValue はnilのValueを返します。引数がnilではないポインターの場合、それは逆参照され、再帰的に defaultConverter.ConvertValue が呼び出されます。他の型はエラーです。
 var DefaultParameterConverter defaultConverter
 

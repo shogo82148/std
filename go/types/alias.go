@@ -39,8 +39,8 @@ func (a *Alias) Obj() *TypeName
 
 func (a *Alias) String() string
 
-// Underlyingは、エイリアス型aの [underlying type] を返します。これはエイリアスされた型の基底型です。
-// 基底型は、Named、TypeParam、Alias型ではありません。
+// Underlyingは、エイリアス型aの [underlying type] を返します。これはエイリアスされた型の基礎となる型です。
+// 基礎となる型は、Named、TypeParam、Alias型ではありません。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (a *Alias) Underlying() Type

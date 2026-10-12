@@ -155,7 +155,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | constraint | 制約 | |
 | comparable | 比較可能な | |
 | assignable | 代入可能な | |
-| underlying | 基礎となる | (118)。「基になる」(37) も見られるが、新規は「基礎となる」に揃える。underlying type は「基底型」でもよい |
+| underlying | 基礎となる | 「基になる」「基盤となる」「下層の」「基底の」「元となる」は使わない。underlying type は「基礎となる型」。base type（レシーバーの基底型など）は「基底型」 |
 | exported | エクスポートされた | |
 | unexported | エクスポートされていない | |
 | identifier | 識別子 | |

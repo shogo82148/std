@@ -176,5 +176,5 @@ type MarshalerError struct {
 
 func (e *MarshalerError) Error() string
 
-// Unwrapは元となるエラーを返します。
+// Unwrapは基礎となるエラーを返します。
 func (e *MarshalerError) Unwrap() error

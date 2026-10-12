@@ -23,7 +23,7 @@ import (
 // Valueは、基礎となるGoの値が同等の直接操作で並行に使用できる場合、複数のゴルーチンで同時に使用することができます。
 //
 // 2つのValueを比較するには、Interfaceメソッドの結果を比較してください。
-// ==を使用して2つのValueを比較すると、それらが表す基礎の値を比較しません。
+// ==を使用して2つのValueを比較すると、それらが表す基礎となる値を比較しません。
 type Value struct {
 
 	// typ_はValueによって表される値の型を保持します。
@@ -165,7 +165,7 @@ func (v Value) Index(i int) Value
 // CanIntはIntをパニックを引き起こすことなく使用できるかどうかを報告します。
 func (v Value) CanInt() bool
 
-// Intはvの基になる値をint64として返します。
+// Intはvの基礎となる値をint64として返します。
 // vのKindが [Int] 、 [Int8] 、 [Int16] 、 [Int32] 、または [Int64] でない場合、パニックを引き起こします。
 func (v Value) Int() int64
 
@@ -310,7 +310,7 @@ func (v Value) Send(x Value)
 // 非公開フィールドから派生していない必要があります。
 func (v Value) Set(x Value)
 
-// SetBoolはvの基になる値を設定します。
+// SetBoolはvの基礎となる値を設定します。
 // vのKindが [Bool] でない場合、または [Value.CanSet] がfalseを返す場合はパニックを引き起こします。
 func (v Value) SetBool(x bool)
 

@@ -35,12 +35,12 @@ type Writer struct {
 // テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriter(w io.Writer) *Writer
 
-// SetOffset は、zip データの開始オフセットを基になるライター内に設定します。
+// SetOffset は、zip データの開始オフセットを基礎となるライター内に設定します。
 // これは、バイナリー実行可能ファイルなどに zip データが追加される場合に使用する必要があります。
 // データが書き込まれる前に呼び出す必要があります。
 func (w *Writer) SetOffset(n int64)
 
-// Flush は、バッファリングされたデータを基になるライターにフラッシュします。
+// Flush は、バッファリングされたデータを基礎となるライターにフラッシュします。
 // Flush を呼び出す必要は通常ありません。Close を呼び出すだけで十分です。
 func (w *Writer) Flush() error
 
@@ -49,7 +49,7 @@ func (w *Writer) Flush() error
 func (w *Writer) SetComment(comment string) error
 
 // Close は、中央ディレクトリーを書き込むことで zip ファイルの書き込みを終了します。
-// 基になるライターを閉じません。
+// 基礎となるライターを閉じません。
 func (w *Writer) Close() error
 
 // Create は、指定された名前を使用してファイルを zip ファイルに追加します。

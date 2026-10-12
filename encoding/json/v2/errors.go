@@ -54,7 +54,7 @@ type SemanticError struct {
 	// GoTypeは、処理できなかったGoの型を示します。
 	GoType reflect.Type
 
-	// Errは、根本的なエラーです。
+	// Errは、基礎となるエラーです。
 	Err error
 }
 

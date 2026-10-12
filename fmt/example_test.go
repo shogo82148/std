@@ -170,7 +170,7 @@ func ExampleFprintf() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintf(os.Stdout, "%s is %d years old.\n", name, age)
 
-	// Fprintfからのnとerrの返り値は、基になるio.Writerによって返されたものです。
+	// Fprintfからのnとerrの返り値は、基礎となるio.Writerによって返されたものです。
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
 	}

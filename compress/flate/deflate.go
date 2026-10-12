@@ -44,13 +44,13 @@ func NewWriter(w io.Writer, level int) (*Writer, error)
 // テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
-// Writerは、書き込まれたデータを受け取り、そのデータの圧縮された形式を基になるWriterに書き込む。 ([NewWriter] を参照してください)。
+// Writerは、書き込まれたデータを受け取り、そのデータの圧縮された形式を基礎となるWriterに書き込む。 ([NewWriter] を参照してください)。
 type Writer struct {
 	d    compressor
 	dict []byte
 }
 
-// Writeは、wにデータを書き込み、その後データの圧縮形式を基になるライターに書き込みます。
+// Writeは、wにデータを書き込み、その後データの圧縮形式を基礎となるライターに書き込みます。
 func (w *Writer) Write(data []byte) (n int, err error)
 
 // Flushは、保留中のデータを基礎となるライターにフラッシュします。

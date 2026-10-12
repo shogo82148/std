@@ -119,7 +119,7 @@ func (l *UnixListener) Addr() Addr
 // ゼロの時間値は締め切りを無効にします。
 func (l *UnixListener) SetDeadline(t time.Time) error
 
-// File は基になる [os.File] のコピーを返します。
+// File は基礎となる [os.File] のコピーを返します。
 // 終了時には、f を閉じるのは呼び出し元の責任です。
 // l を閉じても f に影響を与えず、f を閉じても l に影響を与えません。
 //

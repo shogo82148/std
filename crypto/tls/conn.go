@@ -126,7 +126,7 @@ func (c *Conn) SetReadDeadline(t time.Time) error
 // 書き込みがタイムアウトした後、TLSの状態が壊れるため、以降の書き込みは同じエラーを返します。
 func (c *Conn) SetWriteDeadline(t time.Time) error
 
-// NetConnはcによってラップされた基になる接続を返します。
+// NetConnはcによってラップされた基礎となる接続を返します。
 // ただし、この接続に直接書き込みまたは読み込みを行うと、TLSセッションが破損することに注意してください。
 func (c *Conn) NetConn() net.Conn
 
