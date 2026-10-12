@@ -21,7 +21,7 @@ type SyntaxError struct {
 
 func (e SyntaxError) Error() string
 
-// BitStringは、ASN.1 BIT STRINGタイプを使用したい場合に使用する構造体です。ビット文字列は、メモリ上で最も近いバイトまでパディングされ、有効なビット数が記録されます。パディングビットはゼロになります。
+// BitStringは、ASN.1 BIT STRINGタイプを使用したい場合に使用する構造体です。ビット文字列は、メモリー上で最も近いバイトまでパディングされ、有効なビット数が記録されます。パディングビットはゼロになります。
 type BitString struct {
 	Bytes     []byte
 	BitLength int
@@ -30,7 +30,7 @@ type BitString struct {
 // Atは、指定されたインデックスのビットを返します。インデックスが範囲外の場合は0を返します。
 func (b BitString) At(i int) int
 
-// RightAlign はパディングビットが先頭にあるスライスを返します。スライスは BitString とメモリを共有する場合があります。
+// RightAlign はパディングビットが先頭にあるスライスを返します。スライスは BitString とメモリーを共有する場合があります。
 func (b BitString) RightAlign() []byte
 
 // NullRawValueは、TagにASN.1のNULL型タグ（5）が設定された [RawValue] です。
@@ -66,7 +66,7 @@ type RawContent []byte
 
 // UnmarshalはDER形式のASN.1データ構造bを解析し、reflectパッケージを使用してvalで指定された任意の値を埋める。
 // Unmarshalはreflectパッケージを使用するため、書き込まれる構造体は大文字のフィールド名を使用する必要がある。
-// valがnilまたはポインタでない場合、Unmarshalはエラーを返す。
+// valがnilまたはポインターでない場合、Unmarshalはエラーを返す。
 //
 // bを解析した後、valに埋めるために使用されなかったバイトはrestとして返される。
 // 構造体へのSEQUENCEの解析時、valにマッチするフィールドを持たないトレーリング要素は、
@@ -135,5 +135,5 @@ type RawContent []byte
 // Unmarshalは解析エラーを返します。
 func Unmarshal(b []byte, val any) (rest []byte, err error)
 
-// UnmarshalWithParamsでは、トップレベルの要素にフィールドパラメータを指定することができます。パラメータの形式は、フィールドタグと同じです。
+// UnmarshalWithParamsでは、トップレベルの要素にフィールドパラメーターを指定することができます。パラメーターの形式は、フィールドタグと同じです。
 func UnmarshalWithParams(b []byte, val any, params string) (rest []byte, err error)

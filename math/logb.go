@@ -13,7 +13,7 @@ package math
 //	Logb(NaN) = NaN
 func Logb(x float64) float64
 
-// Ilogbはxのバイナリ指数を整数として返します。
+// Ilogbはxのバイナリー指数を整数として返します。
 //
 // 特殊なケースは以下の通りです:
 //

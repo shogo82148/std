@@ -4,7 +4,7 @@
 
 package net
 
-// インターフェースはネットワークインタフェースの名前とインデックスのマッピングを表します。また、ネットワークインタフェースの機能情報も表します。
+// インターフェースはネットワークインターフェースの名前とインデックスのマッピングを表します。また、ネットワークインターフェースの機能情報も表します。
 type Interface struct {
 	Index        int
 	MTU          int
@@ -32,7 +32,7 @@ func (ifi *Interface) Addrs() ([]Addr, error)
 // MulticastAddrsは特定のインターフェースに結合されたマルチキャストグループアドレスのリストを返します。
 func (ifi *Interface) MulticastAddrs() ([]Addr, error)
 
-// インタフェースはシステムのネットワークインタフェースのリストを返します。
+// インターフェースはシステムのネットワークインターフェースのリストを返します。
 func Interfaces() ([]Interface, error)
 
 // InterfaceAddrsはシステムのユニキャストインターフェースのアドレスのリストを返します。

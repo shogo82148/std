@@ -5,7 +5,7 @@
 // importerパッケージは、エクスポートデータインポータへのアクセスを提供します。
 //
 // これらの関数は、ほとんどが非推奨であり、Go 1.11リリースでモジュールが導入される前の
-// ものです。標準ライブラリのみに依存する小さなプログラムを使用するテストケースでの
+// ものです。標準ライブラリーのみに依存する小さなプログラムを使用するテストケースでの
 // 使用を除いて、もはや依存すべきではありません。型情報の信頼性のあるモジュール対応
 // ロードについては、golang.org/x/tools/go/packages のpackages.Load関数を使用してください。
 package importer
@@ -19,10 +19,10 @@ import (
 // Lookup 関数は、与えられたインポートパスに対してパッケージデータにアクセスするためのリーダー、または一致するパッケージが見つからない場合はエラーを返します。
 type Lookup func(path string) (io.ReadCloser, error)
 
-// ForCompilerは、コンパイラ「gc」および「gccgo」のインストールされたパッケージからインポートするための
-// Importerを返します。または、コンパイラ引数が「source」の場合はソースから直接インポートします。
+// ForCompilerは、コンパイラー「gc」および「gccgo」のインストールされたパッケージからインポートするための
+// Importerを返します。または、コンパイラー引数が「source」の場合はソースから直接インポートします。
 // 後者の場合、エクスポートされたAPIが純粋なGoソースコードで完全に定義されていない状況では、
-// インポートが失敗する可能性があります（パッケージAPIがcgo定義のエンティティに依存している場合、
+// インポートが失敗する可能性があります（パッケージAPIがcgo定義のエンティティーに依存している場合、
 // 型チェッカーはそれらにアクセスできません）。
 //
 // lookup関数は、結果のインポータがインポートパスを解決する必要があるたびに呼び出されます。
@@ -43,7 +43,7 @@ func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Impo
 //go:fix inline
 func For(compiler string, lookup Lookup) types.Importer
 
-// Defaultは実行中のバイナリをビルドしたコンパイラ用のImporterを返します。
+// Defaultは実行中のバイナリーをビルドしたコンパイラー用のImporterを返します。
 // 利用可能な場合、結果は [types.ImporterFrom] を実装します。
 //
 // Defaultは最もシンプルなケースでの使用には便利かもしれませんが、

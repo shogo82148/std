@@ -17,5 +17,5 @@ package asn1
 //	generalized: time.TimeをASN.1 GeneralizedTime値としてマーシャルします
 func Marshal(val any) ([]byte, error)
 
-// MarshalWithParamsは、トップレベルの要素にフィールドパラメータを指定することを可能にします。パラメータの形式は、フィールドタグと同じです。
+// MarshalWithParamsは、トップレベルの要素にフィールドパラメーターを指定することを可能にします。パラメーターの形式は、フィールドタグと同じです。
 func MarshalWithParams(val any, params string) ([]byte, error)

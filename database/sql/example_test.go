@@ -27,13 +27,13 @@ func ExampleDB_QueryContext() {
 		if err := rows.Scan(&name); err != nil {
 
 			// スキャンエラーをチェックします。
-			// クエリの行はdeferで閉じられます。
+			// クエリーの行はdeferで閉じられます。
 			log.Fatal(err)
 		}
 		names = append(names, name)
 	}
 
-	// データベースが書き込まれる場合は、ドライバから返されるCloseエラーを確認することを確実に行ってください。クエリは自動コミットエラーに遭遇し、変更をロールバックする必要がある場合があります。
+	// データベースが書き込まれる場合は、ドライバーから返されるCloseエラーを確認することを確実に行ってください。クエリーは自動コミットエラーに遭遇し、変更をロールバックする必要がある場合があります。
 	rerr := rows.Close()
 	if rerr != nil {
 		log.Fatal(rerr)
@@ -142,7 +142,7 @@ func ExampleDB_PingContext() {
 
 	// PingとPingContextは、データベースサーバーとの通信がまだ可能かどうかを判定するために使用されます。
 	//
-	// コマンドラインアプリケーションで使用する場合、Pingは追加クエリが可能であり、提供されたDSNが有効であることを確立するために使用できます。
+	// コマンドラインアプリケーションで使用する場合、Pingは追加クエリーが可能であり、提供されたDSNが有効であることを確立するために使用できます。
 	//
 	// ロングランニングサービスで使用する場合、Pingはヘルスチェックシステムの一部となることがあります。
 
@@ -302,7 +302,7 @@ func ExampleStmt() {
 	}
 	defer stmt.Close()
 
-	// クエリを発行する必要があるたびに再利用してください。
+	// クエリーを発行する必要があるたびに再利用してください。
 	id := 43
 	var username string
 	err = stmt.QueryRowContext(ctx, id).Scan(&username)
@@ -324,7 +324,7 @@ func ExampleStmt_QueryRowContext() {
 	}
 	defer stmt.Close()
 
-	// クエリを発行するたびに再利用してください。
+	// クエリーを発行するたびに再利用してください。
 	id := 43
 	var username string
 	err = stmt.QueryRowContext(ctx, id).Scan(&username)

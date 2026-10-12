@@ -12,7 +12,7 @@ import (
 //
 // この種の鍵は、一般的に"RSA PRIVATE KEY"タイプのPEMブロックでエンコードされます。
 //
-// Go 1.24以前では、CRTパラメータは無視され、再計算されていました。古い
+// Go 1.24以前では、CRTパラメーターは無視され、再計算されていました。古い
 // 動作を復元するには、GODEBUG=x509rsacrt=0環境変数を使用してください。
 func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error)
 

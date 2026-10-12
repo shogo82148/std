@@ -71,7 +71,7 @@ func ParseAddressList(list string) ([]*Address, error)
 
 // AddressParserはRFC 5322形式のアドレスパーサーです。
 type AddressParser struct {
-	// WordDecoderはRFC 2047でエンコードされた単語のデコーダをオプションで指定します。
+	// WordDecoderはRFC 2047でエンコードされた単語のデコーダーをオプションで指定します。
 	WordDecoder *mime.WordDecoder
 }
 

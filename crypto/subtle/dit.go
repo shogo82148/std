@@ -23,7 +23,7 @@ package subtle
 //
 // WithDataIndependentTimingの呼び出しはネストできます。
 //
-// FEAT_DITを備えたArm64プロセッサでは、WithDataIndependentTimingはPSTATE.DITを有効にします。
+// FEAT_DITを備えたArm64プロセッサーでは、WithDataIndependentTimingはPSTATE.DITを有効にします。
 // https://developer.arm.com/documentation/ka005181/1-0/?lang=en を参照してください。
 //
 // 現在、その他のすべてのアーキテクチャでは、WithDataIndependentTimingは

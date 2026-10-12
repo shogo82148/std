@@ -80,7 +80,7 @@ func Search(n int, f func(int) bool) int
 //	    return strings.Compare(target, x.At(i))
 //	})
 //	if found {
-//	    fmt.Printf("%s がエントリ %d で見つかりました\n", target, i)
+//	    fmt.Printf("%s がエントリー %d で見つかりました\n", target, i)
 //	} else {
 //	    fmt.Printf("%s は見つかりませんでした。挿入位置は %d です", target, i)
 //	}
@@ -104,11 +104,11 @@ func SearchFloat64s(a []float64, x float64) int
 // スライスは昇順にソートされている必要があります。
 func SearchStrings(a []string, x string) int
 
-// Searchはレシーバと x に [SearchInts] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchInts] を適用した結果を返します。
 func (p IntSlice) Search(x int) int
 
-// Searchはレシーバと x に [SearchFloat64s] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchFloat64s] を適用した結果を返します。
 func (p Float64Slice) Search(x float64) int
 
-// Searchはレシーバと x に [SearchStrings] を適用した結果を返します。
+// Searchはレシーバーと x に [SearchStrings] を適用した結果を返します。
 func (p StringSlice) Search(x string) int

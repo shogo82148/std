@@ -4,7 +4,7 @@
 
 //go:build goexperiment.runtimesecret
 
-// secretパッケージは、前方秘匿性のために、ユーザープログラムからは見えないメモリを
+// secretパッケージは、前方秘匿性のために、ユーザープログラムからは見えないメモリーを
 // ゼロクリアするためのヘルパー関数を含みます。詳細については
 // https://en.wikipedia.org/wiki/Forward_secrecy を参照してください。
 //

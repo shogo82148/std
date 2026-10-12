@@ -25,7 +25,7 @@ const (
 // 明示的なエラーを返すことができなかったことを意味します。
 var ErrShortWrite = errors.New("short write")
 
-// ErrShortBuffer は、読み込みに提供されたバッファよりも長いバッファが必要だったことを意味します。
+// ErrShortBuffer は、読み込みに提供されたバッファーよりも長いバッファーが必要だったことを意味します。
 var ErrShortBuffer = errors.New("short buffer")
 
 // EOFは、入力がもう利用できない場合にReadが返すエラーです。
@@ -86,7 +86,7 @@ type Closer interface {
 // Seekは、ファイルの先頭を基準とした新たなオフセットまたはエラーを返します。
 // ファイルの先頭より前のオフセットにシークすることはエラーです。
 // 任意の正のオフセットにシークすることは許可されるかもしれませんが、
-// 新しいオフセットが基になるオブジェクトのサイズを超える場合、
+// 新しいオフセットが基礎となるオブジェクトのサイズを超える場合、
 // その後のI/O操作の振る舞いは実装に依存します。
 type Seeker interface {
 	Seek(offset int64, whence int) (int64, error)
@@ -110,7 +110,7 @@ type WriteCloser interface {
 	Closer
 }
 
-// ReadWriteCloserは、基本的なRead、Write、Closeメソッドをグループ化するインタフェースです。
+// ReadWriteCloserは、基本的なRead、Write、Closeメソッドをグループ化するインターフェースです。
 type ReadWriteCloser interface {
 	Reader
 	Writer
@@ -154,7 +154,7 @@ type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
 
-// WriterToはWriteToメソッドをラップするインタフェースです。
+// WriterToはWriteToメソッドをラップするインターフェースです。
 //
 // WriteToはデータを書き込み、書き込むデータがなくなるか
 // エラーが発生するまでwに書き込みます。戻り値nは書き込まれた
@@ -167,7 +167,7 @@ type WriterTo interface {
 
 // ReaderAtは基本的なReadAtメソッドをラップするインターフェースです。
 //
-// ReadAtは、基になる入力ソースのオフセットoffから始まるpにlen(p)バイトを読み込みます。
+// ReadAtは、基礎となる入力ソースのオフセットoffから始まるpにlen(p)バイトを読み込みます。
 // 読み込まれたバイト数(0 <= n <= len(p))と、エラーが発生した場合のエラーを返します。
 //
 // ReadAtがn < len(p)を返す場合、なぜ追加のバイトが返されなかったかを説明する非nilのエラーが返されます。
@@ -180,7 +180,7 @@ type WriterTo interface {
 // ReadAtが返すn = len(p)バイトが入力ソースの末尾にある場合、ReadAtはerr == EOFまたはerr == nilのどちらかを返す可能性があります。
 //
 // ReadAtがシークオフセットを持つ入力ソースから読み込んでいる場合、
-// ReadAtは基になるシークオフセットに影響を与えないし、影響を受けません。
+// ReadAtは基礎となるシークオフセットに影響を与えないし、影響を受けません。
 //
 // ReadAtのクライアントは、同じ入力ソースに対して並行してReadAt呼び出しを実行できます。
 //
@@ -191,12 +191,12 @@ type ReaderAt interface {
 
 // WriterAtは基本的なWriteAtメソッドをラップするインターフェースです。
 //
-// WriteAtはpからlen(p)バイトを下層のデータストリームのoffセットに書き込みます。
+// WriteAtはpからlen(p)バイトを基礎となるデータストリームのoffセットに書き込みます。
 // 書き込まれたバイト数n(0 <= n <= len(p))と書き込みが早期に終了した原因となった
 // エラーが返されます。もしn < len(p)なら、WriteAtは非nilのエラーを返さなければなりません。
 //
 // もしWriteAtがseekオフセットを持つ宛先に書き込みを行っている場合、
-// WriteAtは下層のseekオフセットに影響を与えず、また影響を受けてはいけません。
+// WriteAtは基礎となるseekオフセットに影響を与えず、また影響を受けてはいけません。
 //
 // WriteAtのクライアントは、範囲が重ならない場合には同じ宛先で並列して
 // WriteAt呼び出しを実行することができます。
@@ -294,8 +294,8 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 // それ以外の場合、dstが [ReaderFrom] インターフェースを実装している場合、コピーはdst.ReadFrom(src)の呼び出しで実装されます。
 func Copy(dst Writer, src Reader) (written int64, err error)
 
-// CopyBuffer は Copy と同じですが、一時的なバッファを割り当てる代わりに、
-// 提供されたバッファを使用してステージングします（必要な場合）。buf が nil の場合、一時的なバッファが割り当てられます。
+// CopyBuffer は Copy と同じですが、一時的なバッファーを割り当てる代わりに、
+// 提供されたバッファーを使用してステージングします（必要な場合）。buf が nil の場合、一時的なバッファーが割り当てられます。
 // もし buf の長さがゼロなら、CopyBuffer はパニックを引き起こします。
 //
 // もし src が [WriterTo] を実装しているか、dst が [ReaderFrom] を実装している場合、
@@ -307,7 +307,7 @@ func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
 // 内部の実装は*LimitedReaderです。
 func LimitReader(r Reader, n int64) Reader
 
-// LimitedReaderはRから読み込みますが、返されるデータ量をNバイトに制限します。Readの各呼び出しは、新しい残りの量を反映するためにNを更新します。また、N <= 0または基になるRがEOFを返す場合に、ReadはEOFを返します。
+// LimitedReaderはRから読み込みますが、返されるデータ量をNバイトに制限します。Readの各呼び出しは、新しい残りの量を反映するためにNを更新します。また、N <= 0または基礎となるRがEOFを返す場合に、ReadはEOFを返します。
 type LimitedReader struct {
 	R Reader
 	N int64
@@ -318,7 +318,7 @@ func (l *LimitedReader) Read(p []byte) (n int, err error)
 // NewSectionReaderは、rからオフセットoffで読み取りを開始し、nバイト後にEOFで停止する [SectionReader] を返します。
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
 
-// SectionReaderは、元となる [ReaderAt] の一部に対してRead、Seek、ReadAtを実装します。
+// SectionReaderは、基礎となる [ReaderAt] の一部に対してRead、Seek、ReadAtを実装します。
 type SectionReader struct {
 	r     ReaderAt
 	base  int64
@@ -336,13 +336,13 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 // Size はセクションのサイズをバイト単位で返します。
 func (s *SectionReader) Size() int64
 
-// Outerは、セクションの下位の [ReaderAt] とオフセットを返します。
+// Outerは、セクションの基礎となる [ReaderAt] とオフセットを返します。
 //
 // 返される値は、[SectionReader] が作成されたときに
 // [NewSectionReader] に渡されたものと同じです。
 func (s *SectionReader) Outer() (r ReaderAt, off int64, n int64)
 
-// OffsetWriterは、基準オフセットから基準オフセット+オフセットの範囲で下位のライターへの書き込みをマッピングします。
+// OffsetWriterは、基準オフセットから基準オフセット+オフセットの範囲で基礎となるライターへの書き込みをマッピングします。
 type OffsetWriter struct {
 	w    WriterAt
 	base int64

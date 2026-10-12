@@ -6,7 +6,7 @@
 
 package syscall
 
-// RouteRIBは、ネットワーク機能の情報、状態、パラメータで構成される
+// RouteRIBは、ネットワーク機能の情報、状態、パラメーターで構成される
 // ルーティング情報ベース（RIBとも呼ばれる）を返します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
@@ -19,7 +19,7 @@ type RoutingMessage interface {
 	sockaddr() ([]Sockaddr, error)
 }
 
-// RouteMessageは、ルーティングエントリを含むルーティングメッセージを表します。
+// RouteMessageは、ルーティングエントリーを含むルーティングメッセージを表します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
 type RouteMessage struct {
@@ -27,7 +27,7 @@ type RouteMessage struct {
 	Data   []byte
 }
 
-// InterfaceMessageは、ネットワークインターフェースのエントリを含む
+// InterfaceMessageは、ネットワークインターフェースのエントリーを含む
 // ルーティングメッセージを表します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。
@@ -36,7 +36,7 @@ type InterfaceMessage struct {
 	Data   []byte
 }
 
-// InterfaceAddrMessageは、ネットワークインターフェースのアドレスエントリを含む
+// InterfaceAddrMessageは、ネットワークインターフェースのアドレスエントリーを含む
 // ルーティングメッセージを表します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。

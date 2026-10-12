@@ -43,7 +43,7 @@ func ExampleWaitGroup_addAndDone() {
 		wg.Add(1)
 		// URLを取得するために、ゴルーチンを起動します。
 		go func(url string) {
-			// ゴルーチンが完了したら、カウンタを減らす。
+			// ゴルーチンが完了したら、カウンターを減らす。
 			defer wg.Done()
 			// URLを取得する。
 			http.Get(url)

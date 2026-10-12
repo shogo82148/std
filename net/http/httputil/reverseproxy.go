@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// HTTP逆プロキシハンドラ
+// HTTP逆プロキシーハンドラー
 
 package httputil
 
@@ -17,7 +17,7 @@ import (
 type ProxyRequest struct {
 	In *http.Request
 
-	// Outはプロキシに送信されるリクエストです。
+	// Outはプロキシーに送信されるリクエストです。
 	// Rewrite関数はこのリクエストを変更または置換する場合があります。
 	// Rewriteが呼び出される前に、ホップバイホップのヘッダーはこのリクエストから削除されます。
 	Out *http.Request
@@ -27,8 +27,8 @@ type ProxyRequest struct {
 // 例えば、targetのパスが "/base" で、受信リクエストが "/dir" の場合、ターゲットリクエストは "/base/dir" になります。
 // 受信パスを結合せずにリクエストをルーティングしたい場合は、r.Out.URL を直接設定してください。
 //
-// SetURLは、アウトバウンドのHostヘッダをターゲットのホストに合わせて書き換えます。
-// インバウンドのリクエストのHostヘッダを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
+// SetURLは、アウトバウンドのHostヘッダーをターゲットのホストに合わせて書き換えます。
+// インバウンドのリクエストのHostヘッダーを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
 //	    r.SetURL(url)
@@ -52,9 +52,9 @@ func (r *ProxyRequest) SetURL(target *url.URL)
 //	}
 func (r *ProxyRequest) SetXForwarded()
 
-// ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシするHTTPハンドラです。
+// ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシーするHTTPハンドラーです。
 //
-// 1xxレスポンスは、基盤となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
+// 1xxレスポンスは、基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
 //
 // ホップバイホップヘッダー（RFC 9110のセクション7.6.1参照）、
 // Connection、Proxy-Connection、Keep-Alive、Proxy-Authenticate、
@@ -71,37 +71,37 @@ type ReverseProxy struct {
 	// Forwarded、X-Forwarded、X-Forwarded-Host、およびX-Forwarded-Protoヘッダーは、
 	// Rewriteが呼び出される前に送信リクエストから削除されます。また、ProxyRequest.SetXForwardedメソッドも参照してください。
 	//
-	// 解析できないクエリパラメータは、Rewriteが呼び出される前に送信リクエストから削除されます。
-	// Rewrite関数は、インバウンドURLのRawQueryをアウトバウンドURLにコピーして、元のパラメータ文字列を保持することがあります。
-	// 注意：これは、プロキシのクエリパラメータの解釈がダウンストリームサーバーと一致しない場合にセキュリティの問題を引き起こす可能性があります。
+	// 解析できないクエリーパラメーターは、Rewriteが呼び出される前に送信リクエストから削除されます。
+	// Rewrite関数は、インバウンドURLのRawQueryをアウトバウンドURLにコピーして、元のパラメーター文字列を保持することがあります。
+	// 注意：これは、プロキシーのクエリーパラメーターの解釈がダウンストリームサーバーと一致しない場合にセキュリティーの問題を引き起こす可能性があります。
 	//
 	// RewriteまたはDirectorのいずれか一つのみ設定できます。
 	Rewrite func(*ProxyRequest)
 
 	// Director（ディレクター）は、リクエストを変更して新しいリクエストをTransport（トランスポート）を使用して送信します。そのレスポンスは、元のクライアントに変更せずにコピーされます。Directorは、戻った後に提供されたリクエストにアクセスしてはいけません。
 	// デフォルトでは、X-Forwarded-ForヘッダーはクライアントのIPアドレスの値に設定されます。もし既にX-Forwarded-Forヘッダーが存在する場合、クライアントのIPは既存の値に追加されます。ただし、特殊なケースとして、リクエストのRequest.Headerマップにヘッダーが存在しているが、値がnilである場合（Director関数によって設定された場合など）、X-Forwarded-Forヘッダーは変更されません。
-	// IPスプーフィングを防ぐために、クライアントまたは信頼できないプロキシから送られてきたプリエクスティングのX-Forwarded-Forヘッダーを削除するようにしてください。
+	// IPスプーフィングを防ぐために、クライアントまたは信頼できないプロキシーから送られてきたプリエクスティングのX-Forwarded-Forヘッダーを削除するようにしてください。
 	// ディレクターが戻った後にリクエストからホップバイホップヘッダーが削除されます。これにより、ディレクターが追加したヘッダーも削除される可能性があります。リクエストの変更を保持するためには、リライト関数を使用してください。
-	// ディレクターが戻った後、リクエストのRequest.Formが設定されている場合は、解析できないクエリパラメータが送信先のリクエストから削除されます。
+	// ディレクターが戻った後、リクエストのRequest.Formが設定されている場合は、解析できないクエリーパラメーターが送信先のリクエストから削除されます。
 	// RewriteまたはDirectorのうち、最大1つが設定できます。
 	Director func(*http.Request)
 
-	// プロキシリクエストを実行するために使用されるトランスポートです。
+	// プロキシーリクエストを実行するために使用されるトランスポートです。
 	// nil の場合、http.DefaultTransport が使用されます。
 	Transport http.RoundTripper
 
-	// FlushIntervalは、レスポンスボディをクライアントにコピーする際のフラッシュ間隔を指定します。
+	// FlushIntervalは、レスポンスボディーをクライアントにコピーする際のフラッシュ間隔を指定します。
 	// ゼロの場合、定期的なフラッシュは行われません。
 	// 負の値は、クライアントへの各書き込みの直後にすぐにフラッシュすることを意味します。
 	// FlushIntervalは、ReverseProxyがストリーミングレスポンスとしてレスポンスを認識するか、またはContentLengthが-1の場合は無視されます。
 	// このようなレスポンスの場合、書き込みはすぐにクライアントにフラッシュされます。
 	FlushInterval time.Duration
 
-	// ErrorLogは、リクエストをプロキシする際に発生したエラーのオプションのロガーを指定します。
+	// ErrorLogは、リクエストをプロキシーする際に発生したエラーのオプションのロガーを指定します。
 	// nilの場合、ログはlogパッケージの標準ロガーを使用して行われます。
 	ErrorLog *log.Logger
 
-	// BufferPoolは、io.CopyBufferがHTTPのレスポンスボディをコピーする際に使用するバイトスライスを取得するためのオプションのバッファプールを指定します。
+	// BufferPoolは、io.CopyBufferがHTTPのレスポンスボディーをコピーする際に使用するバイトスライスを取得するためのオプションのバッファープールを指定します。
 	BufferPool BufferPool
 
 	// ModifyResponseはオプションの関数であり、バックエンドからのレスポンスを変更する役割を持ちます。

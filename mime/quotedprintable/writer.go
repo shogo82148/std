@@ -8,8 +8,8 @@ import "github.com/shogo82148/std/io"
 
 // Writerは、[io.WriteCloser] を実装するquoted-printableライターです。
 type Writer struct {
-	// バイナリモードでは、ライターの入力を純粋なバイナリとして扱い、
-	// 行末のバイトをバイナリデータとして処理します。
+	// バイナリーモードでは、ライターの入力を純粋なバイナリーとして扱い、
+	// 行末のバイトをバイナリーデータとして処理します。
 	Binary bool
 
 	w    io.Writer

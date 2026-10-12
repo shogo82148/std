@@ -12,9 +12,9 @@ import (
 	"github.com/shogo82148/std/testing/slogtest"
 )
 
-// この例は、このパッケージを使用してハンドラをテストする一つの手法を示しています。
-// ハンドラには [bytes.Buffer] が書き込み用に与えられ、結果の出力の各行が解析されます。
-// JSON出力の場合、[encoding/json.Unmarshal] はmap[string]anyへのポインタを与えると、
+// この例は、このパッケージを使用してハンドラーをテストする一つの手法を示しています。
+// ハンドラーには [bytes.Buffer] が書き込み用に与えられ、結果の出力の各行が解析されます。
+// JSON出力の場合、[encoding/json.Unmarshal] はmap[string]anyへのポインターを与えると、
 // 望ましい形式の結果を生成します。
 func Example_parsing() {
 	var buf bytes.Buffer

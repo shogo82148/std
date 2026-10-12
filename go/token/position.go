@@ -95,7 +95,7 @@ func (f *File) LineCount() int
 // 行オフセットは前の行のオフセットよりも大きく、ファイルのサイズよりも小さい必要があります。そうでない場合、行オフセットは無視されます。
 func (f *File) AddLine(offset int)
 
-// MergeLineは、次の行と行を結合します。これは、行の末尾の改行文字をスペースで置き換えることに似ています（残りのオフセットは変更されません）。行番号を取得するには、[Position.Line] などを参照してください。無効な行番号が指定された場合、MergeLineはパニックを起こします。
+// MergeLineは、次の行と行を結合します。これは、行の末尾の改行文字をスペースで置き換えることに似ています（残りのオフセットは変更されません）。行番号を取得するには、[Position.Line] などを参照してください。無効な行番号が指定された場合、MergeLineはパニックを引き起こします。
 func (f *File) MergeLine(line int)
 
 // Linesは [File.SetLines] で指定された形式の効果的な行オフセットの表を返します。
@@ -170,7 +170,7 @@ func (f *File) Position(p Pos) (pos Position)
 //
 // 新しいファイルを追加する際には、ファイルベースが必要です。それはすでにファイルセット内の任意のファイルの間隔の終わりを過ぎた整数値である必要があります。便宜上、 [FileSet.Base] はそのような値を提供します。それは単純に最後に追加されたファイルのPos間隔の終わりの位置に+1した値です。後で間隔を拡張する必要がない場合は、 [FileSet.Base] を [FileSet.AddFile] の引数として使用する必要があります。
 //
-// FileSetが不要な場合、 [File] はFileSetから削除することができます。これにより、長時間実行されるアプリケーションでメモリ使用量を削減することができます。
+// FileSetが不要な場合、 [File] はFileSetから削除することができます。これにより、長時間実行されるアプリケーションでメモリー使用量を削減することができます。
 type FileSet struct {
 	mutex sync.RWMutex
 	base  int
@@ -199,7 +199,7 @@ func (s *FileSet) AddExistingFiles(files ...*File)
 // RemoveFileは [FileSet] からファイルを削除し、その後の
 // [Pos] 区間への問い合わせが負の結果を返すようにします。
 // これにより、無制限のファイルストリームに遭遇する長期間実行される
-// [FileSet] のメモリ使用量を削減します。
+// [FileSet] のメモリー使用量を削減します。
 //
 // セットに属さないファイルを削除しても効果はありません。
 func (s *FileSet) RemoveFile(file *File)

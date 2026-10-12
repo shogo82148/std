@@ -16,8 +16,8 @@ import (
 
 // Responseは、HTTPリクエストからのレスポンスを表します。
 //
-// [Client] と [Transport] は、レスポンスヘッダが受信された後、サーバーからResponsesを返します。
-// レスポンスボディは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
+// [Client] と [Transport] は、レスポンスヘッダーが受信された後、サーバーからResponsesを返します。
+// レスポンスボディーは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
 type Response struct {
 	Status     string
 	StatusCode int
@@ -33,18 +33,18 @@ type Response struct {
 	// マップ内のキーは正準化されます(CanonicalHeaderKeyを参照)。
 	Header Header
 
-	// Bodyは、レスポンスボディを表します。
+	// Bodyは、レスポンスボディーを表します。
 	//
-	// レスポンスボディは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
+	// レスポンスボディーは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
 	// ネットワーク接続が失敗した場合や、サーバーがレスポンスを終了した場合、Body.Read呼び出しはエラーを返します。
 	//
-	// httpのClientとTransportは、ボディのないレスポンスやボディが
+	// httpのClientとTransportは、ボディーのないレスポンスやボディーが
 	// ゼロ長のレスポンスであっても、Bodyが常にnilでないことを保証します。
 	// Bodyを閉じる責任は呼び出し元にあります。デフォルトのHTTPクライアントの
 	// Transportは、BodyがEOFまで読み取られ閉じられない場合、
 	// HTTP/1.xの"keep-alive" TCP接続を再利用できない可能性があります。
-	// ただし、ほとんどの場合、ボディを手動でEOFまで読み取る必要はありません。
-	// ボディを閉じることで、保守的な上限まで非同期にボディがEOFまで
+	// ただし、ほとんどの場合、ボディーを手動でEOFまで読み取る必要はありません。
+	// ボディーを閉じることで、保守的な上限まで非同期にボディーがEOFまで
 	// 読み取られるためです。
 	//
 	// サーバーが「chunked」Transfer-Encodingで返答した場合、Bodyは自動的にデチャンクされます。
@@ -89,7 +89,7 @@ type Response struct {
 
 	// TLSは、レスポンスを受信したTLS接続に関する情報を含みます。
 	// 非暗号化のレスポンスの場合、nilです。
-	// このポインタはレスポンス間で共有され、変更してはいけません。
+	// このポインターはレスポンス間で共有され、変更してはいけません。
 	TLS *tls.ConnectionState
 }
 
@@ -105,7 +105,7 @@ var ErrNoLocation = errors.New("http: no Location header in response")
 func (r *Response) Location() (*url.URL, error)
 
 // ReadResponseは、rからHTTPレスポンスを読み取り、返します。
-// reqパラメータは、この [Response] に対応する [Request] をオプションで指定します。
+// reqパラメーターは、この [Response] に対応する [Request] をオプションで指定します。
 // nilの場合、GETリクエストが想定されます。
 // クライアントは、resp.Bodyを読み取り終えたらresp.Body.Closeを呼び出す必要があります。
 // その呼び出しの後、クライアントはresp.Trailerを調べて、レスポンストレーラーに含まれるキー/値ペアを見つけることができます。
@@ -115,7 +115,7 @@ func ReadResponse(r *bufio.Reader, req *Request) (*Response, error)
 func (r *Response) ProtoAtLeast(major, minor int) bool
 
 // Writeは、HTTP/1.xサーバーレスポンス形式でrをwに書き込みます。
-// ステータス行、ヘッダー、ボディ、およびオプションのトレーラーを含みます。
+// ステータス行、ヘッダー、ボディー、およびオプションのトレーラーを含みます。
 //
 // このメソッドは、レスポンスrの以下のフィールドを参照します。
 //
@@ -129,5 +129,5 @@ func (r *Response) ProtoAtLeast(major, minor int) bool
 //	ContentLength
 //	Header, 非正準化キーの値は予測不可能な動作をします
 //
-// レスポンスボディは送信後に閉じられます。
+// レスポンスボディーは送信後に閉じられます。
 func (r *Response) Write(w io.Writer) error

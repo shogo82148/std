@@ -4,27 +4,27 @@
 
 package debug
 
-// ReadBuildInfoは実行中のバイナリに埋め込まれたビルド情報を返します。
-// この情報はモジュールサポートでビルドされたバイナリでのみ利用可能です。
+// ReadBuildInfoは実行中のバイナリーに埋め込まれたビルド情報を返します。
+// この情報はモジュールサポートでビルドされたバイナリーでのみ利用可能です。
 func ReadBuildInfo() (info *BuildInfo, ok bool)
 
-// BuildInfoはGoバイナリから読み取られるビルド情報を表します。
+// BuildInfoはGoバイナリーから読み取られるビルド情報を表します。
 type BuildInfo struct {
-	// GoVersionはバイナリをビルドしたGoツールチェーンのバージョンです
+	// GoVersionはバイナリーをビルドしたGoツールチェーンのバージョンです
 	// （例: "go1.19.2"）。
 	GoVersion string `json:",omitempty"`
 
-	// Pathはバイナリのメインパッケージのパッケージパスです
+	// Pathはバイナリーのメインパッケージのパッケージパスです
 	// （例: "golang.org/x/tools/cmd/stringer"）。
 	Path string `json:",omitempty"`
 
-	// Mainはバイナリのメインパッケージを含むモジュールを記述します。
+	// Mainはバイナリーのメインパッケージを含むモジュールを記述します。
 	Main Module `json:""`
 
-	// Depsは、このバイナリのビルドに寄与したすべての依存モジュール（直接・間接両方）を記述します。
+	// Depsは、このバイナリーのビルドに寄与したすべての依存モジュール（直接・間接両方）を記述します。
 	Deps []*Module `json:",omitempty"`
 
-	// Settingsはバイナリのビルドに使用されたビルド設定を記述します。
+	// Settingsはバイナリーのビルドに使用されたビルド設定を記述します。
 	Settings []BuildSetting `json:",omitempty"`
 }
 
@@ -41,7 +41,7 @@ type Module struct {
 // 定義されたキーには以下のものがあります:
 //
 //   - -buildmode: 使用されたbuildmodeフラグ（通常は "exe"）
-//   - -compiler: 使用されたコンパイラツールチェーンフラグ（通常は "gc"）
+//   - -compiler: 使用されたコンパイラーツールチェーンフラグ（通常は "gc"）
 //   - CGO_ENABLED: 有効なCGO_ENABLED環境変数
 //   - CGO_CFLAGS: 有効なCGO_CFLAGS環境変数
 //   - CGO_CPPFLAGS: 有効なCGO_CPPFLAGS環境変数

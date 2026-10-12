@@ -35,21 +35,21 @@ type Writer struct {
 // テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriter(w io.Writer) *Writer
 
-// SetOffset は、zip データの開始オフセットを基になるライター内に設定します。
-// これは、バイナリ実行可能ファイルなどに zip データが追加される場合に使用する必要があります。
+// SetOffset は、zip データの開始オフセットを基礎となるライター内に設定します。
+// これは、バイナリー実行可能ファイルなどに zip データが追加される場合に使用する必要があります。
 // データが書き込まれる前に呼び出す必要があります。
 func (w *Writer) SetOffset(n int64)
 
-// Flush は、バッファリングされたデータを基になるライターにフラッシュします。
+// Flush は、バッファリングされたデータを基礎となるライターにフラッシュします。
 // Flush を呼び出す必要は通常ありません。Close を呼び出すだけで十分です。
 func (w *Writer) Flush() error
 
-// SetComment は、中央ディレクトリのコメントフィールドを設定します。
+// SetComment は、中央ディレクトリーのコメントフィールドを設定します。
 // [Writer.Close] を呼び出す前にのみ呼び出すことができます。
 func (w *Writer) SetComment(comment string) error
 
-// Close は、中央ディレクトリを書き込むことで zip ファイルの書き込みを終了します。
-// 基になるライターを閉じません。
+// Close は、中央ディレクトリーを書き込むことで zip ファイルの書き込みを終了します。
+// 基礎となるライターを閉じません。
 func (w *Writer) Close() error
 
 // Create は、指定された名前を使用してファイルを zip ファイルに追加します。
@@ -58,8 +58,8 @@ func (w *Writer) Close() error
 // 名前は相対パスである必要があります。
 // ドライブレター（例：C:）または先頭のスラッシュで始まることはできず、
 // スラッシュのみが許可されます。
-// ファイルではなくディレクトリを作成するには、名前の末尾にスラッシュを追加します。
-// 重複する名前は以前のエントリを上書きせず、ZIPファイルに追加されます。
+// ファイルではなくディレクトリーを作成するには、名前の末尾にスラッシュを追加します。
+// 重複する名前は以前のエントリーを上書きせず、ZIPファイルに追加されます。
 // 次の [Writer.Create] 、 [Writer.CreateHeader] 、または [Writer.Close] を呼び出す前に、ファイルの内容を [io.Writer] に書き込む必要があります。
 func (w *Writer) Create(name string) (io.Writer, error)
 
@@ -77,8 +77,8 @@ func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
 //
 // [Writer.CreateHeader] とは異なり、Writer に渡されるバイトは圧縮されません。
 //
-// CreateRawの引数はwに格納されます。引数がメモリ内のデータから作成された [Reader] から取得した
-// [File] 内の埋め込まれた [FileHeader] へのポインタである場合、wはそのメモリ全体を参照します。
+// CreateRawの引数はwに格納されます。引数がメモリー内のデータから作成された [Reader] から取得した
+// [File] 内の埋め込まれた [FileHeader] へのポインターである場合、wはそのメモリー全体を参照します。
 func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
 
 // Copy は、ファイル f（ [Reader] から取得された）を w にコピーします。
@@ -90,6 +90,6 @@ func (w *Writer) Copy(f *File) error
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
 
 // AddFSは、fs.FSからのファイルをアーカイブに追加します。
-// ファイルシステムのルートから始まるディレクトリツリーを走査し、
-// ディレクトリ構造を維持しながら、各ファイルをdeflateを使用してzipに追加します。
+// ファイルシステムのルートから始まるディレクトリーツリーを走査し、
+// ディレクトリー構造を維持しながら、各ファイルをdeflateを使用してzipに追加します。
 func (w *Writer) AddFS(fsys fs.FS) error

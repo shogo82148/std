@@ -91,7 +91,7 @@ UjmopwKBgAqB2KYYMUqAOvYcBnEfLDmyZv9BTVNHbR2lKkMYqv5LlvDaBxVfilE0
 // 極めて重要です。これは秘密情報を漏洩するためです。
 // DecryptPKCS1v15SessionKeyはこの状況のために設計されており、
 // 復号化された対称キー（正しい形式の場合）を、ランダムキーを含む
-// バッファに定数時間でコピーします。したがって、RSAの結果が
+// バッファーに定数時間でコピーします。したがって、RSAの結果が
 // 正しい形式でない場合、実装は定数時間でランダムキーを使用します。
 func ExampleDecryptPKCS1v15SessionKey() {
 

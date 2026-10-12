@@ -15,17 +15,17 @@ import (
 func Example_interface() {
 	var network bytes.Buffer // ネットワークの代わり。
 
-	// エンコーダとデコーダ（通常はエンコーダとは別のマシン上）に具体的な型を登録する必要があります。
+	// エンコーダーとデコーダー（通常はエンコーダーとは別のマシン上）に具体的な型を登録する必要があります。
 	// それぞれの端では、これがどの具体的な型がインターフェースを実装して送信されているかをエンジンに伝えます。
 	gob.Register(Point{})
 
-	// エンコーダを作成し、いくつかの値を送信します。
+	// エンコーダーを作成し、いくつかの値を送信します。
 	enc := gob.NewEncoder(&network)
 	for i := 1; i <= 3; i++ {
 		interfaceEncode(enc, Point{3 * i, 4 * i})
 	}
 
-	// デコーダを作成し、いくつかの値を受信します。
+	// デコーダーを作成し、いくつかの値を受信します。
 	dec := gob.NewDecoder(&network)
 	for i := 1; i <= 3; i++ {
 		result := interfaceDecode(dec)

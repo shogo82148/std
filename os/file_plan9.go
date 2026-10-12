@@ -28,7 +28,7 @@ func (f *File) Stat() (FileInfo, error)
 func (f *File) Truncate(size int64) error
 
 // Syncはファイルの現在の内容を安定したストレージにコミットします。
-// 通常、これはファイルシステムのインメモリコピーのディスクへの最近書き込まれたデータのフラッシュを意味します。
+// 通常、これはファイルシステムのインメモリーコピーのディスクへの最近書き込まれたデータのフラッシュを意味します。
 func (f *File) Sync() error
 
 // Truncateは指定されたファイルのサイズを変更します。
@@ -36,7 +36,7 @@ func (f *File) Sync() error
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func Truncate(name string, size int64) error
 
-// Removeは指定されたファイルまたはディレクトリを削除します。
+// Removeは指定されたファイルまたはディレクトリーを削除します。
 // エラーが発生した場合、エラーは[*PathError]型になります。
 func Remove(name string) error
 
@@ -56,7 +56,7 @@ func Link(oldname, newname string) error
 
 // Symlinkはnewnameをoldnameへのシンボリックリンクとして作成します。
 // Windowsでは、存在しないoldnameへのシンボリックリンクはファイルのシンボリックリンクとして作成されます。
-// その後oldnameがディレクトリとして作成された場合、シンボリックリンクは機能しません。
+// その後oldnameがディレクトリーとして作成された場合、シンボリックリンクは機能しません。
 // エラーが発生した場合、*LinkErrorの型になります。
 func Symlink(oldname, newname string) error
 
@@ -78,7 +78,7 @@ func Lchown(name string, uid, gid int) error
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Chown(uid, gid int) error
 
-// Chdirはカレントワーキングディレクトリをそのファイルに変更します。
-// ファイルはディレクトリである必要があります。
+// Chdirはカレントワーキングディレクトリーをそのファイルに変更します。
+// ファイルはディレクトリーである必要があります。
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Chdir() error

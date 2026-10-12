@@ -8,7 +8,7 @@
 
 package dwarf
 
-// Typeは、通常、特定のType構造体（[CharType]、[StructType] など）のいずれかへのポインタを表します。
+// Typeは、通常、特定のType構造体（[CharType]、[StructType] など）のいずれかへのポインターを表します。
 type Type interface {
 	Common() *CommonType
 	String() string
@@ -116,7 +116,7 @@ type VoidType struct {
 
 func (t *VoidType) String() string
 
-// PtrTypeは、ポインタ型を表します。
+// PtrTypeは、ポインター型を表します。
 type PtrType struct {
 	CommonType
 	Type Type
@@ -142,7 +142,7 @@ type StructType struct {
 // BitSizeは、ビットフィールドのビット数です。
 //
 // DataBitOffsetが0以外の場合、それは、
-// ビットフィールドの開始位置から囲むエンティティ（例：含まれるstruct/class/union）の開始位置までのビット数です。
+// ビットフィールドの開始位置から囲むエンティティー（例：含まれるstruct/class/union）の開始位置までのビット数です。
 // これは、DWARF 4で導入されたDW_AT_data_bit_offset DWARF属性に対応します。
 //
 // BitOffsetが0以外の場合、それは、
@@ -153,7 +153,7 @@ type StructType struct {
 //
 // DataBitOffsetとBitOffsetのうち、最大1つだけが非ゼロになります。
 // DataBitOffset/BitOffsetは、BitSizeが非ゼロの場合にのみ非ゼロになります。
-// Cコンパイラがどちらを使用するかは、コンパイラのバージョンとコマンドラインオプションに依存します。
+// Cコンパイラーがどちらを使用するかは、コンパイラーのバージョンとコマンドラインオプションに依存します。
 //
 // 以下は、C/C++のビットフィールドの使用例と、DWARFビットオフセット情報の期待値の例です。
 // このコードを考えてみましょう。
@@ -178,7 +178,7 @@ type StructType struct {
 //
 // 上記のように、j/k/m/nの含まれるストレージユニットに対するオフセットのみが考慮されます。これらの値は、含まれる構造体の前のデータメンバーのサイズに基づいて変化することはありません。
 //
-// コンパイラがDW_AT_data_bit_offsetを出力する場合、期待される値は次のようになります。
+// コンパイラーがDW_AT_data_bit_offsetを出力する場合、期待される値は次のようになります。
 //
 //	"j":     32
 //	"k":     37
@@ -229,7 +229,7 @@ type FuncType struct {
 
 func (t *FuncType) String() string
 
-// DotDotDotTypeは、可変長の...関数パラメータを表します。
+// DotDotDotTypeは、可変長の...関数パラメーターを表します。
 type DotDotDotType struct {
 	CommonType
 }

@@ -61,7 +61,7 @@ func ExampleTempDir_suffix() {
 	}
 	defer os.RemoveAll(logsDir) // クリーンアップ
 
-	// ログは、*-logsで終わるサフィックスを持つすべてのディレクトリを検索することで、必要に応じて早期にクリーンアップできます。
+	// ログは、*-logsで終わるサフィックスを持つすべてのディレクトリーを検索することで、必要に応じて早期にクリーンアップできます。
 	globPattern := filepath.Join(parentDir, "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {

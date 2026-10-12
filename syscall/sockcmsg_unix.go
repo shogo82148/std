@@ -25,10 +25,10 @@ type SocketControlMessage struct {
 // ParseSocketControlMessageは、bをソケット制御メッセージの配列としてパースします。
 func ParseSocketControlMessage(b []byte) ([]SocketControlMessage, error)
 
-// UnixRightsは、開いているファイルディスクリプタの集合を、
+// UnixRightsは、開いているファイルディスクリプターの集合を、
 // 別のプロセスに送信するためのソケット制御メッセージにエンコードします。
 func UnixRights(fds ...int) []byte
 
-// ParseUnixRightsは、別のプロセスからの開いているファイルディスクリプタの
+// ParseUnixRightsは、別のプロセスからの開いているファイルディスクリプターの
 // 整数配列を含むソケット制御メッセージをデコードします。
 func ParseUnixRights(m *SocketControlMessage) ([]int, error)

@@ -12,21 +12,21 @@ import (
 
 // Optionsは [Marshal], [MarshalWrite], [MarshalEncode],
 // [Unmarshal], [UnmarshalRead], [UnmarshalDecode] を特定の機能で設定します。
-// 各関数は可変長のオプションリストを受け取り、後から指定されたオプションのプロパティが
+// 各関数は可変長のオプションリストを受け取り、後から指定されたオプションのプロパティーが
 // 以前に設定された値を上書きします。
 //
 // Options型は [encoding/json.Options] や [encoding/json/jsontext.Options] と同一です。
 // 他のパッケージのOptionsも本パッケージの機能と相互利用できます。
 //
 // Options 値は、単一のオプションまたはオプションの集合を表します。
-// これはオプションのプロパティを持つ Go のマップと考えることができます
+// これはオプションのプロパティーを持つ Go のマップと考えることができます
 // （ただし、実装の基盤はパフォーマンスのために Go のマップを避けています）。
 //
 // コンストラクタ（例: [Deterministic]）は、単一のオプション用の値を返します:
 //
 //	opt := Deterministic(true)
 //
-// これは単一エントリのマップを作ることに相当します:
+// これは単一エントリーのマップを作ることに相当します:
 //
 //	opt := Options{"Deterministic": true}
 //
@@ -43,7 +43,7 @@ import (
 //		}
 //	}
 //
-// [GetOption] はオプションパラメータの値を取得します:
+// [GetOption] はオプションパラメーターの値を取得します:
 //
 //	v, ok := GetOption(opts, Deterministic)
 //
@@ -68,7 +68,7 @@ import (
 type Options = jsonopts.Options
 
 // JoinOptionsは、指定されたオプションリストを1つのOptionsにまとめます。
-// 後から指定されたオプションのプロパティが、以前に設定された値を上書きします。
+// 後から指定されたオプションのプロパティーが、以前に設定された値を上書きします。
 func JoinOptions(srcs ...Options) Options
 
 // GetOptionは、指定されたsetterに対応する値をoptsから取得し、
@@ -112,7 +112,7 @@ func DefaultOptionsV2() Options
 //
 // RFC 8259 のセクション6によると、JSON実装はJSON数値の表現を
 // IEEE 754 binary64値に制限する場合があります。
-// これにより、デコーダがint64型やuint64型の精度を失う可能性があります。
+// これにより、デコーダーがint64型やuint64型の精度を失う可能性があります。
 // JSON数値をJSON文字列として引用することで、正確な精度を保持できます。
 //
 // このオプションはマーシャル・アンマーシャルの両方に影響します。
@@ -123,7 +123,7 @@ func StringifyNumbers(v bool) Options
 //
 // たとえば、Go のマップはキー順にソートされてマーシャルされます。
 //
-// ネイティブな Go 型については、同一のバイナリの異なるインスタンス間では
+// ネイティブな Go 型については、同一のバイナリーの異なるインスタンス間では
 // 決定性が保証されますが、同一のプログラムの異なるビルド間では
 // 保証されません（たとえば、異なるソースやツールチェインのバージョン、
 // 異なる GOOS/GOARCH、異なるビルドフラグなど）。

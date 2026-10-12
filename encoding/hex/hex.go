@@ -20,7 +20,7 @@ func EncodedLen(n int) int
 func Encode(dst, src []byte) int
 
 // AppendEncodeは、16進数でエンコードされたsrcをdstに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 func AppendEncode(dst, src []byte) []byte
 
 // ErrLengthは、[Decode] または [DecodeString] を使用して奇数長の入力をデコードしようとする試みを報告します。
@@ -44,7 +44,7 @@ func DecodedLen(x int) int
 func Decode(dst, src []byte) (int, error)
 
 // AppendDecodeは、16進数でデコードされたsrcをdstに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 // 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
 func AppendDecode(dst, src []byte) ([]byte, error)
 

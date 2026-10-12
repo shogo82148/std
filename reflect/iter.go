@@ -11,7 +11,7 @@ import (
 // Seqは、vの要素を反復処理する iter.Seq[Value] を返します。
 // vのkindが [Func] の場合、戻り値を持たず、
 // ある型Tに対する func(T) bool 型の引数を1つ受け取る関数でなければなりません。
-// vのkindが [Pointer] の場合、ポインタの要素型のkindは [Array] でなければなりません。
+// vのkindが [Pointer] の場合、ポインターの要素型のkindは [Array] でなければなりません。
 // それ以外の場合、vのkindは [Int], [Int8], [Int16], [Int32], [Int64],
 // [Uint], [Uint8], [Uint16], [Uint32], [Uint64], [Uintptr],
 // [Array], [Chan], [Map], [Slice], [String] のいずれかでなければなりません。
@@ -20,6 +20,6 @@ func (v Value) Seq() iter.Seq[Value]
 // Seq2は、vの要素を反復処理する iter.Seq2[Value, Value] を返します。
 // vのkindが [Func] の場合、戻り値を持たず、
 // ある型K, Vに対する func(K, V) bool 型の引数を1つ受け取る関数でなければなりません。
-// vのkindが [Pointer] の場合、ポインタの要素型のkindは [Array] でなければなりません。
+// vのkindが [Pointer] の場合、ポインターの要素型のkindは [Array] でなければなりません。
 // それ以外の場合、vのkindは [Array], [Map], [Slice], [String] のいずれかでなければなりません。
 func (v Value) Seq2() iter.Seq2[Value, Value]

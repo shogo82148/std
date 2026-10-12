@@ -14,14 +14,14 @@ import (
 var ForkLock sync.RWMutex
 
 // StringSlicePtrは、文字列のスライスをNUL終端されたバイト配列への
-// ポインタのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
-// この関数はエラーを返す代わりにパニックします。
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// この関数はエラーを返す代わりにパニックを引き起こします。
 //
 // Deprecated: 代わりにSlicePtrFromStringsを使用してください。
 func StringSlicePtr(ss []string) []*byte
 
 // SlicePtrFromStringsは、文字列のスライスをNUL終端されたバイト配列への
-// ポインタのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
 // (nil, [EINVAL])を返します。
 func SlicePtrFromStrings(ss []string) ([]*byte, error)
 

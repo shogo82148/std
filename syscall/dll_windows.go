@@ -46,7 +46,7 @@ type DLL struct {
 	Handle Handle
 }
 
-// LoadDLLは、指定されたDLLファイルをメモリにロードします。
+// LoadDLLは、指定されたDLLファイルをメモリーにロードします。
 //
 // nameが絶対パスではなく、Goが使用する既知のシステムDLLでもない場合、
 // Windowsは多くの場所で指定されたDLLを検索するため、
@@ -55,17 +55,17 @@ type DLL struct {
 // システムDLLを安全にロードするには、golang.org/x/sys/windowsの [LazyDLL] を使用してください。
 func LoadDLL(name string) (*DLL, error)
 
-// MustLoadDLLは [LoadDLL] と同様ですが、ロード操作が失敗した場合はパニックします。
+// MustLoadDLLは [LoadDLL] と同様ですが、ロード操作が失敗した場合はパニックを引き起こします。
 func MustLoadDLL(name string) *DLL
 
 // FindProcは、[DLL] dからnameという名前のプロシージャを検索し、
 // 見つかった場合は [*Proc] を返します。検索に失敗した場合はエラーを返します。
 func (d *DLL) FindProc(name string) (proc *Proc, err error)
 
-// MustFindProcは [DLL.FindProc] と同様ですが、検索に失敗した場合はパニックします。
+// MustFindProcは [DLL.FindProc] と同様ですが、検索に失敗した場合はパニックを引き起こします。
 func (d *DLL) MustFindProc(name string) *Proc
 
-// Releaseは、[DLL] dをメモリからアンロードします。
+// Releaseは、[DLL] dをメモリーからアンロードします。
 func (d *DLL) Release() (err error)
 
 // Procは、[DLL] 内のプロシージャへのアクセスを実装します。
@@ -108,8 +108,8 @@ type LazyDLL struct {
 	Name string
 }
 
-// Loadは、DLLファイルd.Nameをメモリにロードします。失敗した場合はエラーを返します。
-// DLLがすでにメモリにロードされている場合、LoadはDLLをロードしようとしません。
+// Loadは、DLLファイルd.Nameをメモリーにロードします。失敗した場合はエラーを返します。
+// DLLがすでにメモリーにロードされている場合、LoadはDLLをロードしようとしません。
 func (d *LazyDLL) Load() error
 
 // Handleは、dのモジュールハンドルを返します。
@@ -132,7 +132,7 @@ type LazyProc struct {
 
 // Findは、[DLL] からp.Nameという名前のプロシージャを検索します。
 // 検索に失敗した場合はエラーを返します。プロシージャがすでに見つかっていて
-// メモリにロードされている場合、Findはプロシージャを検索しません。
+// メモリーにロードされている場合、Findはプロシージャを検索しません。
 func (p *LazyProc) Find() error
 
 // Addrは、pが表すプロシージャのアドレスを返します。

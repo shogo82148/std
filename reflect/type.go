@@ -221,7 +221,7 @@ func TypeOf(i any) Type
 // TypeForは、型引数Tを表す [Type] を返します。
 func TypeFor[T any]() Type
 
-// PtrToは要素tを持つポインタ型を返します。
+// PtrToは要素tを持つポインター型を返します。
 // 例えば、tが型Fooを表す場合、PtrTo(t)は*Fooを表します。
 //
 // PtrToは [PointerTo] の古い綴りです。
@@ -232,7 +232,7 @@ func TypeFor[T any]() Type
 //go:fix inline
 func PtrTo(t Type) Type
 
-// PointerToは要素tを持つポインタ型を返します。
+// PointerToは要素tを持つポインター型を返します。
 // 例えば、もしtがFoo型を表すなら、PointerTo(t)は*Fooを表します。
 func PointerTo(t Type) Type
 
@@ -240,7 +240,7 @@ func PointerTo(t Type) Type
 // たとえば、tがintを表す場合、ChanOf(RecvDir, t)は<-chan intを表します。
 //
 // gcのランタイムは、チャネルの要素型に64 kBの制限を課しています。
-// もしtのサイズがこの制限以上である場合、ChanOfはパニックを発生させます。
+// もしtのサイズがこの制限以上である場合、ChanOfはパニックを引き起こします。
 func ChanOf(dir ChanDir, t Type) Type
 
 // MapOfは、指定されたキーと要素の型を持つマップ型を返します。
@@ -248,7 +248,7 @@ func ChanOf(dir ChanDir, t Type) Type
 // MapOf(k, e)はmap[int]stringを表します。
 //
 // キーの型が有効なマップキーの型でない場合（つまり、Goの==演算子を
-// 実装していない場合）、MapOfはパニックを起こします。
+// 実装していない場合）、MapOfはパニックを引き起こします。
 func MapOf(key, elem Type) Type
 
 // FuncOfは与えられた引数と戻り値の型を持つ関数型を返します。
@@ -256,7 +256,7 @@ func MapOf(key, elem Type) Type
 // FuncOf([]Type{k}, []Type{e}, false)はfunc(int) stringを表します。
 //
 // 可変引数の引数は、関数が可変引数かどうかを制御します。FuncOfは、
-// variadicがtrueであり、in[len(in)-1]がスライスを表していない場合にパニックを起こします。
+// variadicがtrueであり、in[len(in)-1]がスライスを表していない場合にパニックを引き起こします。
 func FuncOf(in, out []Type, variadic bool) Type
 
 // SliceOfは要素の型がtのスライス型を返します。
@@ -264,7 +264,7 @@ func FuncOf(in, out []Type, variadic bool) Type
 func SliceOf(t Type) Type
 
 // StructOfはフィールドを含む構造体の型を返します。
-// OffsetとIndexのフィールドは無視され、コンパイラによって計算されます。
+// OffsetとIndexのフィールドは無視され、コンパイラーによって計算されます。
 //
 // StructOfは、現在、埋め込みフィールドの昇格メソッドをサポートしておらず、
 // エクスポートされていないStructFieldsが渡された場合にパニックを引き起こします。
@@ -273,5 +273,5 @@ func StructOf(fields []StructField) Type
 // ArrayOfは、与えられた長さと要素の型を持つ配列型を返します。
 // 例えば、tがintを表す場合、ArrayOf(5, t)は[5]intを表します。
 //
-// もし結果の型が利用可能なアドレススペースよりも大きくなる場合、ArrayOfはパニックを発生させます。
+// もし結果の型が利用可能なアドレススペースよりも大きくなる場合、ArrayOfはパニックを引き起こします。
 func ArrayOf(length int, elem Type) Type

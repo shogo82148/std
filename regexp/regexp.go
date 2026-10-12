@@ -118,11 +118,11 @@ func CompilePOSIX(expr string) (*Regexp, error)
 // このメソッドは [Regexp] を修正するため、他のメソッドと同時に呼び出すことはできません。
 func (re *Regexp) Longest()
 
-// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックします。
+// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化が簡素化されます。
 func MustCompile(str string) *Regexp
 
-// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはpanicを発生させます。
+// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化を簡素化します。
 func MustCompilePOSIX(str string) *Regexp
 
@@ -156,15 +156,15 @@ func (re *Regexp) MatchString(s string) bool
 func (re *Regexp) Match(b []byte) bool
 
 // MatchReaderは、[io.RuneReader] によって返されるテキストに正規表現パターンの一致があるかどうかを報告します。
-// より複雑なクエリには [Compile] と完全な [Regexp] インターフェイスを使用する必要があります。
+// より複雑なクエリーには [Compile] と完全な [Regexp] インターフェイスを使用する必要があります。
 func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 
 // MatchStringは、文字列sが正規表現パターンに一致するものを含んでいるかどうかを報告します。
-// より複雑なクエリを行う場合は、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
+// より複雑なクエリーを行う場合は、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
 func MatchString(pattern string, s string) (matched bool, err error)
 
 // Matchは、バイトスライス b が正規表現パターンのいずれかに一致するかどうかを報告します。
-// より複雑なクエリには、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
+// より複雑なクエリーには、 [Compile] と完全な [Regexp] インターフェースを使用する必要があります。
 func Match(pattern string, b []byte) (matched bool, err error)
 
 // ReplaceAllStringは、srcの [Regexp] にマッチする箇所を置換文字列replで置き換えたsrcのコピーを返します。repl内では、 [Regexp.Expand] と同様に$記号が解釈されます。例えば、$1は最初のサブマッチのテキストを表します。
@@ -315,7 +315,7 @@ func (re *Regexp) ExpandString(dst []byte, template string, src string, match []
 //	s := regexp.MustCompile("a*").Split("abaabaccadaaae", 5)
 //	// s: ["", "b", "b", "c", "cadaaae"]
 //
-// countパラメータによって返す部分文字列の数が決まります:
+// countパラメーターによって返す部分文字列の数が決まります:
 //
 //   - n > 0: 最大でn個の部分文字列を返します。最後の部分文字列は分割されなかった残りの部分です。
 //   - n == 0: 結果はnil（部分文字列なし）です。

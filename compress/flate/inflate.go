@@ -41,7 +41,7 @@ type WriteError struct {
 
 func (e *WriteError) Error() string
 
-// Resetterは [NewReader] または [NewReaderDict] が返すReadCloserをリセットし、新しい基になる [Reader] に切り替えます。これにより、新しいものを割り当てる代わりにReadCloserを再利用することができます。
+// Resetterは [NewReader] または [NewReaderDict] が返すReadCloserをリセットし、新しい基礎となる [Reader] に切り替えます。これにより、新しいものを割り当てる代わりにReadCloserを再利用することができます。
 type Resetter interface {
 	Reset(r io.Reader, dict []byte) error
 }

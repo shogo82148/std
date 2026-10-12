@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// scannerパッケージは、UTF-8エンコードされたテキストのスキャナとトークナイザを提供します。
+// scannerパッケージは、UTF-8エンコードされたテキストのスキャナーとトークナイザを提供します。
 // それはソースを提供するio.Readerを取り、その後、Scan関数を繰り返し呼び出すことでトークン化できます。
 // 既存のツールとの互換性のため、NUL文字は許可されていません。ソースの最初の文字が
 // UTF-8エンコードされたバイトオーダーマーク（BOM）である場合、それは破棄されます。
@@ -38,7 +38,7 @@ func (pos Position) String() string
 //	ScanIdents | ScanInts | ScanComments | SkipComments
 //
 // SkipCommentsが設定されている場合、コメントはスキップされるを除いて、
-// 認識されないトークンは無視されません。代わりに、スキャナは単に
+// 認識されないトークンは無視されません。代わりに、スキャナーは単に
 // それぞれの個々の文字（または可能性のあるサブトークン）を返します。
 // 例えば、モードがScanIdents（ScanStringsではない）の場合、文字列
 // "foo"はトークンシーケンス '"' [Ident] '"'としてスキャンされます。
@@ -131,7 +131,7 @@ type Scanner struct {
 	// InitまたはNextを呼び出すと、位置が無効になります（Line == 0）。
 	// Filenameフィールドは常にScannerによって untouched のままです。
 	// エラーが報告され（Error経由で）かつPositionが無効な場合、
-	// スキャナはトークンの内部にはありません。その場合、または最近スキャンされたトークンの
+	// スキャナーはトークンの内部にはありません。その場合、または最近スキャンされたトークンの
 	// 直後の位置を取得するには、Posを呼び出します。
 	Position
 }
@@ -148,13 +148,13 @@ func (s *Scanner) Init(src io.Reader) *Scanner
 // 更新しません。現在の位置を取得するには、[Scanner.Pos]()を使用します。
 func (s *Scanner) Next() rune
 
-// Peekは、スキャナを進めずにソースの次のUnicode文字を返します。
-// スキャナの位置がソースの最後の文字にある場合、[EOF] を返します。
+// Peekは、スキャナーを進めずにソースの次のUnicode文字を返します。
+// スキャナーの位置がソースの最後の文字にある場合、[EOF] を返します。
 func (s *Scanner) Peek() rune
 
 // Scanは、ソースから次のトークンまたはUnicode文字を読み取り、それを返します。
 // それは、それぞれの [Scanner.Mode] ビット（1<<-t）が設定されているトークンtのみを認識します。
-// ソースの終わりで [EOF] を返します。スキャナのエラー（読み取りエラーとトークンエラー）は、
+// ソースの終わりで [EOF] を返します。スキャナーのエラー（読み取りエラーとトークンエラー）は、
 // s.Errorがnilでない場合にはs.Errorを呼び出すことで報告します。それ以外の場合は、
 // [os.Stderr] にエラーメッセージを出力します。
 func (s *Scanner) Scan() rune

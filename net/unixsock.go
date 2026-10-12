@@ -32,7 +32,7 @@ func (a *UnixAddr) String() string
 //
 // ネットワークはUnixのネットワーク名である必要があります。
 //
-// ネットワークとアドレスのパラメータについての説明は、
+// ネットワークとアドレスのパラメーターについての説明は、
 // [Dial] 関数を参照してください。
 func ResolveUnixAddr(network, address string) (*UnixAddr, error)
 
@@ -119,14 +119,14 @@ func (l *UnixListener) Addr() Addr
 // ゼロの時間値は締め切りを無効にします。
 func (l *UnixListener) SetDeadline(t time.Time) error
 
-// File は基になる [os.File] のコピーを返します。
+// File は基礎となる [os.File] のコピーを返します。
 // 終了時には、f を閉じるのは呼び出し元の責任です。
 // l を閉じても f に影響を与えず、f を閉じても l に影響を与えません。
 //
-// 返される [os.File] のファイルディスクリプタは元の接続のものとは異なります。
-// この複製を使って元のプロパティを変更しようとしても、期待通りの効果があるとは限りません。
+// 返される [os.File] のファイルディスクリプターは元の接続のものとは異なります。
+// この複製を使って元のプロパティーを変更しようとしても、期待通りの効果があるとは限りません。
 //
-// Windowsでは、返される os.File のファイルディスクリプタは
+// Windowsでは、返される os.File のファイルディスクリプターは
 // 他のプロセスでは使用できません。
 func (l *UnixListener) File() (f *os.File, err error)
 

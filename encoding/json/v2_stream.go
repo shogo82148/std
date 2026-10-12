@@ -28,9 +28,9 @@ type Decoder struct {
 	hadEOF bool
 }
 
-// NewDecoderは、rから読み込む新しいデコーダを返します。
+// NewDecoderは、rから読み込む新しいデコーダーを返します。
 //
-// デコーダは独自にバッファリングを行い、要求されたJSON値以外のデータもrから読み込む場合があります。
+// デコーダーは独自にバッファリングを行い、要求されたJSON値以外のデータもrから読み込む場合があります。
 func NewDecoder(r io.Reader) *Decoder
 
 // UseNumberは、Decoderが数値をfloat64ではなく [Number] としてinterface値にアンマーシャルするようにします。
@@ -44,7 +44,7 @@ func (dec *Decoder) DisallowUnknownFields()
 // JSONからGo値への変換の詳細については [Unmarshal] のドキュメントを参照してください。
 func (dec *Decoder) Decode(v any) error
 
-// Bufferedは、未読バッファに残っているデータのリーダーを返します。
+// Bufferedは、未読バッファーに残っているデータのリーダーを返します。
 // このデータには0バイト以上が含まれる可能性があります。
 // これは入力 [io.Reader] からすでに消費されたデータですが、
 // まだ [Decoder.Decode] または [Decoder.Token] の呼び出しでは読み取られていません。
@@ -54,7 +54,7 @@ func (dec *Decoder) Decode(v any) error
 // 時間とともに変わる可能性があります。
 //
 // 最後にデコードされたJSON値の後に続くバイト列全体を得るには、
-// このバッファと入力Readerの残りを連結する責任は呼び出し側にあります。
+// このバッファーと入力Readerの残りを連結する責任は呼び出し側にあります。
 //
 // このリーダーは、次の [Decoder.Decode] または [Decoder.Token] の呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
@@ -71,7 +71,7 @@ type Encoder struct {
 	indentValue  string
 }
 
-// NewEncoderは、wに書き込む新しいエンコーダを返します。
+// NewEncoderは、wに書き込む新しいエンコーダーを返します。
 func NewEncoder(w io.Writer) *Encoder
 
 // Encodeは、vのJSONエンコーディングをストリームに書き込み、
@@ -80,7 +80,7 @@ func NewEncoder(w io.Writer) *Encoder
 // Go値からJSONへの変換の詳細については[Marshal]のドキュメントを参照してください。
 func (enc *Encoder) Encode(v any) error
 
-// SetIndentは、エンコーダに対して以降にエンコードされる値を、パッケージレベル関数Indent(dst, src, prefix, indent)でインデントされたかのように整形するよう指示します。
+// SetIndentは、エンコーダーに対して以降にエンコードされる値を、パッケージレベル関数Indent(dst, src, prefix, indent)でインデントされたかのように整形するよう指示します。
 // SetIndent("", "")を呼び出すとインデントが無効になります。
 func (enc *Encoder) SetIndent(prefix, indent string)
 
@@ -124,6 +124,6 @@ func (dec *Decoder) Token() (Token, error)
 // Moreは、現在パース中の配列またはオブジェクトに次の要素が存在するかどうかを報告します。
 func (dec *Decoder) More() bool
 
-// InputOffsetは、現在のデコーダ位置の入力ストリームのバイトオフセットを返します。
+// InputOffsetは、現在のデコーダー位置の入力ストリームのバイトオフセットを返します。
 // オフセットは直前に返されたトークンの終了位置と、次のトークンの開始位置を示します。
 func (dec *Decoder) InputOffset() int64

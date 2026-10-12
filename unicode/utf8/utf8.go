@@ -71,7 +71,7 @@ func RuneLen(r rune) int
 func EncodeRune(p []byte, r rune) int
 
 // AppendRuneは、rのUTF-8エンコーディングをpの末尾に追加し、
-// 拡張されたバッファを返します。もしルーンが範囲外であれば、
+// 拡張されたバッファーを返します。もしルーンが範囲外であれば、
 // [RuneError] のエンコーディングを追加します。
 func AppendRune(p []byte, r rune) []byte
 

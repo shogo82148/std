@@ -12,7 +12,7 @@ type InterfaceAnnounceMessage struct {
 	Header IfAnnounceMsghdr
 }
 
-// InterfaceMulticastAddrMessageは、ネットワークインターフェースのアドレスエントリを
+// InterfaceMulticastAddrMessageは、ネットワークインターフェースのアドレスエントリーを
 // 含むルーティングメッセージを表します。
 //
 // Deprecated: 代わりにgolang.org/x/net/routeを使用してください。

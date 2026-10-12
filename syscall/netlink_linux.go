@@ -13,7 +13,7 @@ type NetlinkRouteRequest struct {
 	Data   RtGenmsg
 }
 
-// NetlinkRIBは、ネットワーク機能の情報、状態、パラメータで構成される
+// NetlinkRIBは、ネットワーク機能の情報、状態、パラメーターで構成される
 // ルーティング情報ベース（RIBとも呼ばれる）を返します。
 func NetlinkRIB(proto, family int) ([]byte, error)
 

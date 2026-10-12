@@ -53,7 +53,7 @@ func (w *PipeWriter) Close() error
 // 常にnilを返します。
 func (w *PipeWriter) CloseWithError(err error) error
 
-// Pipeは同期的なインメモリパイプを作成します。
+// Pipeは同期的なインメモリーパイプを作成します。
 // これは、[io.Reader] を期待するコードと [io.Writer] を期待するコードを
 // 接続するために使用できます。
 //

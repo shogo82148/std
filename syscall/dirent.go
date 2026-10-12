@@ -6,7 +6,7 @@
 
 package syscall
 
-// ParseDirentは、buf内の最大max個のディレクトリエントリをパースし、
+// ParseDirentは、buf内の最大max個のディレクトリーエントリーをパースし、
 // 名前をnamesに追加します。bufから消費されたバイト数、
-// namesに追加されたエントリの数、および新しいnamesスライスを返します。
+// namesに追加されたエントリーの数、および新しいnamesスライスを返します。
 func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)

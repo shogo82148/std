@@ -123,7 +123,7 @@ func (s *Section) Data() ([]byte, error)
 // Openは、Mach-Oセクションを読み取る新しいReadSeekerを返します。
 func (s *Section) Open() io.ReadSeeker
 
-// Dylibは、Mach-Oの動的ライブラリロードコマンドを表します。
+// Dylibは、Mach-Oの動的ライブラリーロードコマンドを表します。
 type Dylib struct {
 	LoadBytes
 	Name           string
@@ -152,7 +152,7 @@ type Rpath struct {
 	Path string
 }
 
-// Symbolは、Mach-O 32ビットまたは64ビットのシンボルテーブルエントリです。
+// Symbolは、Mach-O 32ビットまたは64ビットのシンボルテーブルエントリーです。
 type Symbol struct {
 	Name  string
 	Type  uint8
@@ -171,7 +171,7 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-// Openは、[os.Open] を使用して指定されたファイルを開き、それをMach-Oバイナリとして使用するための準備をします。
+// Openは、[os.Open] を使用して指定されたファイルを開き、それをMach-Oバイナリーとして使用するための準備をします。
 func Open(name string) (*File, error)
 
 // Closeは、[File] を閉じます。
@@ -179,8 +179,8 @@ func Open(name string) (*File, error)
 // Closeは何も影響を与えません。
 func (f *File) Close() error
 
-// NewFileは、基礎となるリーダーでMach-Oバイナリにアクセスするための新しいFileを作成します。
-// Mach-Oバイナリは、ReaderAtの位置0で開始することが期待されています。
+// NewFileは、基礎となるリーダーでMach-Oバイナリーにアクセスするための新しいFileを作成します。
+// Mach-Oバイナリーは、ReaderAtの位置0で開始することが期待されています。
 func NewFile(r io.ReaderAt) (*File, error)
 
 // Segmentは、指定された名前の最初のSegmentを返します。そのようなセグメントが存在しない場合はnilを返します。
@@ -193,10 +193,10 @@ func (f *File) Section(name string) *Section
 // DWARFは、Mach-OファイルのDWARFデバッグ情報を返します。
 func (f *File) DWARF() (*dwarf.Data, error)
 
-// ImportedSymbolsは、バイナリfが参照しているすべてのシンボルの名前を返します。
-// これらは、動的ロード時に他のライブラリによって満たされることが期待されています。
+// ImportedSymbolsは、バイナリーfが参照しているすべてのシンボルの名前を返します。
+// これらは、動的ロード時に他のライブラリーによって満たされることが期待されています。
 func (f *File) ImportedSymbols() ([]string, error)
 
-// ImportedLibrariesは、バイナリfが参照しているすべてのライブラリのパスを返します。
-// これらは、動的リンク時にバイナリとリンクされることが期待されています。
+// ImportedLibrariesは、バイナリーfが参照しているすべてのライブラリーのパスを返します。
+// これらは、動的リンク時にバイナリーとリンクされることが期待されています。
 func (f *File) ImportedLibraries() ([]string, error)

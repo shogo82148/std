@@ -19,8 +19,8 @@ type JSONHandler struct {
 // optsがnilの場合、デフォルトのオプションが使用されます。
 func NewJSONHandler(w io.Writer, opts *HandlerOptions) *JSONHandler
 
-// Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
-// ハンドラは、レベルが低いレコードを無視します。
+// Enabledは、ハンドラーが指定されたレベルのレコードを処理するかどうかを報告します。
+// ハンドラーは、レベルが低いレコードを無視します。
 func (h *JSONHandler) Enabled(_ context.Context, level Level) bool
 
 // WithAttrsは、hの属性に続く属性で構成される新しい [JSONHandler] を返します。

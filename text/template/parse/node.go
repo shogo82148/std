@@ -116,7 +116,7 @@ func (p *PipeNode) CopyPipe() *PipeNode
 
 func (p *PipeNode) Copy() Node
 
-// ActionNodeはアクション（デリミタで区切られた何か）を保持します。
+// ActionNodeはアクション（デリミターで区切られた何か）を保持します。
 // 制御アクションはそれぞれが独自のノードを持ち、ActionNodeはフィールド評価や
 // 括弧付きパイプラインのような単純なものを表します。
 type ActionNode struct {

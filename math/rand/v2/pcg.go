@@ -4,7 +4,7 @@
 
 package rand
 
-// PCGは、128ビットの内部状態を持つPCGジェネレータです。
+// PCGは、128ビットの内部状態を持つPCGジェネレーターです。
 // ゼロのPCGは、NewPCG(0, 0)と同等です。
 type PCG struct {
 	hi uint64

@@ -9,9 +9,9 @@ import (
 	"github.com/shogo82148/std/net/http/internal"
 )
 
-// ErrLineTooLongは、不正なチャンクエンコーディングでリクエストまたはレスポンスボディを読み取る場合に返されます。
+// ErrLineTooLongは、不正なチャンクエンコーディングでリクエストまたはレスポンスボディーを読み取る場合に返されます。
 var ErrLineTooLong = internal.ErrLineTooLong
 
-// ErrBodyReadAfterCloseは、ボディが閉じられた後に [Request] または [Response] のボディを読み取る場合に返されます。
-// これは通常、HTTP [Handler] が [ResponseWriter] のWriteHeaderまたはWriteを呼び出した後にボディが読み取られた場合に発生します。
+// ErrBodyReadAfterCloseは、ボディーが閉じられた後に [Request] または [Response] のボディーを読み取る場合に返されます。
+// これは通常、HTTP [Handler] が [ResponseWriter] のWriteHeaderまたはWriteを呼び出した後にボディーが読み取られた場合に発生します。
 var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")

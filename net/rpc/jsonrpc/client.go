@@ -17,5 +17,5 @@ func NewClientCodec(conn io.ReadWriteCloser) rpc.ClientCodec
 // NewClientは、接続先の一連のサービスへのリクエストを処理する新しい [rpc.Client] を返します。
 func NewClient(conn io.ReadWriteCloser) *rpc.Client
 
-// Dialは指定されたネットワークアドレスのJSON-RPCサーバに接続します。
+// Dialは指定されたネットワークアドレスのJSON-RPCサーバーに接続します。
 func Dial(network, address string) (*rpc.Client, error)

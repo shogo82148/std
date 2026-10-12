@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// imageパッケージは、基本的な2次元画像ライブラリを実装します。
+// imageパッケージは、基本的な2次元画像ライブラリーを実装します。
 //
 // 基本的なインターフェースは [Image] と呼ばれます。[Image] は色を含み、
 // 色はimage/colorパッケージで記述されています。
@@ -10,7 +10,7 @@
 // [Image] インターフェースの値は、[NewRGBA] や [NewPaletted] などの関数を呼び出すか、
 // GIF、JPEG、PNGなどの形式の画像データを含む [io.Reader] に対して [Decode] を
 // 呼び出すことによって作成されます。特定の画像形式をデコードするには、
-// 事前にデコーダ関数を登録する必要があります。
+// 事前にデコーダー関数を登録する必要があります。
 // 登録は通常、その形式のパッケージを初期化する際の副作用として自動的に行われるため、
 // PNG画像をデコードするには、プログラムのmainパッケージに
 //
@@ -25,14 +25,14 @@
 // # Security Considerations
 //
 // imageパッケージは任意の大きさの画像をパースするために使用できますが、
-// それらを格納するのに十分なメモリを持たないマシンではリソースの枯渇を引き起こす可能性があります。
+// それらを格納するのに十分なメモリーを持たないマシンではリソースの枯渇を引き起こす可能性があります。
 // 任意の画像を扱う場合は、[Decode] の前に [DecodeConfig] を呼び出して、
 // 返されたヘッダーで定義されている画像を利用可能なリソースで安全にデコードできるかどうかを
 // プログラムが判断できるようにするべきです。[DecodeConfig] が返すヘッダーで
 // 定義されているとおりの非常に大きな画像を生成する [Decode] の呼び出しは、
-// 画像自体が不正な形式であるかどうかにかかわらず、セキュリティ上の問題とはみなされません。
+// 画像自体が不正な形式であるかどうかにかかわらず、セキュリティー上の問題とはみなされません。
 // [Decode] が返す画像と一致しないヘッダーを返す [DecodeConfig] の呼び出しは
-// セキュリティ上の問題とみなされる可能性があり、
+// セキュリティー上の問題とみなされる可能性があり、
 // [Go Security Policy](https://go.dev/security/policy)に従って報告するべきです。
 package image
 
@@ -71,7 +71,7 @@ type PalettedImage interface {
 	Image
 }
 
-// RGBAは、Atメソッドが [color.RGBA] 値を返すインメモリイメージです。
+// RGBAは、Atメソッドが [color.RGBA] 値を返すインメモリーイメージです。
 type RGBA struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -111,7 +111,7 @@ func (p *RGBA) Opaque() bool
 // NewRGBAは、指定された境界を持つ新しい [RGBA] イメージを返します。
 func NewRGBA(r Rectangle) *RGBA
 
-// RGBA64は、Atメソッドが [color.RGBA64] 値を返すインメモリイメージです。
+// RGBA64は、Atメソッドが [color.RGBA64] 値を返すインメモリーイメージです。
 type RGBA64 struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
@@ -147,7 +147,7 @@ func (p *RGBA64) Opaque() bool
 // NewRGBA64は、指定された境界を持つ新しい [RGBA64] イメージを返します。
 func NewRGBA64(r Rectangle) *RGBA64
 
-// NRGBAは、Atメソッドが [color.NRGBA] 値を返すインメモリイメージです。
+// NRGBAは、Atメソッドが [color.NRGBA] 値を返すインメモリーイメージです。
 type NRGBA struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -187,7 +187,7 @@ func (p *NRGBA) Opaque() bool
 // NewNRGBAは、指定された境界を持つ新しい [NRGBA] イメージを返します。
 func NewNRGBA(r Rectangle) *NRGBA
 
-// NRGBA64は、Atメソッドが [color.NRGBA64] 値を返すインメモリイメージです。
+// NRGBA64は、Atメソッドが [color.NRGBA64] 値を返すインメモリーイメージです。
 type NRGBA64 struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
@@ -227,7 +227,7 @@ func (p *NRGBA64) Opaque() bool
 // NewNRGBA64は、指定された境界を持つ新しい [NRGBA64] イメージを返します。
 func NewNRGBA64(r Rectangle) *NRGBA64
 
-// Alphaは、Atメソッドが [color.Alpha] 値を返すインメモリイメージです。
+// Alphaは、Atメソッドが [color.Alpha] 値を返すインメモリーイメージです。
 type Alpha struct {
 	// Pixは、画像のピクセルをアルファ値として保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
@@ -267,7 +267,7 @@ func (p *Alpha) Opaque() bool
 // NewAlphaは、指定された境界を持つ新しい [Alpha] イメージを返します。
 func NewAlpha(r Rectangle) *Alpha
 
-// Alpha16は、Atメソッドが [color.Alpha16] 値を返すインメモリイメージです。
+// Alpha16は、Atメソッドが [color.Alpha16] 値を返すインメモリーイメージです。
 type Alpha16 struct {
 	// Pixは、画像のピクセルをアルファ値として、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
@@ -307,7 +307,7 @@ func (p *Alpha16) Opaque() bool
 // NewAlpha16は、指定された境界を持つ新しい [Alpha16] イメージを返します。
 func NewAlpha16(r Rectangle) *Alpha16
 
-// Grayは、Atメソッドが [color.Gray] 値を返すインメモリイメージです。
+// Grayは、Atメソッドが [color.Gray] 値を返すインメモリーイメージです。
 type Gray struct {
 	// Pixは、画像のピクセルをグレー値として保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
@@ -347,7 +347,7 @@ func (p *Gray) Opaque() bool
 // NewGrayは、指定された境界を持つ新しい [Gray] イメージを返します。
 func NewGray(r Rectangle) *Gray
 
-// Gray16は、Atメソッドが [color.Gray16] 値を返すインメモリイメージです。
+// Gray16は、Atメソッドが [color.Gray16] 値を返すインメモリーイメージです。
 type Gray16 struct {
 	// Pixは、画像のピクセルをグレー値として、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
@@ -387,7 +387,7 @@ func (p *Gray16) Opaque() bool
 // NewGray16は、指定された境界を持つ新しい [Gray16] イメージを返します。
 func NewGray16(r Rectangle) *Gray16
 
-// CMYKは、Atメソッドが [color.CMYK] 値を返すインメモリイメージです。
+// CMYKは、Atメソッドが [color.CMYK] 値を返すインメモリーイメージです。
 type CMYK struct {
 	// Pixは、画像のピクセルをC, M, Y, Kの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -427,7 +427,7 @@ func (p *CMYK) Opaque() bool
 // NewCMYKは、指定された境界を持つ新しいCMYKイメージを返します。
 func NewCMYK(r Rectangle) *CMYK
 
-// Palettedは、指定されたパレットへのuint8インデックスのインメモリイメージです。
+// Palettedは、指定されたパレットへのuint8インデックスのインメモリーイメージです。
 type Paletted struct {
 	// Pixは、画像のピクセルをパレットインデックスとして保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。

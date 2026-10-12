@@ -127,7 +127,7 @@ func Map(mapping func(rune) rune, s string) string
 
 // Repeatは、文字列sのcount個のコピーからなる新しい文字列を返します。
 //
-// countが負の場合、または（len(s) * count）の結果がオーバーフローする場合、パニックが発生します。
+// countが負の場合、または（len(s) * count）の結果がオーバーフローする場合、パニックを引き起こします。
 func Repeat(s string, count int) string
 
 // ToUpperは、すべてのUnicode文字を大文字にマップしたsを返します。

@@ -127,7 +127,7 @@ func Map(mapping func(r rune) rune, s []byte) []byte
 
 // Repeat は、bのcount回のコピーからなる新しいバイトスライスを返します。
 //
-// countが負数であるか、(len(b) * count)の結果がオーバーフローする場合、パニックが発生します。
+// countが負数であるか、(len(b) * count)の結果がオーバーフローする場合、パニックを引き起こします。
 func Repeat(b []byte, count int) []byte
 
 // ToUpperは、すべてのUnicode文字を大文字に変換したバイトスライスsのコピーを返します。

@@ -155,7 +155,7 @@ func Example_omitFields() {
 		Bar []int  `json:",omitempty"`
 		// "omitzero"と"omitempty"は両方同時に指定できます。
 		// その場合、どちらかの条件を満たせばフィールドは省略されます。
-		// この場合、Bazフィールドはnilポインタであるか、
+		// この場合、Bazフィールドはnilポインターであるか、
 		// 空のJSONオブジェクトとしてエンコードされる場合に省略されます。
 		Baz *MyStruct `json:",omitzero,omitempty"`
 	}
@@ -197,9 +197,9 @@ func Example_omitFields() {
 		MapNil: nil,
 		// Mapは、map[int]int{}がGoのマップのゼロ値ではないため省略されません。
 		Map: map[int]int{},
-		// PointerNilは、nilがGoのポインタのゼロ値であるため省略されます。
+		// PointerNilは、nilがGoのポインターのゼロ値であるため省略されます。
 		PointerNil: nil,
-		// Pointerは、new(string)がGoのポインタのゼロ値ではないため省略されません。
+		// Pointerは、new(string)がGoのポインターのゼロ値ではないため省略されません。
 		Pointer: new(string),
 		// InterfaceNilは、nilがGoのインターフェースのゼロ値であるため省略されます。
 		InterfaceNil: nil,

@@ -26,7 +26,7 @@ func Example_openDBCLI() {
 	}
 	var err error
 
-	// ドライバを開く場合、通常、データベースへの接続は試みられません。
+	// ドライバーを開く場合、通常、データベースへの接続は試みられません。
 	pool, err = sql.Open("driver-name", *dsn)
 	if err != nil {
 

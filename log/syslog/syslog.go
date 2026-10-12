@@ -60,7 +60,7 @@ const (
 	LOG_LOCAL7
 )
 
-// Writerはsyslogサーバへの接続です。
+// Writerはsyslogサーバーへの接続です。
 type Writer struct {
 	priority Priority
 	tag      string

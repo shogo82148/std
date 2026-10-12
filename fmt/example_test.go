@@ -170,7 +170,7 @@ func ExampleFprintf() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintf(os.Stdout, "%s is %d years old.\n", name, age)
 
-	// Fprintfからのnとerrの返り値は、基になるio.Writerによって返されたものです。
+	// Fprintfからのnとerrの返り値は、基礎となるio.Writerによって返されたものです。
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
 	}
@@ -280,9 +280,9 @@ func Example_formats() {
 	fmt.Printf("%v %+v %#v\n", person, person, person)
 	// 結果: {Kim 22} {Name:Kim Age:22} struct { Name string; Age int }{Name:"Kim", Age:22}
 
-	// ポインタのデフォルトのフォーマットは、アンパサンドに続く元の値を表示します。
-	// %p フォーマット指定子はポインタの値を16進数で表示します。ここでは、
-	// %p への引数には型付きの nil を使用しています。なぜなら、非 nil のポインタ
+	// ポインターのデフォルトのフォーマットは、アンパサンドに続く元の値を表示します。
+	// %p フォーマット指定子はポインターの値を16進数で表示します。ここでは、
+	// %p への引数には型付きの nil を使用しています。なぜなら、非 nil のポインター
 	// の値は実行ごとに変化するためです；コメントアウトされた Printf 呼び出し
 	// を自分で実行するとわかります。
 	pointer := &person

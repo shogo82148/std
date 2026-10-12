@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// WordEncoderは、RFC 2047のエンコードされたワードエンコーダです。
+// WordEncoderは、RFC 2047のエンコードされたワードエンコーダーです。
 type WordEncoder byte
 
 const (

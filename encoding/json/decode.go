@@ -14,16 +14,16 @@ import (
 )
 
 // Unmarshalは、JSONエンコードされたデータを解析し、結果をvが指す値に格納します。
-// もしvがnilまたはポインタでない場合、Unmarshalは [InvalidUnmarshalError] を返します。
+// もしvがnilまたはポインターでない場合、Unmarshalは [InvalidUnmarshalError] を返します。
 //
 // Unmarshalは、[Marshal] が使用するエンコーディングの逆を使用し、
-// 必要に応じてマップ、スライス、ポインタを割り当てます。
+// 必要に応じてマップ、スライス、ポインターを割り当てます。
 // 以下の追加ルールも適用されます：
 //
-// JSONをポインタにアンマーシャルするために、Unmarshalはまず
+// JSONをポインターにアンマーシャルするために、Unmarshalはまず
 // JSONがJSONリテラルnullであるケースを処理します。その場合、Unmarshalは
-// ポインタをnilに設定します。それ以外の場合、UnmarshalはJSONを
-// ポインタが指す値にアンマーシャルします。もしポインタがnilなら、Unmarshalは
+// ポインターをnilに設定します。それ以外の場合、UnmarshalはJSONを
+// ポインターが指す値にアンマーシャルします。もしポインターがnilなら、Unmarshalは
 // それが指す新しい値を割り当てます。
 //
 // [Unmarshaler] インターフェースを実装する値にJSONをアンマーシャルするために、
@@ -66,7 +66,7 @@ import (
 //
 // JSONオブジェクトをマップにアンマーシャルするために、Unmarshalは最初に使用するマップを確立します。
 // マップがnilの場合、Unmarshalは新しいマップを割り当てます。それ以外の場合、Unmarshalは
-// 既存のマップを再利用し、既存のエントリを保持します。次に、UnmarshalはJSONオブジェクトから
+// 既存のマップを再利用し、既存のエントリーを保持します。次に、UnmarshalはJSONオブジェクトから
 // キーと値のペアをマップに格納します。マップのキーの型は、任意の文字列型、整数、
 // または [encoding.TextUnmarshaler] を実装するものでなければなりません。
 //
@@ -79,7 +79,7 @@ import (
 // 説明する [UnmarshalTypeError] を返します。いずれにせよ、問題のあるフィールドに続く
 // すべてのフィールドがターゲットオブジェクトにアンマーシャルされることは保証されません。
 //
-// JSONのnull値は、そのGoの値をnilに設定することでインターフェース、マップ、ポインタ、スライスにアンマーシャルされます。
+// JSONのnull値は、そのGoの値をnilに設定することでインターフェース、マップ、ポインター、スライスにアンマーシャルされます。
 // nullはJSONで「存在しない」を意味することが多いため、JSONのnullを他のGoの型にアンマーシャルすると、
 // 値には影響せず、エラーも発生しません。
 //
@@ -119,7 +119,7 @@ type UnmarshalFieldError struct {
 func (e *UnmarshalFieldError) Error() string
 
 // InvalidUnmarshalErrorは、[Unmarshal] に渡された無効な引数を説明します。
-// ([Unmarshal] への引数はnilでないポインタでなければなりません。)
+// ([Unmarshal] への引数はnilでないポインターでなければなりません。)
 type InvalidUnmarshalError struct {
 	Type reflect.Type
 }

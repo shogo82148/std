@@ -17,6 +17,6 @@ import (
 // 代わりに [testing/cryptotest.SetGlobalRandom] を使用してください。
 func Prime(r io.Reader, bits int) (*big.Int, error)
 
-// Intは[0, max)の範囲の一様乱数値を返します。max <= 0の場合はパニックし、
+// Intは[0, max)の範囲の一様乱数値を返します。max <= 0の場合はパニックを引き起こし、
 // rand.Readがエラーを返した場合はエラーを返します。
 func Int(rand io.Reader, max *big.Int) (n *big.Int, err error)

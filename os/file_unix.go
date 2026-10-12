@@ -15,7 +15,7 @@ const DevNull = "/dev/null"
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func Truncate(name string, size int64) error
 
-// Removeは指定されたファイルまたは（空の）ディレクトリを削除します。
+// Removeは指定されたファイルまたは（空の）ディレクトリーを削除します。
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func Remove(name string) error
 
@@ -25,6 +25,6 @@ func Link(oldname, newname string) error
 
 // Symlinkはnewnameをoldnameへのシンボリックリンクとして作成します。
 // Windowsでは、存在しないoldnameへのシンボリックリンクはファイルのシンボリックリンクとして作成されます。
-// もしoldnameが後でディレクトリとして作成された場合、シンボリックリンクは機能しません。
+// もしoldnameが後でディレクトリーとして作成された場合、シンボリックリンクは機能しません。
 // エラーが発生した場合は、*LinkError型のエラーになります。
 func Symlink(oldname, newname string) error

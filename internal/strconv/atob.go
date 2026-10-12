@@ -12,5 +12,5 @@ func ParseBool(str string) (bool, error)
 // FormatBoolはbの値に応じて"true"または"false"を返します。
 func FormatBool(b bool) string
 
-// AppendBoolはbの値に応じて、"true"または"false"をdstに追加し、拡張されたバッファを返します。
+// AppendBoolはbの値に応じて、"true"または"false"をdstに追加し、拡張されたバッファーを返します。
 func AppendBool(dst []byte, b bool) []byte

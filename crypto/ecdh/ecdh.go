@@ -97,5 +97,5 @@ func (k *PrivateKey) Curve() Curve
 
 func (k *PrivateKey) PublicKey() *PublicKey
 
-// Publicは、すべての標準ライブラリの非公開キーの暗黙のインターフェースを実装します。 [crypto.PrivateKey] のドキュメントを参照してください。
+// Publicは、すべての標準ライブラリーの非公開キーの暗黙のインターフェースを実装します。 [crypto.PrivateKey] のドキュメントを参照してください。
 func (k *PrivateKey) Public() crypto.PublicKey

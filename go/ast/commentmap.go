@@ -25,7 +25,7 @@ func NewCommentMap(fset *token.FileSet, node Node, comments []*CommentGroup) Com
 // 古いノードに関連付けられていたコメントは、新しいノードに関連付けられます。
 func (cmap CommentMap) Update(old, new Node) Node
 
-// Filterはnodeによって指定されたASTに対応するノードが存在する場合、cmapのエントリのみで構成される新しいコメントマップを返します。
+// Filterはnodeによって指定されたASTに対応するノードが存在する場合、cmapのエントリーのみで構成される新しいコメントマップを返します。
 func (cmap CommentMap) Filter(node Node) CommentMap
 
 // Commentsはコメントマップ内のコメントグループのリストを返します。

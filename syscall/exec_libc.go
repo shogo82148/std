@@ -15,8 +15,8 @@ type SysProcAttr struct {
 	// Setpgidは、子のプロセスグループIDをPgidに設定します。
 	// Pgid == 0の場合は、新しい子のプロセスIDに設定します。
 	Setpgid bool
-	// Setcttyは、子の制御端末をファイルディスクリプタCttyに設定します。
-	// Cttyは子プロセス内のディスクリプタ番号、つまりProcAttr.Filesへの
+	// Setcttyは、子の制御端末をファイルディスクリプターCttyに設定します。
+	// Cttyは子プロセス内のディスクリプター番号、つまりProcAttr.Filesへの
 	// インデックスでなければなりません。
 	// これはSetsidがtrueの場合にのみ意味を持ちます。
 	Setctty bool
@@ -24,9 +24,9 @@ type SysProcAttr struct {
 	Ctty    int
 	// Foregroundは、子プロセスグループをフォアグラウンドに配置します。
 	// これはSetpgidを暗黙的に含みます。Cttyフィールドには
-	// 制御TTYのディスクリプタを設定しなければなりません。
+	// 制御TTYのディスクリプターを設定しなければなりません。
 	// Setcttyとは異なり、この場合Cttyは親プロセス内の
-	// ディスクリプタ番号でなければなりません。
+	// ディスクリプター番号でなければなりません。
 	Foreground bool
 	Pgid       int
 }

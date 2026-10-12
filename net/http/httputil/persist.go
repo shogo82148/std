@@ -103,7 +103,7 @@ func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 // ユーザーは、[ClientConn.Read] または ClientConn.Writeが進行中の間にHijackを呼び出さないでください。
 func (cc *ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
 
-// Closeは [ClientConn.Hijack] を呼び出し、その後下層の接続も閉じます。
+// Closeは [ClientConn.Hijack] を呼び出し、その後基礎となる接続も閉じます。
 func (cc *ClientConn) Close() error
 
 // Writeはリクエストを書き込みます。もしHTTP keep-aliveによって接続が閉じられた場合、[ErrPersistEOF] エラーが返されます。もしreq.Closeがtrueの場合、このリクエストの後にkeep-alive接続が論理的に閉じられ、対向サーバーに通知されます。ErrUnexpectedEOFは、リモートが基礎となるTCP接続を閉じたことを示しており、通常は正常な終了と見なされます。

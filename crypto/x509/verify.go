@@ -45,7 +45,7 @@ const (
 	NoValidChains
 )
 
-// CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
+// CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリーのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
 type CertificateInvalidError struct {
 	Cert   *Certificate
 	Reason InvalidReason
@@ -84,7 +84,7 @@ func (se SystemRootsError) Error() string
 
 func (se SystemRootsError) Unwrap() error
 
-// VerifyOptionsにはCertificate.Verifyのパラメータが含まれています。
+// VerifyOptionsにはCertificate.Verifyのパラメーターが含まれています。
 type VerifyOptions struct {
 
 	// DNSNameが設定されている場合は、Certificate.VerifyHostnameまたはプラットフォームの検証器で葉証明書と照合されます。

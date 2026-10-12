@@ -89,7 +89,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | See the X documentation for details. | 詳細については、X のドキュメントを参照してください。 | |
 | For example, ... | 例えば、... | 括弧内の (for example, "...") は（例: "..."） |
 | Note that ... | ...ことに注意してください。 | |
-| It panics if ... | ...場合、パニックを引き起こします。 | 「パニックを起こします」「パニックします」も多いので、ファイル内で揃える |
+| It panics if ... | ...場合、パニックを引き起こします。 | 「パニックを起こします」「パニックします」「パニックを発生させます」「パニックが発生します」は使わない。ただし仕様の "a run-time panic occurs" は「ランタイムパニックが発生します」 |
 | It returns an error if ... | ...場合はエラーを返します。 | |
 | If X is nil, ... | X が nil の場合、... | |
 | ..., or nil if ... | ...を返します。...の場合は nil を返します。 | |
@@ -155,7 +155,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | constraint | 制約 | |
 | comparable | 比較可能な | |
 | assignable | 代入可能な | |
-| underlying | 基礎となる | (118)。「基になる」(37) も見られるが、新規は「基礎となる」に揃える。underlying type は「基底型」でもよい |
+| underlying | 基礎となる | 「基になる」「基盤となる」「下層の」「基底の」「元となる」は使わない。underlying type は「基礎となる型」。base type（レシーバーの基底型など）は「基底型」 |
 | exported | エクスポートされた | |
 | unexported | エクスポートされていない | |
 | identifier | 識別子 | |
@@ -189,7 +189,7 @@ Go 標準ライブラリーの godoc を和訳するときの用語集・定型�
 | lock / unlock | ロック／アンロック | |
 | mutex | ミューテックス | |
 | block | ブロックする | |
-| panic | パニック | |
+| panic (動詞) | パニックを引き起こす | 名詞は「パニック」 |
 | runtime | ランタイム | |
 | heap | ヒープ | |
 | stack | スタック | |

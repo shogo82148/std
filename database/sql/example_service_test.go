@@ -11,7 +11,7 @@ import (
 )
 
 func Example_openDBService() {
-	// ドライバを開くと、通常はデータベースに接続しようとは試みません。
+	// ドライバーを開くと、通常はデータベースに接続しようとは試みません。
 	db, err := sql.Open("driver-name", "database=test1")
 	if err != nil {
 

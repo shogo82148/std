@@ -25,7 +25,7 @@ const (
 	NameDnsDomain        = 12
 )
 
-// TranslateAccountNameは、ディレクトリサービスのオブジェクト名を
+// TranslateAccountNameは、ディレクトリーサービスのオブジェクト名を
 // ある形式から別の形式に変換します。
 func TranslateAccountName(username string, from, to uint32, initSize int) (string, error)
 
@@ -58,31 +58,31 @@ const (
 	SidTypeLabel
 )
 
-// セキュリティ識別子（SID）構造体は、ユーザーまたはグループを一意に識別するために
+// セキュリティー識別子（SID）構造体は、ユーザーまたはグループを一意に識別するために
 // 使用される可変長の構造体です。
 type SID struct{}
 
-// StringToSidは、文字列形式のセキュリティ識別子sidを、
+// StringToSidは、文字列形式のセキュリティー識別子sidを、
 // 有効で機能するsidに変換します。
 func StringToSid(s string) (*SID, error)
 
-// LookupSIDは、アカウントのセキュリティ識別子sidと、
+// LookupSIDは、アカウントのセキュリティー識別子sidと、
 // そのアカウントが見つかったドメインの名前を取得します。
-// systemには検索対象のコンピュータを指定します。
+// systemには検索対象のコンピューターを指定します。
 func LookupSID(system, account string) (sid *SID, domain string, accType uint32, err error)
 
 // Stringは、sidを表示、保存、または送信に適した文字列形式に変換します。
 func (sid *SID) String() (string, error)
 
-// Lenは、有効なセキュリティ識別子sidの長さをバイト単位で返します。
+// Lenは、有効なセキュリティー識別子sidの長さをバイト単位で返します。
 func (sid *SID) Len() int
 
-// Copyは、セキュリティ識別子sidの複製を作成します。
+// Copyは、セキュリティー識別子sidの複製を作成します。
 func (sid *SID) Copy() (*SID, error)
 
 // LookupAccountは、このsidのアカウント名と、
 // このsidが見つかった最初のドメインの名前を取得します。
-// systemには検索対象のコンピュータを指定します。
+// systemには検索対象のコンピューターを指定します。
 func (sid *SID) LookupAccount(system string) (account, domain string, accType uint32, err error)
 
 const (
@@ -161,12 +161,12 @@ type Tokenprimarygroup struct {
 	PrimaryGroup *SID
 }
 
-// アクセストークンには、ログオンセッションのセキュリティ情報が含まれます。
+// アクセストークンには、ログオンセッションのセキュリティー情報が含まれます。
 // システムはユーザーがログオンするとアクセストークンを作成し、
 // ユーザーの代わりに実行されるすべてのプロセスはトークンのコピーを持ちます。
 // トークンは、ユーザー、ユーザーのグループ、およびユーザーの特権を識別します。
-// システムはトークンを使用して、セキュリティ保護可能なオブジェクトへのアクセスを制御し、
-// ローカルコンピュータ上でさまざまなシステム関連の操作を実行するユーザーの能力を制御します。
+// システムはトークンを使用して、セキュリティー保護可能なオブジェクトへのアクセスを制御し、
+// ローカルコンピューター上でさまざまなシステム関連の操作を実行するユーザーの能力を制御します。
 type Token Handle
 
 // OpenCurrentProcessTokenは、現在のプロセスに関連付けられた
@@ -181,9 +181,9 @@ func (t Token) GetTokenUser() (*Tokenuser, error)
 
 // GetTokenPrimaryGroupは、アクセストークンtのプライマリグループ情報を取得します。
 // これは、このアクセストークンを使用するプロセスによって作成されたオブジェクトの
-// プライマリグループとなるグループを表すSID構造体へのポインタです。
+// プライマリグループとなるグループを表すSID構造体へのポインターです。
 func (t Token) GetTokenPrimaryGroup() (*Tokenprimarygroup, error)
 
 // GetUserProfileDirectoryは、アクセストークンtのユーザーのプロファイルの
-// ルートディレクトリへのパスを取得します。
+// ルートディレクトリーへのパスを取得します。
 func (t Token) GetUserProfileDirectory() (string, error)
