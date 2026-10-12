@@ -49,7 +49,7 @@ var ErrNoProgress = errors.New("multiple Read calls return no data or error")
 // Readがn > 0バイトの読み込みに成功した後にエラーやファイルの終わりの状態に遭遇すると、読み込んだバイト数を返します。同じ呼び出しから（nilではない）エラーを返すことも、次の呼び出しからエラー（およびn == 0）を返すこともあります。入力ストリームの終わりで非ゼロのバイト数を返すReaderのインスタンスは、err == EOFまたはerr == nilのいずれかを返す場合があります。次のReadは0, EOFを返すべきです。
 // 呼び出し元は、n > 0バイトが返される前にエラーerrを処理する必要があります。これにより、いくつかのバイトを読んだ後に発生するI/Oエラーや、許可されるEOFの両方の動作が正しく処理されます。
 // len(p) == 0の場合、Readは常にn == 0を返すべきです。EOFなどのエラー条件が既知の場合、非nilのエラーを返す場合があります。
-// Readの実装は、len(p) == 0の場合を除き、0バイトカウントとnilエラーを返すことは避けるべきです。呼び出し元は、0とnilの返り値は何も発生しなかったことを示しており、特にEOFを示しているわけではないと扱うべきです。
+// Readの実装は、len(p) == 0の場合を除き、0バイトカウントとnilエラーを返すことは避けるべきです。呼び出し元は、0とnilの戻り値は何も発生しなかったことを示しており、特にEOFを示しているわけではないと扱うべきです。
 // 実装はpを保持してはいけません。
 type Reader interface {
 	Read(p []byte) (n int, err error)
@@ -70,8 +70,8 @@ type Writer interface {
 
 // Closerは基本のCloseメソッドをラップするインターフェースです。
 //
-// 最初の呼び出し後のCloseの振る舞いは未定義です。
-// 特定の実装は独自の振る舞いを文書化することがあります。
+// 最初の呼び出し後のCloseの動作は未定義です。
+// 特定の実装は独自の動作を文書化することがあります。
 type Closer interface {
 	Close() error
 }
@@ -87,7 +87,7 @@ type Closer interface {
 // ファイルの先頭より前のオフセットにシークすることはエラーです。
 // 任意の正のオフセットにシークすることは許可されるかもしれませんが、
 // 新しいオフセットが基礎となるオブジェクトのサイズを超える場合、
-// その後のI/O操作の振る舞いは実装に依存します。
+// その後のI/O操作の動作は実装に依存します。
 type Seeker interface {
 	Seek(offset int64, whence int) (int64, error)
 }
@@ -146,7 +146,7 @@ type ReadWriteSeeker interface {
 // ReaderFromはReadFromメソッドをラップするインターフェースです。
 //
 // ReadFromはエラーが発生するか、EOFに到達するまでrからデータを読み取ります。
-// 返り値のnは読み取られたバイト数です。
+// 戻り値のnは読み取られたバイト数です。
 // 読み取り中にEOF以外のエラーも返されます。
 //
 // [Copy] 関数は [ReaderFrom] が利用可能な場合に使用します。
@@ -274,7 +274,7 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 // 読み込まれたバイト数と、読み込まれたバイト数が少なかった場合のエラーが返されます。
 // エラーは、バイトが一つも読み込まれなかった場合にのみEOFです。
 // 一部のバイトが読み込まれた後にEOFが発生した場合、ReadFullは [ErrUnexpectedEOF] を返します。
-// 返り値では、n == len(buf)であるのはerr == nilの場合のみです。
+// 戻り値では、n == len(buf)であるのはerr == nilの場合のみです。
 // rが少なくともlen(buf)バイトを読み込んだ後にエラーが発生した場合、そのエラーは無視されます。
 func ReadFull(r Reader, buf []byte) (n int, err error)
 

@@ -53,7 +53,7 @@ type WaitGroup struct {
 // カウンターがゼロになると、[WaitGroup.Wait] でブロックされているすべてのゴルーチンが解放されます。
 // カウンターが負になると、Addはパニックを引き起こします。
 //
-// 呼び出し側は [WaitGroup.Go]を優先して使用すべきです。
+// 呼び出し元は [WaitGroup.Go]を優先して使用すべきです。
 //
 // カウンターがゼロのときに正のdeltaで呼び出す場合、Waitの前に実行する必要があります。
 // カウンターがゼロより大きいときに正のdeltaで呼び出す場合や、負のdeltaで呼び出す場合は、いつでも実行できます。
@@ -66,10 +66,10 @@ func (wg *WaitGroup) Add(delta int)
 // Doneは、[WaitGroup] のタスクカウンターを1減算します。
 // Add(-1)と同じです。
 //
-// 呼び出し側は [WaitGroup.Go] を優先して使用すべきです。
+// 呼び出し元は [WaitGroup.Go] を優先して使用すべきです。
 //
 // [the Go memory model] の用語では、Doneの呼び出しは、
-// それによって解除されるWait呼び出しの返り値より「先に同期」します。
+// それによって解除されるWait呼び出しの戻り値より「先に同期」します。
 //
 // [the Go memory model]: https://go.dev/ref/mem
 func (wg *WaitGroup) Done()
@@ -89,8 +89,8 @@ func (wg *WaitGroup) Wait()
 // WaitGroupを複数の独立したタスクセットの待機に再利用する場合は、
 // 新しいGoの呼び出しは、すべての前回のWait呼び出しが返った後に実行する必要があります。
 //
-// [the Go memory model] の用語では、fの返り値は、
-// それによって解除されるWait呼び出しの返り値より「先に同期」します。
+// [the Go memory model] の用語では、fの戻り値は、
+// それによって解除されるWait呼び出しの戻り値より「先に同期」します。
 //
 // [the Go memory model]: https://go.dev/ref/mem
 func (wg *WaitGroup) Go(f func())

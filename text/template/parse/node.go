@@ -10,8 +10,8 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-// Nodeはパースツリーの要素です。インターフェースは極めて単純です。
-// インターフェースには未エクスポートのメソッドが含まれているため、
+// Nodeは解析ツリーの要素です。インターフェースは極めて単純です。
+// インターフェースにはエクスポートされていないメソッドが含まれているため、
 // このパッケージのローカルタイプのみがそれを満たすことができます。
 type Node interface {
 	Type() NodeType
@@ -24,10 +24,10 @@ type Node interface {
 	writeTo(*strings.Builder)
 }
 
-// NodeTypeは、パースツリーノードのタイプを識別します。
+// NodeTypeは、解析ツリーノードのタイプを識別します。
 type NodeType int
 
-// Posは、このテンプレートがパースされた元の入力テキストのバイト位置を表します。
+// Posは、このテンプレートが解析された元の入力テキストのバイト位置を表します。
 type Pos int
 
 func (p Pos) Position() Pos
@@ -253,7 +253,7 @@ func (b *BoolNode) Copy() Node
 
 // NumberNodeは、符号付きまたは符号なしの整数、浮動小数点数、または複素数を保持します。
 // 値は解析され、その値を表現できるすべての型の下に格納されます。
-// これはGoの理想的な定数の振る舞いを少量のコードでシミュレートします。
+// これはGoの理想的な定数の動作を少量のコードでシミュレートします。
 type NumberNode struct {
 	NodeType
 	Pos

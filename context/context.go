@@ -191,6 +191,6 @@ func WithTimeoutCause(parent Context, timeout time.Duration, cause error) (Conte
 //
 // 提供されたキーは比較可能である必要があり、衝突を避けるためにstringまたは他の組み込み型であってはなりません。
 // WithValueを使用するユーザーは、キーのために独自の型を定義する必要があります。
-// interface{} に代入するときのアロケーションを避けるために、コンテキストキーは通常、具体的な型 struct{} を持ちます。
+// interface{} に代入するときの割り当てを避けるために、コンテキストキーは通常、具体的な型 struct{} を持ちます。
 // 代替案として、エクスポートされたコンテキストキー変数の静的型はポインターまたはインターフェースである必要があります。
 func WithValue(parent Context, key, val any) Context

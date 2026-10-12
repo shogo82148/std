@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージparseは、text/templateおよびhtml/templateで定義されているテンプレートのパースツリーを構築します。
+// parseパッケージは、text/templateおよびhtml/templateで定義されているテンプレートの解析ツリーを構築します。
 // クライアントは、一般的な使用を目的としていない共有内部データ構造を提供するこのパッケージではなく、
 // それらのパッケージを使用してテンプレートを構築する必要があります。
 package parse
 
-// Treeは、単一のパースされたテンプレートの表現です。
+// Treeは、単一の解析されたテンプレートの表現です。
 type Tree struct {
 	Name      string
 	ParseName string
@@ -37,7 +37,7 @@ const (
 	SkipFuncCheck
 )
 
-// Copyは [Tree] のコピーを返します。パース状態は破棄されます。
+// Copyは [Tree] のコピーを返します。解析状態は破棄されます。
 func (t *Tree) Copy() *Tree
 
 // Parseは、引数の文字列で記述されたテンプレートを解析することで作成された、
@@ -46,7 +46,7 @@ func (t *Tree) Copy() *Tree
 // エラーと共に空のマップが返されます。
 func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)
 
-// Newは、指定された名前を持つ新しいパースツリーを割り当てます。
+// Newは、指定された名前を持つ新しい解析ツリーを割り当てます。
 func New(name string, funcs ...map[string]any) *Tree
 
 // ErrorContextは、入力テキスト内のノードの位置のテキスト表現を返します。

@@ -42,7 +42,7 @@ func (dec *Decoder) DisallowUnknownFields()
 // Decodeは、入力から次のJSONエンコードされた値を読み取り、
 // それをvが指す値に格納します。
 //
-// JSONをGoの値に変換する詳細については、[Unmarshal] のドキュメンテーションを参照してください。
+// JSONをGoの値に変換する詳細については、[Unmarshal] のドキュメントを参照してください。
 func (dec *Decoder) Decode(v any) error
 
 // Bufferedは、未読バッファーに残っているデータのリーダーを返します。
@@ -55,7 +55,7 @@ func (dec *Decoder) Decode(v any) error
 // 時間とともに変わる可能性があります。
 //
 // 最後にデコードされたJSON値の後に続くバイト列全体を得るには、
-// このバッファーと入力Readerの残りを連結する責任は呼び出し側にあります。
+// このバッファーと入力Readerの残りを連結する責任は呼び出し元にあります。
 //
 // このリーダーは、次の [Decoder.Decode] または [Decoder.Token] の呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
@@ -78,7 +78,7 @@ func NewEncoder(w io.Writer) *Encoder
 // 重要でない空白文字を省略し、
 // 改行文字で終わります。
 //
-// Goの値をJSONに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
+// Goの値をJSONに変換する詳細については、[Marshal] のドキュメントを参照してください。
 func (enc *Encoder) Encode(v any) error
 
 // SetIndentは、エンコーダーに対して、次にエンコードされる各値を、パッケージレベルの関数Indent(dst, src, prefix, indent)で

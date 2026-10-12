@@ -42,7 +42,7 @@ func RaceRelease(addr unsafe.Pointer)
 
 // RaceReleaseMergeはRaceReleaseと似ていますが、addrの前にあるRaceReleaseまたはRaceReleaseMergeとのhappens-before関係も確立します。
 //
-// Cのメモリーモデルにおいて、RaceReleaseMergeはatomic_exchange(memory_order_release)と等価です。
+// Cのメモリーモデルにおいて、RaceReleaseMergeはatomic_exchange(memory_order_release)と同等です。
 //
 //go:nosplit
 func RaceReleaseMerge(addr unsafe.Pointer)
@@ -54,7 +54,7 @@ func RaceReleaseMerge(addr unsafe.Pointer)
 //go:nosplit
 func RaceDisable()
 
-// RaceEnableは現在のgoroutineでのレースイベントの処理を再有効化します。
+// RaceEnableは現在のゴルーチンでのレースイベントの処理を再有効化します。
 //
 //go:nosplit
 func RaceEnable()

@@ -106,7 +106,7 @@ func (c *TCPConn) CloseRead() error
 // ほとんどの呼び出し元は Close を使用すべきです。
 func (c *TCPConn) CloseWrite() error
 
-// SetLingerは、まだ送信または確認待ちのデータがある接続に対してCloseの振る舞いを設定します。
+// SetLingerは、まだ送信または確認待ちのデータがある接続に対してCloseの動作を設定します。
 // sec < 0（デフォルト）の場合、オペレーティングシステムはバックグラウンドでデータの送信を完了します。
 // sec == 0の場合、オペレーティングシステムは未送信または確認待ちのデータを破棄します。
 // sec > 0の場合、データはsec < 0と同様にバックグラウンドで送信されます。
@@ -137,7 +137,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error
 // Linuxでは、カーネルのバージョンがv5.16以上の場合、さらに条件が検証され、結果が改善されます。
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-// DialTCPはTCPネットワークのための [Dial] のように振る舞います。
+// DialTCPはTCPネットワークのための [Dial] のように動作します。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
 //

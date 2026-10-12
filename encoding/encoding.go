@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package encodingは、データをバイトレベルやテキスト表現に変換する他のパッケージで共有されるインターフェースを定義します。
+// encodingパッケージは、データをバイトレベルやテキスト表現に変換する他のパッケージで共有されるインターフェースを定義します。
 // これらのインターフェースをチェックするパッケージにはencoding/gob、encoding/json、encoding/xmlなどがあります。
 // そのため、一度インターフェースを実装することで、1つの型が複数のエンコーディングで有用になることがあります。
 // これらのインターフェースを実装する標準の型にはtime.Timeやnet.IPがあります。

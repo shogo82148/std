@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package mlkemtest は ML-KEM アルゴリズムのテスト関数を提供します。
+// mlkemtestパッケージは ML-KEM アルゴリズムのテスト関数を提供します。
 package mlkemtest
 
 import (

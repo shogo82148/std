@@ -24,7 +24,7 @@
 //
 // # Security Considerations
 //
-// imageパッケージは任意の大きさの画像をパースするために使用できますが、
+// imageパッケージは任意の大きさの画像を解析するために使用できますが、
 // それらを格納するのに十分なメモリーを持たないマシンではリソースの枯渇を引き起こす可能性があります。
 // 任意の画像を扱う場合は、[Decode] の前に [DecodeConfig] を呼び出して、
 // 返されたヘッダーで定義されている画像を利用可能なリソースで安全にデコードできるかどうかを
@@ -63,8 +63,8 @@ type RGBA64Image interface {
 
 // PalettedImageは、色が限定的なパレットから来る可能性がある画像です。
 // もしmがPalettedImageで、m.ColorModel()が [color.Palette] pを返すなら、
-// m.At(x, y)はp[m.ColorIndexAt(x, y)]と等価であるべきです。もしmの
-// カラーモデルがcolor.Paletteでないなら、ColorIndexAtの振る舞いは
+// m.At(x, y)はp[m.ColorIndexAt(x, y)]と同等であるべきです。もしmの
+// カラーモデルがcolor.Paletteでないなら、ColorIndexAtの動作は
 // 定義されていません。
 type PalettedImage interface {
 	ColorIndexAt(x, y int) uint8

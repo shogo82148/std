@@ -79,7 +79,7 @@ type Table struct {
 // NewTableはGoシンボルテーブル（ELFの".gosymtab"セクション）をデコードし、
 // インメモリー表現を返します。
 // Go 1.3以降、Goシンボルテーブルにはもはやシンボルデータが含まれていません。
-// 呼び出し側はsymtabパラメーターにnilを渡すべきです。
+// 呼び出し元はsymtabパラメーターにnilを渡すべきです。
 func NewTable(symtab []byte, pcln *LineTable) (*Table, error)
 
 // PCToFuncは、プログラムカウンターpcを含む関数を返します。

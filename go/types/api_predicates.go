@@ -37,7 +37,7 @@ func Implements(V Type, T *Interface) bool
 // VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
 func Satisfies(V Type, T *Interface) bool
 
-// Identicalはxとyが同じ型であるかどうかを返します。
+// Identicalはxとyが同じ型であるかどうかを報告します。
 // [Signature] 型のレシーバーは無視されます。
 //
 // [Identical]、[Implements]、[Satisfies] などの述語は、

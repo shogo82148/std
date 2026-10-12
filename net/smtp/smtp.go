@@ -65,11 +65,11 @@ func (c *Client) Hello(localName string) error
 func (c *Client) StartTLS(config *tls.Config) error
 
 // TLSConnectionState はクライアントのTLS接続状態を返します。
-// [Client.StartTLS] が成功しなかった場合、返り値はゼロ値になります。
+// [Client.StartTLS] が成功しなかった場合、戻り値はゼロ値になります。
 func (c *Client) TLSConnectionState() (state tls.ConnectionState, ok bool)
 
 // Verifyはサーバー上でメールアドレスの妥当性をチェックします。
-// Verifyがnilを返す場合、アドレスは有効です。非nilの返り値は
+// Verifyがnilを返す場合、アドレスは有効です。非nilの戻り値は
 // 必ずしも無効なアドレスを示すわけではありません。セキュリティー上の理由から、
 // 多くのサーバーはアドレスの検証を行わない場合があります。
 func (c *Client) Verify(addr string) error

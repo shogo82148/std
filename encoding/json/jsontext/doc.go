@@ -4,7 +4,7 @@
 
 //go:build goexperiment.jsonv2
 
-// Package jsontextは、RFC 4627, RFC 7159, RFC 7493, RFC 8259, RFC 8785で規定された
+// jsontextパッケージは、RFC 4627, RFC 7159, RFC 7493, RFC 8259, RFC 8785で規定された
 // JSONの構文処理を実装します。
 // JSONは、ブール値、文字列、数値などのプリミティブ型に加え、
 // オブジェクトや配列などの構造化データ型も表現できるシンプルなデータ交換フォーマットです。

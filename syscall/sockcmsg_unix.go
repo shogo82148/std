@@ -22,7 +22,7 @@ type SocketControlMessage struct {
 	Data   []byte
 }
 
-// ParseSocketControlMessageは、bをソケット制御メッセージの配列としてパースします。
+// ParseSocketControlMessageは、bをソケット制御メッセージの配列として解析します。
 func ParseSocketControlMessage(b []byte) ([]SocketControlMessage, error)
 
 // UnixRightsは、開いているファイルディスクリプターの集合を、

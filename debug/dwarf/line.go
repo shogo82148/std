@@ -169,6 +169,6 @@ var ErrUnknownPC = errors.New("ErrUnknownPC")
 //
 // DWARF行テーブルは、順次前方スキャンのみを許可します。
 // したがって、最悪の場合、これには行テーブルのサイズに比例する時間がかかります。
-// 呼び出し側が繰り返し高速なPC検索を行いたい場合は、
+// 呼び出し元が繰り返し高速なPC検索を行いたい場合は、
 // 適切な行テーブルのインデックスを構築する必要があります。
 func (r *LineReader) SeekPC(pc uint64, entry *LineEntry) error

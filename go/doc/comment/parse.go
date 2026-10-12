@@ -130,7 +130,7 @@ type DocLink struct {
 
 // Parserはドキュメントコメントのパーサーです。
 // 構造体のフィールドは、[Parser.Parse] を呼び出す前に埋めることで、
-// パースプロセスの詳細をカスタマイズすることができます。
+// 解析プロセスの詳細をカスタマイズすることができます。
 type Parser struct {
 
 	// WordsはGo言語の識別子に対応する単語のマップであり、斜体にする必要があり、
@@ -175,7 +175,7 @@ type Parser struct {
 // ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
-// Parseはドキュメントコメントのテキストをパースし、*[Doc] 形式を返します。
+// Parseはドキュメントコメントのテキストを解析し、*[Doc] 形式を返します。
 // テキスト内のコメントマーカー（/* // および */）は事前に取り除かれている必要があります。
 func (p *Parser) Parse(text string) *Doc
 

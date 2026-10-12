@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package flateは、RFC 1951で説明されているDEFLATE圧縮データ形式を実装します。
+// flateパッケージは、RFC 1951で説明されているDEFLATE圧縮データ形式を実装します。
 // [compress/gzip] および [compress/zlib] パッケージは、
 // DEFLATEベースのファイル形式へのアクセスを実装します。
 package flate

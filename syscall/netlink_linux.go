@@ -23,7 +23,7 @@ type NetlinkMessage struct {
 	Data   []byte
 }
 
-// ParseNetlinkMessageは、bをnetlinkメッセージの配列としてパースし、
+// ParseNetlinkMessageは、bをnetlinkメッセージの配列として解析し、
 // NetlinkMessage構造体を含むスライスを返します。
 func ParseNetlinkMessage(b []byte) ([]NetlinkMessage, error)
 
@@ -34,5 +34,5 @@ type NetlinkRouteAttr struct {
 }
 
 // ParseNetlinkRouteAttrは、mのペイロードをnetlinkのルート属性の配列として
-// パースし、NetlinkRouteAttr構造体を含むスライスを返します。
+// 解析し、NetlinkRouteAttr構造体を含むスライスを返します。
 func ParseNetlinkRouteAttr(m *NetlinkMessage) ([]NetlinkRouteAttr, error)

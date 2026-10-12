@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// NewWriteLoggerは、wのように振る舞うライターを返しますが、
+// NewWriteLoggerは、wのように動作するライターを返しますが、
 // 書き込みごとに（[log.Printf] を使用して）標準エラーにログを出力し、
 // プレフィックスと書き込まれた16進数データを印刷します。
 func NewWriteLogger(prefix string, w io.Writer) io.Writer

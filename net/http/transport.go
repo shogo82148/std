@@ -47,7 +47,7 @@ const DefaultMaxIdleConnsPerHost = 2
 // この動作は、[Transport.CloseIdleConnections] メソッドと [Transport.MaxIdleConnsPerHost] および [Transport.DisableKeepAlives] フィールドを使用して管理できます。
 //
 // Transportは必要に応じて作成するのではなく、再利用する必要があります。
-// Transportは、複数のgoroutineによる同時使用に対して安全です。
+// Transportは、複数のゴルーチンによる同時使用に対して安全です。
 //
 // Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
 // クッキーやリダイレクトなどの高レベルの機能については、[Client] を参照してください。

@@ -187,7 +187,7 @@ type Certificate struct {
 	OCSPServer            []string
 	IssuingCertificateURL []string
 
-	// Subject Alternate Nameの値。（ただし、パースされた証明書に無効な値が含まれている場合、これらの値は有効ではない場合があります。例えば、DNSNamesの要素が有効なDNSドメイン名であるとは限りません。）
+	// Subject Alternate Nameの値。（ただし、解析された証明書に無効な値が含まれている場合、これらの値は有効ではない場合があります。例えば、DNSNamesの要素が有効なDNSドメイン名であるとは限りません。）
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
@@ -210,7 +210,7 @@ type Certificate struct {
 	// PolicyIdentifiersにはasn1.ObjectIdentifiersが含まれ、その構成要素は
 	// int32に制限されます。証明書にasn1.ObjectIdentifierで表現できないポリシーが
 	// 含まれている場合、それはPolicyIdentifiersには含まれませんが、
-	// パースされたすべてのポリシーOIDを含むPoliciesには含まれます。
+	// 解析されたすべてのポリシーOIDを含むPoliciesには含まれます。
 	// このフィールドとPoliciesフィールドの相互作用については、
 	// CreateCertificateを参照してください。
 	PolicyIdentifiers []asn1.ObjectIdentifier
@@ -226,7 +226,7 @@ type Certificate struct {
 	// InhibitAnyPolicyの値は、この証明書の後のパス内で、anyPolicyポリシーOIDを使用して
 	// 他の任意のポリシーとの一致を示すことができる追加の証明書の数を示します。
 	//
-	// 証明書をパースする際、正の非ゼロのInhibitAnyPolicyはフィールドが指定されたことを意味し、
+	// 証明書を解析する際、正の非ゼロのInhibitAnyPolicyはフィールドが指定されたことを意味し、
 	// -1は未設定であることを意味し、InhibitAnyPolicyZeroがtrueであることは
 	// フィールドが明示的にゼロに設定されたことを意味します。
 	// InhibitAnyPolicy==0かつInhibitAnyPolicyZero==falseの場合は、
@@ -243,7 +243,7 @@ type Certificate struct {
 	// InhibitPolicyMappingの値は、この証明書の後のパス内で、ポリシーマッピングを
 	// 使用できる追加の証明書の数を示します。
 	//
-	// 証明書をパースする際、正の非ゼロのInhibitPolicyMappingはフィールドが指定されたことを意味し、
+	// 証明書を解析する際、正の非ゼロのInhibitPolicyMappingはフィールドが指定されたことを意味し、
 	// -1は未設定であることを意味し、InhibitPolicyMappingZeroがtrueであることは
 	// フィールドが明示的にゼロに設定されたことを意味します。
 	// InhibitPolicyMapping==0かつInhibitPolicyMappingZero==falseの場合は、
@@ -262,7 +262,7 @@ type Certificate struct {
 	// パス内の後続の各証明書は、必要なポリシーOID、またはポリシーマッピング拡張によって
 	// 同等と宣言されたポリシーOIDを含まなければなりません。
 	//
-	// 証明書をパースする際、正の非ゼロのRequireExplicitPolicyはフィールドが指定されたことを意味し、
+	// 証明書を解析する際、正の非ゼロのRequireExplicitPolicyはフィールドが指定されたことを意味し、
 	// -1は未設定であることを意味し、RequireExplicitPolicyZeroがtrueであることは
 	// フィールドが明示的にゼロに設定されたことを意味します。
 	// RequireExplicitPolicy==0かつRequireExplicitPolicyZero==falseの場合は、
@@ -396,7 +396,7 @@ func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv 
 // Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
-// ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLをパースします。
+// ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLを解析します。
 //
 // Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
@@ -495,7 +495,7 @@ type RevocationListEntry struct {
 	ReasonCode int
 
 	// Extensionsには生のX.509拡張が含まれています。CRLエントリーを解析する際、
-	// このフィールドを使用して、このパッケージでパースされない非クリティカルな拡張を取得できます。
+	// このフィールドを使用して、このパッケージで解析されない非クリティカルな拡張を取得できます。
 	// CRLエントリーをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
 

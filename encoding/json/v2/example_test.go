@@ -77,7 +77,7 @@ func Example_fieldNames() {
 		JSONName any `json:"jsonName"`
 		// JSON名が指定されていないため、Goフィールド名が使われます。
 		Option any `json:",case:ignore"`
-		// 非公開フィールドは常に無視されます。
+		// エクスポートされていないフィールドは常に無視されます。
 		unexported any
 	}
 
@@ -147,7 +147,7 @@ func Example_caseSensitivity() {
 // "IsZero() bool"メソッドがtrueを返す場合にフィールドを省略します。
 // "omitempty"オプションは、フィールドが空のJSON値としてエンコードされる場合に省略します。
 // ここで空のJSON値とは、JSON null、空文字列、空オブジェクト、空配列を指します。
-// 多くの場合、"omitzero"と"omitempty"の挙動は同等です。
+// 多くの場合、"omitzero"と"omitempty"の動作は同等です。
 // 両方で期待する効果が得られる場合は、"omitzero"の使用が推奨されます。
 func Example_omitFields() {
 	type MyStruct struct {
@@ -160,7 +160,7 @@ func Example_omitFields() {
 		Baz *MyStruct `json:",omitzero,omitempty"`
 	}
 
-	// "omitzero"の挙動を示します。
+	// "omitzero"の動作を示します。
 	b, err := json.Marshal(struct {
 		Bool         bool        `json:",omitzero"`
 		Int          int         `json:",omitzero"`
@@ -214,7 +214,7 @@ func Example_omitFields() {
 	v.Indent()
 	fmt.Println("OmitZero:", string(v)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
 
-	// "omitempty"の挙動を示します。
+	// "omitempty"の動作を示します。
 	b, err = json.Marshal(struct {
 		Bool         bool        `json:",omitempty"`
 		Int          int         `json:",omitempty"`
@@ -506,8 +506,8 @@ func ExampleWithUnmarshalers_rawNumber() {
 	// [false 1e-1000 3.141592653589793238462643383279 1e+1000 true]
 }
 
-// JSONで設定ファイルをパースする場合、
-// パース処理は入力のどこでエラーが発生したかを示すために
+// JSONで設定ファイルを解析する場合、
+// 解析処理は入力のどこでエラーが発生したかを示すために
 // 行番号や列番号付きでエラーを報告する必要があることがよくあります。
 func ExampleWithUnmarshalers_recordOffsets() {
 	// 仮想的な設定ファイル。

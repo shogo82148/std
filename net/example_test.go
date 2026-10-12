@@ -27,7 +27,7 @@ func ExampleListener() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// 新しいgoroutineで接続を処理する。
+		// 新しいゴルーチンで接続を処理する。
 		// ループはその後、受け付けを再開するため、
 		// 複数の接続を同時に処理することが可能です。
 		go func(c net.Conn) {

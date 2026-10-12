@@ -65,7 +65,7 @@ type OAEPOptions struct {
 	// ゼロの場合、代わりにHashが使用されます。
 	MGFHash crypto.Hash
 
-	// ラベルは、暗号化の際に使用される値と等しい任意のバイトストリングです。
+	// ラベルは、暗号化の際に使用される値と等しい任意のバイト文字列です。
 	Label []byte
 }
 

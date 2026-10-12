@@ -41,7 +41,7 @@ func MustParse(s string) UUID
 // Newは新しいUUIDを返します。
 //
 // 特定のUUID生成アルゴリズムを必要としないプログラムはNewを使用してください。
-// 現在のNewは [NewV4] と等価です。
+// 現在のNewは [NewV4] と同等です。
 func New() UUID
 
 // NilはNil UUID 00000000-0000-0000-0000-000000000000を返します。

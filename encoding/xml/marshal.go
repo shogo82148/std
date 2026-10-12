@@ -116,7 +116,7 @@ func (enc *Encoder) Indent(prefix, indent string)
 
 // Encodeは、vのXMLエンコーディングをストリームに書き込みます。
 //
-// Goの値をXMLに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
+// Goの値をXMLに変換する詳細については、[Marshal] のドキュメントを参照してください。
 //
 // Encodeは、戻る前に [Encoder.Flush] を呼び出します。
 func (enc *Encoder) Encode(v any) error
@@ -124,7 +124,7 @@ func (enc *Encoder) Encode(v any) error
 // EncodeElementは、vのXMLエンコーディングをストリームに書き込みます。
 // この際、エンコーディングの最も外側のタグとしてstartを使用します。
 //
-// Goの値をXMLに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
+// Goの値をXMLに変換する詳細については、[Marshal] のドキュメントを参照してください。
 //
 // EncodeElementは、戻る前に [Encoder.Flush] を呼び出します。
 func (enc *Encoder) EncodeElement(v any, start StartElement) error
@@ -142,7 +142,7 @@ func (enc *Encoder) EncodeElement(v any, start StartElement) error
 func (enc *Encoder) EncodeToken(t Token) error
 
 // Flushは、バッファリングされたXMLを基礎となるライターにフラッシュします。
-// いつ必要かについての詳細は、EncodeTokenのドキュメンテーションを参照してください。
+// いつ必要かについての詳細は、EncodeTokenのドキュメントを参照してください。
 func (enc *Encoder) Flush() error
 
 // エンコーダーを閉じます。これは、これ以上データが書き込まれないことを示します。

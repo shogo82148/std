@@ -82,7 +82,7 @@ func New(priority Priority, tag string) (*Writer, error)
 // 各書き込みは、施設と重大度（priorityから）およびタグを持つログメッセージを送信します。
 // タグが空の場合、[os.Args][0]が使用されます。
 // ネットワークが空の場合、Dialはローカルのsyslogサーバーに接続します。
-// それ以外の場合は、ネットワークとraddrの有効な値については、net.Dialのドキュメンテーションを参照してください。
+// それ以外の場合は、ネットワークとraddrの有効な値については、net.Dialのドキュメントを参照してください。
 func Dial(network, raddr string, priority Priority, tag string) (*Writer, error)
 
 // Writeはログメッセージをsyslogデーモンに送信します。

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package hpke は [RFC 9180] で定義されたハイブリッド公開鍵暗号化 (HPKE)
+// hpkeパッケージは [RFC 9180] で定義されたハイブリッド公開鍵暗号化 (HPKE)
 // を実装します。
 //
 // [RFC 9180]: https://www.rfc-editor.org/rfc/rfc9180.html

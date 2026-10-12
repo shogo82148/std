@@ -246,7 +246,7 @@ type AddrPort struct {
 }
 
 // AddrPortFromは、提供されたIPとポート番号で [AddrPort] を返します。
-// アロケーションは行いません。
+// 割り当ては行いません。
 func AddrPortFrom(ip Addr, port uint16) AddrPort
 
 // Addrは、pのIPアドレスを返します。
@@ -319,7 +319,7 @@ type Prefix struct {
 
 // PrefixFromは、指定されたIPアドレスとビットプレフィックス長で [Prefix] を返します。
 //
-// アロケーションは行いません。[Addr.Prefix] とは異なり、[PrefixFrom] はipのホストビットをマスクしません。
+// 割り当ては行いません。[Addr.Prefix] とは異なり、[PrefixFrom] はipのホストビットをマスクしません。
 //
 // bitsが負の場合またはip.BitLenより大きい場合、[Prefix.Bits] は無効な値-1を返します。
 func PrefixFrom(ip Addr, bits int) Prefix

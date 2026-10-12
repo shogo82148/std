@@ -12,7 +12,7 @@ unsafeをインポートするパッケージは非可搬性があり、Go 1の�
 // これは任意のGo式の型を表します。
 type ArbitraryType int
 
-// IntegerTypeはドキュメンテーションのために存在しますが、実際にはunsafeパッケージの一部ではありません。
+// IntegerTypeはドキュメントのために存在しますが、実際にはunsafeパッケージの一部ではありません。
 // 任意の整数型を表します。
 type IntegerType int
 
@@ -224,7 +224,7 @@ func SliceData(slice []ArbitraryType) *ArbitraryType
 func String(ptr *byte, len IntegerType) string
 
 // StringDataは、strの基礎バイトへのポインターを返します。
-// 空の文字列の場合、返り値は特定されず、nilである場合があります。
+// 空の文字列の場合、戻り値は特定されず、nilである場合があります。
 //
 // Goの文字列は不変のため、StringDataによって返されたバイトは変更してはいけません。
 func StringData(str string) *byte

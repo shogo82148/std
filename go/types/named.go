@@ -60,7 +60,7 @@ func (t *Named) Obj() *TypeName
 // tがインスタンス化されていない型の場合は、結果はtとなります。
 func (t *Named) Origin() *Named
 
-// TypeParams は、名前付きの型 t の型パラメーターを返します。返り値は nil です。
+// TypeParams は、名前付きの型 t の型パラメーターを返します。戻り値は nil です。
 // (元々) ジェネリック型である場合、インスタンス化されているかどうかに関わらず、結果は非 nil です。
 func (t *Named) TypeParams() *TypeParamList
 

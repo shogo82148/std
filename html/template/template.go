@@ -19,7 +19,7 @@ type Template struct {
 	// we need to keep our version of the name space and the underlying
 	// template's in sync.
 	text *template.Template
-	// 基礎となるテンプレートのパースツリーで、最初の実行後に
+	// 基礎となるテンプレートの解析ツリーで、最初の実行後に
 	// HTMLセーフになるように更新されます。
 	Tree *parse.Tree
 	*nameSpace
@@ -35,10 +35,10 @@ func (t *Template) Templates() []*Template
 //
 // 既知のオプション:
 //
-// missingkey: マップが存在しないキーでインデックス付けされた場合の、実行中の振る舞いを制御します。
+// missingkey: マップが存在しないキーでインデックス付けされた場合の、実行中の動作を制御します。
 //
 //	"missingkey=default" または "missingkey=invalid"
-//		デフォルトの振る舞い: 何もせずに実行を続けます。
+//		デフォルトの動作: 何もせずに実行を続けます。
 //		印刷される場合、インデックス操作の結果は文字列
 //		"<no value>" です。
 //	"missingkey=zero"
@@ -80,7 +80,7 @@ func (t *Template) DefinedTemplates() string
 // メインのテンプレートボディーを上書きすることはありません。
 func (t *Template) Parse(text string) (*Template, error)
 
-// AddParseTreeは、名前とパースツリーを持つ新しいテンプレートを作成し、
+// AddParseTreeは、名前と解析ツリーを持つ新しいテンプレートを作成し、
 // それをtに関連付けます。
 //
 // tまたは関連するテンプレートがすでに実行されている場合、エラーを返します。

@@ -22,7 +22,7 @@ const (
 	PrivateKeySize = 64
 	// SignatureSizeは、このパッケージで生成および検証される署名のサイズ（バイト単位）です。
 	SignatureSize = 64
-	// SeedSizeは、RFC 8032で使用されるプライベートキーのシードのサイズ（バイト単位）です。
+	// SeedSizeは、RFC 8032で使用される秘密鍵のシードのサイズ（バイト単位）です。
 	SeedSize = 32
 )
 
@@ -41,7 +41,7 @@ func (priv PrivateKey) Public() crypto.PublicKey
 // Equal は priv と x が同じ値を持っているかどうかを報告します。
 func (priv PrivateKey) Equal(x crypto.PrivateKey) bool
 
-// Seedはprivに対応するプライベートキーシードを返します。RFC 8032との互換性のために提供されています。RFC 8032のプライベートキーはこのパッケージのシードに対応します。
+// Seedはprivに対応する秘密鍵シードを返します。RFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
 func (priv PrivateKey) Seed() []byte
 
 // Signは与えられたメッセージをprivで署名します。randは無視され、nilであってもかまいません。

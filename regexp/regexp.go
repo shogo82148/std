@@ -93,7 +93,7 @@ func (re *Regexp) String() string
 // Copyは、異なる [Regexp.Longest] 設定で2つのコピーを作成する必要がある場合には依然適切かもしれません。
 func (re *Regexp) Copy() *Regexp
 
-// Compileは正規表現をパースし、成功した場合には、
+// Compileは正規表現を解析し、成功した場合には、
 // テキストと照合するために使用できる [Regexp] オブジェクトを返します。
 //
 // テキストと照合する際、正規表現は入力のなるべく早い位置（最も左端）から一致し、
@@ -173,7 +173,7 @@ func (re *Regexp) ReplaceAllString(src, repl string) string
 // ReplaceAllLiteralStringはsrcのコピーを返し、 [Regexp] の一致部分を置換文字列replで置き換えます。置換replは直接代入され、 [Regexp.Expand] を使用しません。
 func (re *Regexp) ReplaceAllLiteralString(src, repl string) string
 
-// ReplaceAllStringFuncは、srcのすべての [Regexp] の一致箇所を、関数replが適用された一致した部分文字列の返り値に置き換えたコピーを返します。replによって返される置換文字列は、 [Regexp.Expand] を使用せずに直接代入されます。
+// ReplaceAllStringFuncは、srcのすべての [Regexp] の一致箇所を、関数replが適用された一致した部分文字列の戻り値に置き換えたコピーを返します。replによって返される置換文字列は、 [Regexp.Expand] を使用せずに直接代入されます。
 func (re *Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
 
 // ReplaceAllは、 [Regexp] の一致した箇所を置換テキストreplで置き換えたsrcのコピーを返します。repl内の$記号は [Regexp.Expand] と同様に解釈されます。つまり、$1は最初のサブマッチのテキストを表します。
@@ -296,7 +296,7 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
 //
 // テンプレート中では、変数は$nameまたは${name}の形式の部分文字列で示されます。nameは非空の文字、数字、アンダースコアの連続です。$1のような純粋な数字の名前は、対応するインデックスのサブマッチを参照します。その他の名前は、(?P<name>...)構文で名前付きのキャプチャ括弧を参照します。範囲外またはマッチしないインデックスの参照または正規表現に存在しない名前は、空のスライスで置き換えられます。
 //
-// $name形式では、nameは可能な限り長くなります：$1xは${1x}ではなく${1}xと等価です。また、$10は${10}ではなく${1}0と等価です。
+// $name形式では、nameは可能な限り長くなります：$1xは${1x}ではなく${1}xと同等です。また、$10は${10}ではなく${1}0と同等です。
 // 出力にリテラルの$を挿入するには、テンプレートで$$を使用してください。
 func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte
 

@@ -120,7 +120,7 @@ func Abs(path string) (string, error)
 // それを計算するために現在の作業ディレクトリーを知る必要がある場合はエラーが返されます。
 func Rel(basePath, targPath string) (string, error)
 
-// SkipDirは、[WalkFunc] からの返り値として使用され、呼び出し元で指定されたディレクトリーをスキップすることを示します。これは、どの関数からもエラーとして返されません。
+// SkipDirは、[WalkFunc] からの戻り値として使用され、呼び出し元で指定されたディレクトリーをスキップすることを示します。これは、どの関数からもエラーとして返されません。
 var SkipDir error = fs.SkipDir
 
 // SkipAllは [WalkFunc] からの戻り値として使用され、残りのすべてのファイルとディレクトリーをスキップすることを示します。これはエラーではなく、いかなる関数からも戻されません。
