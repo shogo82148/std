@@ -6,6 +6,10 @@
 
 package goroot
 
-// IsStandardPackage reports whether path is a standard package,
-// given goroot and compiler.
-func IsStandardPackage(goroot, compiler, path string) bool
+import (
+	"github.com/shogo82148/std/os"
+)
+
+// IsStandardPackageは、gorootとcompilerが与えられたとき、pathが
+// 標準パッケージかどうかを報告します。readDirはOSのファイルシステムパスを受け取ります。
+func IsStandardPackage(readDir func(string) ([]os.DirEntry, error), goroot, compiler, path string) bool

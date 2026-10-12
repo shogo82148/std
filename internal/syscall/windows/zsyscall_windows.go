@@ -29,6 +29,10 @@ func QueryServiceStatus(hService syscall.Handle, lpServiceStatus *SERVICE_STATUS
 
 func RevertToSelf() (err error)
 
+func SetEntriesInAcl(countExplicitEntries uint32, explicitEntries *EXPLICIT_ACCESS, oldACL *ACL, newACL **ACL) (ret error)
+
+func SetNamedSecurityInfo(objectName string, objectType uint32, securityInformation uint32, owner *syscall.SID, group *syscall.SID, dacl *ACL, sacl *ACL) (ret error)
+
 func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation unsafe.Pointer, tokenInformationLength uint32) (err error)
 
 func ProcessPrng(buf []byte) (err error)
@@ -74,6 +78,8 @@ func Module32Next(snapshot syscall.Handle, moduleEntry *ModuleEntry32) (err erro
 func MoveFileEx(from *uint16, to *uint16, flags uint32) (err error)
 
 func MultiByteToWideChar(codePage uint32, dwFlags uint32, str *byte, nstr int32, wchar *uint16, nwchar int32) (nwrite int32, err error)
+
+func ReOpenFile(filehandle syscall.Handle, desiredAccess uint32, shareMode uint32, flagAndAttributes uint32) (handle syscall.Handle, err error)
 
 func RtlLookupFunctionEntry(pc uintptr, baseAddress *uintptr, table unsafe.Pointer) (ret *RUNTIME_FUNCTION)
 
