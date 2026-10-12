@@ -39,7 +39,7 @@ package tar
 // Writerは現在、スパースファイルに対するサポートを提供していません。
 type Format int
 
-// Constants to identify various tar formats.
+// さまざまなtarフォーマットを識別するための定数。
 const (
 	// Deliberately hide the meaning of constants from public API.
 	_ Format = (1 << iota) / 4

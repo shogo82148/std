@@ -6,8 +6,8 @@
 
 package syscall
 
-// Linux unshare/clone/clone2/clone3 flags, architecture-independent,
-// copied from linux/sched.h.
+// Linuxのunshare/clone/clone2/clone3のフラグ（アーキテクチャ非依存）。
+// linux/sched.hからコピーしたものです。
 const (
 	CLONE_VM             = 0x00000100
 	CLONE_FS             = 0x00000200

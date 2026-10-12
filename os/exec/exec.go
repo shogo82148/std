@@ -18,7 +18,7 @@
 // このパッケージの例はUnixシステムを前提としています。
 // Windowsでは動作しない場合があり、go.dev や pkg.go.dev で使われているGo Playgroundでは実行できません。
 //
-// # Executables in the current directory
+// # カレントディレクトリ内の実行ファイル
 //
 // 関数 [Command] と [LookPath] は、ホストオペレーティングシステムの規則に従って、
 // 現在のパスにリストされたディレクトリでプログラムを探します。

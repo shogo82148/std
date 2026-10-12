@@ -40,7 +40,7 @@ const (
 	SO_ERROR
 )
 
-// Misc constants expected by package net but not supported.
+// netパッケージが期待するが、サポートされていないその他の定数。
 const (
 	_ = iota
 	F_DUPFD_CLOEXEC

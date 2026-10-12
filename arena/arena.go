@@ -5,26 +5,24 @@
 //go:build goexperiment.arenas
 
 /*
-The arena package provides the ability to allocate memory for a collection
-of Go values and free that space manually all at once, safely. The purpose
-of this functionality is to improve efficiency: manually freeing memory
-before a garbage collection delays that cycle. Less frequent cycles means
-the CPU cost of the garbage collector is incurred less frequently.
+arenaパッケージは、Goの値のコレクションのためのメモリを割り当て、その領域を
+手動で一度にまとめて安全に解放する機能を提供します。この機能の目的は効率の向上です。
+ガベージコレクションの前にメモリを手動で解放すると、そのサイクルが遅れます。
+サイクルの頻度が下がれば、ガベージコレクタのCPUコストが発生する頻度も下がります。
 
-This functionality in this package is mostly captured in the Arena type.
-Arenas allocate large chunks of memory for Go values, so they're likely to
-be inefficient for allocating only small amounts of small Go values. They're
-best used in bulk, on the order of MiB of memory allocated on each use.
+このパッケージの機能は、主にArena型に集約されています。
+ArenaはGoの値のために大きなメモリチャンクを割り当てるため、小さなGoの値を
+少量だけ割り当てる用途には非効率になりがちです。1回の使用ごとにMiB単位のメモリを
+割り当てるような、まとまった使い方に最も適しています。
 
-Note that by allowing for this limited form of manual memory allocation
-that use-after-free bugs are possible with regular Go values. This package
-limits the impact of these use-after-free bugs by preventing reuse of freed
-memory regions until the garbage collector is able to determine that it is
-safe. Typically, a use-after-free bug will result in a fault and a helpful
-error message, but this package reserves the right to not force a fault on
-freed memory. That means a valid implementation of this package is to just
-allocate all memory the way the runtime normally would, and in fact, it
-reserves the right to occasionally do so for some Go values.
+このような限定的な形での手動メモリ割り当てを許可することで、通常のGoの値でも
+解放後使用（use-after-free）のバグが起こりうることに注意してください。このパッケージは、
+解放されたメモリ領域を、ガベージコレクタが安全であると判断できるまで再利用しないことで、
+こうした解放後使用のバグの影響を抑えています。通常、解放後使用のバグはフォールトと
+有用なエラーメッセージを引き起こしますが、このパッケージは解放されたメモリに対して
+フォールトを強制しない権利を留保しています。つまり、ランタイムが通常行うのと同じ方法で
+すべてのメモリを割り当てるだけでも、このパッケージの有効な実装となります。実際、
+一部のGoの値については、時折そのようにする権利を留保しています。
 */
 package arena
 

@@ -303,7 +303,7 @@ func (f *File) SyscallConn() (syscall.RawConn, error)
 // ほとんどの場合、f.SyscallConnメソッドの使用を推奨します。
 func (f *File) Fd() uintptr
 
-// DirFS returns a file system (an fs.FS) for the tree of files rooted at the directory dir.
+// DirFSは、ディレクトリdirをルートとするファイルツリーのためのファイルシステム（fs.FS）を返します。
 //
 // ただし、DirFS("/prefix")は、オペレーティングシステムへのOpen呼び出しが常に"/prefix"で始まることを保証するだけです。
 // つまり、DirFS("/prefix").Open("file")はos.Open("/prefix/file")と同じです。

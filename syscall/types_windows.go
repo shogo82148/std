@@ -372,7 +372,7 @@ type Win32FileAttributeData struct {
 	FileSizeLow    uint32
 }
 
-// ShowWindow constants
+// ShowWindowの定数。
 const (
 	// winuser.h
 	SW_HIDE            = 0
@@ -523,7 +523,7 @@ type WSABuf struct {
 	Buf *byte
 }
 
-// Invented values to support what package os expects.
+// osパッケージが期待するものをサポートするために作られた値。
 const (
 	S_IFMT   = 0x1f000
 	S_IFIFO  = 0x1000

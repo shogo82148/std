@@ -130,9 +130,6 @@ const (
 	HighestPrec = 7
 )
 
-// Precedence returns the operator precedence of the binary
-// operator op. If op is not a binary operator, the result
-// is LowestPrecedence.
 // Precedenceは、バイナリ演算子opの演算子の優先度を返します。opがバイナリ演算子でない場合、結果はLowestPrecedenceになります。
 func (op Token) Precedence() int
 

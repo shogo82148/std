@@ -193,7 +193,6 @@ type (
 		Rparen token.Pos
 	}
 
-	// A CallExpr node represents an expression followed by an argument list.
 	// CallExprノードは、式の後に引数リストが続くことを表します。
 	CallExpr struct {
 		Fun      Expr

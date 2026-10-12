@@ -48,18 +48,18 @@
 //
 // 詳細については [go help test] および [go help testflag] を実行してください。
 //
-// ＃ ベンチマーク
+// # ベンチマーク
 //
 // 次の形式の関数
 //
 //	func BenchmarkXxx(*testing.B)
 //
-// are considered benchmarks, and are executed by the "go test" command when
-// its -bench flag is provided. Benchmarks are run sequentially.
+// はベンチマークとみなされ、-benchフラグが指定されたときに"go test"コマンドによって
+// 実行されます。ベンチマークは逐次的に実行されます。
 //
-// For a description of the testing flags, see [go help testflag].
+// テストフラグの説明については、 [go help testflag] を参照してください。
 //
-// A sample benchmark function looks like this:
+// ベンチマーク関数の例は次のとおりです。
 //
 //	func BenchmarkRandInt(b *testing.B) {
 //	    for b.Loop() {
@@ -67,15 +67,14 @@
 //	    }
 //	}
 //
-// The output
+// 出力
 //
 //	BenchmarkRandInt-8   	68453040	        17.8 ns/op
 //
-// means that the body of the loop ran 68453040 times at a speed of 17.8 ns per loop.
+// は、ループの本体が1ループあたり17.8 nsの速度で68453040回実行されたことを意味します。
 //
-// Only the body of the loop is timed, so benchmarks may do expensive
-// setup before calling b.Loop, which will not be counted toward the
-// benchmark measurement:
+// 時間が計測されるのはループの本体だけなので、ベンチマークはb.Loopを呼び出す前に
+// コストの高いセットアップを行うことができ、それはベンチマークの計測には含まれません。
 //
 //	func BenchmarkBigLen(b *testing.B) {
 //	    big := NewBig()
@@ -84,9 +83,9 @@
 //	    }
 //	}
 //
-// If a benchmark needs to test performance in a parallel setting, it may use
-// the RunParallel helper function; such benchmarks are intended to be used with
-// the go test -cpu flag:
+// ベンチマークが並列な環境でのパフォーマンスをテストする必要がある場合は、
+// RunParallelヘルパー関数を使用できます。このようなベンチマークは、
+// go test -cpuフラグと一緒に使用することを意図しています。
 //
 //	func BenchmarkTemplateParallel(b *testing.B) {
 //	    templ := template.Must(template.New("test").Parse("Hello, {{.}}!"))
@@ -99,18 +98,16 @@
 //	    })
 //	}
 //
-// A detailed specification of the benchmark results format is given
-// in https://go.dev/design/14313-benchmark-format.
+// ベンチマーク結果のフォーマットの詳細な仕様は、
+// https://go.dev/design/14313-benchmark-format にあります。
 //
-// There are standard tools for working with benchmark results at
-// [golang.org/x/perf/cmd].
-// In particular, [golang.org/x/perf/cmd/benchstat] performs
-// statistically robust A/B comparisons.
+// ベンチマーク結果を扱うための標準的なツールが [golang.org/x/perf/cmd] にあります。
+// 特に、 [golang.org/x/perf/cmd/benchstat] は統計的に頑健なA/B比較を行います。
 //
-// # b.N-style benchmarks
+// # b.N形式のベンチマーク
 //
-// Prior to the introduction of [B.Loop], benchmarks were written in a
-// different style using B.N. For example:
+// [B.Loop] が導入される以前は、ベンチマークはB.Nを使った別の形式で書かれていました。
+// 例えば次のとおりです。
 //
 //	func BenchmarkRandInt(b *testing.B) {
 //	    for range b.N {
@@ -118,14 +115,13 @@
 //	    }
 //	}
 //
-// In this style of benchmark, the benchmark function must run
-// the target code b.N times. The benchmark function is called
-// multiple times with b.N adjusted until the benchmark function
-// lasts long enough to be timed reliably. This also means any setup
-// done before the loop may be run several times.
+// この形式のベンチマークでは、ベンチマーク関数は対象のコードをb.N回実行しなければなりません。
+// ベンチマーク関数は、確実に時間を計測できるほど長く続くようになるまで、
+// b.Nを調整しながら複数回呼び出されます。これは、ループの前に行われるセットアップも
+// 複数回実行される可能性があることを意味します。
 //
-// If a benchmark needs some expensive setup before running, the timer
-// should be explicitly reset:
+// ベンチマークの実行前にコストの高いセットアップが必要な場合は、
+// タイマーを明示的にリセットする必要があります。
 //
 //	func BenchmarkBigLen(b *testing.B) {
 //	    big := NewBig()
@@ -135,15 +131,14 @@
 //	    }
 //	}
 //
-// New benchmarks should prefer using [B.Loop], which is more robust
-// and more efficient.
+// 新しいベンチマークでは、より頑健で効率的な [B.Loop] を使用することを推奨します。
 //
-// # Examples
+// # 例
 //
-// The package also runs and verifies example code. Example functions may
-// include a concluding line comment that begins with "Output:" and is compared with
-// the standard output of the function when the tests are run. (The comparison
-// ignores leading and trailing space.) These are examples of an example:
+// このパッケージは、サンプルコードの実行と検証も行います。Example関数には、
+// "Output:"で始まる結びの行コメントを含めることができ、テストの実行時に関数の
+// 標準出力と比較されます。（比較では先頭と末尾の空白は無視されます。）
+// 以下はExampleの例です。
 //
 //	func ExampleHello() {
 //	    fmt.Println("hello")
@@ -158,8 +153,8 @@
 //	    // goodbye
 //	}
 //
-// The comment prefix "Unordered output:" is like "Output:", but matches any
-// line order:
+// コメントの接頭辞"Unordered output:"は"Output:"に似ていますが、
+// 行の順序を問わずにマッチします。
 //
 //	func ExamplePerm() {
 //	    for _, value := range Perm(5) {
@@ -172,42 +167,41 @@
 //	    // 0
 //	}
 //
-// Example functions without output comments are compiled but not executed.
+// 出力コメントのないExample関数は、コンパイルされますが実行されません。
 //
-// The naming convention to declare examples for the package, a function F, a type T and
-// method M on type T are:
+// パッケージ、関数F、型T、および型TのメソッドMに対するExampleを宣言するための
+// 命名規則は次のとおりです。
 //
 //	func Example() { ... }
 //	func ExampleF() { ... }
 //	func ExampleT() { ... }
 //	func ExampleT_M() { ... }
 //
-// Multiple example functions for a package/type/function/method may be provided by
-// appending a distinct suffix to the name. The suffix must start with a
-// lower-case letter.
+// パッケージ/型/関数/メソッドに対する複数のExample関数は、名前に異なる接尾辞を
+// 付けることで提供できます。接尾辞は小文字で始まる必要があります。
 //
 //	func Example_suffix() { ... }
 //	func ExampleF_suffix() { ... }
 //	func ExampleT_suffix() { ... }
 //	func ExampleT_M_suffix() { ... }
 //
-// The entire test file is presented as the example when it contains a single
-// example function, at least one other function, type, variable, or constant
-// declaration, and no test or benchmark functions.
+// テストファイルが、1つのExample関数と、少なくとも1つの他の関数、型、変数、
+// または定数の宣言を含み、テスト関数やベンチマーク関数を含まない場合、
+// テストファイル全体がExampleとして提示されます。
 //
-// # Fuzzing
+// # ファジング
 //
-// 'go test' and the testing package support fuzzing, a testing technique where
-// a function is called with randomly generated inputs to find bugs not
-// anticipated by unit tests.
+// 'go test'とtestingパッケージはファジングをサポートしています。ファジングは、
+// ユニットテストでは予期されていなかったバグを見つけるために、ランダムに生成された
+// 入力で関数を呼び出すテスト手法です。
 //
-// Functions of the form
+// 次の形式の関数
 //
 //	func FuzzXxx(*testing.F)
 //
-// are considered fuzz tests.
+// はファズテストとみなされます。
 //
-// For example:
+// 例えば次のとおりです。
 //
 //	func FuzzHex(f *testing.F) {
 //	  for _, seed := range [][]byte{{}, {0}, {9}, {0xa}, {0xf}, {1, 2, 3, 4}} {
@@ -225,46 +219,43 @@
 //	  })
 //	}
 //
-// A fuzz test maintains a seed corpus, or a set of inputs which are run by
-// default, and can seed input generation. Seed inputs may be registered by
-// calling [F.Add] or by storing files in the directory testdata/fuzz/<Name>
-// (where <Name> is the name of the fuzz test) within the package containing
-// the fuzz test. Seed inputs are optional, but the fuzzing engine may find
-// bugs more efficiently when provided with a set of small seed inputs with good
-// code coverage. These seed inputs can also serve as regression tests for bugs
-// identified through fuzzing.
+// ファズテストはシードコーパス、つまりデフォルトで実行され、入力の生成の種となる
+// 入力の集合を保持します。シード入力は、 [F.Add] を呼び出すか、ファズテストを含む
+// パッケージ内のディレクトリtestdata/fuzz/<Name>（<Name>はファズテストの名前）に
+// ファイルを格納することで登録できます。シード入力は省略可能ですが、
+// コードカバレッジの良い小さなシード入力の集合が与えられると、ファジングエンジンは
+// より効率的にバグを見つけられる場合があります。これらのシード入力は、ファジングによって
+// 特定されたバグに対するリグレッションテストとしても機能します。
 //
-// The function passed to [F.Fuzz] within the fuzz test is considered the fuzz
-// target. A fuzz target must accept a [*T] parameter, followed by one or more
-// parameters for random inputs. The types of arguments passed to [F.Add] must
-// be identical to the types of these parameters. The fuzz target may signal
-// that it's found a problem the same way tests do: by calling [T.Fail] (or any
-// method that calls it like [T.Error] or [T.Fatal]) or by panicking.
+// ファズテスト内で [F.Fuzz] に渡される関数は、ファズターゲットとみなされます。
+// ファズターゲットは、 [*T] パラメータと、それに続くランダムな入力のための1つ以上の
+// パラメータを受け取らなければなりません。 [F.Add] に渡される引数の型は、
+// これらのパラメータの型と同一でなければなりません。ファズターゲットは、テストと同じ方法、
+// つまり [T.Fail] （または [T.Error] や [T.Fatal] のようにそれを呼び出すメソッド）を
+// 呼び出すか、パニックすることで、問題を見つけたことを通知できます。
 //
-// When fuzzing is enabled (by setting the -fuzz flag to a regular expression
-// that matches a specific fuzz test), the fuzz target is called with arguments
-// generated by repeatedly making random changes to the seed inputs. On
-// supported platforms, 'go test' compiles the test executable with fuzzing
-// coverage instrumentation. The fuzzing engine uses that instrumentation to
-// find and cache inputs that expand coverage, increasing the likelihood of
-// finding bugs. If the fuzz target fails for a given input, the fuzzing engine
-// writes the inputs that caused the failure to a file in the directory
-// testdata/fuzz/<Name> within the package directory. This file later serves as
-// a seed input. If the file can't be written at that location (for example,
-// because the directory is read-only), the fuzzing engine writes the file to
-// the fuzz cache directory within the build cache instead.
+// ファジングが有効な場合（-fuzzフラグに特定のファズテストにマッチする正規表現を
+// 設定した場合）、ファズターゲットは、シード入力にランダムな変更を繰り返し加えて生成された
+// 引数で呼び出されます。サポートされているプラットフォームでは、'go test'は
+// ファジング用のカバレッジ計装を施してテスト実行ファイルをコンパイルします。
+// ファジングエンジンはその計装を使用して、カバレッジを拡大する入力を見つけて
+// キャッシュし、バグを見つける可能性を高めます。ある入力に対してファズターゲットが
+// 失敗した場合、ファジングエンジンは失敗の原因となった入力を、パッケージディレクトリ内の
+// ディレクトリtestdata/fuzz/<Name>にあるファイルに書き込みます。このファイルは後で
+// シード入力として機能します。その場所にファイルを書き込めない場合（例えば、
+// ディレクトリが読み取り専用である場合）、ファジングエンジンは代わりにビルドキャッシュ内の
+// ファズキャッシュディレクトリにファイルを書き込みます。
 //
-// When fuzzing is disabled, the fuzz target is called with the seed inputs
-// registered with [F.Add] and seed inputs from testdata/fuzz/<Name>. In this
-// mode, the fuzz test acts much like a regular test, with subtests started
-// with [F.Fuzz] instead of [T.Run].
+// ファジングが無効な場合、ファズターゲットは [F.Add] で登録されたシード入力と
+// testdata/fuzz/<Name>のシード入力で呼び出されます。このモードでは、ファズテストは
+// 通常のテストとほぼ同じように動作し、サブテストは [T.Run] の代わりに [F.Fuzz] で開始されます。
 //
-// See https://go.dev/doc/fuzz for documentation about fuzzing.
+// ファジングについてのドキュメントは https://go.dev/doc/fuzz を参照してください。
 //
-// # Skipping
+// # スキップ
 //
-// Tests or benchmarks may be skipped at run time with a call to
-// [T.Skip] or [B.Skip]:
+// テストやベンチマークは、 [T.Skip] または [B.Skip] を呼び出すことで、
+// 実行時にスキップできます。
 //
 //	func TestTimeConsuming(t *testing.T) {
 //	    if testing.Short() {
@@ -273,8 +264,8 @@
 //	    ...
 //	}
 //
-// The [T.Skip] method can be used in a fuzz target if the input is invalid,
-// but should not be considered a failing input. For example:
+// [T.Skip] メソッドは、入力が無効であるものの失敗する入力とみなすべきではない場合に、
+// ファズターゲット内で使用できます。例えば次のとおりです。
 //
 //	func FuzzJSONMarshaling(f *testing.F) {
 //	    f.Fuzz(func(t *testing.T, b []byte) {
@@ -288,12 +279,12 @@
 //	    })
 //	}
 //
-// # Subtests and Sub-benchmarks
+// # サブテストとサブベンチマーク
 //
-// The [T.Run] and [B.Run] methods allow defining subtests and sub-benchmarks,
-// without having to define separate functions for each. This enables uses
-// like table-driven benchmarks and creating hierarchical tests.
-// It also provides a way to share common setup and tear-down code:
+// [T.Run] と [B.Run] メソッドを使うと、それぞれに別々の関数を定義することなく、
+// サブテストとサブベンチマークを定義できます。これにより、テーブル駆動のベンチマークや
+// 階層的なテストの作成といった使い方が可能になります。
+// また、共通のセットアップとティアダウンのコードを共有する方法も提供します。
 //
 //	func TestFoo(t *testing.T) {
 //	    // <setup code>
@@ -303,16 +294,15 @@
 //	    // <tear-down code>
 //	}
 //
-// Each subtest and sub-benchmark has a unique name: the combination of the name
-// of the top-level test and the sequence of names passed to Run, separated by
-// slashes, with an optional trailing sequence number for disambiguation.
+// 各サブテストとサブベンチマークは一意な名前を持ちます。それは、トップレベルのテストの
+// 名前とRunに渡された名前の並びをスラッシュで区切って組み合わせたもので、
+// 曖昧さをなくすために末尾に連番が付く場合があります。
 //
-// The argument to the -run, -bench, and -fuzz command-line flags is an unanchored regular
-// expression that matches the test's name. For tests with multiple slash-separated
-// elements, such as subtests, the argument is itself slash-separated, with
-// expressions matching each name element in turn. Because it is unanchored, an
-// empty expression matches any string.
-// For example, using "matching" to mean "whose name contains":
+// -run、-bench、-fuzzコマンドラインフラグの引数は、テストの名前にマッチする
+// アンカーなしの正規表現です。サブテストのようにスラッシュで区切られた複数の要素を持つ
+// テストの場合、引数自体もスラッシュで区切られ、各式が名前の各要素に順にマッチします。
+// アンカーなしであるため、空の式は任意の文字列にマッチします。
+// 例えば、「マッチする」を「名前に含む」という意味で使うと次のようになります。
 //
 //	go test -run ''        # Run all tests.
 //	go test -run Foo       # Run top-level tests matching "Foo", such as "TestFooBar".
@@ -320,18 +310,18 @@
 //	go test -run /A=1      # For all top-level tests, run subtests matching "A=1".
 //	go test -fuzz FuzzFoo  # Fuzz the target matching "FuzzFoo"
 //
-// The -run argument can also be used to run a specific value in the seed
-// corpus, for debugging. For example:
+// -run引数は、デバッグのためにシードコーパス内の特定の値を実行するためにも使用できます。
+// 例えば次のとおりです。
 //
 //	go test -run=FuzzFoo/9ddb952d9814
 //
-// The -fuzz and -run flags can both be set, in order to fuzz a target but
-// skip the execution of all other tests.
+// -fuzzフラグと-runフラグの両方を設定すると、ターゲットをファジングしつつ、
+// 他のすべてのテストの実行をスキップできます。
 //
-// Subtests can also be used to control parallelism. A parent test will only
-// complete once all of its subtests complete. In this example, all tests are
-// run in parallel with each other, and only with each other, regardless of
-// other top-level tests that may be defined:
+// サブテストは並列性の制御にも使用できます。親テストは、そのすべてのサブテストが
+// 完了したときにのみ完了します。この例では、定義されている可能性のある他の
+// トップレベルのテストに関係なく、すべてのテストが互いに並列に、かつ互いの間でのみ
+// 並列に実行されます。
 //
 //	func TestGroupedParallel(t *testing.T) {
 //	    for _, tc := range tests {
@@ -342,8 +332,8 @@
 //	    }
 //	}
 //
-// Run does not return until parallel subtests have completed, providing a way
-// to clean up after a group of parallel tests:
+// Runは並列のサブテストが完了するまで戻らないため、並列テストのグループの後で
+// クリーンアップを行う方法を提供します。
 //
 //	func TestTeardownParallel(t *testing.T) {
 //	    // This Run will not return until the parallel tests finish.
@@ -357,33 +347,33 @@
 //
 // # Main
 //
-// It is sometimes necessary for a test or benchmark program to do extra setup or teardown
-// before or after it executes. It is also sometimes necessary to control
-// which code runs on the main thread. To support these and other cases,
-// if a test file contains a function:
+// テストやベンチマークのプログラムで、実行の前後に追加のセットアップやティアダウンを
+// 行う必要がある場合があります。また、どのコードをメインスレッドで実行するかを
+// 制御する必要がある場合もあります。これらのケースやその他のケースをサポートするために、
+// テストファイルに次の関数が含まれている場合、
 //
 //	func TestMain(m *testing.M)
 //
-// then the generated test will call TestMain(m) instead of running the tests or benchmarks
-// directly. TestMain runs in the main goroutine and can do whatever setup
-// and teardown is necessary around a call to m.Run. m.Run will return an exit
-// code that may be passed to [os.Exit]. If TestMain returns, the test wrapper
-// will pass the result of m.Run to [os.Exit] itself.
+// 生成されたテストは、テストやベンチマークを直接実行する代わりにTestMain(m)を呼び出します。
+// TestMainはメインゴルーチンで実行され、m.Runの呼び出しの前後で必要なセットアップと
+// ティアダウンを何でも行うことができます。m.Runは [os.Exit] に渡すことができる
+// 終了コードを返します。TestMainが戻った場合、テストのラッパーがm.Runの結果を
+// 自ら [os.Exit] に渡します。
 //
-// When TestMain is called, flag.Parse has not been run. If TestMain depends on
-// command-line flags, including those of the testing package, it should call
-// [flag.Parse] explicitly. Command line flags are always parsed by the time test
-// or benchmark functions run.
+// TestMainが呼び出された時点では、flag.Parseは実行されていません。TestMainが
+// testingパッケージのフラグを含むコマンドラインフラグに依存する場合は、
+// 明示的に [flag.Parse] を呼び出す必要があります。コマンドラインフラグは、
+// テスト関数やベンチマーク関数が実行される時点では常に解析済みです。
 //
-// A simple implementation of TestMain is:
+// TestMainの簡単な実装は次のとおりです。
 //
 //	func TestMain(m *testing.M) {
 //		// call flag.Parse() here if TestMain uses flags
 //		m.Run()
 //	}
 //
-// TestMain is a low-level primitive and should not be necessary for casual
-// testing needs, where ordinary test functions suffice.
+// TestMainは低レベルのプリミティブであり、通常のテスト関数で十分な
+// 一般的なテストの用途では必要ないはずです。
 //
 // [go help test]: https://pkg.go.dev/cmd/go#hdr-Test_packages
 // [go help testflag]: https://pkg.go.dev/cmd/go#hdr-Testing_flags

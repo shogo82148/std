@@ -10,7 +10,7 @@ import (
 
 type commonHandler struct{}
 
-// A Handler handles log records produced by a Logger.
+// Handlerは、Loggerによって生成されたログレコードを処理します。
 //
 // 典型的なハンドラは、ログレコードを標準エラーに出力したり、
 // ファイルやデータベースに書き込んだり、

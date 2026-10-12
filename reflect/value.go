@@ -184,16 +184,15 @@ func (v Value) Interface() (i any)
 //
 //	v2, ok := v.Interface().(T)
 //
-// Note that this function, just as the type assertion above, might return:
+// この関数は、上記の型アサーションと同様に、次のような結果を返す場合があることに注意してください。
 //
-//   - ok == false when v.Type() == reflect.TypeFor[T]()
-//     For example, when both T and v are interface types and v.IsNil() == true.
-//     In that case v.Interface() returns a nil interface value, and the
-//     assertion .(T) fails with ok == false.
+//   - v.Type() == reflect.TypeFor[T]() のときに ok == false
+//     例えば、Tとvが両方ともインターフェース型で、v.IsNil() == true の場合です。
+//     この場合、v.Interface()はnilのインターフェース値を返し、
+//     アサーション .(T) は ok == false で失敗します。
 //
-//   - ok == true when v.Type() != reflect.TypeFor[T]().
-//     For example, when T is an interface type and v holds a value whose
-//     concrete type implements T.
+//   - v.Type() != reflect.TypeFor[T]() のときに ok == true
+//     例えば、Tがインターフェース型で、vがTを実装する具象型の値を保持している場合です。
 func TypeAssert[T any](v Value) (T, bool)
 
 // InterfaceDataは未指定のuintptr値のペアを返します。

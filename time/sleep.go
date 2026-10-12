@@ -41,43 +41,40 @@ func (t *Timer) Stop() bool
 // NewTimerは、少なくともdの期間経過後に、
 // そのチャネルに現在の時刻を送信する新しいTimerを作成します。
 //
-// Before Go 1.23, the garbage collector did not recover
-// timers that had not yet expired or been stopped, so code often
-// immediately deferred t.Stop after calling NewTimer, to make
-// the timer recoverable when it was no longer needed.
-// As of Go 1.23, the garbage collector can recover unreferenced
-// timers, even if they haven't expired or been stopped.
-// The Stop method is no longer necessary to help the garbage collector.
-// (Code may of course still want to call Stop to stop the timer for other reasons.)
+// Go 1.23より前では、ガベージコレクタはまだ期限切れになっていない、または
+// 停止されていないタイマーを回収しなかったため、タイマーが不要になったときに
+// 回収できるように、コードではNewTimerを呼び出した直後にt.Stopをdeferすることが
+// よくありました。
+// Go 1.23以降、ガベージコレクタは、期限切れになっていない、または停止されていない
+// タイマーであっても、参照されていなければ回収できます。
+// ガベージコレクタを助けるためにStopメソッドを呼ぶ必要はもうありません。
+// （もちろん、他の理由でタイマーを停止するためにStopを呼び出したい場合もあるでしょう。）
 //
-// Before Go 1.23, the channel associated with a Timer was
-// asynchronous (buffered, capacity 1), which meant that
-// stale time values could be received even after [Timer.Stop]
-// or [Timer.Reset] returned.
-// As of Go 1.23, the channel is synchronous (unbuffered, capacity 0),
-// eliminating the possibility of those stale values.
+// Go 1.23より前では、Timerに関連付けられたチャネルは非同期（バッファ付き、容量1）
+// であったため、 [Timer.Stop] や [Timer.Reset] が戻った後でも古い時刻の値を
+// 受信する可能性がありました。
+// Go 1.23以降、チャネルは同期（バッファなし、容量0）になり、
+// そのような古い値を受信する可能性はなくなりました。
 func NewTimer(d Duration) *Timer
 
 // Resetはタイマーを期間d後に期限切れにする。
 // タイマーがアクティブであった場合はtrue、期限切れまたは停止された場合はfalseを返す。
 //
-// For a func-based timer created with [AfterFunc](d, f), Reset either reschedules
-// when f will run, in which case Reset returns true, or schedules f
-// to run again, in which case it returns false.
-// When Reset returns false, Reset neither waits for the prior f to
-// complete before returning nor does it guarantee that the subsequent
-// goroutine running f does not run concurrently with the prior
-// one. If the caller needs to know whether the prior execution of
-// f is completed, it must coordinate with f explicitly.
+// [AfterFunc](d, f) で作成された関数ベースのタイマーの場合、Resetはfが実行される
+// 時刻を再スケジュールするか（この場合Resetはtrueを返します）、fが再び実行される
+// ようにスケジュールします（この場合falseを返します）。
+// Resetがfalseを返す場合、Resetは戻る前に以前のfの完了を待つことはなく、
+// fを実行する後続のゴルーチンが以前のものと並行して実行されないことも保証しません。
+// 呼び出し元が以前のfの実行が完了したかどうかを知る必要がある場合は、
+// fと明示的に連携する必要があります。
 //
-// For a chan-based timer created with NewTimer, as of Go 1.23,
-// any receive from t.C after Reset has returned is guaranteed not
-// to receive a time value corresponding to the previous timer settings;
-// if the program has not received from t.C already and the timer is
-// running, Reset is guaranteed to return true.
-// Before Go 1.23, the only safe way to use Reset was to call [Timer.Stop]
-// and explicitly drain the timer first.
-// See the [NewTimer] documentation for more details.
+// NewTimerで作成されたチャネルベースのタイマーの場合、Go 1.23以降、
+// Resetが戻った後のt.Cからの受信では、以前のタイマー設定に対応する時刻の値を
+// 受信しないことが保証されます。プログラムがまだt.Cから受信しておらず、
+// タイマーが動作中であれば、Resetはtrueを返すことが保証されます。
+// Go 1.23より前では、Resetを安全に使う唯一の方法は、まず [Timer.Stop] を呼び出して
+// タイマーを明示的に空にすることでした。
+// 詳細については、 [NewTimer] のドキュメントを参照してください。
 func (t *Timer) Reset(d Duration) bool
 
 // Afterは期間が経過するのを待ち、返されたチャネルに現在時刻を送信します。
