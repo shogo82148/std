@@ -1,9 +1,9 @@
 # 翻訳メモリー（glossary）
 
-Go 標準ライブラリの godoc を和訳するときの用語集・定型文集です。
+Go 標準ライブラリーの godoc を和訳するときの用語集・定型文集です。
 `origin/upstream/release-branch.go1.27`（英語原文）と `release-branch.go1.27`（和訳）のドキュメントコメントを宣言単位で対応付け（約 6,800 組）、よく使われている訳語を集計してまとめました。
 
-- 「推奨訳」は既存の和訳で最も多く使われている訳です。新しく訳すときはこちらに揃えてください。
+- 「推奨訳」は原則として既存の和訳で最も多く使われている訳です（カタカナ語の長音は後述の規則を優先します）。新しく訳すときはこちらに揃えてください。
 - 括弧内の数字は、既存の和訳での出現回数の目安です。
 - 「避ける訳」は既存の和訳に混在しているが、揃えたい表記です。既存の訳を見つけても、無理にまとめて直す必要はありません。
 
@@ -13,34 +13,49 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 
 ### カタカナ語の長音
 
-既存の和訳で多数派の表記に揃えます。語ごとに慣用が分かれているため、一律に長音を付ける／付けないとはしていません。
+もとの英語のつづりが **-er, -or, -ar, -y** で終わる語は、語尾に「ー」を付けます。
+既存の和訳では長音なしの表記も多く混在していますが、新しく訳すときはこの規則に従ってください。
+
+| 英語 | 推奨表記 | 避ける表記 |
+| --- | --- | --- |
+| server | サーバー | サーバ |
+| header | ヘッダー | ヘッダ |
+| parameter | パラメーター | パラメータ |
+| security | セキュリティー | セキュリティ |
+| user | ユーザー | ユーザ |
+| reader / writer | リーダー／ライター | リーダ／ライタ |
+| parser | パーサー | パーサ |
+| receiver | レシーバー | レシーバ |
+| handler | ハンドラー | ハンドラ |
+| buffer | バッファー | バッファ |
+| iterator | イテレーター | イテレータ |
+| pointer | ポインター | ポインタ |
+| compiler | コンパイラー | コンパイラ |
+| driver | ドライバー | ドライバ |
+| listener | リスナー | リスナ |
+| resolver | リゾルバー | リゾルバ |
+| collector | コレクター | コレクタ |
+| counter | カウンター | カウンタ |
+| descriptor | ディスクリプター | ディスクリプタ |
+| encoder / decoder | エンコーダー／デコーダー | エンコーダ／デコーダ |
+| scanner | スキャナー | スキャナ |
+| helper | ヘルパー | ヘルパ |
+| directory | ディレクトリー | ディレクトリ |
+| entry | エントリー | エントリ |
+| memory | メモリー | メモリ |
+| library | ライブラリー | ライブラリ |
+| binary | バイナリー | バイナリ |
+| query | クエリー | クエリ |
+| proxy | プロキシー | プロキシ |
+| category | カテゴリー | カテゴリ |
+| body | ボディー | ボディ |
+| key | キー | |
+
+規則の対象外の語は、既存の和訳での慣用に従います。
 
 | 英語 | 推奨表記 | 避ける表記 |
 | --- | --- | --- |
 | interface | インターフェース (531) | インタフェース (22) |
-| server | サーバー (306) | サーバ (11) |
-| header | ヘッダー (249) | ヘッダ (22) |
-| reader | リーダー (64) | リーダ |
-| writer | ライター (53) | ライタ |
-| parser | パーサー (42) | パーサ |
-| user | ユーザー | ユーザ（ほぼ同数で混在。新規はユーザーに統一） |
-| parameter | パラメータ (228) | パラメーター (25) |
-| receiver | レシーバ (67) | レシーバー (29) |
-| handler | ハンドラ (111) | ハンドラー (40) |
-| buffer | バッファ (241) | バッファー (7) |
-| iterator | イテレータ (93) | イテレーター (9) |
-| pointer | ポインタ (393) | ポインター (9) |
-| directory | ディレクトリ (473) | ディレクトリー |
-| entry | エントリ (134) | エントリー |
-| memory | メモリ (282) | メモリー |
-| compiler | コンパイラ (78) | コンパイラー |
-| library | ライブラリ (86) | ライブラリー |
-| binary | バイナリ (168) | バイナリー |
-| query | クエリ (113) | クエリー |
-| proxy | プロキシ (45) | プロキシー |
-| security | セキュリティ (72) | セキュリティー |
-| category | カテゴリ (16) | カテゴリー |
-| driver | ドライバ / ドライバー | （ほぼ同数で混在。パッケージ内で揃える） |
 | channel | チャネル (102) | チャンネル |
 | goroutine | ゴルーチン (236) | goroutine、ゴールーチン |
 
@@ -108,9 +123,9 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | function | 関数 | |
 | method | メソッド | |
 | method set | メソッドセット | |
-| receiver | レシーバ | |
+| receiver | レシーバー | |
 | argument | 引数 | |
-| parameter | パラメータ | 型パラメータ (type parameter) も同様 |
+| parameter | パラメーター | 型パラメーター (type parameter) も同様 |
 | type argument | 型引数 | |
 | return value | 戻り値 | 「返り値」(34) より「戻り値」(97) |
 | result | 結果 | |
@@ -123,7 +138,7 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | array | 配列 | |
 | map | マップ | |
 | channel | チャネル | |
-| pointer | ポインタ | |
+| pointer | ポインター | |
 | string | 文字列 | |
 | integer | 整数 | |
 | unsigned | 符号なし | |
@@ -180,11 +195,11 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | stack | スタック | |
 | stack trace | スタックトレース | |
 | allocate / allocation | 割り当てる／割り当て | 「アロケーション」より「割り当て」 |
-| garbage collector | ガベージコレクタ | 「GC」とそのまま書いてもよい |
+| garbage collector | ガベージコレクター | 「GC」とそのまま書いてもよい |
 | thread | スレッド | |
 | signal | シグナル | |
 | process | プロセス | |
-| program counter | プログラムカウンタ | |
+| program counter | プログラムカウンター | |
 | profile / profiling | プロファイル／プロファイリング | |
 | trace | トレース | |
 | metric | メトリクス | |
@@ -193,7 +208,7 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | deadline | 期限 | 「デッドライン」より多数派 |
 | timeout | タイムアウト | |
 | callback | コールバック | |
-| iterator | イテレータ | |
+| iterator | イテレーター | |
 | iterate | 反復する | |
 
 ### エラー・動作
@@ -229,7 +244,7 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | write / writes | 書き込む | |
 | append | 追加する | |
 | flush | フラッシュする | |
-| buffer / buffered | バッファ／バッファリングされた | |
+| buffer / buffered | バッファー／バッファリングされた | |
 | close | 閉じる | |
 | seek | シークする | |
 | offset | オフセット | |
@@ -239,15 +254,15 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | standard output / standard error | 標準出力／標準エラー | |
 | file | ファイル | |
 | file system | ファイルシステム | |
-| directory | ディレクトリ | |
-| working directory | 作業ディレクトリ | |
+| directory | ディレクトリー | |
+| working directory | 作業ディレクトリー | |
 | path | パス | |
 | absolute path / relative path | 絶対パス／相対パス | |
 | symbolic link | シンボリックリンク | |
-| file descriptor | ファイルディスクリプタ | |
+| file descriptor | ファイルディスクリプター | |
 | permission bits | パーミッションビット | |
 | archive | アーカイブ | |
-| entry | エントリ | |
+| entry | エントリー | |
 | environment variable | 環境変数 | |
 | exit / exit status | 終了／終了ステータス | |
 
@@ -295,14 +310,14 @@ Go 標準ライブラリの godoc を和訳するときの用語集・定型文�
 | request | リクエスト | (508)。「要求」より「リクエスト」 |
 | response | レスポンス | (135)。「応答」(61) も見られる |
 | header | ヘッダー | |
-| body | ボディ | |
-| handler | ハンドラ | |
+| body | ボディー | |
+| handler | ハンドラー | |
 | transport | トランスポート | |
 | redirect | リダイレクト | |
 | cookie | クッキー | |
-| proxy | プロキシ | |
+| proxy | プロキシー | |
 | scheme | スキーム | |
-| resolver | リゾルバ | |
+| resolver | リゾルバー | |
 | lookup | 検索 | DNS lookup は「DNS 検索」または「ルックアップ」 |
 | handshake | ハンドシェイク | |
 | session | セッション | |
