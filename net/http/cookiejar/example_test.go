@@ -14,7 +14,7 @@ import (
 )
 
 func ExampleNew() {
-	// クッキーを提供するためのサーバを開始する。
+	// クッキーを提供するためのサーバーを開始する。
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, err := r.Cookie("Flavor"); err != nil {
 			http.SetCookie(w, &http.Cookie{Name: "Flavor", Value: "Chocolate Chip"})

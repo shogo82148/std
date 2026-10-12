@@ -21,7 +21,7 @@ type Location struct {
 	extend string
 
 	// ほとんどの検索は現在の時刻で行われます。
-	// txをバイナリサーチしないように、
+	// txをバイナリーサーチしないように、
 	// Locationが作成された時点の正しいタイムゾーンを
 	// 提供する静的な単一要素キャッシュを保持します。
 	// もし cacheStart <= t < cacheEnd であれば、
@@ -40,7 +40,7 @@ var UTC *Location = &utcLoc
 // Local はシステムのローカルなタイムゾーンを表します。
 // Unix システムでは、Local は TZ 環境変数を参照して使用するタイムゾーンを見つけます。TZ が指定されていない場合は、システムのデフォルトの /etc/localtime を使用します。
 // TZ="" は UTC を使用します。
-// TZ="foo" はシステムのタイムゾーンディレクトリ内のファイル foo を使用します。
+// TZ="foo" はシステムのタイムゾーンディレクトリー内のファイル foo を使用します。
 var Local *Location = &localLoc
 
 // Stringは、[LoadLocation] または [FixedZone] のname引数に対応する、タイムゾーン情報の記述的な名前を返します。
@@ -59,7 +59,7 @@ func FixedZone(name string, offset int) *Location
 //
 // LoadLocationは以下の順序でIANAタイムゾーンデータベースを探します:
 //
-//   - ZONEINFO環境変数によって指定されたディレクトリまたは解凍されたzipファイル
+//   - ZONEINFO環境変数によって指定されたディレクトリーまたは解凍されたzipファイル
 //   - Unixシステムでは、システムの標準インストール場所
 //   - $GOROOT/lib/time/zoneinfo.zip
 //   - インポートされていた場合、time/tzdataパッケージ

@@ -2,29 +2,29 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// driverパッケージは、package sqlによって使用されるデータベースドライバが実装するインターフェースを定義します。
+// driverパッケージは、package sqlによって使用されるデータベースドライバーが実装するインターフェースを定義します。
 //
 // ほとんどのコードは、[database/sql] パッケージを使用するべきです。
 //
-// ドライバのインターフェースは時間の経過とともに進化してきました。ドライバは [Connector] と [DriverContext] のインターフェースを実装する必要があります。
+// ドライバーのインターフェースは時間の経過とともに進化してきました。ドライバーは [Connector] と [DriverContext] のインターフェースを実装する必要があります。
 // Connector.ConnectとDriver.Openメソッドは、決して [ErrBadConn] を返してはいけません。
 // [ErrBadConn] は、 [Validator] 、 [SessionResetter] 、または接続が既に無効な（閉じられたなど）状態にある場合にのみ返されるべきです。
 //
 // すべての [Conn] の実装は、以下のインターフェースを実装する必要があります：
 // [Pinger] 、 [SessionResetter] 、および [Validator] 。
 //
-// 名前付きパラメータやコンテキストがサポートされている場合、ドライバの [Conn] は以下を実装する必要があります：
+// 名前付きパラメーターやコンテキストがサポートされている場合、ドライバーの [Conn] は以下を実装する必要があります：
 // [ExecerContext] 、 [QueryerContext] 、 [ConnPrepareContext] 、および [ConnBeginTx] 。
 //
-// カスタムデータ型をサポートするためには、 [NamedValueChecker] を実装します。 [NamedValueChecker] は、CheckNamedValueから [ErrRemoveArgument] を返すことで、クエリごとのオプションをパラメータとして受け入れることも可能にします。
+// カスタムデータ型をサポートするためには、 [NamedValueChecker] を実装します。 [NamedValueChecker] は、CheckNamedValueから [ErrRemoveArgument] を返すことで、クエリーごとのオプションをパラメーターとして受け入れることも可能にします。
 //
 // 複数の結果セットがサポートされている場合、 [Rows] は [RowsNextResultSet] を実装する必要があります。
-// ドライバが返された結果に含まれる型を説明する方法を知っている場合、以下のインターフェースを実装する必要があります：
+// ドライバーが返された結果に含まれる型を説明する方法を知っている場合、以下のインターフェースを実装する必要があります：
 // [RowsColumnTypeScanType] 、 [RowsColumnTypeDatabaseTypeName] 、 [RowsColumnTypeLength] 、 [RowsColumnTypeNullable] 、および [RowsColumnTypePrecisionScale] 。
 // ある行の値は、Rows型を返すこともあり、それはデータベースカーソル値を表すことができます。
 //
 // [Conn] が [Validator] を実装している場合には、接続が使用後に接続プールに返される前にIsValidメソッドが呼び出されます。
-// コネクションプールのエントリーが [SessionResetter] を実装している場合には、別のクエリに再利用される前にResetSessionが呼び出されます。
+// コネクションプールのエントリーが [SessionResetter] を実装している場合には、別のクエリーに再利用される前にResetSessionが呼び出されます。
 // 接続が接続プールに返されないで直接再利用される場合は、再利用の前にResetSessionが呼び出されますが、IsValidは呼び出されません。
 package driver
 
@@ -35,8 +35,8 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// Valueは、ドライバが扱える必要がある値です。
-// nil、データベースドライバの [NamedValueChecker] インターフェースで扱われる型、または次のいずれかの型のインスタンスです：
+// Valueは、ドライバーが扱える必要がある値です。
+// nil、データベースドライバーの [NamedValueChecker] インターフェースで扱われる型、または次のいずれかの型のインスタンスです：
 //
 //	int64
 //	float64
@@ -45,21 +45,21 @@ import (
 //	string
 //	time.Time
 //
-// ドライバがカーソルをサポートしている場合、返されたValueはこのパッケージの [Rows] インターフェースも実装する場合があります。
-// これは、ユーザが "select cursor(select * from my_table) from dual" のようなカーソルを選択した場合に使用されます。
+// ドライバーがカーソルをサポートしている場合、返されたValueはこのパッケージの [Rows] インターフェースも実装する場合があります。
+// これは、ユーザーが "select cursor(select * from my_table) from dual" のようなカーソルを選択した場合に使用されます。
 // セレクトの [Rows] がクローズされると、カーソルの [Rows] もクローズされます。
 type Value any
 
 // NamedValueは値の名前と値を保持します。
 type NamedValue struct {
 
-	// もし Name が空でなければ、パラメータの識別子に使用されるべきであり、
+	// もし Name が空でなければ、パラメーターの識別子に使用されるべきであり、
 	// 順序位置ではないです。
 	//
 	// Name にはシンボルのプレフィックスはつきません。
 	Name string
 
-	// パラメータの序数位置は常に1から始まります。
+	// パラメーターの序数位置は常に1から始まります。
 	Ordinal int
 
 	// Valueはパラメーターの値です。
@@ -82,10 +82,10 @@ type DriverContext interface {
 	OpenConnector(name string) (Connector, error)
 }
 
-// コネクタは、固定の構成でドライバを表し、複数のゴルーチンで使用するための同等の接続を作成できます。
+// コネクタは、固定の構成でドライバーを表し、複数のゴルーチンで使用するための同等の接続を作成できます。
 //
-// コネクタは [database/sql.OpenDB] に渡すことができ、ドライバは独自の [database/sql.DB] コンストラクタを実装するため、また、 [DriverContext] のOpenConnectorメソッドによって返されることができます。
-// これにより、ドライバはコンテキストへのアクセスとドライバ構成の繰り返し解析を避けることができます。
+// コネクタは [database/sql.OpenDB] に渡すことができ、ドライバーは独自の [database/sql.DB] コンストラクタを実装するため、また、 [DriverContext] のOpenConnectorメソッドによって返されることができます。
+// これにより、ドライバーはコンテキストへのアクセスとドライバー構成の繰り返し解析を避けることができます。
 //
 // コネクタが [io.Closer] を実装している場合、sqlパッケージの [database/sql.DB.Close] メソッドはCloseを呼び出し、エラー（あれば）を返します。
 type Connector interface {
@@ -94,10 +94,10 @@ type Connector interface {
 	Driver() Driver
 }
 
-// ErrSkipは、一部のオプションのインタフェースメソッドによって、高速経路が利用できないことを実行時に示すために返される場合があります。sqlパッケージは、オプションのインタフェースが実装されていないかのように続行する必要があります。ErrSkipは、明示的に文書化されている場所でのみサポートされます。
+// ErrSkipは、一部のオプションのインターフェースメソッドによって、高速経路が利用できないことを実行時に示すために返される場合があります。sqlパッケージは、オプションのインターフェースが実装されていないかのように続行する必要があります。ErrSkipは、明示的に文書化されている場所でのみサポートされます。
 var ErrSkip = errors.New("driver: skip fast-path; continue as if unimplemented")
 
-// ErrBadConnは、ドライバが driver.[Conn] が不良な状態であることを示すために、
+// ErrBadConnは、ドライバーが driver.[Conn] が不良な状態であることを示すために、
 // [database/sql] パッケージに返すべきです（たとえば、サーバーが接続を早期に閉じたなど）。
 // また、[database/sql] パッケージは新しい接続で再試行する必要があります。
 //
@@ -120,11 +120,11 @@ type Pinger interface {
 // Execerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
 // もし [Conn] が [ExecerContext] または [Execer] のどちらの実装も持っていない場合、
-// [database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行し、そしてステートメントを閉じます。
+// [database/sql.DB.Exec] はまずクエリーを準備し、ステートメントを実行し、そしてステートメントを閉じます。
 //
 // Execは [ErrSkip] を返す場合があります。
 //
-// Deprecated: ドライバは代わりに [ExecerContext] を実装するべきです。
+// Deprecated: ドライバーは代わりに [ExecerContext] を実装するべきです。
 type Execer interface {
 	Exec(query string, args []Value) (Result, error)
 }
@@ -132,7 +132,7 @@ type Execer interface {
 // ExecerContextは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
 // [Conn] が [ExecerContext] を実装していない場合、[database/sql.DB.Exec] は [Execer] にフォールバックします。
-// もしConnがExecerも実装していない場合、[database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// もしConnがExecerも実装していない場合、[database/sql.DB.Exec] はまずクエリーを準備し、ステートメントを実行してからステートメントを閉じます。
 //
 // ExecContextは [ErrSkip] を返すことがあります。
 //
@@ -143,11 +143,11 @@ type ExecerContext interface {
 
 // Queryerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
-// [Conn] が [QueryerContext] も [Queryer] でも実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// [Conn] が [QueryerContext] も [Queryer] でも実装していない場合、 [database/sql.DB.Query] はまずクエリーを準備し、ステートメントを実行してからステートメントを閉じます。
 //
 // Queryは [ErrSkip] を返すことがあります。
 //
-// Deprecated: ドライバは代わりに [QueryerContext] を実装するべきです。
+// Deprecated: ドライバーは代わりに [QueryerContext] を実装するべきです。
 type Queryer interface {
 	Query(query string, args []Value) (Rows, error)
 }
@@ -155,7 +155,7 @@ type Queryer interface {
 // QueryerContextは、[Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
 // [Conn] がQueryerContextを実装していない場合、 [database/sql.DB.Query] は [Queryer] にフォールバックします。
-// もし、Connが [Queryer] を実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// もし、Connが [Queryer] を実装していない場合、 [database/sql.DB.Query] はまずクエリーを準備し、ステートメントを実行してからステートメントを閉じます。
 //
 // QueryContextは [ErrSkip] を返す場合があります。
 //
@@ -193,24 +193,24 @@ type TxOptions struct {
 	ReadOnly  bool
 }
 
-// ConnBeginTxは、コンテキストと [TxOptions] を追加して [Conn] インタフェースを拡張します。
+// ConnBeginTxは、コンテキストと [TxOptions] を追加して [Conn] インターフェースを拡張します。
 type ConnBeginTx interface {
 	BeginTx(ctx context.Context, opts TxOptions) (Tx, error)
 }
 
-// SessionResetterは、 [Conn] によって実装される可能性があります。これにより、ドライバは接続に関連付けられたセッション状態をリセットし、悪い接続を通知することができます。
+// SessionResetterは、 [Conn] によって実装される可能性があります。これにより、ドライバーは接続に関連付けられたセッション状態をリセットし、悪い接続を通知することができます。
 type SessionResetter interface {
 	ResetSession(ctx context.Context) error
 }
 
 // Validatorは、 [Conn] によって実装されることがあります。これにより、ドライバーは接続が有効であるか、破棄すべきかを示すことができます。
 //
-// 実装されている場合、ドライバーはクエリから基礎となるエラーを返すことができます。たとえ接続プールによって接続が破棄されるべきであってもです。
+// 実装されている場合、ドライバーはクエリーから基礎となるエラーを返すことができます。たとえ接続プールによって接続が破棄されるべきであってもです。
 type Validator interface {
 	IsValid() bool
 }
 
-// Resultはクエリの実行結果です。
+// Resultはクエリーの実行結果です。
 type Result interface {
 	LastInsertId() (int64, error)
 
@@ -239,17 +239,17 @@ type StmtQueryContext interface {
 }
 
 // ErrRemoveArgumentは、 [NamedValueChecker] から返されることがあります。
-// これは、[database/sql] パッケージに対して引数をドライバのクエリインターフェースに渡さないよう指示するためです。
-// クエリ固有のオプションやSQLクエリ引数ではない構造体を受け入れる場合に返します。
+// これは、[database/sql] パッケージに対して引数をドライバーのクエリーインターフェースに渡さないよう指示するためです。
+// クエリー固有のオプションやSQLクエリー引数ではない構造体を受け入れる場合に返します。
 var ErrRemoveArgument = errors.New("driver: remove argument from query")
 
-// NamedValueCheckerは [Conn] または [Stmt] によってオプションで実装されることがあります。これにより、ドライバはデフォルトの [Value] タイプを超えたGoおよびデータベースのタイプを処理するための制御を提供します。
+// NamedValueCheckerは [Conn] または [Stmt] によってオプションで実装されることがあります。これにより、ドライバーはデフォルトの [Value] タイプを超えたGoおよびデータベースのタイプを処理するための制御を提供します。
 //
 // [database/sql] パッケージは、値チェッカーを以下の順序でチェックし、最初に一致したもので停止します： Stmt.NamedValueChecker、Conn.NamedValueChecker、Stmt.ColumnConverter、 [DefaultParameterConverter] 。
 //
-// CheckNamedValueが [ErrRemoveArgument] を返す場合、 [NamedValue] は最終的なクエリ引数に含まれません。これはクエリ自体に特殊なオプションを渡すために使用される場合があります。
+// CheckNamedValueが [ErrRemoveArgument] を返す場合、 [NamedValue] は最終的なクエリー引数に含まれません。これはクエリー自体に特殊なオプションを渡すために使用される場合があります。
 //
-// [ErrSkip] が返された場合、列コンバーターのエラーチェックパスが引数に使用されます。ドライバは、独自の特殊なケースを使い果たした後に [ErrSkip] を返すことを望むかもしれません。
+// [ErrSkip] が返された場合、列コンバーターのエラーチェックパスが引数に使用されます。ドライバーは、独自の特殊なケースを使い果たした後に [ErrSkip] を返すことを望むかもしれません。
 type NamedValueChecker interface {
 	CheckNamedValue(*NamedValue) error
 }
@@ -260,7 +260,7 @@ type ColumnConverter interface {
 	ColumnConverter(idx int) ValueConverter
 }
 
-// Rowsは実行されたクエリの結果に対するイテレータです。
+// Rowsは実行されたクエリーの結果に対するイテレーターです。
 type Rows interface {
 	Columns() []string
 
@@ -269,11 +269,11 @@ type Rows interface {
 	Next(dest []Value) error
 }
 
-// ScanContextは、現在のクエリに関連する状態を
+// ScanContextは、現在のクエリーに関連する状態を
 // [RowsColumnScanner.ScanColumn] 関数から [database/sql.ConvertAssign] まで運びます。
 type ScanContext internal.ScanContext
 
-// RowsColumnScannerは、ドライバがユーザー指定の宛先へ直接スキャンできる手段を提供することで、
+// RowsColumnScannerは、ドライバーがユーザー指定の宛先へ直接スキャンできる手段を提供することで、
 // [Rows] インターフェースを拡張します。
 //
 // RowsColumnScanner は [Rows.Next] メソッドに取って代わります。
@@ -288,7 +288,7 @@ type RowsColumnScanner interface {
 	ScanColumn(scanCtx ScanContext, index int, dest any) error
 }
 
-// RowsNextResultSetは、次の結果セットへ進むようドライバに通知する手段を提供することで、
+// RowsNextResultSetは、次の結果セットへ進むようドライバーに通知する手段を提供することで、
 // [Rows] インターフェースを拡張します。
 type RowsNextResultSet interface {
 	Rows

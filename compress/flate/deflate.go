@@ -59,10 +59,10 @@ func (w *Writer) Write(data []byte) (n int, err error)
 // パンディングのないデータでFlushを呼び出すと、 [Writer] は少なくとも4バイトの同期マーカーを出力します。
 // 基礎となるライターがエラーを返す場合、Flushはそのエラーを返します。
 //
-// zlibライブラリの用語では、FlushはZ_SYNC_FLUSHと等価です。
+// zlibライブラリーの用語では、FlushはZ_SYNC_FLUSHと等価です。
 func (w *Writer) Flush() error
 
-// Close は書き込みバッファをフラッシュしてクローズします。
+// Close は書き込みバッファーをフラッシュしてクローズします。
 func (w *Writer) Close() error
 
 // Reset はライターの状態を破棄し、dst と w のレベルおよび辞書を使って

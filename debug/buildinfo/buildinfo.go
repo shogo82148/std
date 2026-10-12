@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// buildinfoパッケージは、Goバイナリに埋め込まれた情報にアクセスするための機能を提供します。
-// これには、Goツールチェーンのバージョン、および使用されたモジュールのセット（モジュールモードでビルドされたバイナリの場合）が含まれます。
+// buildinfoパッケージは、Goバイナリーに埋め込まれた情報にアクセスするための機能を提供します。
+// これには、Goツールチェーンのバージョン、および使用されたモジュールのセット（モジュールモードでビルドされたバイナリーの場合）が含まれます。
 //
-// ビルド情報は、現在実行中のバイナリでruntime/debug.ReadBuildInfoを使用して利用できます。
+// ビルド情報は、現在実行中のバイナリーでruntime/debug.ReadBuildInfoを使用して利用できます。
 package buildinfo
 
 import (
@@ -19,10 +19,10 @@ import (
 // 依存関係が大きくなるためです。
 type BuildInfo = debug.BuildInfo
 
-// ReadFileは、指定されたパスのGoバイナリファイルに埋め込まれたビルド情報を返します。
-// ほとんどの情報は、モジュールサポートでビルドされたバイナリでのみ利用可能です。
+// ReadFileは、指定されたパスのGoバイナリーファイルに埋め込まれたビルド情報を返します。
+// ほとんどの情報は、モジュールサポートでビルドされたバイナリーでのみ利用可能です。
 func ReadFile(name string) (info *BuildInfo, err error)
 
-// Readは、指定されたReaderAtを介してアクセスされるGoバイナリファイルに埋め込まれたビルド情報を返します。
-// ほとんどの情報は、モジュールサポートでビルドされたバイナリでのみ利用可能です。
+// Readは、指定されたReaderAtを介してアクセスされるGoバイナリーファイルに埋め込まれたビルド情報を返します。
+// ほとんどの情報は、モジュールサポートでビルドされたバイナリーでのみ利用可能です。
 func Read(r io.ReaderAt) (*BuildInfo, error)

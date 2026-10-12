@@ -61,23 +61,23 @@ func (c *CrossOriginProtection) AddTrustedOrigin(origin string) error
 // 以降のリクエストに適用されます。
 func (c *CrossOriginProtection) AddInsecureBypassPattern(pattern string)
 
-// SetDenyHandlerは、リクエストが拒否されたときに呼び出すハンドラを設定します。
-// デフォルトのエラーハンドラは403 Forbiddenステータスで応答します。
+// SetDenyHandlerは、リクエストが拒否されたときに呼び出すハンドラーを設定します。
+// デフォルトのエラーハンドラーは403 Forbiddenステータスで応答します。
 //
 // SetDenyHandlerは他のメソッドやリクエスト処理と並行して呼び出すことができ、
 // 以降のリクエストに適用されます。
 //
-// Checkはエラーハンドラを呼び出しません。
+// Checkはエラーハンドラーを呼び出しません。
 func (c *CrossOriginProtection) SetDenyHandler(h Handler)
 
 // Checkはリクエストにクロスオリジンチェックを適用します。
 // リクエストを拒否すべき場合はエラーを返します。
 func (c *CrossOriginProtection) Check(req *Request) error
 
-// Handlerは、ハンドラhを呼び出す前にクロスオリジンチェックを適用する
-// ハンドラを返します。
+// Handlerは、ハンドラーhを呼び出す前にクロスオリジンチェックを適用する
+// ハンドラーを返します。
 //
 // リクエストがクロスオリジンチェックに失敗した場合、そのリクエストは
 // 403 Forbiddenステータスで拒否されるか、[CrossOriginProtection.SetDenyHandler] に
-// 渡されたハンドラで処理されます。
+// 渡されたハンドラーで処理されます。
 func (c *CrossOriginProtection) Handler(h Handler) Handler

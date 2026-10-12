@@ -9,144 +9,144 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Bufferはバイトの可変サイズのバッファであり、 [Buffer.Read] と [Buffer.Write] のメソッドを持っています。
-// Bufferのゼロ値は、使い-readyになった空のバッファです。
+// Bufferはバイトの可変サイズのバッファーであり、 [Buffer.Read] と [Buffer.Write] のメソッドを持っています。
+// Bufferのゼロ値は、使い-readyになった空のバッファーです。
 type Buffer struct {
 	buf      []byte
 	off      int
 	lastRead readOp
 }
 
-// ErrTooLargeは、バッファにデータを格納するためのメモリを割り当てることができない場合にpanicに渡されます。
+// ErrTooLargeは、バッファーにデータを格納するためのメモリーを割り当てることができない場合にpanicに渡されます。
 var ErrTooLarge = errors.New("bytes.Buffer: too large")
 
-// Bytesは、バッファの未読部分を保持する長さb.Len()のスライスを返します。
-// このスライスは、次のバッファの変更までしか有効ではありません（つまり、
+// Bytesは、バッファーの未読部分を保持する長さb.Len()のスライスを返します。
+// このスライスは、次のバッファーの変更までしか有効ではありません（つまり、
 // [Buffer.Read] 、 [Buffer.Write] 、 [Buffer.Reset] 、または [Buffer.Truncate] などのメソッドの次の呼び出しまでのみ有効です）。
-// スライスは、次のバッファの変更まで少なくともバッファの内容をエイリアスしているため、
+// スライスは、次のバッファーの変更まで少なくともバッファーの内容をエイリアスしているため、
 // スライスへの直接の変更は将来の読み取り結果に影響を与えます。
 func (b *Buffer) Bytes() []byte
 
-// AvailableBufferはb.Available()の容量を持つ空のバッファを返します。
-// このバッファは追加され、直後の [Buffer.Write] 呼び出しに渡すことが想定されています。
-// バッファはbに対する次の書き込み操作までの間のみ有効です。
+// AvailableBufferはb.Available()の容量を持つ空のバッファーを返します。
+// このバッファーは追加され、直後の [Buffer.Write] 呼び出しに渡すことが想定されています。
+// バッファーはbに対する次の書き込み操作までの間のみ有効です。
 func (b *Buffer) AvailableBuffer() []byte
 
-// Stringはバッファの未読部分の内容を文字列として返します。もし [Buffer] がnilポインタであれば、"<nil>"を返します。
+// Stringはバッファーの未読部分の内容を文字列として返します。もし [Buffer] がnilポインターであれば、"<nil>"を返します。
 //
 // より効率的に文字列を構築するには、[strings.Builder] 型を参照してください。
 func (b *Buffer) String() string
 
-// Peekはバッファを進めることなく次のnバイトを返します。
+// Peekはバッファーを進めることなく次のnバイトを返します。
 // Peekがnバイトより少ないバイトを返す場合、[io.EOF] も返します。
 // スライスは、次の読み取りまたは書き込みメソッドの呼び出しまでの間のみ有効です。
-// スライスは、次のバッファの変更まで少なくともバッファの内容をエイリアスしているため、
+// スライスは、次のバッファーの変更まで少なくともバッファーの内容をエイリアスしているため、
 // スライスへの直接の変更は将来の読み取り結果に影響を与えます。
 func (b *Buffer) Peek(n int) ([]byte, error)
 
-// Lenはバッファの未読部分のバイト数を返します。
+// Lenはバッファーの未読部分のバイト数を返します。
 // b.Len() == len(b.Bytes())。
 func (b *Buffer) Len() int
 
-// Capはバッファの基礎となるバイトスライスの容量、つまりバッファのデータのために割り当てられた総スペースを返します。
+// Capはバッファーの基礎となるバイトスライスの容量、つまりバッファーのデータのために割り当てられた総スペースを返します。
 func (b *Buffer) Cap() int
 
-// Availableはバッファ内で未使用のバイト数を返します。
+// Availableはバッファー内で未使用のバイト数を返します。
 func (b *Buffer) Available() int
 
-// Truncateはバッファから最初のnバイト以外の未読データを削除し、同じ割り当てられたストレージを使用し続けます。
-// nが負数またはバッファの長さよりも大きい場合、パニックが発生します。
+// Truncateはバッファーから最初のnバイト以外の未読データを削除し、同じ割り当てられたストレージを使用し続けます。
+// nが負数またはバッファーの長さよりも大きい場合、パニックが発生します。
 func (b *Buffer) Truncate(n int)
 
-// Resetはバッファを空にリセットしますが、将来の書き込みのために基礎となるストレージは保持されます。
+// Resetはバッファーを空にリセットしますが、将来の書き込みのために基礎となるストレージは保持されます。
 // Resetは [Buffer.Truncate](0)と同じです。
 func (b *Buffer) Reset()
 
-// Growは必要に応じてバッファの容量を増やし、残りのnバイトの空間を保証します。Grow(n)の後、バッファには少なくともnバイトを別の割り当てなしで書き込むことができます。
+// Growは必要に応じてバッファーの容量を増やし、残りのnバイトの空間を保証します。Grow(n)の後、バッファーには少なくともnバイトを別の割り当てなしで書き込むことができます。
 // nが負数の場合、Growはパニックを引き起こします。
-// バッファを拡大できない場合、 [ErrTooLarge] でパニックを引き起こします。
+// バッファーを拡大できない場合、 [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) Grow(n int)
 
 // Write はバッファーに p の内容を追加し、必要に応じてバッファーを拡張します。戻り値 n は p の長さであり、err は常に nil です。バッファーが大きすぎる場合、Write は [ErrTooLarge] とともにパニックを発生させます。
 func (b *Buffer) Write(p []byte) (n int, err error)
 
-// WriteStringは、必要に応じてバッファを拡張し、sの内容をバッファに追加します。戻り値nはsの長さであり、errは常にnilです。バッファが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを発生させます。
+// WriteStringは、必要に応じてバッファーを拡張し、sの内容をバッファーに追加します。戻り値nはsの長さであり、errは常にnilです。バッファーが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを発生させます。
 func (b *Buffer) WriteString(s string) (n int, err error)
 
 // MinReadは、[Buffer.ReadFrom] によって [Buffer.Read] 呼び出しに渡される最小スライスサイズです。
 // [Buffer] がrの内容を保持するのに必要なバイト数を超えて少なくともMinReadバイトを持っている限り、
-// [Buffer.ReadFrom] は基礎となるバッファを拡張しません。
+// [Buffer.ReadFrom] は基礎となるバッファーを拡張しません。
 const MinRead = 512
 
-// ReadFromは、rからEOFまでデータを読み取り、バッファに追加していきます。必要に応じてバッファのサイズが拡大されます。返り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
+// ReadFromは、rからEOFまでデータを読み取り、バッファーに追加していきます。必要に応じてバッファーのサイズが拡大されます。返り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファーがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
 
-// WriteTo はバッファが空になるかエラーが発生するまで、データを w に書き込みます。
+// WriteTo はバッファーが空になるかエラーが発生するまで、データを w に書き込みます。
 // 戻り値の n は書き込まれたバイト数です。この値は常に int に収まりますが、[io.WriterTo] インターフェースに合わせて int64 型です。書き込み中に発生したエラーも返されます。
 func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 
-// WriteByteはバイトcをバッファに追加し、必要に応じてバッファを拡張します。
+// WriteByteはバイトcをバッファーに追加し、必要に応じてバッファーを拡張します。
 // 返されるエラーは常にnilですが、 [bufio.Writer] のWriteByteに合わせるために含まれています。
-// バッファが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックします。
+// バッファーが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックします。
 func (b *Buffer) WriteByte(c byte) error
 
-// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファに追加し、
+// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファーに追加し、
 // 書き込まれたバイト数とnilエラーを返します。nilエラーは
-// [bufio.Writer] のWriteRuneに合わせるために含まれています。バッファは必要に応じて拡張され、
+// [bufio.Writer] のWriteRuneに合わせるために含まれています。バッファーは必要に応じて拡張され、
 // 大きくなりすぎるとWriteRuneは [ErrTooLarge] でパニックします。
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
-// Readは、バッファから次のlen(p)バイトを読み取るか、バッファが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
+// Readは、バッファーから次のlen(p)バイトを読み取るか、バッファーが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファーに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
 func (b *Buffer) Read(p []byte) (n int, err error)
 
-// Nextは、バッファから次のnバイトを含むスライスを返し、
-// バイトが [Buffer.Read] によって返された場合と同様にバッファを進めます。
-// バッファにnバイト未満のバイトがある場合、Nextはバッファ全体を返します。
+// Nextは、バッファーから次のnバイトを含むスライスを返し、
+// バイトが [Buffer.Read] によって返された場合と同様にバッファーを進めます。
+// バッファーにnバイト未満のバイトがある場合、Nextはバッファー全体を返します。
 // スライスは、次の読み取りまたは書き込みメソッドの呼び出しまでの間のみ有効です。
 func (b *Buffer) Next(n int) []byte
 
-// ReadByte はバッファから次のバイトを読み込んで返します。
+// ReadByte はバッファーから次のバイトを読み込んで返します。
 // バイトが利用できない場合は、エラー [io.EOF] を返します。
 func (b *Buffer) ReadByte() (byte, error)
 
-// ReadRuneはバッファから次のUTF-8エンコードされた
+// ReadRuneはバッファーから次のUTF-8エンコードされた
 // Unicodeコードポイントを読み取り、返します。
 // バイトが利用できない場合は、io.EOFというエラーが返されます。
 // バイトが不正なUTF-8エンコーディングの場合、1バイトを消費し、U+FFFD、1を返します。
 func (b *Buffer) ReadRune() (r rune, size int, err error)
 
 // UnreadRuneは [Buffer.ReadRune] によって返された最後のルーンを未読状態にします。
-// バッファ上の直近の読み込みや書き込み操作が [Buffer.ReadRune] の成功でない場合、UnreadRuneはエラーを返します。 (この点で、 [Buffer.UnreadByte] よりも厳格です。 [Buffer.UnreadByte] はすべての読み込み操作から最後のバイトを未読状態にします。)
+// バッファー上の直近の読み込みや書き込み操作が [Buffer.ReadRune] の成功でない場合、UnreadRuneはエラーを返します。 (この点で、 [Buffer.UnreadByte] よりも厳格です。 [Buffer.UnreadByte] はすべての読み込み操作から最後のバイトを未読状態にします。)
 func (b *Buffer) UnreadRune() error
 
 // UnreadByteは、少なくとも1バイトを読み込んだ最後の成功した読み込み操作で返された最後のバイトを戻します。最後の読み込み以降に書き込みが発生した場合、最後の読み込みがエラーを返した場合、または読み込みが0バイトを読み込んだ場合、UnreadByteはエラーを返します。
 func (b *Buffer) UnreadByte() error
 
 // ReadBytesは入力の最初のdelimが現れるまで読み取り、
-// デリミタを含むデータを含むスライスを返します。
-// ReadBytesがデリミタを見つける前にエラーに遭遇した場合、
+// デリミターを含むデータを含むスライスを返します。
+// ReadBytesがデリミターを見つける前にエラーに遭遇した場合、
 // エラー自体（通常は [io.EOF]）とエラー前に読み取ったデータを返します。
 // 返されたデータの末尾がdelimで終わっていない場合、
 // ReadBytesはerr != nilを返します。
 func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
 
-// ReadStringは入力の最初のデリミタが現れるまで読み取り、
-// デリミタを含むデータを含む文字列を返します。
-// ReadStringがデリミタを見つける前にエラーに遭遇する場合、
+// ReadStringは入力の最初のデリミターが現れるまで読み取り、
+// デリミターを含むデータを含む文字列を返します。
+// ReadStringがデリミターを見つける前にエラーに遭遇する場合、
 // エラー自体（通常は [io.EOF]）とエラーが発生する前に読み取ったデータを返します。
 // ReadStringは、返されるデータがdelimで終わっていない場合、err！= nilを返します。
 func (b *Buffer) ReadString(delim byte) (line string, err error)
 
 // NewBufferは、bufを初期コンテンツとして使用して新しい [Buffer] を作成および初期化します。
 // 新しい [Buffer] は、bufを所有し、この呼び出しの後にbufを使用しないようにする必要があります。
-// NewBufferは、既存のデータを読むために [Buffer] を準備するためのものです。書き込み用の内部バッファの初期サイズを設定するためにも使用できます。そのためには、
+// NewBufferは、既存のデータを読むために [Buffer] を準備するためのものです。書き込み用の内部バッファーの初期サイズを設定するためにも使用できます。そのためには、
 // bufは希望する容量を持つ必要がありますが、長さはゼロである必要があります。
 //
 // ほとんどの場合、new([Buffer])（または単に [Buffer] 変数を宣言する）で
 // Bufferを初期化するのに十分です。
 func NewBuffer(buf []byte) *Buffer
 
-// NewBufferStringは、文字列sを初期内容として使用して新しい [Buffer] を作成し、初期化します。既存の文字列を読むためのバッファを準備するために使用されます。
+// NewBufferStringは、文字列sを初期内容として使用して新しい [Buffer] を作成し、初期化します。既存の文字列を読むためのバッファーを準備するために使用されます。
 //
 // ほとんどの場合、new([Buffer])（または単に [Buffer] 変数を宣言する）でBufferを初期化するのに十分です。
 func NewBufferString(s string) *Buffer

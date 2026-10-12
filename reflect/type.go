@@ -221,7 +221,7 @@ func TypeOf(i any) Type
 // TypeForは、型引数Tを表す [Type] を返します。
 func TypeFor[T any]() Type
 
-// PtrToは要素tを持つポインタ型を返します。
+// PtrToは要素tを持つポインター型を返します。
 // 例えば、tが型Fooを表す場合、PtrTo(t)は*Fooを表します。
 //
 // PtrToは [PointerTo] の古い綴りです。
@@ -232,7 +232,7 @@ func TypeFor[T any]() Type
 //go:fix inline
 func PtrTo(t Type) Type
 
-// PointerToは要素tを持つポインタ型を返します。
+// PointerToは要素tを持つポインター型を返します。
 // 例えば、もしtがFoo型を表すなら、PointerTo(t)は*Fooを表します。
 func PointerTo(t Type) Type
 
@@ -264,7 +264,7 @@ func FuncOf(in, out []Type, variadic bool) Type
 func SliceOf(t Type) Type
 
 // StructOfはフィールドを含む構造体の型を返します。
-// OffsetとIndexのフィールドは無視され、コンパイラによって計算されます。
+// OffsetとIndexのフィールドは無視され、コンパイラーによって計算されます。
 //
 // StructOfは、現在、埋め込みフィールドの昇格メソッドをサポートしておらず、
 // エクスポートされていないStructFieldsが渡された場合にパニックを引き起こします。

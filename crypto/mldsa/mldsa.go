@@ -26,7 +26,7 @@ const (
 	MLDSA87SignatureSize = 4627
 )
 
-// Parametersは、FIPS 204で定義された固定パラメータセットの1つを表します。
+// Parametersは、FIPS 204で定義された固定パラメーターセットの1つを表します。
 //
 // ほとんどのアプリケーションでは [MLDSA44] を使用するべきです。
 //
@@ -39,22 +39,22 @@ type Parameters struct {
 	signatureSize int
 }
 
-// MLDSA44は、FIPS 204で定義されたML-DSA-44パラメータセットを返します。
+// MLDSA44は、FIPS 204で定義されたML-DSA-44パラメーターセットを返します。
 func MLDSA44() Parameters
 
-// MLDSA65は、FIPS 204で定義されたML-DSA-65パラメータセットを返します。
+// MLDSA65は、FIPS 204で定義されたML-DSA-65パラメーターセットを返します。
 func MLDSA65() Parameters
 
-// MLDSA87は、FIPS 204で定義されたML-DSA-87パラメータセットを返します。
+// MLDSA87は、FIPS 204で定義されたML-DSA-87パラメーターセットを返します。
 func MLDSA87() Parameters
 
-// PublicKeySizeは、このパラメータセットの公開鍵サイズをバイト単位で返します。
+// PublicKeySizeは、このパラメーターセットの公開鍵サイズをバイト単位で返します。
 func (params Parameters) PublicKeySize() int
 
-// SignatureSizeは、このパラメータセットの署名サイズをバイト単位で返します。
+// SignatureSizeは、このパラメーターセットの署名サイズをバイト単位で返します。
 func (params Parameters) SignatureSize() int
 
-// Stringは、パラメータセットの名前（例: "ML-DSA-44"）を返します。
+// Stringは、パラメーターセットの名前（例: "ML-DSA-44"）を返します。
 func (params Parameters) String() string
 
 // Optionsは、ML-DSA署名の生成と検証のための追加オプションを保持します。

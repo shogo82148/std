@@ -30,7 +30,7 @@ import (
 //	'p'	16進数の仮数は[½, 1)、または0
 //	'b'	x.Prec()ビットを使用した10進数の整数仮数、または0
 //
-// 'x'形式は、他のほとんどの言語やライブラリで使用されている形式であることに注意してください。
+// 'x'形式は、他のほとんどの言語やライブラリーで使用されている形式であることに注意してください。
 //
 // フォーマットが異なる文字の場合、Textは"%"と認識されないフォーマット文字を続けて返します。
 //
@@ -46,7 +46,7 @@ func (x *Float) Text(format byte, prec int) string
 func (x *Float) String() string
 
 // Appendは、x.Textによって生成された浮動小数点数xの文字列形式をbufに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 func (x *Float) Append(buf []byte, fmt byte, prec int) []byte
 
 var _ fmt.Formatter = &floatZero

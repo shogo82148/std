@@ -29,7 +29,7 @@ type Tree struct {
 	rightDelim string
 }
 
-// Mode値はフラグのセット（または0）です。Modeはパーサの動作を制御します。
+// Mode値はフラグのセット（または0）です。Modeはパーサーの動作を制御します。
 type Mode uint
 
 const (
@@ -50,12 +50,12 @@ func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (m
 func New(name string, funcs ...map[string]any) *Tree
 
 // ErrorContextは、入力テキスト内のノードの位置のテキスト表現を返します。
-// 受信者は、ノードが内部にツリーへのポインタを持っていない場合にのみ使用されます。
+// 受信者は、ノードが内部にツリーへのポインターを持っていない場合にのみ使用されます。
 // これは古いコードで発生する可能性があります。
 func (t *Tree) ErrorContext(n Node) (location, context string)
 
 // Parseは、テンプレート定義文字列を解析して、テンプレートの実行用の表現を構築します。
-// アクションデリミタ文字列のいずれかが空の場合、デフォルト（"{{"または"}}"）が使用されます。
+// アクションデリミター文字列のいずれかが空の場合、デフォルト（"{{"または"}}"）が使用されます。
 // 埋め込まれたテンプレート定義は、treeSetマップに追加されます。
 func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]any) (tree *Tree, err error)
 

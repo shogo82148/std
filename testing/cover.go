@@ -29,7 +29,7 @@ type Cover struct {
 	CoveredPackages string
 }
 
-// RegisterCoverはテストのためのカバレッジデータアキュムレータを記録します。
+// RegisterCoverはテストのためのカバレッジデータアキュムレーターを記録します。
 // 注意: この関数はテストインフラストラクチャ内部のものであり、変更される可能性があります。
 // まだGo 1互換性ガイドラインには含まれていません。
 func RegisterCover(c Cover)

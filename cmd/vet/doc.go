@@ -3,10 +3,10 @@
 // license that can be found in the LICENSE file.
 
 /*
-VetはGoのソースコードを検査し、Printfのような呼び出しがフォーマット文字列と一致しない場合に疑わしい構造を報告します。Vetは完全な報告を保証するわけではないヒューリスティックを使用しているため、すべての報告が本当の問題ではないかもしれませんが、コンパイラでは見つからないエラーを見つけることができます。
+VetはGoのソースコードを検査し、Printfのような呼び出しがフォーマット文字列と一致しない場合に疑わしい構造を報告します。Vetは完全な報告を保証するわけではないヒューリスティックを使用しているため、すべての報告が本当の問題ではないかもしれませんが、コンパイラーでは見つからないエラーを見つけることができます。
 
 Vetは通常、goコマンドを通じて起動されます。
-現在のディレクトリのパッケージを検査するためには、以下のコマンドを使用します:
+現在のディレクトリーのパッケージを検査するためには、以下のコマンドを使用します:
 
 	go vet
 
@@ -26,13 +26,13 @@ Vetの終了コードは、ツールの誤った呼び出しまたは問題が�
 	atomic           sync/atomicパッケージの一般的な間違いをチェック
 	bools            真偽値演算子の一般的な間違いをチェック
 	buildtag         //go:buildと// +buildディレクティブをチェック
-	cgocall          cgoポインタ渡しルールの違反を検出
+	cgocall          cgoポインター渡しルールの違反を検出
 	composites       キーなしの複合リテラルをチェック
 	copylocks        値で誤って渡されたロックをチェック
 	defers           defer文の一般的な間違いを報告
 	directive        //go:debugなどのGoツールチェーンディレクティブをチェック
-	errorsas         errors.Asに非ポインタまたは非エラー値を渡すことを報告
-	framepointer     フレームポインタを保存前に破壊するアセンブリを報告
+	errorsas         errors.Asに非ポインターまたは非エラー値を渡すことを報告
+	framepointer     フレームポインターを保存前に破壊するアセンブリを報告
 	hostport         net.Dialに渡されるアドレスの形式をチェック
 	httpresponse     HTTP応答使用の間違いをチェック
 	ifaceassert      不可能なインターフェース間の型アサーションを検出
@@ -41,16 +41,16 @@ Vetの終了コードは、ツールの誤った呼び出しまたは問題が�
 	nilfunc          関数とnilの無駄な比較をチェック
 	printf           Printfフォーマット文字列と引数の整合性をチェック
 	shift            整数の幅以上のシフトをチェック
-	sigchanyzer      os.Signalのバッファなしチャネルをチェック
+	sigchanyzer      os.Signalのバッファーなしチャネルをチェック
 	slog             無効な構造化ログ呼び出しをチェック
 	stdmethods       よく知られたインターフェースのメソッドのシグネチャをチェック
-	stdversion       新しすぎる標準ライブラリシンボルの使用を報告
+	stdversion       新しすぎる標準ライブラリーシンボルの使用を報告
 	stringintconv    string(int)変換をチェック
 	structtag        構造体フィールドタグがreflect.StructTag.Getに準拠するかチェック
 	testinggoroutine テストが開始したgoroutineからの(*testing.T).Fatal呼び出しを報告
 	tests            テストと例の一般的な誤用をチェック
 	timeformat       2006-02-01を使った(time.Time).FormatやTime.Parse呼び出しをチェック
-	unmarshal        unmarshalに非ポインタまたは非インターフェース値を渡すことを報告
+	unmarshal        unmarshalに非ポインターまたは非インターフェース値を渡すことを報告
 	unreachable      到達不可能なコードをチェック
 	unsafeptr        uintptrからunsafe.Pointerへの無効な変換をチェック
 	unusedresult     一部の関数呼び出しの未使用結果をチェック

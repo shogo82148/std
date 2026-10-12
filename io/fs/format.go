@@ -13,7 +13,7 @@ func FormatFileInfo(info FileInfo) string
 
 // FormatDirEntry は dir の人間が読みやすい形式のフォーマット済みバージョンを返します。
 // [DirEntry] の実装は、これを String メソッドから呼び出すことができます。
-// 名前が subdir のディレクトリと名前が hello.go のファイルの出力は次の通りです：
+// 名前が subdir のディレクトリーと名前が hello.go のファイルの出力は次の通りです：
 //
 // d subdir/
 // - hello.go

@@ -28,7 +28,7 @@ import (
 // ParsePKIXPublicKeyはPKIX、ASN.1 DER形式の公開鍵を解析します。エンコードされた公開鍵はSubjectPublicKeyInfo構造体です（RFC 5280、セクション4.1を参照）。
 //
 // 戻り値は、*[rsa.PublicKey]、*[dsa.PublicKey]、*[ecdsa.PublicKey]、
-// [ed25519.PublicKey]（ポインタではありません）、*[mldsa.PublicKey]、
+// [ed25519.PublicKey]（ポインターではありません）、*[mldsa.PublicKey]、
 // または*[ecdh.PublicKey]（X25519用）のいずれかです。
 // 将来的に、さらに多くの型がサポートされる可能性があります。
 //
@@ -40,7 +40,7 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // （RFC 5280、セクション4.1を参照）。
 //
 // 現在サポートされている鍵型は、*[rsa.PublicKey]、
-// *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインタではありません）、
+// *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインターではありません）、
 // *[mldsa.PublicKey]、および*[ecdh.PublicKey]です。
 // サポートされていない鍵型を指定するとエラーになります。
 //
@@ -156,7 +156,7 @@ type Certificate struct {
 	// ExtraExtensionsには、任意のマーシャル化された証明書にコピーして使用される、拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。証明書の解析時にはExtraExtensionsフィールドは埋められませんが、Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 
-	// UnhandledCriticalExtensionsは、解析時に（完全に）処理されなかった拡張IDのリストを含んでいます。このスライスが空でない場合、検証は失敗します。ただし、すべての重要な拡張を理解できるOSライブラリに検証が委任されている場合は除きます。
+	// UnhandledCriticalExtensionsは、解析時に（完全に）処理されなかった拡張IDのリストを含んでいます。このスライスが空でない場合、検証は失敗します。ただし、すべての重要な拡張を理解できるOSライブラリーに検証が委任されている場合は除きます。
 	//
 	// ユーザーはExtensionsを使用してこれらの拡張にアクセスし、処理されたと信じられる要素をこのスライスから削除することができます。
 	UnhandledCriticalExtensions []asn1.ObjectIdentifier
@@ -277,7 +277,7 @@ type Certificate struct {
 	PolicyMappings []PolicyMapping
 }
 
-// PolicyMappingは、policyMappings拡張のポリシーマッピングエントリを表します。
+// PolicyMappingは、policyMappings拡張のポリシーマッピングエントリーを表します。
 type PolicyMapping struct {
 	// IssuerDomainPolicyには、発行者の証明書がサブジェクト証明書の
 	// SubjectDomainPolicyと同等とみなすポリシーOIDが含まれます。
@@ -362,7 +362,7 @@ func (h UnhandledCriticalExtension) Error() string
 //   - URIs
 //   - UnknownExtKeyUsage
 //
-// 証明書は親によって署名されます。親がテンプレートと等しい場合、証明書は自己署名です。pubパラメータは生成される証明書の公開鍵であり、privは署名者の秘密鍵です。
+// 証明書は親によって署名されます。親がテンプレートと等しい場合、証明書は自己署名です。pubパラメーターは生成される証明書の公開鍵であり、privは署名者の秘密鍵です。
 //
 // 返されるスライスはDERエンコーディングされた証明書です。
 //
@@ -475,10 +475,10 @@ func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 // CheckSignatureはcの署名が有効かどうかを報告します。
 func (c *CertificateRequest) CheckSignature() error
 
-// RevocationListEntryは、CRLのrevokedCertificatesシーケンスのエントリを表します。
+// RevocationListEntryは、CRLのrevokedCertificatesシーケンスのエントリーを表します。
 type RevocationListEntry struct {
 
-	// Raw は revokedCertificates エントリの生のバイトを含んでいます。
+	// Raw は revokedCertificates エントリーの生のバイトを含んでいます。
 	// CRL を解析する際に設定され、CRL を生成する際には無視されます。
 	Raw []byte
 
@@ -494,12 +494,12 @@ type RevocationListEntry struct {
 	// ReasonCodeは、RFC 5280 Section 5.3.1 で指定された整数の列挙値を使用して、回復の理由を表します。CRLを作成する場合、ゼロ値はreasonCode拡張機能が省略される結果になります。CRLを解析する際、ゼロ値はreasonCode拡張機能が存在しないこと（0/Unspecifiedのデフォルト回収理由を意味する）を表すか、reasonCode拡張機能が存在し、明示的に0/Unspecifiedの値を含んでいることを表す可能性があります（これはDERエンコーディングルールによらないで発生する可能性がありますが、実際に発生することがあります）。
 	ReasonCode int
 
-	// Extensionsには生のX.509拡張が含まれています。CRLエントリを解析する際、
+	// Extensionsには生のX.509拡張が含まれています。CRLエントリーを解析する際、
 	// このフィールドを使用して、このパッケージでパースされない非クリティカルな拡張を取得できます。
-	// CRLエントリをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
+	// CRLエントリーをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
 
-	// ExtraExtensionsには、任意のマーシャルされたCRLエントリにコピーするための拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。ExtraExtensionsフィールドは、CRLエントリの解析時には値が設定されません。Extensionsを参照してください。
+	// ExtraExtensionsには、任意のマーシャルされたCRLエントリーにコピーするための拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。ExtraExtensionsフィールドは、CRLエントリーの解析時には値が設定されません。Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 }
 

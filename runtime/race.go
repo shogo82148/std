@@ -26,7 +26,7 @@ func RaceErrors() int
 // （例：RaceDisable/RaceEnableのコード節内の同期）。
 // RaceAcquireは、addrの前のRaceReleaseMergeからaddrの最後のRaceReleaseまでの
 // happens-before関係を確立します。
-// Cのメモリモデル（C11 §5.1.2.4、§7.17.3）において、RaceAcquireは
+// Cのメモリーモデル（C11 §5.1.2.4、§7.17.3）において、RaceAcquireは
 // atomic_load(memory_order_acquire)に相当します。
 //
 //go:nosplit
@@ -35,21 +35,21 @@ func RaceAcquire(addr unsafe.Pointer)
 // RaceReleaseは、addr上のリリース操作を実行します。
 // これは、後のaddr上のRaceAcquireと同期することができます。
 //
-// Cのメモリモデルの観点からは、RaceReleaseはatomic_store(memory_order_release)に相当します。
+// Cのメモリーモデルの観点からは、RaceReleaseはatomic_store(memory_order_release)に相当します。
 //
 //go:nosplit
 func RaceRelease(addr unsafe.Pointer)
 
 // RaceReleaseMergeはRaceReleaseと似ていますが、addrの前にあるRaceReleaseまたはRaceReleaseMergeとのhappens-before関係も確立します。
 //
-// Cのメモリモデルにおいて、RaceReleaseMergeはatomic_exchange(memory_order_release)と等価です。
+// Cのメモリーモデルにおいて、RaceReleaseMergeはatomic_exchange(memory_order_release)と等価です。
 //
 //go:nosplit
 func RaceReleaseMerge(addr unsafe.Pointer)
 
 // RaceDisableは現在のゴルーチンでの競争同期イベントの処理を無効にします。
 // RaceEnableで処理は再有効化されます。RaceDisable/RaceEnableは入れ子にすることができます。
-// 非同期イベント（メモリアクセス、関数の入退場）は引き続き競争検出器に影響します。
+// 非同期イベント（メモリーアクセス、関数の入退場）は引き続き競争検出器に影響します。
 //
 //go:nosplit
 func RaceDisable()

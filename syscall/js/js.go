@@ -85,15 +85,15 @@ func (t Type) String() string
 // nullに対してTypeObjectではなくTypeNullを返す点が異なります。
 func (v Value) Type() Type
 
-// Getは、値vのJavaScriptのプロパティpを返します。
+// Getは、値vのJavaScriptのプロパティーpを返します。
 // vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Get(p string) Value
 
-// Setは、値vのJavaScriptのプロパティpをValueOf(x)に設定します。
+// Setは、値vのJavaScriptのプロパティーpをValueOf(x)に設定します。
 // vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Set(p string, x any)
 
-// Deleteは、値vのJavaScriptのプロパティpを削除します。
+// Deleteは、値vのJavaScriptのプロパティーpを削除します。
 // vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Delete(p string)
 
@@ -105,7 +105,7 @@ func (v Value) Index(i int) Value
 // vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) SetIndex(i int, x any)
 
-// Lengthは、vのJavaScriptのプロパティ"length"を返します。
+// Lengthは、vのJavaScriptのプロパティー"length"を返します。
 // vがJavaScriptのオブジェクトでない場合はパニックします。
 func (v Value) Length() int
 

@@ -12,7 +12,7 @@ import (
 
 func ExampleNotify() {
 	// シグナル通知を送るためのチャネルを用意します。
-	// バッファ付きチャネルを使わないと、シグナル送信時に
+	// バッファー付きチャネルを使わないと、シグナル送信時に
 	// 受信の準備ができていない場合に見逃すおそれがあります。
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
@@ -24,7 +24,7 @@ func ExampleNotify() {
 
 func ExampleNotify_allSignals() {
 	// シグナル通知を送るためのチャネルを用意します。
-	// バッファ付きチャネルを使わないと、シグナル送信時に
+	// バッファー付きチャネルを使わないと、シグナル送信時に
 	// 受信の準備ができていない場合に見逃すおそれがあります。
 	c := make(chan os.Signal, 1)
 

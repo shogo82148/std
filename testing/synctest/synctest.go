@@ -231,7 +231,7 @@
 //				t.Fatalf("ReadRequest: %v\n", err)
 //			}
 //
-//			// クライアントから送られる本文をバッファへコピーする goroutine を開始する。
+//			// クライアントから送られる本文をバッファーへコピーする goroutine を開始する。
 //			// バブル内の全 goroutine がブロックするまで待ち、
 //			// まだ本文を読んでいないことを確認する。
 //			var gotBody bytes.Buffer

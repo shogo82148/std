@@ -32,6 +32,6 @@ func TestHandler(h slog.Handler, results func() []map[string]any) error
 
 // Runは、[TestHandler]　と同じテストケースで　[slog.Handler]　を実行しますが、
 // 各ケースをサブテストで実行します。各テストケースでは、まずnewHandlerを呼び出して
-// テスト対象のハンドラのインスタンスを取得し、次にテストケースを実行し、
+// テスト対象のハンドラーのインスタンスを取得し、次にテストケースを実行し、
 // 次に結果を取得するためにresultを呼び出します。テストケースが失敗すると、t.Errorを呼び出します。
 func Run(t *testing.T, newHandler func(*testing.T) slog.Handler, result func(*testing.T) map[string]any)

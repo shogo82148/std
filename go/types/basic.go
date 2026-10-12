@@ -47,10 +47,10 @@ const (
 	Rune = Int32
 )
 
-// BasicInfoは基本型のプロパティを記述するフラグの集合です。
+// BasicInfoは基本型のプロパティーを記述するフラグの集合です。
 type BasicInfo int
 
-// 基本型のプロパティ。
+// 基本型のプロパティー。
 const (
 	IsBoolean BasicInfo = 1 << iota
 	IsInteger
@@ -75,7 +75,7 @@ type Basic struct {
 // Kindは基本型bの種類を返します。
 func (b *Basic) Kind() BasicKind
 
-// Infoは基本型bのプロパティに関する情報を返します。
+// Infoは基本型bのプロパティーに関する情報を返します。
 func (b *Basic) Info() BasicInfo
 
 // Nameは基本型bの名前を返します。

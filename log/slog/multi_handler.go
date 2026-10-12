@@ -12,8 +12,8 @@ import (
 func NewMultiHandler(handlers ...Handler) *MultiHandler
 
 // MultiHandlerは、指定されたすべてのHandlerを呼び出す [Handler] です。
-// そのEnabledメソッドは、いずれかのハンドラのEnabledメソッドがtrueを返すかどうかを報告します。
-// そのHandle、WithAttrs、WithGroupメソッドは、有効な各ハンドラの対応するメソッドを呼び出します。
+// そのEnabledメソッドは、いずれかのハンドラーのEnabledメソッドがtrueを返すかどうかを報告します。
+// そのHandle、WithAttrs、WithGroupメソッドは、有効な各ハンドラーの対応するメソッドを呼び出します。
 type MultiHandler struct {
 	multi []Handler
 }

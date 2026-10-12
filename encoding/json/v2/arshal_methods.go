@@ -15,7 +15,7 @@ import (
 // 型は [MarshalerTo] を実装することが推奨されます。
 //
 // 実装は、呼び出し元が保持して必要に応じて変更できるような
-// バッファを返すべきです。
+// バッファーを返すべきです。
 //
 // 実装は [errors.ErrUnsupported] を返してはいけません。
 //
@@ -41,7 +41,7 @@ type Marshaler interface {
 // そのメソッドを呼び出す "json" パッケージは、
 // レシーバー型の次に利用可能なJSON表現を使います。
 // これは [Marshal] で説明されている通りです。
-// 実装は [jsontext.Encoder] へのポインタを保持してはいけません。
+// 実装は [jsontext.Encoder] へのポインターを保持してはいけません。
 //
 // 返されたエラーが [SemanticError] の場合、未設定のフィールドには
 // [json] によって追加のコンテキストが設定されることがあります。
@@ -109,7 +109,7 @@ type Unmarshaler interface {
 // あるいは、Decoder を変更せずに [errors.ErrUnsupported] を返しても構いません。
 // そのメソッドを呼び出す "json" パッケージは、
 // レシーバー型の次に利用可能なJSON表現を使います。
-// 実装は [jsontext.Decoder] へのポインタを保持してはいけません。
+// 実装は [jsontext.Decoder] へのポインターを保持してはいけません。
 //
 // 返されたエラーが [SemanticError] の場合、未設定のフィールドには
 // [json] によって追加のコンテキストが設定されることがあります。

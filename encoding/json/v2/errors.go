@@ -22,7 +22,7 @@ import (
 //	err := ...
 //	serr, ok := errors.AsType[*json.SemanticError](err)
 //	if ok && serr.Err == json.ErrUnknownName {
-//		ptr := serr.JSONPointer // 未知の名前へのJSONポインタ
+//		ptr := serr.JSONPointer // 未知の名前へのJSONポインター
 //		name := ptr.LastToken() // 未知の名前自体
 //		...
 //	}
@@ -42,7 +42,7 @@ type SemanticError struct {
 
 	// ByteOffsetは、このバイトオフセット位置以降でエラーが発生したことを示します。
 	ByteOffset int64
-	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を使って
+	// JSONPointerは、RFC 6901で定義されたJSONポインター表記を使って
 	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer jsontext.Pointer
 

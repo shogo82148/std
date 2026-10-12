@@ -12,7 +12,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// PrivateKeyはメモリ上のML-DSA秘密鍵です。
+// PrivateKeyはメモリー上のML-DSA秘密鍵です。
 // [crypto.Signer] と、非公式に拡張された [crypto.PrivateKey] インターフェースを実装します。
 //
 // PrivateKeyは並行利用しても安全です。
@@ -77,7 +77,7 @@ func (pk *PublicKey) Bytes() []byte
 // xが*PublicKeyでない場合、Equalはfalseを返します。
 func (pk *PublicKey) Equal(x crypto.PublicKey) bool
 
-// Parametersは、この公開鍵に関連付けられたパラメータを返します。
+// Parametersは、この公開鍵に関連付けられたパラメーターを返します。
 func (pk *PublicKey) Parameters() Parameters
 
 // Verifyは、signatureがpkによるmessageの有効な署名かどうかを報告します。

@@ -23,7 +23,7 @@ func NewWriter(w io.Writer) *Writer
 func (w *Writer) Boundary() string
 
 // SetBoundaryは、[Writer] のデフォルトのランダムに生成された
-// 境界セパレータを明示的な値で上書きします。
+// 境界セパレーターを明示的な値で上書きします。
 //
 // SetBoundaryはパートが作成される前に呼び出す必要があり、特定のASCII文字のみを
 // 含むことができ、非空であり、最大で70バイトの長さでなければなりません。
@@ -34,7 +34,7 @@ func (w *Writer) SetBoundary(boundary string) error
 func (w *Writer) FormDataContentType() string
 
 // CreatePartは、提供されたヘッダーを持つ新しいマルチパートセクションを作成します。
-// パートのボディは、返された [Writer] に書き込むべきです。
+// パートのボディーは、返された [Writer] に書き込むべきです。
 // CreatePartを呼び出した後、以前のパートにはもう書き込むことができません。
 func (w *Writer) CreatePart(header textproto.MIMEHeader) (io.Writer, error)
 

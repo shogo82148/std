@@ -15,14 +15,14 @@ import (
 func Example_encodeDecode() {
 	var network bytes.Buffer // ネットワークの代わり。
 
-	// エンコーダを作成し、値を送信します。
+	// エンコーダーを作成し、値を送信します。
 	enc := gob.NewEncoder(&network)
 	err := enc.Encode(Vector{3, 4, 5})
 	if err != nil {
 		log.Fatal("encode:", err)
 	}
 
-	// デコーダを作成し、値を受信します。
+	// デコーダーを作成し、値を受信します。
 	dec := gob.NewDecoder(&network)
 	var v Vector
 	err = dec.Decode(&v)

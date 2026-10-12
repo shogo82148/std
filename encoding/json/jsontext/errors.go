@@ -16,7 +16,7 @@ type SyntacticError struct {
 
 	// ByteOffsetは、このバイトオフセット位置以降でエラーが発生したことを示します。
 	ByteOffset int64
-	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を用いて、
+	// JSONPointerは、RFC 6901で定義されたJSONポインター表記を用いて、
 	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer Pointer
 

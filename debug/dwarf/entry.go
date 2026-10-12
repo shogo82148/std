@@ -155,8 +155,8 @@ type Offset uint32
 
 // Readerは、DWARF「info」セクションから [Entry] 構造体を読み取ることを可能にします。
 // [Entry] 構造体はツリー形式で配置されています。[Reader.Next] 関数は、
-// ツリーの先行順序の走査から連続するエントリを返します。
-// エントリに子がある場合、そのChildrenフィールドはtrueになり、子は
+// ツリーの先行順序の走査から連続するエントリーを返します。
+// エントリーに子がある場合、そのChildrenフィールドはtrueになり、子は
 // [Tag] 0の [Entry] で終了します。
 type Reader struct {
 	b            buf
@@ -179,16 +179,16 @@ func (r *Reader) AddressSize() int
 // ByteOrderは、現在のコンパイルユニットのバイトオーダーを返します。
 func (r *Reader) ByteOrder() binary.ByteOrder
 
-// Seekは、エンコードされたエントリストリーム内のオフセットoffに [Reader] を配置します。
-// オフセット0は最初のエントリを示すために使用できます。
+// Seekは、エンコードされたエントリーストリーム内のオフセットoffに [Reader] を配置します。
+// オフセット0は最初のエントリーを示すために使用できます。
 func (r *Reader) Seek(off Offset)
 
-// Nextは、エンコードされたエントリストリームから次のエントリを読み取ります。
+// Nextは、エンコードされたエントリーストリームから次のエントリーを読み取ります。
 // セクションの終わりに達した場合、nil、nilを返します。
 // 現在のオフセットが無効であるか、オフセットのデータを有効な [Entry] としてデコードできない場合、エラーを返します。
 func (r *Reader) Next() (*Entry, error)
 
-// SkipChildrenは、[Reader.Next] によって返された最後の [Entry] に関連付けられた子エントリをスキップします。
+// SkipChildrenは、[Reader.Next] によって返された最後の [Entry] に関連付けられた子エントリーをスキップします。
 // その [Entry] に子がない場合、または [Reader.Next] が呼び出されていない場合、SkipChildrenは何もしません。
 func (r *Reader) SkipChildren()
 
@@ -205,6 +205,6 @@ func (r *Reader) SkipChildren()
 func (r *Reader) SeekPC(pc uint64) (*Entry, error)
 
 // Rangesは、eによってカバーされるPC範囲、つまり[low, high)のペアのスライスを返します。
-// [TagCompileUnit] や [TagSubprogram] など、一部のエントリタイプのみがPC範囲を持っています。
+// [TagCompileUnit] や [TagSubprogram] など、一部のエントリータイプのみがPC範囲を持っています。
 // それ以外の場合、エラーを返さずにnilを返します。
 func (d *Data) Ranges(e *Entry) ([][2]uint64, error)

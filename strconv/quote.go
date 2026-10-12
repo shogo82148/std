@@ -11,7 +11,7 @@ package strconv
 // Goエスケープシーケンス（\t、\n、\xFF、\u0100）を使用します。
 func Quote(s string) string
 
-// AppendQuoteは、sを表すダブルクォートで囲まれたGo文字列リテラル（[Quote] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteは、sを表すダブルクォートで囲まれたGo文字列リテラル（[Quote] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuote(dst []byte, s string) []byte
 
 // QuoteToASCIIは、sを表すダブルクォートで囲まれたGo文字列リテラルを返します。
@@ -19,7 +19,7 @@ func AppendQuote(dst []byte, s string) []byte
 // Goエスケープシーケンス（\t、\n、\xFF、\u0100）を使用します。
 func QuoteToASCII(s string) string
 
-// AppendQuoteToASCIIは、sを表すダブルクォートで囲まれたGo文字列リテラル（[QuoteToASCII] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteToASCIIは、sを表すダブルクォートで囲まれたGo文字列リテラル（[QuoteToASCII] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuoteToASCII(dst []byte, s string) []byte
 
 // QuoteToGraphicは、sを表すダブルクォートで囲まれたGo文字列リテラルを返します。
@@ -27,7 +27,7 @@ func AppendQuoteToASCII(dst []byte, s string) []byte
 // 非グラフィック文字に対してGoエスケープシーケンス（\t、\n、\xFF、\u0100）を使用します。
 func QuoteToGraphic(s string) string
 
-// AppendQuoteToGraphicは、sを表すダブルクォートで囲まれたGo文字列リテラル（[QuoteToGraphic] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteToGraphicは、sを表すダブルクォートで囲まれたGo文字列リテラル（[QuoteToGraphic] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuoteToGraphic(dst []byte, s string) []byte
 
 // QuoteRuneは、runeを表すシングルクォートで囲まれたGo文字リテラルを返します。
@@ -36,7 +36,7 @@ func AppendQuoteToGraphic(dst []byte, s string) []byte
 // rが有効なUnicodeコードポイントでない場合、Unicode置換文字U+FFFDとして解釈されます。
 func QuoteRune(r rune) string
 
-// AppendQuoteRuneは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRune] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteRuneは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRune] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuoteRune(dst []byte, r rune) []byte
 
 // QuoteRuneToASCIIは、runeを表すシングルクォートで囲まれたGo文字リテラルを返します。
@@ -45,7 +45,7 @@ func AppendQuoteRune(dst []byte, r rune) []byte
 // rが有効なUnicodeコードポイントでない場合、Unicode置換文字U+FFFDとして解釈されます。
 func QuoteRuneToASCII(r rune) string
 
-// AppendQuoteRuneToASCIIは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRuneToASCII] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteRuneToASCIIは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRuneToASCII] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuoteRuneToASCII(dst []byte, r rune) []byte
 
 // QuoteRuneToGraphicは、runeを表すシングルクォートで囲まれたGo文字リテラルを返します。
@@ -54,7 +54,7 @@ func AppendQuoteRuneToASCII(dst []byte, r rune) []byte
 // rが有効なUnicodeコードポイントでない場合、Unicode置換文字U+FFFDとして解釈されます。
 func QuoteRuneToGraphic(r rune) string
 
-// AppendQuoteRuneToGraphicは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRuneToGraphic] によって生成されたもの）をdstに追加し、拡張されたバッファを返します。
+// AppendQuoteRuneToGraphicは、runeを表すシングルクォートで囲まれたGo文字リテラル（[QuoteRuneToGraphic] によって生成されたもの）をdstに追加し、拡張されたバッファーを返します。
 func AppendQuoteRuneToGraphic(dst []byte, r rune) []byte
 
 // CanBackquoteは、タブ以外の制御文字を含まない単一行のバッククォート文字列として、文字列sを変更せずに表現できるかどうかを報告します。
@@ -88,5 +88,5 @@ func Unquote(s string) (string, error)
 func IsPrint(r rune) bool
 
 // IsGraphicは、Unicodeによってグラフィックとして定義されたルーンかどうかを報告します。
-// このような文字には、カテゴリL、M、N、P、S、およびZsからの文字、数字、句読点、記号、スペースが含まれます。
+// このような文字には、カテゴリーL、M、N、P、S、およびZsからの文字、数字、句読点、記号、スペースが含まれます。
 func IsGraphic(r rune) bool

@@ -49,11 +49,11 @@ func (a *Alias) Underlying() Type
 // もしaがジェネリックエイリアスのインスタンスでない場合、Originはaを返します。
 func (a *Alias) Origin() *Alias
 
-// TypeParamsは、エイリアス型aの型パラメータを返します。またはnilを返します。
-// ジェネリックエイリアスとそのインスタンスは、同じ型パラメータを持ちます。
+// TypeParamsは、エイリアス型aの型パラメーターを返します。またはnilを返します。
+// ジェネリックエイリアスとそのインスタンスは、同じ型パラメーターを持ちます。
 func (a *Alias) TypeParams() *TypeParamList
 
-// SetTypeParamsは、エイリアス型aの型パラメータを設定します。
+// SetTypeParamsは、エイリアス型aの型パラメーターを設定します。
 // エイリアスaは、型引数を持っていてはいけません。
 func (a *Alias) SetTypeParams(tparams []*TypeParam)
 

@@ -31,14 +31,14 @@ func UTF16FromString(s string) ([]uint16, error)
 func UTF16ToString(s []uint16) string
 
 // StringToUTF16Ptrは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
-// 追加したものへのポインタを返します。sにNULバイトが含まれている場合、
+// 追加したものへのポインターを返します。sにNULバイトが含まれている場合、
 // この関数はエラーを返す代わりにパニックします。
 //
 // Deprecated: 代わりに [UTF16PtrFromString] を使用してください。
 func StringToUTF16Ptr(s string) *uint16
 
 // UTF16PtrFromStringは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
-// 追加したものへのポインタを返します。sのいずれかの位置にNULバイトが
+// 追加したものへのポインターを返します。sのいずれかの位置にNULバイトが
 // 含まれている場合、(nil, EINVAL)を返します。
 // 対になっていないサロゲートはWTF-8を使用してエンコードされます。
 func UTF16PtrFromString(s string) (*uint16, error)
@@ -66,19 +66,19 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
-// NewCallbackは、Goの関数をstdcall呼び出し規約に準拠した関数ポインタに変換します。
+// NewCallbackは、Goの関数をstdcall呼び出し規約に準拠した関数ポインターに変換します。
 // これは、コールバックを必要とするWindowsのコードと相互運用する場合に便利です。
 // 引数は、uintptrサイズの結果を1つ持つ関数であることが期待されます。関数はuintptrのサイズより大きいサイズの引数を持ってはいけません。
 // 単一のGoプロセスで作成できるコールバックの数は限られており、これらのコールバックのために
-// 割り当てられたメモリが解放されることはありません。
+// 割り当てられたメモリーが解放されることはありません。
 // NewCallbackとNewCallbackCDeclを合わせて、少なくとも1024個のコールバックを常に作成できます。
 func NewCallback(fn any) uintptr
 
-// NewCallbackCDeclは、Goの関数をcdecl呼び出し規約に準拠した関数ポインタに変換します。
+// NewCallbackCDeclは、Goの関数をcdecl呼び出し規約に準拠した関数ポインターに変換します。
 // これは、コールバックを必要とするWindowsのコードと相互運用する場合に便利です。
 // 引数は、uintptrサイズの結果を1つ持つ関数であることが期待されます。関数はuintptrのサイズより大きいサイズの引数を持ってはいけません。
 // 単一のGoプロセスで作成できるコールバックの数は限られており、これらのコールバックのために
-// 割り当てられたメモリが解放されることはありません。
+// 割り当てられたメモリーが解放されることはありません。
 // NewCallbackとNewCallbackCDeclを合わせて、少なくとも1024個のコールバックを常に作成できます。
 func NewCallbackCDecl(fn any) uintptr
 
@@ -337,11 +337,11 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 
 // RegEnumKeyExは、開いているレジストリキーのサブキーを列挙します。
 // 各呼び出しは1つのサブキーに関する情報を取得します。nameは、
-// サブキーの名前とNUL終端文字を保持するのに十分な大きさのバッファであるべきです。
+// サブキーの名前とNUL終端文字を保持するのに十分な大きさのバッファーであるべきです。
 // nameLenはその長さです。戻り時に、nameLenにはサブキーの実際の長さが含まれます。
 //
 // nameがサブキーを保持するのに十分な大きさでない場合、この関数は
-// ERROR_MORE_DATAを返し、適切なサイズのバッファで再度呼び出す必要があります。
+// ERROR_MORE_DATAを返し、適切なサイズのバッファーで再度呼び出す必要があります。
 //
 // reservedはnilでなければなりません。classとclassLenは、nameとnameLenと同様に
 // 動作しますが、サブキーのクラスに対するものであり、省略可能です。

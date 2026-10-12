@@ -24,9 +24,9 @@ type Decoder struct {
 	tokenStack []int
 }
 
-// NewDecoderは、rから読み取る新しいデコーダを返します。
+// NewDecoderは、rから読み取る新しいデコーダーを返します。
 //
-// デコーダは自身のバッファリングを導入し、
+// デコーダーは自身のバッファリングを導入し、
 // 要求されたJSON値を超えてrからデータを読み取る可能性があります。
 func NewDecoder(r io.Reader) *Decoder
 
@@ -34,7 +34,7 @@ func NewDecoder(r io.Reader) *Decoder
 // [Number] として interface{} にアンマーシャルします。
 func (dec *Decoder) UseNumber()
 
-// DisallowUnknownFieldsは、デコーダに、宛先が構造体であり、入力に宛先の
+// DisallowUnknownFieldsは、デコーダーに、宛先が構造体であり、入力に宛先の
 // いずれの非無視、エクスポートされたフィールドとも一致しないオブジェクトキーが含まれている場合に
 // エラーを返すよう指示します。
 func (dec *Decoder) DisallowUnknownFields()
@@ -45,7 +45,7 @@ func (dec *Decoder) DisallowUnknownFields()
 // JSONをGoの値に変換する詳細については、[Unmarshal] のドキュメンテーションを参照してください。
 func (dec *Decoder) Decode(v any) error
 
-// Bufferedは、未読バッファに残っているデータのリーダーを返します。
+// Bufferedは、未読バッファーに残っているデータのリーダーを返します。
 // このデータには0バイト以上が含まれる可能性があります。
 // これは入力 [io.Reader] からすでに消費されたデータですが、
 // まだ [Decoder.Decode] または [Decoder.Token] の呼び出しでは読み取られていません。
@@ -55,7 +55,7 @@ func (dec *Decoder) Decode(v any) error
 // 時間とともに変わる可能性があります。
 //
 // 最後にデコードされたJSON値の後に続くバイト列全体を得るには、
-// このバッファと入力Readerの残りを連結する責任は呼び出し側にあります。
+// このバッファーと入力Readerの残りを連結する責任は呼び出し側にあります。
 //
 // このリーダーは、次の [Decoder.Decode] または [Decoder.Token] の呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
@@ -71,7 +71,7 @@ type Encoder struct {
 	indentValue  string
 }
 
-// NewEncoderは、wに書き込む新しいエンコーダを返します。
+// NewEncoderは、wに書き込む新しいエンコーダーを返します。
 func NewEncoder(w io.Writer) *Encoder
 
 // Encodeは、vのJSONエンコーディングをストリームに書き込みます。
@@ -81,7 +81,7 @@ func NewEncoder(w io.Writer) *Encoder
 // Goの値をJSONに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
 func (enc *Encoder) Encode(v any) error
 
-// SetIndentは、エンコーダに対して、次にエンコードされる各値を、パッケージレベルの関数Indent(dst, src, prefix, indent)で
+// SetIndentは、エンコーダーに対して、次にエンコードされる各値を、パッケージレベルの関数Indent(dst, src, prefix, indent)で
 // インデントされているかのようにフォーマットするよう指示します。
 // SetIndent("", "")を呼び出すと、インデントが無効になります。
 func (enc *Encoder) SetIndent(prefix, indent string)
@@ -138,6 +138,6 @@ func (dec *Decoder) Token() (Token, error)
 // Moreは、解析中の現在の配列またはオブジェクトに別の要素があるかどうかを報告します。
 func (dec *Decoder) More() bool
 
-// InputOffsetは、現在のデコーダ位置の入力ストリームバイトオフセットを返します。
+// InputOffsetは、現在のデコーダー位置の入力ストリームバイトオフセットを返します。
 // オフセットは、最近返されたトークンの終わりと次のトークンの始まりの位置を示します。
 func (dec *Decoder) InputOffset() int64

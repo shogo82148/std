@@ -25,7 +25,7 @@ func New(name string) *Template
 // Nameはテンプレートの名前を返します。
 func (t *Template) Name() string
 
-// Newは、与えられたテンプレートと同じデリミタを持つ新しい未定義のテンプレートを割り当てます。
+// Newは、与えられたテンプレートと同じデリミターを持つ新しい未定義のテンプレートを割り当てます。
 // この関連付けは推移的で、一つのテンプレートが{{template}}アクションで別のテンプレートを
 // 呼び出すことを可能にします。
 //
@@ -51,9 +51,9 @@ func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error
 // Templatesは、tに関連付けられた定義済みテンプレートのスライスを返します。
 func (t *Template) Templates() []*Template
 
-// Delimsは、指定された文字列にアクションデリミタを設定します。これは、
+// Delimsは、指定された文字列にアクションデリミターを設定します。これは、
 // その後の [Template.Parse]、[Template.ParseFiles]、または [Template.ParseGlob] への呼び出しで使用されます。
-// ネストしたテンプレート定義はこの設定を継承します。空のデリミタは、
+// ネストしたテンプレート定義はこの設定を継承します。空のデリミターは、
 // 対応するデフォルト（{{または}}）を表します。
 // 戻り値はテンプレートなので、呼び出しはチェーンできます。
 func (t *Template) Delims(left, right string) *Template
@@ -72,7 +72,7 @@ func (t *Template) Funcs(funcMap FuncMap) *Template
 // そのようなテンプレートがないか、テンプレートが定義を持っていない場合はnilを返します。
 func (t *Template) Lookup(name string) *Template
 
-// Parseは、テキストをtのテンプレートボディとして解析します。
+// Parseは、テキストをtのテンプレートボディーとして解析します。
 // テキスト内の名前付きテンプレート定義（{{define ...}}または{{block ...}}ステートメント）は、
 // tに関連付けられた追加のテンプレートを定義し、t自体の定義からは削除されます。
 //

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// ioutilパッケージは、いくつかのI/Oユーティリティ関数を実装しています。
+// ioutilパッケージは、いくつかのI/Oユーティリティー関数を実装しています。
 //
 // Deprecated: Go 1.16以降、同じ機能はパッケージ [io] またはパッケージ [os] で提供されるようになり、
 // これらの実装が新しいコードで優先されるべきです。
@@ -42,14 +42,14 @@ func ReadFile(filename string) ([]byte, error)
 //go:fix inline
 func WriteFile(filename string, data []byte, perm fs.FileMode) error
 
-// ReadDirは、dirnameで指定されたディレクトリを読み取り、
-// ファイル名でソートされたディレクトリの内容の [fs.FileInfo] リストを返します。
-// ディレクトリの読み取り中にエラーが発生した場合、
-// ReadDirはエラーとともにディレクトリエントリを返しません。
+// ReadDirは、dirnameで指定されたディレクトリーを読み取り、
+// ファイル名でソートされたディレクトリーの内容の [fs.FileInfo] リストを返します。
+// ディレクトリーの読み取り中にエラーが発生した場合、
+// ReadDirはエラーとともにディレクトリーエントリーを返しません。
 //
 // Deprecated: Go 1.16以降、 [os.ReadDir] がより効率的で正確な選択肢となります。
 // [os.ReadDir] は [fs.FileInfo] のリストではなく[fs.DirEntry]のリストを返し、
-// ディレクトリの読み取り中にエラーが発生した場合でも部分的な結果を返します。
+// ディレクトリーの読み取り中にエラーが発生した場合でも部分的な結果を返します。
 //
 // [fs.FileInfo] のリストを引き続き取得する必要がある場合は、次のようにします。
 //

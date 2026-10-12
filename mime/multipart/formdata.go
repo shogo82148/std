@@ -14,13 +14,13 @@ import (
 var ErrMessageTooLarge = errors.New("multipart: message too large")
 
 // ReadFormは、パートのContent-Dispositionが"form-data"であるマルチパートメッセージ全体を解析します。
-// メモリには最大でmaxMemoryバイト + 10MB（非ファイルパート用に予約）を格納します。
-// メモリに格納できないファイルパートは、一時ファイルとしてディスクに格納されます。
-// すべての非ファイルパートをメモリに格納できない場合、[ErrMessageTooLarge] を返します。
+// メモリーには最大でmaxMemoryバイト + 10MB（非ファイルパート用に予約）を格納します。
+// メモリーに格納できないファイルパートは、一時ファイルとしてディスクに格納されます。
+// すべての非ファイルパートをメモリーに格納できない場合、[ErrMessageTooLarge] を返します。
 func (r *Reader) ReadForm(maxMemory int64) (*Form, error)
 
 // Formは解析されたマルチパートフォームです。
-// ファイルパートはメモリまたはディスクに保存され、
+// ファイルパートはメモリーまたはディスクに保存され、
 // [*FileHeader] のOpenメソッドを通じてアクセス可能です。
 // Valueパートは文字列として保存されます。
 // 両方ともフィールド名でキー化されます。
@@ -48,7 +48,7 @@ type FileHeader struct {
 func (fh *FileHeader) Open() (File, error)
 
 // Fileは、マルチパートメッセージのファイル部分にアクセスするためのインターフェースです。
-// その内容はメモリに保存されるか、またはディスクに保存されます。
+// その内容はメモリーに保存されるか、またはディスクに保存されます。
 // ディスクに保存されている場合、Fileの基礎となる具体的な型は*os.Fileになります。
 type File interface {
 	io.Reader

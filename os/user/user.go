@@ -9,7 +9,7 @@ userパッケージは、名前またはIDによるユーザーアカウント�
 補足的なグループIDをリストアップするための2つの内部実装があります。
 一つは純粋なGoで書かれており、/etc/passwdと/etc/groupを解析します。
 もう一つはcgoベースで、getpwuid_r、getgrnam_r、getgrouplistなどの
-標準Cライブラリ(libc)のルーチンに依存しています。
+標準Cライブラリー(libc)のルーチンに依存しています。
 
 cgoが利用可能で、特定のプラットフォームのlibcに必要なルーチンが実装されている場合、
 cgoベース（libcバックエンド）のコードが使用されます。
@@ -21,23 +21,23 @@ package user
 type User struct {
 	// UidはユーザーIDです。
 	// POSIXシステムでは、これはuidを表す10進数です。
-	// Windowsでは、これは文字列形式のセキュリティ識別子（SID）です。
+	// Windowsでは、これは文字列形式のセキュリティー識別子（SID）です。
 	// Plan 9では、これは/dev/userの内容です。
 	Uid string
 	// GidはプライマリグループIDです。
 	// POSIXシステムでは、これはgidを表す10進数です。
-	// Windowsでは、これは文字列形式のセキュリティ識別子（SID）です。
+	// Windowsでは、これは文字列形式のセキュリティー識別子（SID）です。
 	// Plan 9では、これは/dev/userの内容です。
 	Gid string
 	// Usernameはログイン名です。
 	Username string
 	// Nameはユーザーの実名または表示名です。
 	// 空である可能性があります。
-	// POSIXシステムでは、これはGECOSフィールドリストの最初（または唯一）のエントリです。
+	// POSIXシステムでは、これはGECOSフィールドリストの最初（または唯一）のエントリーです。
 	// Windowsでは、これはユーザーの表示名です。
 	// Plan 9では、これは/dev/userの内容です。
 	Name string
-	// HomeDirはユーザーのホームディレクトリへのパスです（もし存在する場合）。
+	// HomeDirはユーザーのホームディレクトリーへのパスです（もし存在する場合）。
 	HomeDir string
 }
 

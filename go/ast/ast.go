@@ -63,8 +63,8 @@ func (g *CommentGroup) End() token.Pos
 // 結果が空でない場合、改行で終わります。
 func (g *CommentGroup) Text() string
 
-// Fieldは、struct型のフィールド宣言リスト、インタフェース型のメソッドリスト、またはシグネチャのパラメータ/結果の宣言を表します。
-// [Field.Names] は、無名のパラメータ（型のみを含むパラメータリスト）や埋め込まれたstructフィールドの場合はnilです。
+// Fieldは、struct型のフィールド宣言リスト、インターフェース型のメソッドリスト、またはシグネチャのパラメーター/結果の宣言を表します。
+// [Field.Names] は、無名のパラメーター（型のみを含むパラメーターリスト）や埋め込まれたstructフィールドの場合はnilです。
 // 後者の場合、フィールド名は型名です。
 type Field struct {
 	Doc     *CommentGroup
@@ -89,7 +89,7 @@ func (f *FieldList) Pos() token.Pos
 
 func (f *FieldList) End() token.Pos
 
-// NumFieldsは [FieldList] によって表されるパラメータまたは構造体のフィールドの数を返します。
+// NumFieldsは [FieldList] によって表されるパラメーターまたは構造体のフィールドの数を返します。
 func (f *FieldList) NumFields() int
 
 // 式は、以下の具体的な式ノードを1つ以上含む木で表されます。
@@ -107,7 +107,7 @@ type (
 		Obj     *Object
 	}
 
-	// Ellipsis（省略符）ノードは、パラメータリスト内の "..." 型または配列型の "..." 長さを表します。
+	// Ellipsis（省略符）ノードは、パラメーターリスト内の "..." 型または配列型の "..." 長さを表します。
 	Ellipsis struct {
 		Ellipsis token.Pos
 		Elt      Expr
@@ -217,7 +217,7 @@ type (
 		X     Expr
 	}
 
-	// BinaryExprノードはバイナリ式を表します。
+	// BinaryExprノードはバイナリー式を表します。
 	BinaryExpr struct {
 		X     Expr
 		OpPos token.Pos
@@ -611,7 +611,7 @@ func (s *TypeSpec) End() token.Pos
 // 宣言は次の宣言ノードのいずれかによって表されます。
 type (
 
-	// BadDeclノードは、正しい宣言ノードを作成できない構文エラーを含む宣言のプレースホルダです。
+	// BadDeclノードは、正しい宣言ノードを作成できない構文エラーを含む宣言のプレースホルダーです。
 	BadDecl struct {
 		From, To token.Pos
 	}

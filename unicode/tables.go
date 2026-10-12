@@ -47,7 +47,7 @@ var Categories = map[string]*RangeTable{
 	"Zs": Zs,
 }
 
-// CategoryAliasesはカテゴリのエイリアスを標準的なカテゴリ名にマッピングします。
+// CategoryAliasesはカテゴリーのエイリアスを標準的なカテゴリー名にマッピングします。
 var CategoryAliases = map[string]string{
 	"Cased_Letter":          "LC",
 	"Close_Punctuation":     "Pe",
@@ -502,7 +502,7 @@ var (
 	Zanabazar_Square       = _Zanabazar_Square
 )
 
-// PropertiesはUnicodeプロパティテーブルの集合です。
+// PropertiesはUnicodeプロパティーテーブルの集合です。
 var Properties = map[string]*RangeTable{
 	"ASCII_Hex_Digit":                    ASCII_Hex_Digit,
 	"Bidi_Control":                       Bidi_Control,
@@ -591,8 +591,8 @@ var (
 // CaseRangesは、非自己マッピングを持つすべての文字の大文字小文字変換に関するテーブルです。
 var CaseRanges = _CaseRanges
 
-// FoldCategoryはカテゴリ名を、カテゴリ内のコードポイントと単純な大文字小文字変換で等価なカテゴリ外のコードポイントのテーブルにマッピングします。
-// カテゴリ名のエントリが存在しない場合、そのようなポイントは存在しません。
+// FoldCategoryはカテゴリー名を、カテゴリー内のコードポイントと単純な大文字小文字変換で等価なカテゴリー外のコードポイントのテーブルにマッピングします。
+// カテゴリー名のエントリーが存在しない場合、そのようなポイントは存在しません。
 var FoldCategory = map[string]*RangeTable{
 	"L":  foldL,
 	"Ll": foldLl,
@@ -603,7 +603,7 @@ var FoldCategory = map[string]*RangeTable{
 }
 
 // FoldScriptはスクリプト名をスクリプト内のコードポイントに対して単純なケースフォールディングで等価なスクリプト外のコードポイントのテーブルにマッピングします。
-// スクリプト名のエントリが存在しない場合、そのようなポイントは存在しません。
+// スクリプト名のエントリーが存在しない場合、そのようなポイントは存在しません。
 var FoldScript = map[string]*RangeTable{
 	"Common":    foldCommon,
 	"Greek":     foldGreek,

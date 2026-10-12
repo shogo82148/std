@@ -45,13 +45,13 @@ func (p *Protocols) SetUnencryptedHTTP2(ok bool)
 func (p Protocols) String() string
 
 // NoBodyはバイト数ゼロの [io.ReadCloser] です。Readは常にEOFを返し、
-// Closeは常にnilを返します。リクエストボディがゼロバイトであることを
+// Closeは常にnilを返します。リクエストボディーがゼロバイトであることを
 // 明示的に示すために、送信側のクライアントリクエストで使用できます。
 // ただし、単に [Request.Body] をnilに設定することも代替手段です。
 var NoBody = noBody{}
 
 var (
-	// NoBodyからのio.Copyがバッファを必要としないことを検証する
+	// NoBodyからのio.Copyがバッファーを必要としないことを検証する
 	_ io.WriterTo   = NoBody
 	_ io.ReadCloser = NoBody
 )
@@ -74,7 +74,7 @@ type Pusher interface {
 }
 
 // HTTP2Configは、[Transport] と [Server] の両方に共通する
-// HTTP/2の設定パラメータを定義します。
+// HTTP/2の設定パラメーターを定義します。
 type HTTP2Config struct {
 	// MaxConcurrentStreamsは、ピアが同時に開くことができる
 	// 同時ストリームの数をオプションで指定します。

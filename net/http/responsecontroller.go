@@ -43,28 +43,28 @@ func (c *ResponseController) Flush() error
 // 詳細は [Hijacker] インターフェースを参照してください。
 func (c *ResponseController) Hijack() (net.Conn, *bufio.ReadWriter, error)
 
-// SetReadDeadlineは、ボディを含むリクエスト全体の読み取りの期限を設定します。
-// 期限が超過した後にリクエストボディから読み取りを行うと、エラーが返されます。
+// SetReadDeadlineは、ボディーを含むリクエスト全体の読み取りの期限を設定します。
+// 期限が超過した後にリクエストボディーから読み取りを行うと、エラーが返されます。
 // ゼロ値は期限がないことを意味します。
 //
 // 期限が超過した後に読み取り期限を設定しても、期限は延長されません。
 func (c *ResponseController) SetReadDeadline(deadline time.Time) error
 
 // SetWriteDeadlineは、レスポンスの書き込みの期限を設定します。
-// 期限が超過した後にレスポンスボディに書き込みを行うと、ブロックされず、
+// 期限が超過した後にレスポンスボディーに書き込みを行うと、ブロックされず、
 // データがバッファリングされている場合は成功する可能性があります。
 // ゼロ値は期限がないことを意味します。
 //
 // 期限が超過した後に書き込み期限を設定しても、期限は延長されません。
 func (c *ResponseController) SetWriteDeadline(deadline time.Time) error
 
-// EnableFullDuplexは、リクエストハンドラが [Request.Body] からの読み取りを交互に行い、
+// EnableFullDuplexは、リクエストハンドラーが [Request.Body] からの読み取りを交互に行い、
 // [ResponseWriter] への書き込みと交互に行うことを示します。
 //
 // HTTP/1リクエストの場合、Go HTTPサーバーはデフォルトで、レスポンスの書き込みを開始する前に
-// リクエストボディの未読部分を消費し、ハンドラがリクエストから読み取りとレスポンスの書き込みを
+// リクエストボディーの未読部分を消費し、ハンドラーがリクエストから読み取りとレスポンスの書き込みを
 // 同時に行うことを防止します。EnableFullDuplexを呼び出すと、この動作が無効になり、
-// ハンドラがリクエストからの読み取りを続けながらレスポンスを同時に書き込むことができるようになります。
+// ハンドラーがリクエストからの読み取りを続けながらレスポンスを同時に書き込むことができるようになります。
 //
 // HTTP/2リクエストの場合、Go HTTPサーバーは常に並行して読み取りとレスポンスを許可します。
 func (c *ResponseController) EnableFullDuplex() error

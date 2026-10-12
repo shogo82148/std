@@ -35,13 +35,13 @@ func StringByteSlice(s string) []byte
 // sのいずれかの位置にNULバイトが含まれている場合、(nil, [EINVAL])を返します。
 func ByteSliceFromString(s string) ([]byte, error)
 
-// StringBytePtrは、NUL終端されたバイト配列へのポインタを返します。
+// StringBytePtrは、NUL終端されたバイト配列へのポインターを返します。
 // sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
 //
 // Deprecated: 代わりに [BytePtrFromString] を使用してください。
 func StringBytePtr(s string) *byte
 
-// BytePtrFromStringは、sのテキストを含むNUL終端されたバイト配列へのポインタを返します。
+// BytePtrFromStringは、sのテキストを含むNUL終端されたバイト配列へのポインターを返します。
 // sのいずれかの位置にNULバイトが含まれている場合、(nil, [EINVAL])を返します。
 func BytePtrFromString(s string) (*byte, error)
 

@@ -14,7 +14,7 @@ httpパッケージは HTTP クライアントとサーバーの実装を提供�
 	resp, err := http.PostForm("http://example.com/form",
 		url.Values{"key": {"Value"}, "id": {"123"}})
 
-関数を呼び出した後、レスポンスボディを閉じる必要があります。
+関数を呼び出した後、レスポンスボディーを閉じる必要があります。
 
 	resp, err := http.Get("http://example.com/")
 	if err != nil {
@@ -41,7 +41,7 @@ HTTP クライアントヘッダー、リダイレクトポリシー、その他
 	resp, err := client.Do(req)
 	// ...
 
-プロキシ、TLS 設定、Keep-Alive、圧縮、その他の設定を制御するには、[Transport] を作成してください。
+プロキシー、TLS 設定、Keep-Alive、圧縮、その他の設定を制御するには、[Transport] を作成してください。
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,

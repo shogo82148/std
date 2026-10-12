@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Optionsは、エンコーディングパラメータです。
+// Optionsは、エンコーディングパラメーターです。
 type Options struct {
 	// NumColorsは、画像で使用される色の最大数です。
 	// 1から256までの範囲です。

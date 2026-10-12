@@ -30,7 +30,7 @@ type Value struct {
 	// vのエスケープを避けるために、typメソッドを使用してアクセスしてください。
 	typ_ *abi.Type
 
-	// ポインタ値のデータまたは、flagIndirが設定されている場合はデータへのポインタ。
+	// ポインター値のデータまたは、flagIndirが設定されている場合はデータへのポインター。
 	// flagIndirが設定されているか、typ.pointers()が true の場合に有効です。
 	ptr unsafe.Pointer
 
@@ -41,7 +41,7 @@ type Value struct {
 	// 次のビットはフラグビットです：
 	//	- flagStickyRO：非公開で埋め込まれていないフィールドから取得されたため、読み取り専用
 	//	- flagEmbedRO：非公開の埋め込まれたフィールドから取得されたため、読み取り専用
-	//	- flagIndir：valはデータへのポインタを保持しています
+	//	- flagIndir：valはデータへのポインターを保持しています
 	//	- flagAddr：v.CanAddrがtrue（flagIndirとptrが非nilであることを意味します）
 	//	- flagMethod：vはメソッドの値です。
 	// ifaceIndir(typ)の場合、codeはflagIndirが設定されていると想定することができます。
@@ -59,11 +59,11 @@ type ValueError struct {
 
 func (e *ValueError) Error() string
 
-// Addrはvのアドレスを表すポインタ値を返します。
+// Addrはvのアドレスを表すポインター値を返します。
 // [Value.CanAddr] がfalseを返す場合にはパニックを発生させます。
 // Addrは通常、構造体のフィールドやスライスの要素に対して
-// ポインタレシーバを必要とするメソッドを呼び出すために
-// ポインタを取得するために使用されます。
+// ポインターレシーバーを必要とするメソッドを呼び出すために
+// ポインターを取得するために使用されます。
 func (v Value) Addr() Value
 
 // Boolはvの基礎となる値を返します。
@@ -77,7 +77,7 @@ func (v Value) Bytes() []byte
 // CanAddr関数は、値のアドレスを [Value.Addr] で取得できるかどうかを報告します。
 // このような値は、addressableと呼ばれます。値がaddressableであるとは、
 // スライスの要素、addressableな配列の要素、addressableな構造体のフィールド、
-// またはポインタの参照結果である場合を指します。
+// またはポインターの参照結果である場合を指します。
 // CanAddrがfalseを返す場合、 [Value.Addr] を呼び出すとパニックが発生します。
 func (v Value) CanAddr() bool
 
@@ -91,7 +91,7 @@ func (v Value) CanSet() bool
 // たとえば len(in) == 3 の場合、v.Call(in) は Go の呼び出し v(in[0], in[1], in[2]) を表します。
 // vのKindが [Func] でない場合、Callはパニックを発生させます。
 // 戻り値として、出力結果をValueのスライスで返します。
-// Goと同様に、各入力引数は対応する関数入力パラメータの型に
+// Goと同様に、各入力引数は対応する関数入力パラメーターの型に
 // 代入可能でなければなりません。
 // vが可変長引数関数の場合、Callは可変長引数用のスライス引数を
 // 対応する値をコピーして自動的に作成します。
@@ -103,13 +103,13 @@ func (v Value) Call(in []Value) []Value
 // たとえば len(in) == 3 の場合、v.CallSlice(in) は Go の呼び出し v(in[0], in[1], in[2]...) を表します。
 // vのKindが [Func] でない場合、またはvが可変長引数関数でない場合、CallSliceはパニックを発生させます。
 // 戻り値として、出力結果をValueのスライスで返します。
-// Goと同様に、各入力引数は対応する関数入力パラメータの型に
+// Goと同様に、各入力引数は対応する関数入力パラメーターの型に
 // 代入可能でなければなりません。
 // 非公開の構造体フィールドへのアクセスから取得されたValueの場合はパニックを発生させます。
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap は v の容量を返します。
-// v の Kind が [Array] 、 [Chan] 、 [Slice] 、または [Array] のポインタでない場合、パニックを発生させます。
+// v の Kind が [Array] 、 [Chan] 、 [Slice] 、または [Array] のポインターでない場合、パニックを発生させます。
 func (v Value) Cap() int
 
 // Closeはチャネルvを閉じます。
@@ -123,7 +123,7 @@ func (v Value) CanComplex() bool
 // vのKindが [Complex64] または [Complex128] でない場合、パニックを発生させます。
 func (v Value) Complex() complex128
 
-// Elemは、インターフェースvに格納されている値またはvのポインタが指す値を返します。
+// Elemは、インターフェースvに格納されている値またはvのポインターが指す値を返します。
 // vのKindが [Interface] または [Pointer] でない場合、パニックが発生します。
 // vがnilの場合、ゼロのValueを返します。
 func (v Value) Elem() Value
@@ -201,7 +201,7 @@ func TypeAssert[T any](v Value) (T, bool)
 // Goの以前のバージョンでは、この関数はインターフェースの値をuintptrのペアで返していました。
 // Go 1.4以降、インターフェースの値の実装はInterfaceDataの定義された使用を除外しています。
 //
-// Deprecated: インターフェースの値のメモリ表現はInterfaceDataと互換性がありません。
+// Deprecated: インターフェースの値のメモリー表現はInterfaceDataと互換性がありません。
 func (v Value) InterfaceData() [2]uintptr
 
 // IsNilは引数vがnilであるかどうかを報告します。引数は
@@ -228,14 +228,14 @@ func (v Value) SetZero()
 func (v Value) Kind() Kind
 
 // Lenはvの長さを返します。
-// vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインタでない場合、パニックを発生させます。
+// vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインターでない場合、パニックを発生させます。
 func (v Value) Len() int
 
 // Methodはvのi番目のメソッドに対応する関数値を返します。
-// 返された関数に対するCallの引数にはレシーバを含めないでください。返された関数は常にvをレシーバとして使用します。
+// 返された関数に対するCallの引数にはレシーバーを含めないでください。返された関数は常にvをレシーバーとして使用します。
 // iが範囲外の場合やvがnilインターフェース値の場合、Methodはパニックを発生させます。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのエクスポートされたメソッドを保持します。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのエクスポートされたメソッドを保持します。
 // これにより実行ファイルのサイズが大きくなる場合がありますが、実行速度には影響しません。
 func (v Value) Method(i int) Value
 
@@ -246,11 +246,11 @@ func (v Value) Method(i int) Value
 func (v Value) NumMethod() int
 
 // MethodByNameは、指定された名前のメソッドに対応する関数値を返します。
-// 返された関数に対するCallの引数にはレシーバを含めないでください。返された関数は常にvをレシーバとして使用します。
+// 返された関数に対するCallの引数にはレシーバーを含めないでください。返された関数は常にvをレシーバーとして使用します。
 // メソッドが見つからなかった場合はゼロ値を返します。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのこの名前のメソッドを保持します。
-// リンカが名前を判別できない場合、すべてのエクスポートされたメソッドを保持します。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのこの名前のメソッドを保持します。
+// リンカーが名前を判別できない場合、すべてのエクスポートされたメソッドを保持します。
 // これにより実行ファイルのサイズが大きくなる場合がありますが、実行速度には影響しません。
 func (v Value) MethodByName(name string) Value
 
@@ -277,18 +277,18 @@ func (v Value) OverflowUint(x uint64) bool
 // Pointerはvの値をuintptrとして返します。
 // vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックが発生します。
 //
-// vのKindが [Func] の場合、返されるポインタは基礎となる
-// コードポインタですが、単一の関数を一意に識別するのに
-// 必ずしも十分とは限りません。特に、コードポインタが等しい
+// vのKindが [Func] の場合、返されるポインターは基礎となる
+// コードポインターですが、単一の関数を一意に識別するのに
+// 必ずしも十分とは限りません。特に、コードポインターが等しい
 // 関数であっても、呼び出したときの挙動が同一とは限りません。
 // 唯一の保証は、結果がゼロになるのは
 // vがnilのfunc Valueである場合に限る、ということです。
 //
-// vの種類が [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。
+// vの種類が [Slice] の場合、返されるポインターはスライスの最初の要素へのポインターです。
 // スライスがnilの場合、返される値は0です。
 // スライスが空で非nilの場合、返される値は0でない値です。
 //
-// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
+// vのKindが [String] である場合、返されるポインターは文字列の基礎となるバイトの最初の要素を指します。
 //
 // 同等の結果を得るには、uintptr(Value.UnsafePointer())を使用することが推奨されます。
 func (v Value) Pointer() uintptr
@@ -389,7 +389,7 @@ func (v Value) CanUint() bool
 // vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合にはパニックを発生させます。
 func (v Value) Uint() uint64
 
-// UnsafeAddrはvのデータへのポインタを、uintptrとして返します。
+// UnsafeAddrはvのデータへのポインターを、uintptrとして返します。
 // vがアドレス可能でない場合、panicします。
 //
 // 同等の結果を得るためには、uintptr(Value.Addr().UnsafePointer())を使用することが推奨されます。
@@ -398,16 +398,16 @@ func (v Value) UnsafeAddr() uintptr
 // UnsafePointerはvの値を [unsafe.Pointer] として返します。
 // vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを発生させます。
 //
-// vのKindが [Func] の場合、返されるポインタは基礎となるコードポインタですが、必ずしも単一の関数を一意に識別するためのものではありません。
+// vのKindが [Func] の場合、返されるポインターは基礎となるコードポインターですが、必ずしも単一の関数を一意に識別するためのものではありません。
 // 唯一の保証は、vがnil func Valueである場合にのみ結果がゼロであることです。
 //
-// vのKindが [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。スライスがnilの場合、返される値もnilです。
+// vのKindが [Slice] の場合、返されるポインターはスライスの最初の要素へのポインターです。スライスがnilの場合、返される値もnilです。
 // スライスが空であるが非nilの場合、返される値は非nilです。
 //
-// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
+// vのKindが [String] である場合、返されるポインターは文字列の基礎となるバイトの最初の要素を指します。
 func (v Value) UnsafePointer() unsafe.Pointer
 
-// Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレータを返します。
+// Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレーターを返します。
 //
 // シーケンスは [0, NumField()) の範囲内の各インデックスiに対して
 // [Value.Field] を連続して呼び出すことと等価です。
@@ -415,22 +415,22 @@ func (v Value) UnsafePointer() unsafe.Pointer
 // vのKindがStructでない場合はパニックを発生させます。
 func (v Value) Fields() iter.Seq2[StructField, Value]
 
-// Methodsはvの各 [Method] を対応するメソッド [Value] と共に反復処理するイテレータを返します。
-// これはvがレシーバとしてバインドされた関数です。そのため、
-// レシーバは [Value.Call] の引数に含めるべきではありません。
+// Methodsはvの各 [Method] を対応するメソッド [Value] と共に反復処理するイテレーターを返します。
+// これはvがレシーバーとしてバインドされた関数です。そのため、
+// レシーバーは [Value.Call] の引数に含めるべきではありません。
 //
 // シーケンスは [0, NumMethod()) の範囲内の各インデックスiに対して
 // [Value.Method] を連続して呼び出すことと等価です。
 //
 // vがnilインターフェース値の場合、Methodsはパニックを発生させます。
 //
-// このメソッドを呼び出すと、リンカはすべてのパッケージのエクスポートされたメソッドを保持します。
-// これにより実行ファイルのバイナリサイズが大きくなる可能性がありますが、実行時間には影響しません。
+// このメソッドを呼び出すと、リンカーはすべてのパッケージのエクスポートされたメソッドを保持します。
+// これにより実行ファイルのバイナリーサイズが大きくなる可能性がありますが、実行時間には影響しません。
 func (v Value) Methods() iter.Seq2[Method, Value]
 
 // StringHeaderは文字列のランタイム表現です。
 // 安全かつ可搬性が保証されておらず、将来のリリースで表現が変わる可能性があります。
-// さらに、Dataフィールドだけではデータがガベージコレクションされないことは保証できないため、プログラムは基礎データへの正しい型付きポインタを別途保持する必要があります。
+// さらに、Dataフィールドだけではデータがガベージコレクションされないことは保証できないため、プログラムは基礎データへの正しい型付きポインターを別途保持する必要があります。
 //
 // Deprecated: 代わりにunsafe.Stringまたはunsafe.StringDataを使用してください。
 type StringHeader struct {
@@ -441,7 +441,7 @@ type StringHeader struct {
 // SliceHeaderはスライスのランタイム表現です。
 // これは安全でも可搬性がありませんし、将来のバージョンで変更されるかもしれません。
 // さらに、Dataフィールドだけではデータがガベージコレクトされないことを保証できないため、
-// プログラムは基礎データへの正しい型のポインタを別に保持する必要があります。
+// プログラムは基礎データへの正しい型のポインターを別に保持する必要があります。
 //
 // 廃止予定: 代わりにunsafe.Sliceまたはunsafe.SliceDataを使用してください。
 type SliceHeader struct {
@@ -454,7 +454,7 @@ type SliceHeader struct {
 // 領域を保証します。Grow(n)の後、少なくともn個の要素を追加の割り当てなしに
 // スライスに追加できます。
 //
-// vのKindが [Slice] でない場合、nが負であるかメモリを割り当てるには大きすぎる場合、
+// vのKindが [Slice] でない場合、nが負であるかメモリーを割り当てるには大きすぎる場合、
 // または [Value.CanSet] がfalseを返す場合はパニックします。
 func (v Value) Grow(n int)
 
@@ -526,7 +526,7 @@ func MakeSlice(typ Type, len, cap int) Value
 // これは [unsafe.Slice] のようなものです。
 func SliceAt(typ Type, p unsafe.Pointer, n int) Value
 
-// MakeChanは指定された型とバッファサイズで新しいチャネルを作成します。
+// MakeChanは指定された型とバッファーサイズで新しいチャネルを作成します。
 func MakeChan(typ Type, buffer int) Value
 
 // MakeMapは指定された型の新しいマップを作成します。
@@ -549,11 +549,11 @@ func ValueOf(i any) Value
 // 返された値はアドレスを取ることも変更することもできません。
 func Zero(typ Type) Value
 
-// Newは指定された型の新しいゼロ値へのポインタを表すValueを返します。
+// Newは指定された型の新しいゼロ値へのポインターを表すValueを返します。
 // つまり、返されたValueのTypeは [PointerTo](typ)です。
 func New(typ Type) Value
 
-// NewAtは、pを指し示すポインタを使用して、指定された型の値へのポインタを表すValueを返します。
+// NewAtは、pを指し示すポインターを使用して、指定された型の値へのポインターを表すValueを返します。
 func NewAt(typ Type, p unsafe.Pointer) Value
 
 // Convert は値 v を型 t に変換した値を返します。

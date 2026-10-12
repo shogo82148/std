@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// randパッケージは、シミュレーションなどのタスクに適した擬似乱数生成器を実装しますが、セキュリティに敏感な作業には使用しないでください。
+// randパッケージは、シミュレーションなどのタスクに適した擬似乱数生成器を実装しますが、セキュリティーに敏感な作業には使用しないでください。
 //
 // 乱数は [Source] によって生成され、通常は [Rand] でラップされます。
 // 両方のタイプは一度に1つのゴルーチンから使用されるべきです：複数のゴルーチン間で共有するには何らかの同期が必要です。
@@ -11,10 +11,10 @@
 // 複数のゴルーチンによる並行使用が安全です。
 //
 // [ChaCha8] ソースは、予測に強い汎用的なソースです。
-// [PCG] ソースはより高速ですが、セキュリティに関わる用途には適していません。
+// [PCG] ソースはより高速ですが、セキュリティーに関わる用途には適していません。
 //
 // このパッケージの出力は、どのようにシードしたかに関係なく、
-// 容易に予測できる可能性があります。セキュリティに敏感な用途に適した
+// 容易に予測できる可能性があります。セキュリティーに敏感な用途に適した
 // 乱数については、[crypto/rand] パッケージを参照してください。
 package rand
 
@@ -76,8 +76,8 @@ func (r *Rand) IntN(n int) int
 // nが0の場合、パニックを引き起こします。
 func (r *Rand) UintN(n uint) uint
 
-// Nは半開区間 [0,n) の疑似乱数を返します。
-// 型パラメータIntには任意の整数型を指定できます。
+// Nは半開区間 [0,n) の擬似乱数を返します。
+// 型パラメーターIntには任意の整数型を指定できます。
 // n <= 0 の場合、パニックします。
 func (r *Rand) N[Int intType](n Int) Int
 
@@ -138,7 +138,7 @@ func IntN(n int) int
 func UintN(n uint) uint
 
 // Nは、デフォルトのSourceから半開放区間[0,n)内の擬似乱数を返します。
-// 型パラメータIntは任意の整数型にすることができます。
+// 型パラメーターIntは任意の整数型にすることができます。
 // nが0以下の場合、パニックを引き起こします。
 func N[Int intType](n Int) Int
 
@@ -163,9 +163,9 @@ func Shuffle(n int, swap func(i, j int))
 //	sample = NormFloat64() * desiredStdDev + desiredMean
 func NormFloat64() float64
 
-// ExpFloat64は、デフォルトのSourceからレートパラメータ（lambda）が1で平均が1/lambda（1）の指数分布に従う
+// ExpFloat64は、デフォルトのSourceからレートパラメーター（lambda）が1で平均が1/lambda（1）の指数分布に従う
 // 範囲(0, +math.MaxFloat64]の指数分布のfloat64を返します。
-// 異なるレートパラメータの分布を生成するために、呼び出し元は出力を調整できます：
+// 異なるレートパラメーターの分布を生成するために、呼び出し元は出力を調整できます：
 //
 //	sample = ExpFloat64() / desiredRateParameter
 func ExpFloat64() float64

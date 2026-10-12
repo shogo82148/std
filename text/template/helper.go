@@ -22,7 +22,7 @@ func Must(t *Template, err error) *Template
 // ファイルは少なくとも1つ必要です。
 // エラーが発生した場合、解析は停止し、返される*Templateはnilになります。
 //
-// 異なるディレクトリにある同名の複数のファイルを解析するとき、
+// 異なるディレクトリーにある同名の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
 // 例えば、ParseFiles("a/foo", "b/foo")は "b/foo" を "foo" という名前のテンプレートとして保存し、
 // "a/foo" は利用できません。
@@ -36,7 +36,7 @@ func ParseFiles(filenames ...string) (*Template, error)
 // 内容によっては、t.Executeが失敗する可能性があります。その場合は、
 // t.ExecuteTemplateを使用して有効なテンプレートを実行します。
 //
-// 異なるディレクトリにある同名の複数のファイルを解析するとき、
+// 異なるディレクトリーにある同名の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
@@ -48,7 +48,7 @@ func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 // ParseGlobは、パターンによってマッチしたファイルのリストで [ParseFiles] を
 // 呼び出すのと同等です。
 //
-// 異なるディレクトリにある同名の複数のファイルを解析するとき、
+// 異なるディレクトリーにある同名の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
 func ParseGlob(pattern string) (*Template, error)
 
@@ -58,7 +58,7 @@ func ParseGlob(pattern string) (*Template, error)
 // マッチしなければなりません。ParseGlobは、パターンによってマッチした
 // ファイルのリストで [Template.ParseFiles] を呼び出すのと同等です。
 //
-// 異なるディレクトリにある同名の複数のファイルを解析するとき、
+// 異なるディレクトリーにある同名の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
 func (t *Template) ParseGlob(pattern string) (*Template, error)
 

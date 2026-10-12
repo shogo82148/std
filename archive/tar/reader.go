@@ -29,7 +29,7 @@ type Reader struct {
 // NewReaderはrから読み取りを行う新しい [Reader] を作成します。
 func NewReader(r io.Reader) *Reader
 
-// Nextはtarアーカイブ内の次のエントリに進みます。
+// Nextはtarアーカイブ内の次のエントリーに進みます。
 // Header.Sizeは次のファイルの読み取り可能なバイト数を決定します。
 // 現在のファイルに残っているデータは自動的に破棄されます。
 // アーカイブの末尾に達した場合、Nextはエラーio.EOFを返します。

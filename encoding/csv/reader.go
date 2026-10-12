@@ -114,7 +114,7 @@ type Reader struct {
 	TrimLeadingSpace bool
 
 	// ReuseRecordは、パフォーマンスのために、Readの呼び出しが前回の呼び出しの返されたスライスのバッキング配列を共有するスライスを返すかどうかを制御します。
-	// デフォルトでは、Readの各呼び出しは、呼び出し元が所有する新しく割り当てられたメモリを返します。
+	// デフォルトでは、Readの各呼び出しは、呼び出し元が所有する新しく割り当てられたメモリーを返します。
 	ReuseRecord bool
 
 	// Deprecated: TrailingComma はもう使用されません。

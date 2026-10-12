@@ -6,7 +6,7 @@
 // ML-KEM (以前は Kyber として知られていた) を実装します。
 //
 // ほとんどのアプリケーションは、[DecapsulationKey768] と [EncapsulationKey768]
-// で実装された ML-KEM-768 パラメータセットを使用すべきです。
+// で実装された ML-KEM-768 パラメーターセットを使用すべきです。
 //
 // [NIST FIPS 203]: https://doi.org/10.6028/NIST.FIPS.203
 package mlkem

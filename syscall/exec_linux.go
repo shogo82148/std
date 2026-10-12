@@ -40,10 +40,10 @@ const (
 	CLONE_NEWTIME = 0x00000080
 )
 
-// SysProcIDMapは、Linuxのユーザー名前空間で使用される、コンテナIDからホストIDへの
+// SysProcIDMapは、Linuxのユーザー名前空間で使用される、コンテナーIDからホストIDへの
 // マッピングを保持します。user_namespaces(7)を参照してください。
 //
-// ユーザー名前空間は、多くの一般的なLinuxのバージョンでは（セキュリティ上の問題により）
+// ユーザー名前空間は、多くの一般的なLinuxのバージョンでは（セキュリティー上の問題により）
 // 利用できないか、利用可能であってもUbuntu 24.04のようにAppArmorの制限を受けることに
 // 注意してください。
 type SysProcIDMap struct {
@@ -63,8 +63,8 @@ type SysProcAttr struct {
 	// Setpgidは、子のプロセスグループIDをPgidに設定します。
 	// Pgid == 0の場合は、新しい子のプロセスIDに設定します。
 	Setpgid bool
-	// Setcttyは、子の制御端末をファイルディスクリプタCttyに設定します。
-	// Cttyは子プロセス内のディスクリプタ番号、つまりProcAttr.Filesへの
+	// Setcttyは、子の制御端末をファイルディスクリプターCttyに設定します。
+	// Cttyは子プロセス内のディスクリプター番号、つまりProcAttr.Filesへの
 	// インデックスでなければなりません。
 	// これはSetsidがtrueの場合にのみ意味を持ちます。
 	Setctty bool
@@ -72,9 +72,9 @@ type SysProcAttr struct {
 	Ctty    int
 	// Foregroundは、子プロセスグループをフォアグラウンドに配置します。
 	// これはSetpgidを暗黙的に含みます。Cttyフィールドには
-	// 制御TTYのディスクリプタを設定しなければなりません。
+	// 制御TTYのディスクリプターを設定しなければなりません。
 	// Setcttyとは異なり、この場合Cttyは親プロセス内の
-	// ディスクリプタ番号でなければなりません。
+	// ディスクリプター番号でなければなりません。
 	Foreground bool
 	Pgid       int
 	// Pdeathsigがゼロでない場合、作成したスレッドが終了したときにカーネルが
@@ -88,7 +88,7 @@ type SysProcAttr struct {
 	GidMappings  []SysProcIDMap
 	// GidMappingsEnableSetgroupsはsetgroupsシステムコールを有効にします。
 	// falseの場合、子プロセスではsetgroupsシステムコールが無効になります。
-	// このパラメータは、GidMappings == nilの場合は何もしません。それ以外の場合、
+	// このパラメーターは、GidMappings == nilの場合は何もしません。それ以外の場合、
 	// 特権を持たないユーザーでマッピングを機能させるにはfalseに設定するべきです。
 	GidMappingsEnableSetgroups bool
 	AmbientCaps                []uintptr

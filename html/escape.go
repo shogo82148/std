@@ -10,8 +10,8 @@ package html
 // [UnescapeString](EscapeString(s)) == sは常に成り立ちますが、逆は常に真ではありません。
 func EscapeString(s string) string
 
-// UnescapeStringは"&lt;"のようなエンティティを"<"にアンエスケープします。
-// [EscapeString]がエスケープするよりも広範囲のエンティティをアンエスケープします。
+// UnescapeStringは"&lt;"のようなエンティティーを"<"にアンエスケープします。
+// [EscapeString]がエスケープするよりも広範囲のエンティティーをアンエスケープします。
 // たとえば、"&aacute;"は"á"にアンエスケープされ、"&#225;"や"&#xE1;"も同様です。
 // UnescapeString([EscapeString](s)) == sは常に成り立ちますが、逆は常に真ではありません。
 func UnescapeString(s string) string

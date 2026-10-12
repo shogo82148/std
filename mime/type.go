@@ -23,7 +23,7 @@ package mime
 //
 // Windowsでは、MIMEタイプはレジストリから抽出されます。
 //
-// テキストタイプは、デフォルトでcharsetパラメータが"utf-8"に設定されています。
+// テキストタイプは、デフォルトでcharsetパラメーターが"utf-8"に設定されています。
 func TypeByExtension(ext string) string
 
 // ExtensionsByTypeは、MIMEタイプtypに関連付けられることが知られている拡張子を返します。

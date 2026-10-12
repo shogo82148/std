@@ -62,14 +62,14 @@ func ExampleFileServer() {
 }
 
 func ExampleFileServer_stripPrefix() {
-	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
+	// ディスク上のディレクトリー (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
 	// StripPrefix を使用して、FileServer がそれを見る前に
 	// リクエスト URL のパスを変更します。
 	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
 }
 
 func ExampleStripPrefix() {
-	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
+	// ディスク上のディレクトリー (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
 	// StripPrefix を使用して、FileServer がそれを見る前に
 	// リクエスト URL のパスを変更します。
 	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))

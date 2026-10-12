@@ -84,8 +84,8 @@ func ExampleScanner_Bytes() {
 	// true
 }
 
-// スキャナを使用して、スペースで区切られたトークンのシーケンスとして入力をスキャンすることにより、
-// 単純な単語カウントユーティリティを実装します。
+// スキャナーを使用して、スペースで区切られたトークンのシーケンスとして入力をスキャンすることにより、
+// 単純な単語カウントユーティリティーを実装します。
 func ExampleScanner_words() {
 	// 人工的な入力ソース。
 	const input = "Now is the winter of our discontent,\nMade glorious summer by this sun of York.\n"
@@ -136,7 +136,7 @@ func ExampleScanner_custom() {
 
 // 空の最終値を持つカンマ区切りリストを解析するために、カスタム分割関数を使用するScannerを使用します。
 func ExampleScanner_emptyFinalToken() {
-	// カンマ区切りのリスト。最後のエントリは空です。
+	// カンマ区切りのリスト。最後のエントリーは空です。
 	const input = "1,2,3,4,"
 	scanner := bufio.NewScanner(strings.NewReader(input))
 	// コンマで区切る分割関数を定義します。

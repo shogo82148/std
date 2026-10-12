@@ -10,7 +10,7 @@ package runtime
 //
 // これらのケースが発生した場合、GoランタイムはErrorを実装するエラーでpanicします。これは、panicからのリカバリー時に、カスタムアプリケーションのpanicと基本的なランタイムpanicを区別するのに役立ちます。
 //
-// Go標準ライブラリ以外のパッケージでErrorを実装すべきではありません。
+// Go標準ライブラリー以外のパッケージでErrorを実装すべきではありません。
 type Error interface {
 	error
 

@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// OpenInRootは、ディレクトリdir内のファイルnameを開きます。
+// OpenInRootは、ディレクトリーdir内のファイルnameを開きます。
 // これは、OpenRoot(dir)の後にルート内でファイルを開くことと同等です。
 //
 // nameのいずれかの構成要素がdirの外部の場所を参照している場合、
@@ -18,12 +18,12 @@ import (
 // 詳細と制限については [Root] を参照してください。
 func OpenInRoot(dir, name string) (*File, error)
 
-// Rootは、単一のディレクトリツリー内のファイルにのみアクセスするために使用できます。
+// Rootは、単一のディレクトリーツリー内のファイルにのみアクセスするために使用できます。
 //
-// Rootのメソッドは、ルートディレクトリ配下のファイルとディレクトリにのみアクセスできます。
+// Rootのメソッドは、ルートディレクトリー配下のファイルとディレクトリーにのみアクセスできます。
 // Rootのメソッドに渡されたファイル名のいずれかの構成要素がルートの外部の場所を
 // 参照している場合、メソッドはエラーを返します。
-// ファイル名はディレクトリ自体（.）を参照することができます。
+// ファイル名はディレクトリー自体（.）を参照することができます。
 //
 // Rootのメソッドはシンボリックリンクをたどりますが、シンボリックリンクは
 // ルートの外部の場所を参照できません。
@@ -34,9 +34,9 @@ func OpenInRoot(dir, name string) (*File, error)
 //
 // Rootのメソッドは、複数のゴルーチンから同時に使用しても安全です。
 //
-// ほとんどのプラットフォームでは、Rootを作成すると、そのディレクトリを参照する
-// ファイルディスクリプタまたはハンドルが開かれます。ディレクトリが移動された場合、
-// Rootのメソッドは新しい場所にある元のディレクトリを参照します。
+// ほとんどのプラットフォームでは、Rootを作成すると、そのディレクトリーを参照する
+// ファイルディスクリプターまたはハンドルが開かれます。ディレクトリーが移動された場合、
+// Rootのメソッドは新しい場所にある元のディレクトリーを参照します。
 //
 // Rootの動作は一部のプラットフォームで異なります:
 //
@@ -47,19 +47,19 @@ func OpenInRoot(dir, name string) (*File, error)
 //     操作はリンク先ではなくリンク自体に対して実行される可能性があります。
 //   - GOOS=jsの場合、Rootはシンボリックリンクの検証においてTOCTOU（time-of-check-time-of-use）
 //     攻撃に対して脆弱であり、操作がルートから抜け出さないことを保証できません。
-//   - GOOS=plan9またはGOOS=jsの場合、Rootは名前の変更をまたいでディレクトリを追跡しません。
-//     これらのプラットフォームでは、Rootはファイルディスクリプタではなくディレクトリ名を参照します。
+//   - GOOS=plan9またはGOOS=jsの場合、Rootは名前の変更をまたいでディレクトリーを追跡しません。
+//     これらのプラットフォームでは、Rootはファイルディスクリプターではなくディレクトリー名を参照します。
 //   - WASI preview 1（GOOS=wasip1）は [Root.Chmod] をサポートしていません。
 type Root struct {
 	root *root
 }
 
-// OpenRootは指定されたディレクトリを開きます。
-// ディレクトリ名のシンボリックリンクをたどります。
+// OpenRootは指定されたディレクトリーを開きます。
+// ディレクトリー名のシンボリックリンクをたどります。
 // エラーがある場合、それは [*PathError] 型になります。
 func OpenRoot(name string) (*Root, error)
 
-// Nameは、OpenRootに渡されたディレクトリの名前を返します。
+// Nameは、OpenRootに渡されたディレクトリーの名前を返します。
 //
 // [Close] の後にNameを呼び出しても安全です。
 func (r *Root) Name() string
@@ -83,7 +83,7 @@ func (r *Root) Create(name string) (*File, error)
 // OpenFileはエラーを返します。
 func (r *Root) OpenFile(name string, flag int, perm FileMode) (*File, error)
 
-// OpenRootは、ルート内の指定されたディレクトリを開きます。
+// OpenRootは、ルート内の指定されたディレクトリーを開きます。
 // エラーがある場合、それは [*PathError] 型になります。
 func (r *Root) OpenRoot(name string) (*Root, error)
 
@@ -92,14 +92,14 @@ func (r *Root) OpenRoot(name string) (*Root, error)
 func (r *Root) Chmod(name string, mode FileMode) error
 
 // Mkdirは、指定された名前とパーミッションビット（umask適用前）で、
-// ルート内に新しいディレクトリを作成します。
+// ルート内に新しいディレクトリーを作成します。
 // 詳細は [Mkdir] を参照してください。
 //
 // permに下位9ビット（0o777）以外のビットが含まれている場合、
 // Mkdirはエラーを返します。
 func (r *Root) Mkdir(name string, perm FileMode) error
 
-// MkdirAllは、必要な親ディレクトリとともに、ルート内に新しいディレクトリを作成します。
+// MkdirAllは、必要な親ディレクトリーとともに、ルート内に新しいディレクトリーを作成します。
 // 詳細は [MkdirAll] を参照してください。
 //
 // permに下位9ビット（0o777）以外のビットが含まれている場合、
@@ -118,11 +118,11 @@ func (r *Root) Lchown(name string, uid, gid int) error
 // 詳細は [Chtimes] を参照してください。
 func (r *Root) Chtimes(name string, atime time.Time, mtime time.Time) error
 
-// Removeは、ルート内の指定されたファイルまたは（空の）ディレクトリを削除します。
+// Removeは、ルート内の指定されたファイルまたは（空の）ディレクトリーを削除します。
 // 詳細は [Remove] を参照してください。
 func (r *Root) Remove(name string) error
 
-// RemoveAllは、指定されたファイルまたはディレクトリと、それに含まれるすべての子を削除します。
+// RemoveAllは、指定されたファイルまたはディレクトリーと、それに含まれるすべての子を削除します。
 // 詳細は [RemoveAll] を参照してください。
 func (r *Root) RemoveAll(name string) error
 
@@ -161,7 +161,7 @@ func (r *Root) Link(oldname, newname string) error
 // Symlinkはoldnameを検証しないため、
 // oldnameはルートの外部の場所を参照する可能性があります。
 //
-// Windowsでは、oldnameがルート内のディレクトリを参照している場合はディレクトリリンクが
+// Windowsでは、oldnameがルート内のディレクトリーを参照している場合はディレクトリーリンクが
 // 作成されます。それ以外の場合はファイルリンクが作成されます。
 func (r *Root) Symlink(oldname, newname string) error
 

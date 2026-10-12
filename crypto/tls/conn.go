@@ -130,12 +130,12 @@ func (c *Conn) SetWriteDeadline(t time.Time) error
 // ただし、この接続に直接書き込みまたは読み込みを行うと、TLSセッションが破損することに注意してください。
 func (c *Conn) NetConn() net.Conn
 
-// RecordHeaderError は、TLS レコードヘッダが無効な場合に返されます。
+// RecordHeaderError は、TLS レコードヘッダーが無効な場合に返されます。
 type RecordHeaderError struct {
 	// Msgはエラーを説明する人が読みやすい文字列を含んでいます。
 	Msg string
 
-	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダの5バイトが含まれています。
+	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダーの5バイトが含まれています。
 	RecordHeader [5]byte
 
 	// Connは、クライアントが初期ハンドシェイクを送信しているが、TLSのように見えない場合の基礎となるnet.Connを提供します。

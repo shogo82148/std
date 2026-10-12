@@ -28,7 +28,7 @@ func Unwrap(err error) error
 //	func (m MyError) Is(target error) bool { return target == fs.ErrExist }
 //
 // 例えば、Is(MyError{}, fs.ErrExist)はtrueを返します。
-// 標準ライブラリの例については、 [syscall.Errno.Is] を参照してください。
+// 標準ライブラリーの例については、 [syscall.Errno.Is] を参照してください。
 // Isメソッドは、errとターゲットを浅く比較し、[Unwrap] を呼び出さないようにする必要があります。
 func Is(err, target error) bool
 
@@ -47,5 +47,5 @@ func Is(err, target error) bool
 // エラータイプは、異なるエラータイプであるかのように扱うことができるように、Asメソッドを提供する場合があります。
 //
 // Asは、targetがエラーを実装する型または任意のインターフェース型の、
-// 非nilポインタでない場合にパニックを引き起こします。
+// 非nilポインターでない場合にパニックを引き起こします。
 func As(err error, target any) bool

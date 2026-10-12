@@ -82,7 +82,7 @@ func Example() {
 	//
 	// 画像の境界は必ずしも(0, 0)から始まるわけではないので、2つのループは
 	// bounds.Min.Yとbounds.Min.Xから始まります。Yを最初に、Xを次にループする方が、
-	// Xを最初に、Yを次にループするよりも、より良いメモリアクセスパターンになる可能性が高いです。
+	// Xを最初に、Yを次にループするよりも、より良いメモリーアクセスパターンになる可能性が高いです。
 	var histogram [16][4]int
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {

@@ -42,5 +42,5 @@ func (e CorruptInputError) Error() string
 // [NewDecoder] は、Decodeを [io.Reader] インターフェースでラップします。
 func Decode(dst, src []byte, flush bool) (ndst, nsrc int, err error)
 
-// NewDecoder は新しい ascii85 ストリームデコーダを構築します。
+// NewDecoder は新しい ascii85 ストリームデコーダーを構築します。
 func NewDecoder(r io.Reader) io.Reader

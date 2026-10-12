@@ -14,7 +14,7 @@ package jsontext
 // NaN、+Inf、-Inf の値は、それぞれ "NaN"、"Infinity"、"-Infinity" の
 // JSON 文字列として表されます。
 //
-// ほとんどの JSON ライブラリと標準は、JSON 数値が 64 ビット浮動小数点数であることを
+// ほとんどの JSON ライブラリーと標準は、JSON 数値が 64 ビット浮動小数点数であることを
 // 前提としています。そのため、受け取り側が別の文脈からエンコードされた数値が
 // 32 ビット精度を使っていると分かる場合を除き、64 ビット精度を使うことを推奨します。
 func AppendFloat(dst []byte, src float64, bits int) []byte
@@ -83,7 +83,7 @@ func (v Value) IsValid(opts ...Options) bool
 // その他のオプションは無視されます。
 //
 // 同じオプションで値が有効な場合は必ず成功します。
-// すでにフォーマット済みの場合、バッファは変更されません。
+// すでにフォーマット済みの場合、バッファーは変更されません。
 func (v *Value) Format(opts ...Options) error
 
 // Compactは、生のJSON値からすべての空白を除去します。

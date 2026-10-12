@@ -9,14 +9,14 @@ import (
 	"github.com/shogo82148/std/iter"
 )
 
-// Allは、スライス内のインデックスと値のペアを通常の順序で反復するイテレータを返します。
+// Allは、スライス内のインデックスと値のペアを通常の順序で反復するイテレーターを返します。
 func All[Slice ~[]E, E any](s Slice) iter.Seq2[int, E]
 
-// Backwardは、スライス内のインデックスと値のペアを逆順で反復するイテレータを返します。
+// Backwardは、スライス内のインデックスと値のペアを逆順で反復するイテレーターを返します。
 // インデックスを降順でたどります。
 func Backward[Slice ~[]E, E any](s Slice) iter.Seq2[int, E]
 
-// Valuesは、スライス要素を順番に生成するイテレータを返します。
+// Valuesは、スライス要素を順番に生成するイテレーターを返します。
 func Values[Slice ~[]E, E any](s Slice) iter.Seq[E]
 
 // AppendSeqは、seqの値をスライスに追加し、拡張されたスライスを返します。
@@ -40,7 +40,7 @@ func SortedFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 // seqが空の場合、結果はnilになります。
 func SortedStableFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 
-// Chunkは、sの最大n要素の連続する部分スライスを反復するイテレータを返します。
+// Chunkは、sの最大n要素の連続する部分スライスを反復するイテレーターを返します。
 // 最後の部分スライス以外はすべてサイズnになります。
 // すべての部分スライスは、長さを超える容量を持たないようにクリップされます。
 // sが空の場合、シーケンスも空です：シーケンスに空のスライスはありません。

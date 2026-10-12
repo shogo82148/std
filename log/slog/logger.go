@@ -75,8 +75,8 @@ func With(args ...any) *Logger
 // Enabledは、lが指定されたコンテキストとレベルでログレコードを生成するかどうかを報告します。
 func (l *Logger) Enabled(ctx context.Context, level Level) bool
 
-// NewLogLoggerは、指定されたハンドラにRecordをディスパッチするための新しい [log.Logger] を返します。
-// ロガーは、古いログAPIから新しい構造化ログハンドラへのブリッジとして機能します。
+// NewLogLoggerは、指定されたハンドラーにRecordをディスパッチするための新しい [log.Logger] を返します。
+// ロガーは、古いログAPIから新しい構造化ログハンドラーへのブリッジとして機能します。
 func NewLogLogger(h Handler, level Level) *log.Logger
 
 // Logは、現在の時刻と指定されたレベルとメッセージでログレコードを生成します。

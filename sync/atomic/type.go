@@ -31,7 +31,7 @@ func (x *Bool) CompareAndSwap(old, new bool) (swapped bool)
 // Keep in sync with cmd/compile/internal/test/inl_test.go:TestIntendedInlining.
 var _ = &Pointer[int]{}
 
-// Pointerは型*Tのアトミックなポインタです。ゼロ値はnil *Tです。
+// Pointerは型*Tのアトミックなポインターです。ゼロ値はnil *Tです。
 //
 // Pointerは最初に使用した後でコピーしてはいけません。
 type Pointer[T any] struct {
@@ -53,7 +53,7 @@ func (x *Pointer[T]) Store(val *T)
 // Swapはアトミックにnewをxに格納し、前の値を返します。
 func (x *Pointer[T]) Swap(new *T) (old *T)
 
-// CompareAndSwapは、ポインタxの比較交換操作を実行します。
+// CompareAndSwapは、ポインターxの比較交換操作を実行します。
 func (x *Pointer[T]) CompareAndSwap(old, new *T) (swapped bool)
 
 // Int32はアトミックなint32です。ゼロ値はゼロです。

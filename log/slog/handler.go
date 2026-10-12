@@ -12,9 +12,9 @@ type commonHandler struct{}
 
 // Handlerは、Loggerによって生成されたログレコードを処理します。
 //
-// 典型的なハンドラは、ログレコードを標準エラーに出力したり、
+// 典型的なハンドラーは、ログレコードを標準エラーに出力したり、
 // ファイルやデータベースに書き込んだり、
-// または追加の属性を追加して別のハンドラに渡すことができます。
+// または追加の属性を追加して別のハンドラーに渡すことができます。
 //
 // Handlerのメソッドのいずれかは、自身または他のメソッドと同時に呼び出される可能性があります。
 // Handlerは、この並行性を管理する責任があります。
@@ -22,7 +22,7 @@ type commonHandler struct{}
 // slogパッケージのユーザーは、Handlerメソッドを直接呼び出すべきではありません。
 // 代わりに [Logger] のメソッドを使用すべきです。
 //
-// 独自のハンドラを実装する前に、https://go.dev/s/slog-handler-guide を参照してください。
+// 独自のハンドラーを実装する前に、https://go.dev/s/slog-handler-guide を参照してください。
 type Handler interface {
 	Enabled(context.Context, Level) bool
 
@@ -36,14 +36,14 @@ type Handler interface {
 // HandlerOptionsは、[TextHandler] または [JSONHandler] のオプションです。
 // ゼロ値のHandlerOptionsは、完全にデフォルト値で構成されています。
 type HandlerOptions struct {
-	// AddSourceは、ハンドラにログステートメントのソースコード位置を計算させ、
+	// AddSourceは、ハンドラーにログステートメントのソースコード位置を計算させ、
 	// 出力にSourceKey属性を追加させます。
 	AddSource bool
 
 	// Levelは、ログに記録される最小レコードレベルを報告します。
-	// ハンドラは、より低いレベルのレコードを破棄します。
-	// Levelがnilの場合、ハンドラはLevelInfoを想定します。
-	// ハンドラは処理される各レコードに対してLevel.Levelを呼び出します。
+	// ハンドラーは、より低いレベルのレコードを破棄します。
+	// Levelがnilの場合、ハンドラーはLevelInfoを想定します。
+	// ハンドラーは処理される各レコードに対してLevel.Levelを呼び出します。
 	// 最小レベルを動的に調整するには、LevelVarを使用してください。
 	Level Leveler
 
@@ -77,18 +77,18 @@ type HandlerOptions struct {
 // "built-in"属性のキー。
 const (
 	// TimeKeyは、ログメソッドが呼び出されたときの時間を表すために、
-	// 組み込みハンドラによって使用されるキーです。
+	// 組み込みハンドラーによって使用されるキーです。
 	// 関連する値は [time.Time] です。
 	TimeKey = "time"
 	// LevelKeyは、ログ呼び出しのレベルを表すために、
-	// 組み込みハンドラによって使用されるキーです。
+	// 組み込みハンドラーによって使用されるキーです。
 	// 関連する値は [Level] です。
 	LevelKey = "level"
 	// MessageKeyは、ログ呼び出しのメッセージを表すために、
-	// 組み込みハンドラによって使用されるキーです。
+	// 組み込みハンドラーによって使用されるキーです。
 	// 関連する値は文字列です。
 	MessageKey = "msg"
-	// SourceKey は、ログ呼び出しのソースファイルと行のためにビルトインハンドラによって使用されるキーです。
+	// SourceKey は、ログ呼び出しのソースファイルと行のためにビルトインハンドラーによって使用されるキーです。
 	// 関連する値は *[Source] です。
 	SourceKey = "source"
 )

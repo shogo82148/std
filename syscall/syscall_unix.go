@@ -122,14 +122,14 @@ func Socket(domain, typ, proto int) (fd int, err error)
 
 func Socketpair(domain, typ, proto int) (fd [2]int, err error)
 
-// Sendfileは、ファイルディスクリプタinfdからファイルディスクリプタoutfdに
+// Sendfileは、ファイルディスクリプターinfdからファイルディスクリプターoutfdに
 // 最大countバイトをコピーします。
 //
 // これはsendfileシステムコールをラップします。動作はオペレーティングシステムによって異なり、
 // 特にoffset引数と部分的な書き込みの報告方法に関して異なります。
 //
 // Linuxでは、offsetがnilの場合、Sendfileはinfdの現在のファイル位置を使用して更新します。
-// offsetがnilでない場合、現在のファイル位置は変更されず、offsetポインタが
+// offsetがnilでない場合、現在のファイル位置は変更されず、offsetポインターが
 // 書き込まれたバイト数を反映するように更新されます。
 // nilでないエラーは通常、バイトが書き込まれなかったことを意味します。
 //

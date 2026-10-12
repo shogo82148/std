@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// colorパッケージは基本的な色ライブラリを実装します。
+// colorパッケージは基本的な色ライブラリーを実装します。
 package color
 
 // Colorは、アルファ乗算済みの16ビットチャンネルRGBAに自身を変換できます。

@@ -61,7 +61,7 @@ TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 
 func ExampleConfig_keyLogWriter() {
 	// ネットワークトラフィックのキャプチャを復号してTLSアプリケーションをデバッグします。
-	// 警告: KeyLogWriter の使用はセキュリティを損なうため、
+	// 警告: KeyLogWriter の使用はセキュリティーを損なうため、
 	// デバッグ目的でのみ使用してください。
 
 	server := httptest.NewUnstartedServer(http.HandlerFunc(

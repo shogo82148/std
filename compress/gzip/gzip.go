@@ -71,7 +71,7 @@ func (z *Writer) Write(p []byte) (int, error)
 //
 // これは、主に圧縮されたネットワークプロトコルで有用であり、リモートのリーダーがパケットを再構築するために十分なデータを持っていることを保証します。データが書き込まれるまで、Flushは戻りません。下位のライターがエラーを返した場合、Flushはそのエラーを返します。
 //
-// zlibライブラリの用語では、FlushはZ_SYNC_FLUSHと同等です。
+// zlibライブラリーの用語では、FlushはZ_SYNC_FLUSHと同等です。
 func (z *Writer) Flush() error
 
 // Closeは、書き込まれていないデータを書き込み元の [io.Writer] にフラッシュし、GZIPのフッターを書き込んで [Writer] を閉じます。

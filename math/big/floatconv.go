@@ -66,6 +66,6 @@ var _ fmt.Scanner = (*Float)(nil)
 
 // Scanは、[fmt.Scanner] のサポートルーチンで、zをスキャンされた数値に設定します。
 // これは、浮動小数点値に対して [fmt.Scan] がサポートする動詞を持つ形式を受け入れます。それらは次のとおりです:
-// 'b'（バイナリ）、'e'、'E'、'f'、'F'、'g'、'G'。
+// 'b'（バイナリー）、'e'、'E'、'f'、'F'、'g'、'G'。
 // Scanは±Infを処理しません。
 func (z *Float) Scan(s fmt.ScanState, ch rune) error

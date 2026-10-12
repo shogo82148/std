@@ -34,7 +34,7 @@ func (pe *ProtocolError) Is(err error) bool
 var (
 	// ErrNotSupportedは、機能がサポートされていないことを示します。
 	//
-	// ResponseControllerメソッドによって、ハンドラがメソッドをサポートしていないことを示すために返され、
+	// ResponseControllerメソッドによって、ハンドラーがメソッドをサポートしていないことを示すために返され、
 	// Pusher実装のPushメソッドによって、HTTP/2 Pushサポートが利用できないことを示すために返されます。
 	ErrNotSupported = &ProtocolError{"feature not supported"}
 
@@ -42,7 +42,7 @@ var (
 	// 呼び出し元は、この変数とエラーを比較すべきではありません。
 	ErrUnexpectedTrailer = &ProtocolError{"trailer header without chunked transfer encoding"}
 
-	// ErrMissingBoundaryは、リクエストのContent-Typeに「boundary」パラメータが含まれていない場合に、Request.MultipartReaderによって返されます。
+	// ErrMissingBoundaryは、リクエストのContent-Typeに「boundary」パラメーターが含まれていない場合に、Request.MultipartReaderによって返されます。
 	ErrMissingBoundary = &ProtocolError{"no multipart boundary param in Content-Type"}
 
 	/// ErrNotMultipartは、リクエストのContent-Typeがmultipart/form-dataでない場合、Request.MultipartReaderによって返されます。
@@ -120,7 +120,7 @@ type Request struct {
 	// HTTPクライアントのTransportは、Closeメソッドを呼び出す責任があります。
 	//
 	// サーバーリクエストの場合、Request Bodyは常にnilではありませんが、本文が存在しない場合はすぐにEOFが返されます。
-	// サーバーはリクエストボディを閉じます。ServeHTTPハンドラーは閉じる必要はありません。
+	// サーバーはリクエストボディーを閉じます。ServeHTTPハンドラーは閉じる必要はありません。
 	//
 	// Bodyは、ReadがCloseと同時に呼び出されることを許可する必要があります。
 	// 特に、Closeを呼び出すと、入力を待機しているReadがブロックされている場合は、それを解除する必要があります。
@@ -167,12 +167,12 @@ type Request struct {
 	// Hostには国際ドメイン名が含まれる場合があります。
 	Host string
 
-	// Formには、URLフィールドのクエリパラメータとPATCH、POST、またはPUTフォームデータを含む解析されたフォームデータが含まれます。
+	// Formには、URLフィールドのクエリーパラメーターとPATCH、POST、またはPUTフォームデータを含む解析されたフォームデータが含まれます。
 	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
 	// HTTPクライアントはFormを無視し、代わりにBodyを使用します。
 	Form url.Values
 
-	// PostFormには、PATCH、POST、またはPUTボディパラメータから解析されたフォームデータが含まれます。
+	// PostFormには、PATCH、POST、またはPUTボディーパラメーターから解析されたフォームデータが含まれます。
 	//
 	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
 	// HTTPクライアントはPostFormを無視し、代わりにBodyを使用します。
@@ -192,14 +192,14 @@ type Request struct {
 	//
 	// クライアントリクエストの場合、Trailerは、後で送信するトレーラーキーを含むマップで初期化する必要があります。
 	// 値はnilまたは最終値である場合があります。ContentLengthは0または-1である必要があります。
-	// HTTPリクエストが送信された後、マップの値は、リクエストボディが読み取られている間に更新できます。
-	// ボディがEOFを返した後、呼び出し元はTrailerを変更してはいけません。
+	// HTTPリクエストが送信された後、マップの値は、リクエストボディーが読み取られている間に更新できます。
+	// ボディーがEOFを返した後、呼び出し元はTrailerを変更してはいけません。
 	//
 	// Trailerに不正なバイト（CRやLFなど）を含むキーがあるリクエスト、
 	// またはWrite開始時点でそのような値が存在するリクエストを書き込むと、
 	// エラーが返されます。
 	//
-	// HTTPトレーラーをサポートするHTTPクライアント、サーバー、プロキシは多くありません。
+	// HTTPトレーラーをサポートするHTTPクライアント、サーバー、プロキシーは多くありません。
 	Trailer Header
 
 	// RemoteAddrは、HTTPサーバーやその他のソフトウェアが、通常はログ記録のためにリクエストを送信したネットワークアドレスを記録できるようにします。
@@ -259,7 +259,7 @@ func (r *Request) Context() context.Context
 
 // WithContextは、そのコンテキストをctxに変更したrの浅いコピーを返します。提供されたctxはnilであってはなりません。
 //
-// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディーの読み取り。
 //
 // コンテキストを持つ新しいリクエストを作成するには、[NewRequestWithContext] を使用します。
 // 新しいコンテキストを持つリクエストのディープコピーを作成するには、[Request.Clone] を使用します。
@@ -267,7 +267,7 @@ func (r *Request) WithContext(ctx context.Context) *Request
 
 // Cloneは、そのコンテキストをctxに変更したrのディープコピーを返します。提供されたctxはnilであってはなりません。
 //
-// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディーの読み取り。
 //
 // CloneはBodyフィールドの浅いコピーのみを作成します。
 //
@@ -305,16 +305,16 @@ func (r *Request) AddCookie(c *Cookie)
 //
 // Refererは、HTTPの初期の日々からの誤りで、リクエスト自体で誤ってスペルがされています。
 // この値はHeader["Referer"]として [Header] マップから取得することもできますが、
-// メソッドとして利用可能にすることの利点は、代替の（正しい英語の）スペルreq.Referrer()を使用するプログラムをコンパイラが診断できるが、
+// メソッドとして利用可能にすることの利点は、代替の（正しい英語の）スペルreq.Referrer()を使用するプログラムをコンパイラーが診断できるが、
 // Header["Referrer"]を使用するプログラムを診断できないことです。
 func (r *Request) Referer() string
 
 // MultipartReaderは、これがmultipart/form-dataまたはmultipart/mixed POSTリクエストである場合、MIMEマルチパートリーダーを返します。
 // それ以外の場合はnilとエラーを返します。
-// リクエストボディをストリームとして処理するために、[Request.ParseMultipartForm] の代わりにこの関数を使用してください。
+// リクエストボディーをストリームとして処理するために、[Request.ParseMultipartForm] の代わりにこの関数を使用してください。
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
-// Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディ）を書き込みます。
+// Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディー）を書き込みます。
 // このメソッドは、リクエストの以下のフィールドを参照します。
 //
 //	Host
@@ -335,7 +335,7 @@ func (r *Request) MultipartReader() (*multipart.Reader, error)
 // "Go-http-client/1.1"を使用します。
 func (r *Request) Write(w io.Writer) error
 
-// WriteProxyは、[Request.Write] と似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
+// WriteProxyは、[Request.Write] と似ていますが、HTTPプロキシーが期待する形式でリクエストを書き込みます。
 // 特に、[Request.WriteProxy] は、RFC 7230のセクション5.3に従って、スキームとホストを含む絶対URIでリクエストの最初のRequest-URI行を書き込みます。
 // WriteProxyは、r.Host または r.URL.Host を使用して、Hostヘッダーも書き込みます。
 func (r *Request) WriteProxy(w io.Writer) error
@@ -347,19 +347,19 @@ func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 // NewRequestは、[context.Background] を使用して [NewRequestWithContext] をラップします。
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
-// NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しい [Request] を返します。
+// NewRequestWithContextは、メソッド、URL、およびオプションのボディーが与えられた場合に新しい [Request] を返します。
 //
 // 提供されたbodyが [io.Closer] でも、返された [Request.Body] はbodyに設定され、ClientのDo、Post、PostForm、および [Transport.RoundTrip] によって（非同期に）閉じられます。
 //
 // NewRequestWithContextは、[Client.Do] や [Transport.RoundTrip] で使用できるRequestを返します。
-// サーバーハンドラのテスト用リクエストを作成するには、[net/http/httptest.NewRequest] 関数を使うか、
+// サーバーハンドラーのテスト用リクエストを作成するには、[net/http/httptest.NewRequest] 関数を使うか、
 // [ReadRequest] を使うか、Requestフィールドを手動で更新してください。
 // クライアントから送信するリクエストの場合、contextはリクエストとレスポンスの
-// 取得、リクエストの送信、レスポンスヘッダーとボディの読み取りなど、リクエスト全体のライフサイクルを制御します。
+// 取得、リクエストの送信、レスポンスヘッダーとボディーの読み取りなど、リクエスト全体のライフサイクルを制御します。
 // 入力リクエストと出力リクエストのフィールドの違いについては、[Request] 型のドキュメントを参照してください。
 //
 // bodyが [*bytes.Buffer]、 [*bytes.Reader]、または [*strings.Reader] の場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
-// GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyが [NoBody] に設定されます。
+// GetBodyが作成されます（307および308のリダイレクトがボディーを再生できるように）、およびContentLengthが0の場合はBodyが [NoBody] に設定されます。
 func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
 
 // BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
@@ -380,7 +380,7 @@ func (r *Request) SetBasicAuth(username, password string)
 // ReadRequestは、HTTP/1.xリクエストのみをサポートしています。 HTTP/2の場合は、golang.org/x/net/http2 を使用してください。
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
-// MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディのサイズを制限するために使用されます。
+// MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディーのサイズを制限するために使用されます。
 // io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して [*MaxBytesError] 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
 //
 // MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、[ResponseWriter] に制限に達した後に接続を閉じるように指示します。
@@ -395,30 +395,30 @@ func (e *MaxBytesError) Error() string
 
 // ParseFormはr.Formとr.PostFormを埋めます。
 //
-// すべてのリクエストに対して、ParseFormはURLから生のクエリを解析し、r.Formを更新します。
+// すべてのリクエストに対して、ParseFormはURLから生のクエリーを解析し、r.Formを更新します。
 //
-// POST、PUT、およびPATCHリクエストの場合、それはまた、リクエストボディを読み取り、フォームとして解析し、その結果をr.PostFormとr.Formの両方に入れます。リクエストボディのパラメータは、r.FormのURLクエリ文字列値より優先されます。
+// POST、PUT、およびPATCHリクエストの場合、それはまた、リクエストボディーを読み取り、フォームとして解析し、その結果をr.PostFormとr.Formの両方に入れます。リクエストボディーのパラメーターは、r.FormのURLクエリー文字列値より優先されます。
 //
-// リクエストボディのサイズがすでに [MaxBytesReader] によって制限されていない場合、サイズは10MBに制限されます。
+// リクエストボディーのサイズがすでに [MaxBytesReader] によって制限されていない場合、サイズは10MBに制限されます。
 //
-// 他のHTTPメソッド、またはContent-Typeがapplication/x-www-form-urlencodedでない場合、リクエストボディは読み取られず、r.PostFormはnilでない空の値に初期化されます。
+// 他のHTTPメソッド、またはContent-Typeがapplication/x-www-form-urlencodedでない場合、リクエストボディーは読み取られず、r.PostFormはnilでない空の値に初期化されます。
 //
 // [Request.ParseMultipartForm] は自動的にParseFormを呼び出します。
 // ParseFormは冪等です。
 func (r *Request) ParseForm() error
 
-// ParseMultipartFormは、リクエストボディをmultipart/form-dataとして解析します。
-// リクエストボディ全体が解析され、そのファイルパーツの最大maxMemoryバイトがメモリに格納され、残りは一時ファイルに格納されます。
+// ParseMultipartFormは、リクエストボディーをmultipart/form-dataとして解析します。
+// リクエストボディー全体が解析され、そのファイルパーツの最大maxMemoryバイトがメモリーに格納され、残りは一時ファイルに格納されます。
 // ParseMultipartFormは必要に応じて [Request.ParseForm] を呼び出します。
-// ParseFormがエラーを返した場合、ParseMultipartFormはそれを返しますが、リクエストボディの解析を続けます。
+// ParseFormがエラーを返した場合、ParseMultipartFormはそれを返しますが、リクエストボディーの解析を続けます。
 // ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
-// FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
+// FormValueは、クエリーの名前付きコンポーネントの最初の値を返します。
 // 優先順位は以下の通りです：
-//  1. application/x-www-form-urlencoded形式のフォームボディ（POST、PUT、PATCHのみ）
-//  2. クエリパラメータ（常に）
-//  3. multipart/form-data形式のフォームボディ（常に）
+//  1. application/x-www-form-urlencoded形式のフォームボディー（POST、PUT、PATCHのみ）
+//  2. クエリーパラメーター（常に）
+//  3. multipart/form-data形式のフォームボディー（常に）
 //
 // FormValueは必要に応じて [Request.ParseMultipartForm] と [Request.ParseForm] を呼び出し、
 // これらの関数が返すエラーは無視します。
@@ -427,8 +427,8 @@ func (r *Request) ParseMultipartForm(maxMemory int64) error
 // その後で [Request.Form] を直接調べます。
 func (r *Request) FormValue(key string) string
 
-// PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
-// URLクエリパラメータは無視されます。
+// PostFormValueは、POST、PUT、またはPATCHリクエストボディーの名前付きコンポーネントの最初の値を返します。
+// URLクエリーパラメーターは無視されます。
 // 必要に応じて、PostFormValueは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
 // これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、PostFormValueは空の文字列を返します。

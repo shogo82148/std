@@ -5,7 +5,7 @@
 // DistpackはGoの配布用のtgzファイルとzipファイルを作成します。
 // これはGOROOT/pkg/distpackに書き込みます：
 //
-//   - 現在のGOOSとGOARCH向けのバイナリ配布（tgzまたはzip）
+//   - 現在のGOOSとGOARCH向けのバイナリー配布（tgzまたはzip）
 //   - GOOS/GOARCHに依存しないソース配布
 //   - ゴーグルコマンドで使用されるようにダウンロードするためのモジュールmod、info、zipファイル
 //

@@ -13,7 +13,7 @@ package types
 //
 // AssertableToの動作は、3つのケースで未指定です：
 //   - TがTyp[Invalid]である場合
-//   - Vが一般化されたインタフェースである場合。つまり、Goコードで型制約としてのみ使用されるインタフェースである場合
+//   - Vが一般化されたインターフェースである場合。つまり、Goコードで型制約としてのみ使用されるインターフェースである場合
 //   - Tが未実体化のジェネリック型である場合
 func AssertableTo(V *Interface, T Type) bool
 
@@ -38,7 +38,7 @@ func Implements(V Type, T *Interface) bool
 func Satisfies(V Type, T *Interface) bool
 
 // Identicalはxとyが同じ型であるかどうかを返します。
-// [Signature] 型のレシーバは無視されます。
+// [Signature] 型のレシーバーは無視されます。
 //
 // [Identical]、[Implements]、[Satisfies] などの述語は、
 // 両方のオペランドが一貫したシンボルのコレクション（[Object] 値）に属していると仮定します。

@@ -14,7 +14,7 @@ type RawConn interface {
 }
 
 // Connは、netパッケージとosパッケージの一部の型によって実装され、
-// 基礎となるファイルディスクリプタまたはハンドルへのアクセスを提供します。
+// 基礎となるファイルディスクリプターまたはハンドルへのアクセスを提供します。
 type Conn interface {
 	SyscallConn() (RawConn, error)
 }

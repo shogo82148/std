@@ -39,13 +39,13 @@ func ExampleMakeFunc() {
 		return []reflect.Value{in[1], in[0]}
 	}
 
-	// makeSwapは、fptrがnil関数へのポインタであることを期待しています。
-	// それは、MakeFuncで作成された新しい関数にそのポインタを設定します。
+	// makeSwapは、fptrがnil関数へのポインターであることを期待しています。
+	// それは、MakeFuncで作成された新しい関数にそのポインターを設定します。
 	// 関数が呼び出されると、reflectは引数をValuesに変換し、swapを呼び出し、swapの結果スライスを新しい関数の返り値として変換します。
 	makeSwap := func(fptr any) {
-		// fptrは関数へのポインタです。
+		// fptrは関数へのポインターです。
 		// リフレクト値として関数値自体（おそらくnil）を取得し、
-		// その型をクエリできるようにするために値を設定します。
+		// その型をクエリーできるようにするために値を設定します。
 		fn := reflect.ValueOf(fptr).Elem()
 
 		// 適切な型の関数を作成します。

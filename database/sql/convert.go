@@ -12,12 +12,12 @@ import (
 
 // ConvertAssignは、srcの値をdestが指す値にコピーします。
 // 変換の詳細については、[Rows.Scan] のドキュメントを参照してください。
-// destはポインタであるか、[Scanner] を実装していなければなりません。
+// destはポインターであるか、[Scanner] を実装していなければなりません。
 //
 // [driver.RowsColumnScanner] の実装では、
-// [driver.ScanContext] パラメータをそのまま渡す必要があります。
+// [driver.ScanContext] パラメーターをそのまま渡す必要があります。
 // それ以外の場合は、コンテキストとして driver.ScanContext{} を渡します。
 //
-// ConvertAssignは、ドライバ実装での使用を意図しています。
+// ConvertAssignは、ドライバー実装での使用を意図しています。
 // ほとんどのユーザーは、これを直接使う必要はありません。
 func ConvertAssign(scanCtx driver.ScanContext, dest any, src driver.Value) error

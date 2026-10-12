@@ -51,8 +51,8 @@ type Unmarshalers = typedUnmarshalers
 func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 
 // MarshalFuncは、型T専用のマーシャル方法を指定する関数を構築します。
-// Tは名前付きポインタ以外の任意の型にできます。
-// Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
+// Tは名前付きポインター以外の任意の型にできます。
+// Tがインターフェース型またはポインター型の場合、関数には必ず非nilのポインター値が渡されます。
 //
 // 実装は [Marshaler] の要件に従わなければなりません。
 //
@@ -60,17 +60,17 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
 // MarshalToFuncは、型T専用のマーシャル方法を指定する関数を構築します。
-// Tは名前付きポインタ以外の任意の型にできます。
-// Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
+// Tは名前付きポインター以外の任意の型にできます。
+// Tがインターフェース型またはポインター型の場合、関数には必ず非nilのポインター値が渡されます。
 //
 // 実装は [MarshalerTo] の要件に従わなければなりません。
 //
-// [jsontext.Encoder] へのポインタや T の値を保持してはなりません。
+// [jsontext.Encoder] へのポインターや T の値を保持してはなりません。
 func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 
 // UnmarshalFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
-// Tは名前なしポインタ型またはインターフェース型でなければなりません。
-// 関数には必ず非nilのポインタ値が渡されます。
+// Tは名前なしポインター型またはインターフェース型でなければなりません。
+// 関数には必ず非nilのポインター値が渡されます。
 //
 // 実装は [Unmarshaler] の要件に従わなければなりません。
 //
@@ -78,10 +78,10 @@ func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 
 // UnmarshalFromFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
-// Tは名前なしポインタ型またはインターフェース型でなければなりません。
-// 関数には必ず非nilのポインタ値が渡されます。
+// Tは名前なしポインター型またはインターフェース型でなければなりません。
+// 関数には必ず非nilのポインター値が渡されます。
 //
 // 実装は [UnmarshalerFrom] の要件に従わなければなりません。
 //
-// [jsontext.Decoder] へのポインタや T の値を保持してはなりません。
+// [jsontext.Decoder] へのポインターや T の値を保持してはなりません。
 func UnmarshalFromFunc[T any](fn func(*jsontext.Decoder, T) error) *Unmarshalers

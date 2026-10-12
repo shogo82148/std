@@ -42,10 +42,10 @@ func (s *StdSizes) Offsetsof(fields []*Var) []int64
 
 func (s *StdSizes) Sizeof(T Type) int64
 
-// SizesForは、コンパイラがアーキテクチャで使用するサイズを返します。
-// コンパイラ/アーキテクチャの組み合わせが不明な場合、結果はnilです。
+// SizesForは、コンパイラーがアーキテクチャで使用するサイズを返します。
+// コンパイラー/アーキテクチャの組み合わせが不明な場合、結果はnilです。
 //
-// コンパイラ"gc"に対応したアーキテクチャ:
+// コンパイラー"gc"に対応したアーキテクチャ:
 // "386", "amd64", "amd64p32", "arm", "arm64", "loong64", "mips", "mipsle",
 // "mips64", "mips64le", "ppc64", "ppc64le", "riscv64", "s390x", "sparc64", "wasm"。
 func SizesFor(compiler, arch string) Sizes

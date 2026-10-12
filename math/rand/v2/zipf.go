@@ -22,8 +22,8 @@ type Zipf struct {
 	hx0minusHxm  float64
 }
 
-// NewZipfは、Zipf変量ジェネレータを返します。
-// このジェネレータは、P(k)が(v + k) ** (-s)に比例するような値k ∈ [0, imax]を生成します。
+// NewZipfは、Zipf変量ジェネレーターを返します。
+// このジェネレーターは、P(k)が(v + k) ** (-s)に比例するような値k ∈ [0, imax]を生成します。
 // 要件：s > 1 および v >= 1。
 func NewZipf(r *Rand, s float64, v float64, imax uint64) *Zipf
 

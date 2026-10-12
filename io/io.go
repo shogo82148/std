@@ -25,7 +25,7 @@ const (
 // 明示的なエラーを返すことができなかったことを意味します。
 var ErrShortWrite = errors.New("short write")
 
-// ErrShortBuffer は、読み込みに提供されたバッファよりも長いバッファが必要だったことを意味します。
+// ErrShortBuffer は、読み込みに提供されたバッファーよりも長いバッファーが必要だったことを意味します。
 var ErrShortBuffer = errors.New("short buffer")
 
 // EOFは、入力がもう利用できない場合にReadが返すエラーです。
@@ -110,7 +110,7 @@ type WriteCloser interface {
 	Closer
 }
 
-// ReadWriteCloserは、基本的なRead、Write、Closeメソッドをグループ化するインタフェースです。
+// ReadWriteCloserは、基本的なRead、Write、Closeメソッドをグループ化するインターフェースです。
 type ReadWriteCloser interface {
 	Reader
 	Writer
@@ -154,7 +154,7 @@ type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
 
-// WriterToはWriteToメソッドをラップするインタフェースです。
+// WriterToはWriteToメソッドをラップするインターフェースです。
 //
 // WriteToはデータを書き込み、書き込むデータがなくなるか
 // エラーが発生するまでwに書き込みます。戻り値nは書き込まれた
@@ -294,8 +294,8 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 // それ以外の場合、dstが [ReaderFrom] インターフェースを実装している場合、コピーはdst.ReadFrom(src)の呼び出しで実装されます。
 func Copy(dst Writer, src Reader) (written int64, err error)
 
-// CopyBuffer は Copy と同じですが、一時的なバッファを割り当てる代わりに、
-// 提供されたバッファを使用してステージングします（必要な場合）。buf が nil の場合、一時的なバッファが割り当てられます。
+// CopyBuffer は Copy と同じですが、一時的なバッファーを割り当てる代わりに、
+// 提供されたバッファーを使用してステージングします（必要な場合）。buf が nil の場合、一時的なバッファーが割り当てられます。
 // もし buf の長さがゼロなら、CopyBuffer はパニックを引き起こします。
 //
 // もし src が [WriterTo] を実装しているか、dst が [ReaderFrom] を実装している場合、

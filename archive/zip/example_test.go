@@ -15,7 +15,7 @@ import (
 )
 
 func ExampleWriter() {
-	// アーカイブを書き込むためのバッファを作成します。
+	// アーカイブを書き込むためのバッファーを作成します。
 	buf := new(bytes.Buffer)
 
 	// 新しい zip アーカイブを作成します。
@@ -77,7 +77,7 @@ func ExampleReader() {
 func ExampleWriter_RegisterCompressor() {
 	// デフォルトの Deflate 圧縮プログラムを、より高い圧縮レベルのカスタム圧縮プログラムで上書きします。
 
-	// アーカイブを書き込むためのバッファを作成します。
+	// アーカイブを書き込むためのバッファーを作成します。
 	buf := new(bytes.Buffer)
 
 	// 新しい zip アーカイブを作成します。

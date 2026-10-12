@@ -63,12 +63,12 @@ const (
 	// QUICEvent.Dataが設定されています。
 	QUICWriteData
 
-	// QUICTransportParametersは相手のQUICトランスポートパラメータを提供します。
+	// QUICTransportParametersは相手のQUICトランスポートパラメーターを提供します。
 	// QUICEvent.Dataが設定されています。
 	QUICTransportParameters
 
-	// QUICTransportParametersRequiredは、呼び出し元がピアに送信するためのQUICトランスポートパラメータを提供する必要があることを示します。呼び出し元は、QUICConn.SetTransportParametersを使用してトランスポートパラメータを設定し、QUICConn.NextEventを再度呼び出す必要があります。
-	// QUICConn.Startを呼び出す前にトランスポートパラメータが設定されている場合、接続は決してQUICTransportParametersRequiredイベントを生成しません。
+	// QUICTransportParametersRequiredは、呼び出し元がピアに送信するためのQUICトランスポートパラメーターを提供する必要があることを示します。呼び出し元は、QUICConn.SetTransportParametersを使用してトランスポートパラメーターを設定し、QUICConn.NextEventを再度呼び出す必要があります。
+	// QUICConn.Startを呼び出す前にトランスポートパラメーターが設定されている場合、接続は決してQUICTransportParametersRequiredイベントを生成しません。
 	QUICTransportParametersRequired
 
 	// QUICRejectedEarlyDataは、サーバーが私たちが提供したものであっても、0-RTTデータを拒否したことを示しています。これは、QUICEncryptionLevelApplicationのキーが返される前に返されます。
@@ -169,7 +169,7 @@ func (q *QUICConn) StoreSession(session *SessionState) error
 // ConnectionStateは接続に関する基本的なTLSの詳細を返します。
 func (q *QUICConn) ConnectionState() ConnectionState
 
-// SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
+// SetTransportParametersはピアに送信するためのトランスポートパラメーターを設定します。
 //
-// サーバ接続では、クライアントのトランスポートパラメータを受信した後にトランスポートパラメータを設定することができます。 [QUICTransportParametersRequired] を参照してください。
+// サーバー接続では、クライアントのトランスポートパラメーターを受信した後にトランスポートパラメーターを設定することができます。 [QUICTransportParametersRequired] を参照してください。
 func (q *QUICConn) SetTransportParameters(params []byte)

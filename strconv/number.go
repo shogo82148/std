@@ -21,7 +21,7 @@ func ParseBool(str string) (bool, error)
 func FormatBool(b bool) string
 
 // AppendBoolは、bの値に応じて"true"または"false"をdstに追加し、
-// 拡張されたバッファを返します。
+// 拡張されたバッファーを返します。
 func AppendBool(dst []byte, b bool) []byte
 
 // ParseComplexは、文字列sをbitSizeで指定された精度（complex64の場合は64、
@@ -136,7 +136,7 @@ func FormatComplex(c complex128, fmt byte, prec, bitSize int) string
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
 // AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式を
-// dstに追加し、拡張されたバッファを返します。
+// dstに追加し、拡張されたバッファーを返します。
 func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte
 
 // FormatUintは、2 <= base <= 36の指定された基数でのiの文字列表現を返します。
@@ -151,11 +151,11 @@ func FormatInt(i int64, base int) string
 func Itoa(i int) string
 
 // AppendIntは、[FormatInt] によって生成された整数iの文字列形式を
-// dstに追加し、拡張されたバッファを返します。
+// dstに追加し、拡張されたバッファーを返します。
 func AppendInt(dst []byte, i int64, base int) []byte
 
 // AppendUintは、[FormatUint] によって生成された符号なし整数iの文字列形式を
-// dstに追加し、拡張されたバッファを返します。
+// dstに追加し、拡張されたバッファーを返します。
 func AppendUint(dst []byte, i uint64, base int) []byte
 
 // ErrRangeは、値が対象の型の範囲外であることを示します。
