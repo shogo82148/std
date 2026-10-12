@@ -25,3 +25,12 @@ const (
 //
 // The returned slice can be nonempty even if the error is non-nil.
 func ListModules(ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)
+
+// ParsePathVersionは、argがpath@versionの形式であることを想定して解析します。
+// argに'@'がない場合、foundはfalse、versは""、pathはargになります。これは
+// strings.Cutの典型的な使い方に対応しています。ParsePathVersionは、モジュール
+// バージョンの解析におけるstrings.Cutの汎用的な代替として使われることを意図しています。
+// バージョンが不正な場合はエラーを返します。バージョンが'-'または'/'で始まる場合は
+// 不正とみなされます。これらは、そのバージョンを使って実行するコマンドを組み立てる際に
+// セキュリティ上の問題を引き起こす可能性があるためです。
+func ParsePathVersion(arg string) (path, vers string, found bool, err error)

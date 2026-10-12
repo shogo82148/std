@@ -335,11 +335,18 @@ type Config struct {
 	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
 	// 返されたConfigに明示的にSessionTicketKeyが設定されている場合、または返されたConfigにSetSessionTicketKeysが呼び出された場合、これらのキーが使用されます。それ以外の場合、元のConfigキーが使用されます（自動的に管理される場合、回転する可能性もあります）。
+	// 警告: これにより、親（または兄弟）のConfigで最初に確立された接続のセッション再開が可能になり、
+	// 返されたConfigの [Config.VerifyPeerCertificate] の値が回避される可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
 	// VerifyPeerCertificate は、TLSクライアントまたはサーバーによる通常の証明書検証の後に呼び出されます（nilでない場合）。この関数は、ピアから提供された生のASN.1証明書と、通常の処理で検証されたチェーンを受け取ります。もしnon-nilのエラーを返す場合、ハンドシェイクは中断され、そのエラーが結果となります。
 	// 通常の検証に失敗した場合、このコールバックは検討される前にハンドシェイクが中断されます。通常の検証が無効になっている場合（InsecureSkipVerifyがクライアント側で設定されている場合、またはServerAuthがRequestClientCertまたはRequireAnyClientCertの場合）、このコールバックは考慮されますが、verifiedChains引数は常にnilになります。ClientAuthがNoClientCertの場合、このコールバックはサーバーで呼び出されません。rawCertsは、ClientAuthがRequestClientCertまたはVerifyClientCertIfGivenの場合には、サーバーで空になる可能性があります。
-	// このコールバックは再開された接続では呼び出されず、証明書は再検証されません。
+	//
+	// このコールバックは再開された接続では呼び出されません。警告: これには、[Config.Clone] または
+	// [Config.GetConfigForClient] が返したConfigとその親の間で再開された接続も含まれます。
+	// これが意図しない動作である場合は、代わりに [Config.VerifyConnection] を使用するか、
+	// [Config.SessionTicketsDisabled] を設定してください。
+	//
 	// verifiedChainsとその内容は変更しないでください。
 	VerifyPeerCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 
@@ -566,6 +573,13 @@ type EncryptedClientHelloKey struct {
 
 // Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。TLSクライアントまたはサーバーによって
 // 同時に使用されている [Config] をクローンすることは安全です。
+//
+// 返されたConfigは元のConfigとセッションチケットキーを共有する可能性があり、
+// その場合、2つのConfig間で接続が再開されることがあります。警告:
+// [Config.VerifyPeerCertificate] は、親のConfigで最初に確立された接続を含め、
+// 再開された接続では呼び出されません。
+// これが意図しない動作である場合は、代わりに [Config.VerifyConnection] を使用するか、
+// [Config.SessionTicketsDisabled] を設定してください。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
