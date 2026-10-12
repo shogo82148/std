@@ -23,7 +23,7 @@ func NewCipher(key []byte) (*Cipher, error)
 
 // Resetはキーデータをゼロ化し、 [Cipher] を使用できなくします。
 //
-// Deprecated: Resetはキーがプロセスのメモリから完全に削除されることを保証できません。
+// Deprecated: Resetはキーがプロセスのメモリーから完全に削除されることを保証できません。
 func (c *Cipher) Reset()
 
 // XORKeyStreamは、キーストリームを使用してsrcとXOR演算した結果をdstに設定します。

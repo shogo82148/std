@@ -16,8 +16,8 @@ import (
 // Executeが返すエラーは元のエラーをラップしています。アンラップするには [errors.AsType] を呼び出してください。
 //
 // テンプレートの実行が引数リストを持つ関数を呼び出すとき、そのリストは
-// 関数のパラメータタイプに割り当て可能でなければなりません。任意のタイプの引数に適用することを意図した
-// 関数は、interface{}型または [reflect.Value] 型のパラメータを使用できます。同様に、任意の
+// 関数のパラメータータイプに割り当て可能でなければなりません。任意のタイプの引数に適用することを意図した
+// 関数は、interface{}型または [reflect.Value] 型のパラメーターを使用できます。同様に、任意の
 // タイプの結果を返すことを意図した関数は、interface{}または [reflect.Value] を返すことができます。
 type FuncMap map[string]any
 
@@ -39,5 +39,5 @@ func JSEscapeString(s string) string
 // JSEscaperは、その引数のテキスト表現のエスケープされたJavaScript相当を返します。
 func JSEscaper(args ...any) string
 
-// URLQueryEscaperは、URLクエリに埋め込む形式に適した、その引数のテキスト表現のエスケープされた値を返します。
+// URLQueryEscaperは、URLクエリーに埋め込む形式に適した、その引数のテキスト表現のエスケープされた値を返します。
 func URLQueryEscaper(args ...any) string

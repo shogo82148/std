@@ -2,35 +2,32 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package pbkdf2 implements the key derivation function PBKDF2 as defined in
-// RFC 8018 (PKCS #5 v2.1).
+// pbkdf2パッケージは、RFC 8018 (PKCS #5 v2.1) で定義されている
+// 鍵導出関数PBKDF2を実装します。
 //
-// A key derivation function is useful when encrypting data based on a password
-// or any other not-fully-random data. It uses a pseudorandom function to derive
-// a secure encryption key based on the password.
+// 鍵導出関数は、パスワードやその他の完全にはランダムでないデータに基づいて
+// データを暗号化する場合に役立ちます。擬似乱数関数を使用して、
+// パスワードに基づいた安全な暗号鍵を導出します。
 package pbkdf2
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// Key derives a key from the password, salt and iteration count, returning a
-// []byte of length keyLength that can be used as cryptographic key. The key is
-// derived based on the method described as PBKDF2 with the HMAC variant using
-// the supplied hash function.
+// Keyはパスワード、ソルト、反復回数から鍵を導出し、暗号鍵として使用できる
+// 長さkeyLengthの[]byteを返します。鍵は、指定されたハッシュ関数を用いた
+// HMAC版のPBKDF2として説明されている方法に基づいて導出されます。
 //
-// For example, to use a HMAC-SHA-1 based PBKDF2 key derivation function, you
-// can get a derived key for e.g. AES-256 (which needs a 32-byte key) by
-// doing:
+// 例えば、HMAC-SHA-1ベースのPBKDF2鍵導出関数を使用する場合、
+// AES-256用の導出鍵（32バイトの鍵が必要）は次のようにして得られます:
 //
 //	dk, err := pbkdf2.Key(sha1.New, "some password", salt, 4096, 32)
 //
-// Remember to get a good random salt. At least 8 bytes is recommended by the
-// RFC.
+// 良質なランダムソルトを使用することを忘れないでください。RFCでは
+// 少なくとも8バイトが推奨されています。
 //
-// Using a higher iteration count will increase the cost of an exhaustive
-// search but will also make derivation proportionally slower.
+// 反復回数を増やすと全数探索のコストが増加しますが、導出も比例して遅くなります。
 //
-// keyLength must be a positive integer between 1 and (2^32 - 1) * h.Size().
-// Setting keyLength to a value outside of this range will result in an error.
+// keyLengthは1から(2^32 - 1) * h.Size()の間の正の整数でなければなりません。
+// keyLengthをこの範囲外の値に設定するとエラーになります。
 func Key[Hash hash.Hash](h func() Hash, password string, salt []byte, iter, keyLength int) ([]byte, error)

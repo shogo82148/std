@@ -16,6 +16,8 @@ type Error struct {
 	Msg string
 }
 
+var _ error = (*Error)(nil)
+
 // Errorはerrorインターフェースを実装します。
 func (e Error) Error() string
 
@@ -35,7 +37,7 @@ func (p ErrorList) Swap(i, j int)
 
 func (p ErrorList) Less(i, j int) bool
 
-// Sort関数は、[ErrorList] をソートします。*[Error] のエントリは位置で、他のエラーはエラーメッセージでソートされ、*[Error] のエントリの前に配置されます。
+// Sort関数は、[ErrorList] をソートします。*[Error] のエントリーは位置で、他のエラーはエラーメッセージでソートされ、*[Error] のエントリーの前に配置されます。
 func (p ErrorList) Sort()
 
 // RemoveMultiplesは [ErrorList] をソートし、1行ごとに最初のエラー以外を削除します。
@@ -48,5 +50,5 @@ func (p ErrorList) Error() string
 // リストが空の場合、Errはnilを返します。
 func (p ErrorList) Err() error
 
-// PrintErrorは、errパラメータが [ErrorList] の場合、エラーリストを1行ごとにwに出力します。それ以外の場合は、err文字列を出力します。
+// PrintErrorは、errパラメーターが [ErrorList] の場合、エラーリストを1行ごとにwに出力します。それ以外の場合は、err文字列を出力します。
 func PrintError(w io.Writer, err error)

@@ -5,7 +5,7 @@
 /*
 elfパッケージは、ELFオブジェクトファイルへのアクセスを実装します。
 
-# セキュリティ
+# Security
 
 このパッケージは敵対的な入力に対して強化されるように設計されておらず、
 https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
@@ -111,7 +111,7 @@ type ProgHeader struct {
 	Align  uint64
 }
 
-// Progは、ELFバイナリ内の単一のELFプログラムヘッダーを表します。
+// Progは、ELFバイナリー内の単一のELFプログラムヘッダーを表します。
 type Prog struct {
 	ProgHeader
 
@@ -127,17 +127,17 @@ type Prog struct {
 // Openは、ELFプログラム本体を読み取る新しいReadSeekerを返します。
 func (p *Prog) Open() io.ReadSeeker
 
-// Symbolは、ELFシンボルテーブルセクションのエントリを表します。
+// Symbolは、ELFシンボルテーブルセクションのエントリーを表します。
 type Symbol struct {
 	Name        string
 	Info, Other byte
 
-	// HasVersion reports whether the symbol has any version information.
-	// This will only be true for the dynamic symbol table.
+	// HasVersionは、シンボルが何らかのバージョン情報を持っているかどうかを報告します。
+	// これは動的シンボルテーブルに対してのみtrueになります。
 	HasVersion bool
-	// VersionIndex is the symbol's version index.
-	// Use the methods of the [VersionIndex] type to access it.
-	// This field is only meaningful if HasVersion is true.
+	// VersionIndexは、シンボルのバージョンインデックスです。
+	// アクセスするには [VersionIndex] 型のメソッドを使用してください。
+	// このフィールドはHasVersionがtrueの場合にのみ意味を持ちます。
 	VersionIndex VersionIndex
 
 	Section     SectionIndex
@@ -156,7 +156,7 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-// Openは [os.Open] を使用して指定された名前のファイルを開き、ELFバイナリとしての使用を準備します。
+// Openは [os.Open] を使用して指定された名前のファイルを開き、ELFバイナリーとしての使用を準備します。
 func Open(name string) (*File, error)
 
 // Closeは [File] を閉じます。
@@ -168,8 +168,8 @@ func (f *File) Close() error
 // そのようなセクションがない場合はnilを返します。
 func (f *File) SectionByType(typ SectionType) *Section
 
-// NewFileは、基礎となるリーダー内のELFバイナリにアクセスするための新しい [File] を作成します。
-// ELFバイナリは、ReaderAtの位置0で開始することが期待されます。
+// NewFileは、基礎となるリーダー内のELFバイナリーにアクセスするための新しい [File] を作成します。
+// ELFバイナリーは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
 // ErrNoSymbolsは、[File.Symbols] と [File.DynamicSymbols] によって返されます。
@@ -205,8 +205,8 @@ type ImportedSymbol struct {
 	Library string
 }
 
-// ImportedSymbolsは、動的ロード時に他のライブラリによって満たされることが期待される
-// バイナリfによって参照されるすべてのシンボルの名前を返します。
+// ImportedSymbolsは、動的ロード時に他のライブラリーによって満たされることが期待される
+// バイナリーfによって参照されるすべてのシンボルの名前を返します。
 // 弱いシンボルは返しません。
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
@@ -233,10 +233,10 @@ func (vi VersionIndex) IsHidden() bool
 func (vi VersionIndex) Index() uint16
 
 // DynamicVersionは動的オブジェクトによって定義されるバージョンです。
-// これはELF SHT_GNU_verdefセクションのエントリを記述します。
+// これはELF SHT_GNU_verdefセクションのエントリーを記述します。
 // vd_versionフィールドが1であると仮定します。
 // バージョンの名前はここに表示されることに注意してください；
-// ELFファイルのように最初のDepsエントリにはありません。
+// ELFファイルのように最初のDepsエントリーにはありません。
 type DynamicVersion struct {
 	Name  string
 	Index uint16
@@ -244,16 +244,16 @@ type DynamicVersion struct {
 	Deps  []string
 }
 
-// DynamicVersionNeedは、動的オブジェクトによって必要とされる共有ライブラリを記述し、
-// その共有ライブラリから必要とされるバージョンのリストを含みます。
-// これはELF SHT_GNU_verneedセクションのエントリを記述します。
+// DynamicVersionNeedは、動的オブジェクトによって必要とされる共有ライブラリーを記述し、
+// その共有ライブラリーから必要とされるバージョンのリストを含みます。
+// これはELF SHT_GNU_verneedセクションのエントリーを記述します。
 // vn_versionフィールドが1であると仮定します。
 type DynamicVersionNeed struct {
 	Name  string
 	Needs []DynamicVersionDep
 }
 
-// DynamicVersionDepは共有ライブラリから必要とされるバージョンです。
+// DynamicVersionDepは共有ライブラリーから必要とされるバージョンです。
 type DynamicVersionDep struct {
 	Flags DynamicVersionFlag
 	Index uint16
@@ -266,8 +266,8 @@ func (f *File) DynamicVersions() ([]DynamicVersion, error)
 // DynamicVersionNeedsは動的オブジェクトのバージョン依存関係を返します。
 func (f *File) DynamicVersionNeeds() ([]DynamicVersionNeed, error)
 
-// ImportedLibrariesは、バイナリfによって参照されるすべてのライブラリの名前を返します。
-// これらのライブラリは動的リンク時にバイナリとリンクされることが期待されます。
+// ImportedLibrariesは、バイナリーfによって参照されるすべてのライブラリーの名前を返します。
+// これらのライブラリーは動的リンク時にバイナリーとリンクされることが期待されます。
 func (f *File) ImportedLibraries() ([]string, error)
 
 // DynStringは、ファイルの動的セクションで指定されたタグにリストされている文字列を返します。

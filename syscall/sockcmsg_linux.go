@@ -6,12 +6,11 @@
 
 package syscall
 
-// UnixCredentials encodes credentials into a socket control message
-// for sending to another process. This can be used for
-// authentication.
+// UnixCredentialsは、別のプロセスに送信するために資格情報をソケット制御メッセージに
+// エンコードします。これは認証に使用できます。
 func UnixCredentials(ucred *Ucred) []byte
 
-// ParseUnixCredentials decodes a socket control message that contains
-// credentials in a Ucred structure. To receive such a message, the
-// SO_PASSCRED option must be enabled on the socket.
+// ParseUnixCredentialsは、Ucred構造体の資格情報を含むソケット制御メッセージを
+// デコードします。そのようなメッセージを受信するには、ソケットで
+// SO_PASSCREDオプションを有効にする必要があります。
 func ParseUnixCredentials(m *SocketControlMessage) (*Ucred, error)

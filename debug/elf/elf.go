@@ -699,7 +699,7 @@ const (
 	// オブジェクトのシンボルテーブルが、通常は実行可能ファイルである主要なロードオブジェクトを除く
 	// すべてのシンボルの前に介在することを示します。
 	DF_1_INTERPOSE DynFlag1 = 0x00000400
-	// このオブジェクトの依存関係の検索が、任意のデフォルトのライブラリ検索パスを無視することを示します。
+	// このオブジェクトの依存関係の検索が、任意のデフォルトのライブラリー検索パスを無視することを示します。
 	DF_1_NODEFLIB DynFlag1 = 0x00000800
 	// このオブジェクトがdldumpによってダンプされないことを示します。候補は、
 	// 代替オブジェクトを生成するときに含まれる可能性がある再配置のないオブジェクトです。
@@ -1523,7 +1523,7 @@ const (
 func (i R_PPC) String() string
 func (i R_PPC) GoString() string
 
-// 64ビットPowerPCまたはPower Architectureプロセッサのための再配置タイプ。
+// 64ビットPowerPCまたはPower Architectureプロセッサーのための再配置タイプ。
 //
 // R_PPCとR_PPC64の両方で共有される値は、
 // ELF標準ではR_POWERPC_というプレフィックスが付けられています。R_PPC64タイプの場合、関連する
@@ -1698,7 +1698,7 @@ const (
 func (i R_PPC64) String() string
 func (i R_PPC64) GoString() string
 
-// RISC-Vプロセッサのための再配置タイプ。
+// RISC-Vプロセッサーのための再配置タイプ。
 type R_RISCV int
 
 const (
@@ -1761,7 +1761,7 @@ const (
 func (i R_RISCV) String() string
 func (i R_RISCV) GoString() string
 
-// s390xプロセッサのための再配置タイプ。
+// s390xプロセッサーのための再配置タイプ。
 type R_390 int
 
 const (
@@ -2066,7 +2066,7 @@ func R_SYM64(info uint64) uint32
 func R_TYPE64(info uint64) uint32
 func R_INFO(sym, typ uint32) uint64
 
-// ELF64 シンボルテーブルエントリ。
+// ELF64 シンボルテーブルエントリー。
 type Sym64 struct {
 	Name  uint32
 	Info  uint8
@@ -2078,7 +2078,7 @@ type Sym64 struct {
 
 const Sym64Size = 24
 
-// Dynamic version flags.
+// 動的バージョンフラグ。
 type DynamicVersionFlag uint16
 
 const (

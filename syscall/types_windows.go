@@ -33,7 +33,7 @@ const (
 )
 
 const (
-	// Invented values to support what package os expects.
+	// osパッケージが期待するものをサポートするために作られた値。
 	O_RDONLY   = 0x00000
 	O_WRONLY   = 0x00001
 	O_RDWR     = 0x00002
@@ -49,7 +49,7 @@ const (
 )
 
 const (
-	// More invented values for signals
+	// シグナル用にさらに作られた値
 	SIGHUP  = Signal(0x1)
 	SIGINT  = Signal(0x2)
 	SIGQUIT = Signal(0x3)
@@ -168,7 +168,7 @@ const (
 )
 
 const (
-	// flags for CreateToolhelp32Snapshot
+	// CreateToolhelp32Snapshot用のフラグ
 	TH32CS_SNAPHEAPLIST = 0x01
 	TH32CS_SNAPPROCESS  = 0x02
 	TH32CS_SNAPTHREAD   = 0x04
@@ -283,15 +283,14 @@ var (
 	OID_SGC_NETSCAPE        = []byte("2.16.840.1.113730.4.1\x00")
 )
 
-// Pointer represents a pointer to an arbitrary Windows type.
+// Pointerは、任意のWindows型へのポインターを表します。
 //
-// Pointer-typed fields may point to one of many different types. It's
-// up to the caller to provide a pointer to the appropriate type, cast
-// to Pointer. The caller must obey the unsafe.Pointer rules while
-// doing so.
+// Pointer型のフィールドは、多くの異なる型のいずれかを指す場合があります。
+// 適切な型へのポインターをPointerにキャストして提供するのは呼び出し元の責任です。
+// その際、呼び出し元はunsafe.Pointerのルールに従わなければなりません。
 type Pointer *struct{}
 
-// Invented values to support what package os expects.
+// osパッケージが期待するものをサポートするために作られた値。
 type Timeval struct {
 	Sec  int32
 	Usec int32
@@ -327,8 +326,8 @@ type Filetime struct {
 	HighDateTime uint32
 }
 
-// Nanoseconds returns Filetime ft in nanoseconds
-// since Epoch (00:00:00 UTC, January 1, 1970).
+// Nanosecondsは、Filetime ftをエポック（1970年1月1日 00:00:00 UTC）からの
+// ナノ秒数で返します。
 func (ft *Filetime) Nanoseconds() int64
 
 func NsecToFiletime(nsec int64) (ft Filetime)
@@ -373,7 +372,7 @@ type Win32FileAttributeData struct {
 	FileSizeLow    uint32
 }
 
-// ShowWindow constants
+// ShowWindowの定数。
 const (
 	// winuser.h
 	SW_HIDE            = 0
@@ -524,7 +523,7 @@ type WSABuf struct {
 	Buf *byte
 }
 
-// Invented values to support what package os expects.
+// osパッケージが期待するものをサポートするために作られた値。
 const (
 	S_IFMT   = 0x1f000
 	S_IFIFO  = 0x1000
@@ -635,7 +634,7 @@ const (
 )
 
 const (
-	// flags inside DNSRecord.Dw
+	// DNSRecord.Dw内のフラグ
 	DnsSectionQuestion   = 0x0000
 	DnsSectionAnswer     = 0x0001
 	DnsSectionAuthority  = 0x0002

@@ -14,18 +14,18 @@ type Encoder struct {
 	CompressionLevel CompressionLevel
 
 	// BufferPoolは、画像をエンコードする際に一時的な
-	// EncoderBuffersを取得するためのバッファプールをオプションで指定します。
+	// EncoderBuffersを取得するためのバッファープールをオプションで指定します。
 	BufferPool EncoderBufferPool
 }
 
 // EncoderBufferPoolは、一時的な [EncoderBuffer] 構造体のインスタンスを取得し、
-// 返すためのインターフェースです。これは、複数の画像をエンコードする際にバッファを再利用するために使用できます。
+// 返すためのインターフェースです。これは、複数の画像をエンコードする際にバッファーを再利用するために使用できます。
 type EncoderBufferPool interface {
 	Get() *EncoderBuffer
 	Put(*EncoderBuffer)
 }
 
-// EncoderBufferは、PNG画像のエンコーディングに使用されるバッファを保持します。
+// EncoderBufferは、PNG画像のエンコーディングに使用されるバッファーを保持します。
 type EncoderBuffer encoder
 
 // CompressionLevelは、圧縮レベルを示します。

@@ -4,7 +4,7 @@
 
 //go:generate go run gen_encoding_table.go
 
-// Package url はURLを解析し、クエリのエスケープを実装します。
+// urlパッケージはURLを解析し、クエリーのエスケープを実装します。
 //
 // RFC 3986 を参照してください。このパッケージは、互換性のために逸脱する場合を除き、
 // 一般的にRFC 3986に従います。
@@ -44,7 +44,7 @@ func QueryUnescape(s string) (string, error)
 // PathUnescapeは [QueryUnescape] と同じですが、'+'を' '（スペース）に変換しない点が異なります。
 func PathUnescape(s string) (string, error)
 
-// QueryEscapeは、文字列をエスケープして、安全に [URL] クエリ内に配置できるようにします。
+// QueryEscapeは、文字列をエスケープして、安全に [URL] クエリー内に配置できるようにします。
 func QueryEscape(s string) string
 
 // PathEscapeは、文字列を安全に [URL] パスセグメント内に配置できるようにエスケープします。
@@ -55,11 +55,11 @@ func PathEscape(s string) string
 //
 // 全般的な形式は次のようになります：
 //
-//	[スキーム:][//[ユーザー情報@]ホスト][/パス][?クエリ][#フラグメント]
+//	[スキーム:][//[ユーザー情報@]ホスト][/パス][?クエリー][#フラグメント]
 //
 // スキームの後にスラッシュで始まらないURLは次のように解釈されます：
 //
-//	スキーム:透明部分[?クエリ][#フラグメント]
+//	スキーム:透明部分[?クエリー][#フラグメント]
 //
 // Hostフィールドには、URLのホストとポートのサブコンポーネントが含まれます。
 // ポートが存在する場合、コロンでホストから分離されます。
@@ -96,7 +96,7 @@ func User(username string) *Userinfo
 // UserPasswordは提供されたユーザー名とパスワードを含む [Userinfo] を返します。
 // この機能は、レガシーウェブサイトでのみ使用するべきです。
 // RFC 2396は、この方法でUserinfoを解釈することを「推奨されない」と警告しています。
-// 「URIなどで平文で認証情報を渡すことは、ほとんどの場合セキュリティリスクとなっている」と述べています。
+// 「URIなどで平文で認証情報を渡すことは、ほとんどの場合セキュリティーリスクとなっている」と述べています。
 func UserPassword(username, password string) *Userinfo
 
 // Userinfo型は、[URL] のユーザー名とパスワードの詳細を不変なカプセル化します。既存のUserinfo値には、ユーザー名が設定されていることが保証されています（RFC 2396で許可されているように、空にすることも可能です）、また、オプションでパスワードも持つことができます。
@@ -171,7 +171,7 @@ func (u *URL) String() string
 func (u *URL) Redacted() string
 
 // Valuesは文字列のキーを値のリストにマップします。
-// 通常、クエリパラメータやフォームの値に使用されます。
+// 通常、クエリーパラメーターやフォームの値に使用されます。
 // http.Headerマップとは異なり、Valuesマップのキーは大文字小文字を区別します。
 type Values map[string][]string
 
@@ -195,13 +195,13 @@ func (v Values) Has(key string) bool
 // Cloneはサブジェクト [Values] の深いコピーを作成します。
 func (vs Values) Clone() Values
 
-// ParseQueryはURLエンコードされたクエリ文字列を解析し、
+// ParseQueryはURLエンコードされたクエリー文字列を解析し、
 // 各キーに指定された値をリストするマップを返します。
 // ParseQueryは常に見つかったすべての
-// 有効なクエリパラメータを含むnilではないマップを返します。errは、
+// 有効なクエリーパラメーターを含むnilではないマップを返します。errは、
 // 見つかった最初のデコードエラーを記述します。
 //
-// クエリはアンパサンドで区切られたキー=値のリストとして期待されます。
+// クエリーはアンパサンドで区切られたキー=値のリストとして期待されます。
 // イコール記号がない設定は、空の値に設定されたキーとして解釈されます。
 // URLエンコードされていないセミコロンが含まれる設定は無効と見なされます。
 func ParseQuery(query string) (Values, error)
@@ -214,7 +214,7 @@ func (v Values) Encode() string
 // 絶対とは、空ではないスキームを持っていることを意味します。
 func (u *URL) IsAbs() bool
 
-// Parseはレシーバのコンテキストで [URL] を解析します。提供されたURLは相対的または絶対的である可能性があります。Parseは解析の失敗時にはnil、errを返し、それ以外の場合は [URL.ResolveReference] と同じ値を返します。
+// Parseはレシーバーのコンテキストで [URL] を解析します。提供されたURLは相対的または絶対的である可能性があります。Parseは解析の失敗時にはnil、errを返し、それ以外の場合は [URL.ResolveReference] と同じ値を返します。
 func (u *URL) Parse(ref string) (*URL, error)
 
 // ResolveReferenceは、RFC 3986 Section 5.2 に従って、絶対ベースURI uからURIリファレンスを絶対URIに解決します。URIリファレンスは相対または絶対のどちらでもかまいません。ResolveReferenceは常に新しい [URL] インスタンスを返しますが、返されたURLがベースまたはリファレンスと同じであってもです。refが絶対URLの場合、ResolveReferenceはbaseを無視してrefのコピーを返します。

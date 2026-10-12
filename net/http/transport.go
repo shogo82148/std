@@ -23,7 +23,7 @@ import (
 
 // DefaultTransportは [Transport] のデフォルト実装であり、[DefaultClient] によって使用されます。
 // 必要に応じてネットワーク接続を確立し、後続の呼び出しで再利用するためにキャッシュします。
-// 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン）によって指示されたように、HTTPプロキシを使用します。
+// 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン）によって指示されたように、HTTPプロキシーを使用します。
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
 	DialContext: defaultTransportDialContext(&net.Dialer{
@@ -40,14 +40,14 @@ var DefaultTransport RoundTripper = &Transport{
 // DefaultMaxIdleConnsPerHostは、[Transport] のMaxIdleConnsPerHostのデフォルト値です。
 const DefaultMaxIdleConnsPerHost = 2
 
-// Transportは、HTTP、HTTPS、およびHTTPプロキシ（HTTPまたはHTTPS with CONNECTのいずれか）をサポートする [RoundTripper] の実装です。
+// Transportは、HTTP、HTTPS、およびHTTPプロキシー（HTTPまたはHTTPS with CONNECTのいずれか）をサポートする [RoundTripper] の実装です。
 //
 // デフォルトでは、Transportは将来の再利用のために接続をキャッシュします。
 // これにより、多くのホストにアクセスする場合に多数のオープンな接続が残る可能性があります。
 // この動作は、[Transport.CloseIdleConnections] メソッドと [Transport.MaxIdleConnsPerHost] および [Transport.DisableKeepAlives] フィールドを使用して管理できます。
 //
 // Transportは必要に応じて作成するのではなく、再利用する必要があります。
-// Transportは、複数のgoroutineによる同時使用に対して安全です。
+// Transportは、複数のゴルーチンによる同時使用に対して安全です。
 //
 // Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
 // クッキーやリダイレクトなどの高レベルの機能については、[Client] を参照してください。
@@ -61,11 +61,11 @@ const DefaultMaxIdleConnsPerHost = 2
 // 無視された1xxレスポンスを表示するには、httptraceトレースパッケージのClientTrace.Got1xxResponseを使用します。
 //
 // Transportは、ネットワークエラーに遭遇した場合、接続が既に正常に使用されており、
-// かつリクエストが冪等であり、ボディがないか、または[Request.GetBody]が
+// かつリクエストが冪等であり、ボディーがないか、または[Request.GetBody]が
 // 定義されている場合にのみ、リクエストを再試行します。HTTPリクエストは、
 // HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEの場合、
 // または[Header]マップに"Idempotency-Key"または"X-Idempotency-Key"
-// エントリが含まれている場合に冪等と見なされます。冪等キーの値が
+// エントリーが含まれている場合に冪等と見なされます。冪等キーの値が
 // 長さゼロのスライスの場合、リクエストは冪等として扱われますが、
 // ヘッダーは回線上に送信されません。
 type Transport struct {
@@ -86,21 +86,21 @@ type Transport struct {
 	connsPerHostWait map[connectMethodKey]wantConnQueue
 	dialsInProgress  wantConnQueue
 
-	// Proxyは、指定されたRequestに対するプロキシを返す関数を指定します。
+	// Proxyは、指定されたRequestに対するプロキシーを返す関数を指定します。
 	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。
 	//
-	// プロキシのタイプは、URLスキームによって決定されます。
+	// プロキシーのタイプは、URLスキームによって決定されます。
 	// "http"、"https"、"sock5"、および"socks5h"がサポートされています。
 	// スキームが空の場合、"http"が想定されます。
 	// "socks5"は"socks5h"と同じように扱われます。
 	//
-	// プロキシURLにuserinfoサブコンポーネントが含まれている場合、
-	// プロキシリクエストはProxy-Authorizationヘッダーでユーザー名とパスワードを渡します。
+	// プロキシーURLにuserinfoサブコンポーネントが含まれている場合、
+	// プロキシーリクエストはProxy-Authorizationヘッダーでユーザー名とパスワードを渡します。
 	//
-	// Proxyがnilまたはnilの*URLを返す場合、プロキシは使用されません。
+	// Proxyがnilまたはnilの*URLを返す場合、プロキシーは使用されません。
 	Proxy func(*Request) (*url.URL, error)
 
-	// OnProxyConnectResponseは、TransportがCONNECTリクエストのプロキシからHTTPレスポンスを受信したときに呼び出されます。
+	// OnProxyConnectResponseは、TransportがCONNECTリクエストのプロキシーからHTTPレスポンスを受信したときに呼び出されます。
 	// これは、200 OKレスポンスのチェックの前に呼び出されます。
 	// エラーを返すと、リクエストはそのエラーで失敗します。
 	OnProxyConnectResponse func(ctx context.Context, proxyURL *url.URL, connectReq *Request, connectRes *Response) error
@@ -124,7 +124,7 @@ type Transport struct {
 	// 両方が設定されている場合、DialContextが優先されます。
 	Dial func(network, addr string) (net.Conn, error)
 
-	// DialTLSContextは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
+	// DialTLSContextは、プロキシーを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
 	//
 	// DialTLSContextがnilである場合（および下記の非推奨のDialTLSもnilである場合）、
 	// DialContextとTLSClientConfigが使用されます。
@@ -137,7 +137,7 @@ type Transport struct {
 	// *tls.Connであるか、*tls.Connと同じConnectionStateメソッドを実装する必要があります。
 	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
-	// DialTLSは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
+	// DialTLSは、プロキシーを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
 	//
 	// Deprecated: 代わりにDialTLSContextを使用してください。これにより、トランスポートはダイアルが不要になった直後にキャンセルできます。
 	// 両方が設定されている場合、DialTLSContextが優先されます。
@@ -182,21 +182,21 @@ type Transport struct {
 	// ゼロは制限がないことを意味します。
 	IdleConnTimeout time.Duration
 
-	// ResponseHeaderTimeoutがゼロでない場合、リクエスト（ボディがある場合はそれも含む）を完全に書き込んだ後、
+	// ResponseHeaderTimeoutがゼロでない場合、リクエスト（ボディーがある場合はそれも含む）を完全に書き込んだ後、
 	// サーバーのレスポンスヘッダーを待機する時間を指定します。
-	// この時間には、レスポンスボディを読み取る時間は含まれません。
+	// この時間には、レスポンスボディーを読み取る時間は含まれません。
 	ResponseHeaderTimeout time.Duration
 
 	// ExpectContinueTimeoutがゼロでない場合、リクエストに"Expect: 100-continue"ヘッダーがある場合、
 	// リクエストヘッダーを完全に書き込んだ後、サーバーの最初のレスポンスヘッダーを待機する時間を指定します。
-	// ゼロはタイムアウトがないことを意味し、サーバーの承認を待たずに、すぐにボディを送信します。
+	// ゼロはタイムアウトがないことを意味し、サーバーの承認を待たずに、すぐにボディーを送信します。
 	// この時間には、リクエストヘッダーを送信する時間は含まれません。
 	ExpectContinueTimeout time.Duration
 
 	// TLSNextProtoは、TLS ALPNプロトコルネゴシエーション後に、Transportが
 	// 代替プロトコル（HTTP/2など）に切り替える方法を指定します。Transportが
 	// 空でないプロトコル名でTLS接続をダイアルし、TLSNextProtoがそのキー
-	// （"h2"など）のマップエントリを含んでいる場合、リクエストの権限
+	// （"h2"など）のマップエントリーを含んでいる場合、リクエストの権限
 	// （"example.com"や"example.com:1234"など）とTLS接続でfuncが呼び出されます。
 	// この関数は、その後リクエストを処理するRoundTripperを返さなければなりません。
 	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
@@ -205,7 +205,7 @@ type Transport struct {
 	// Transport.Protocolsフィールドは、これを行うためのより簡単な方法を提供します。
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
 
-	// ProxyConnectHeaderは、CONNECTリクエスト中にプロキシに送信するヘッダーをオプションで指定します。
+	// ProxyConnectHeaderは、CONNECTリクエスト中にプロキシーに送信するヘッダーをオプションで指定します。
 	// ヘッダーを動的に設定するには、GetProxyConnectHeaderを参照してください。
 	ProxyConnectHeader Header
 
@@ -220,11 +220,11 @@ type Transport struct {
 	// ゼロは、デフォルトの制限を使用することを意味します。
 	MaxResponseHeaderBytes int64
 
-	// WriteBufferSizeは、トランスポートへの書き込み時に使用される書き込みバッファのサイズを指定します。
+	// WriteBufferSizeは、トランスポートへの書き込み時に使用される書き込みバッファーのサイズを指定します。
 	// ゼロの場合、デフォルト値（現在は4KB）が使用されます。
 	WriteBufferSize int
 
-	// ReadBufferSizeは、トランスポートから読み取るときに使用される読み取りバッファのサイズを指定します。
+	// ReadBufferSizeは、トランスポートから読み取るときに使用される読み取りバッファーのサイズを指定します。
 	// ゼロの場合、デフォルト値（現在は4KB）が使用されます。
 	ReadBufferSize int
 
@@ -245,17 +245,17 @@ type Transport struct {
 	// アップグレードを試みるには、これをtrueに設定します。
 	ForceAttemptHTTP2 bool
 
-	// HTTP2 configures HTTP/2 connections.
+	// HTTP2はHTTP/2接続を設定します。
 	HTTP2 *HTTP2Config
 
-	// Protocols is the set of protocols supported by the transport.
+	// Protocolsは、トランスポートがサポートするプロトコルのセットです。
 	//
-	// If Protocols includes UnencryptedHTTP2 and does not include HTTP1,
-	// the transport will use unencrypted HTTP/2 for requests for http:// URLs.
+	// ProtocolsがUnencryptedHTTP2を含み、HTTP1を含まない場合、
+	// トランスポートはhttp:// URLへのリクエストに暗号化されていないHTTP/2を使用します。
 	//
-	// If Protocols is nil, the default is usually HTTP/1 only.
-	// If ForceAttemptHTTP2 is true, or if TLSNextProto contains an "h2" entry,
-	// the default is HTTP/1 and HTTP/2.
+	// Protocolsがnilの場合、デフォルトは通常HTTP/1のみです。
+	// ForceAttemptHTTP2がtrueの場合、またはTLSNextProtoに"h2"エントリーが含まれている場合、
+	// デフォルトはHTTP/1とHTTP/2です。
 	Protocols *Protocols
 }
 
@@ -263,19 +263,19 @@ type Transport struct {
 func (t *Transport) Clone() *Transport
 
 // ProxyFromEnvironmentは、環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはそれらの小文字バージョン）によって示されるように、
-// 指定されたリクエストに使用するプロキシのURLを返します。
-// リクエストは、NO_PROXYによって除外されていない限り、スキームに一致する環境変数からプロキシを使用します。
+// 指定されたリクエストに使用するプロキシーのURLを返します。
+// リクエストは、NO_PROXYによって除外されていない限り、スキームに一致する環境変数からプロキシーを使用します。
 //
 // 環境値は、完全なURLまたは"host[:port]"のいずれかである場合があります。この場合、"http"スキームが想定されます。
 // 値が異なる形式の場合は、エラーが返されます。
 //
-// 環境変数でプロキシが定義されていない場合、またはNO_PROXYによって指定されたリクエストにプロキシを使用しない場合、
+// 環境変数でプロキシーが定義されていない場合、またはNO_PROXYによって指定されたリクエストにプロキシーを使用しない場合、
 // nilのURLとnilのエラーが返されます。
 //
 // 特別な場合として、req.URL.Hostが"localhost"（ポート番号ありまたはなし）の場合、nilのURLとnilのエラーが返されます。
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
-// ProxyURLは、常に同じURLを返すプロキシ関数（[Transport] で使用するため）を返します。
+// ProxyURLは、常に同じURLを返すプロキシー関数（[Transport] で使用するため）を返します。
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
 // ErrSkipAltProtocolは、Transport.RegisterProtocolで定義されるセンチネルエラー値です。

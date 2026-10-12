@@ -6,20 +6,20 @@
 
 package syscall
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func LsfStmt(code, k int) *SockFilter
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func LsfJump(code, k, jt, jf int) *SockFilter
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func LsfSocket(ifindex, proto int) (int, error)
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func SetLsfPromisc(name string, m bool) error
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func AttachLsf(fd int, i []SockFilter) error
 
-// Deprecated: Use golang.org/x/net/bpf instead.
+// Deprecated: 代わりにgolang.org/x/net/bpfを使用してください。
 func DetachLsf(fd int) error

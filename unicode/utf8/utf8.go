@@ -71,17 +71,17 @@ func RuneLen(r rune) int
 func EncodeRune(p []byte, r rune) int
 
 // AppendRuneは、rのUTF-8エンコーディングをpの末尾に追加し、
-// 拡張されたバッファを返します。もしルーンが範囲外であれば、
+// 拡張されたバッファーを返します。もしルーンが範囲外であれば、
 // [RuneError] のエンコーディングを追加します。
 func AppendRune(p []byte, r rune) []byte
 
 // RuneCount は p 内のルーンの数を返します。間違ったエンコーディングや短いエンコーディングは、1バイトの幅を持つ単一のルーンとして扱われます。
 func RuneCount(p []byte) int
 
-// RuneCountInString is like [RuneCount] but its input is a string.
+// RuneCountInStringは [RuneCount] と同様ですが、入力は文字列です。
 func RuneCountInString(s string) (n int)
 
-// RuneStartは、バイトが符号化された（おそらく無効な）ルーンの最初のバイトであるかどうかを報告します。2番目以降のバイトは常に上位2ビットが10に設定されます。
+// RuneStartは、バイトがエンコードされた（おそらく無効な）ルーンの最初のバイトであるかどうかを報告します。2番目以降のバイトは常に上位2ビットが10に設定されます。
 func RuneStart(b byte) bool
 
 // Validは、pが完全に有効なUTF-8エンコードされたルーンで構成されているかどうかを示します。

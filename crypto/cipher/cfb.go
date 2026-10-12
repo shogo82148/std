@@ -10,7 +10,7 @@ package cipher
 // ivは [Block] のブロックサイズと同じ長さである必要があります。
 //
 // Deprecated: CFBモードは認証されておらず、一般的に平文を操作して復元するアクティブ攻撃を可能にします。
-// アプリケーションでは代わりに [AEAD] モードを使用することを推奨します。CFBの標準ライブラリ実装は
+// アプリケーションでは代わりに [AEAD] モードを使用することを推奨します。CFBの標準ライブラリー実装は
 // 最適化されておらず、FIPS 140-3モジュールの一部として検証されていません。
 // 認証されていない [Stream] モードが必要な場合は、代わりに [NewCTR] を使用してください。
 func NewCFBEncrypter(block Block, iv []byte) Stream
@@ -19,7 +19,7 @@ func NewCFBEncrypter(block Block, iv []byte) Stream
 // ivは [Block] のブロックサイズと同じ長さである必要があります。
 //
 // Deprecated: CFBモードは認証されておらず、一般的に平文を操作して復元するアクティブ攻撃を可能にします。
-// アプリケーションでは代わりに [AEAD] モードを使用することを推奨します。CFBの標準ライブラリ実装は
+// アプリケーションでは代わりに [AEAD] モードを使用することを推奨します。CFBの標準ライブラリー実装は
 // 最適化されておらず、FIPS 140-3モジュールの一部として検証されていません。
 // 認証されていない [Stream] モードが必要な場合は、代わりに [NewCTR] を使用してください。
 func NewCFBDecrypter(block Block, iv []byte) Stream

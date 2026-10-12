@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Buildidは、Goパッケージまたはバイナリに格納されているビルドIDを表示または更新します。
+Buildidは、Goパッケージまたはバイナリーに格納されているビルドIDを表示または更新します。
 
 使用法：
 

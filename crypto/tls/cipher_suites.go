@@ -12,19 +12,19 @@ type CipherSuite struct {
 	// Supported versionsは、この暗号スイートをネゴシエートできるTLSプロトコルのバージョンのリストです。
 	SupportedVersions []uint16
 
-	// Insecureは、そのプリミティブ、設計、または実装による既知のセキュリティ問題があるため、暗号スイートが安全ではない場合にtrueとなります。
+	// Insecureは、そのプリミティブ、設計、または実装による既知のセキュリティー問題があるため、暗号スイートが安全ではない場合にtrueとなります。
 	Insecure bool
 }
 
 // CipherSuitesは、このパッケージで現在実装されている暗号スイートのリストを返します。
-// ただし、セキュリティ上の問題があるものは [InsecureCipherSuites] によって返されます。
+// ただし、セキュリティー上の問題があるものは [InsecureCipherSuites] によって返されます。
 //
 // このリストはIDでソートされています。このパッケージによって選択されるデフォルトの暗号スイートが、
 // 静的なリストでは捉えることができないロジックに依存している場合があり、
 // この関数によって返されるものと一致しない場合があります。
 func CipherSuites() []*CipherSuite
 
-// InsecureCipherSuitesは、現在このパッケージで実装されているセキュリティ上の問題を抱えた暗号スイートのリストを返します。
+// InsecureCipherSuitesは、現在このパッケージで実装されているセキュリティー上の問題を抱えた暗号スイートのリストを返します。
 // ほとんどのアプリケーションは、このリストに含まれる暗号スイートを使用すべきではありません。代わりに、 [CipherSuites] で返されるスイートのみを使用するべきです。
 func InsecureCipherSuites() []*CipherSuite
 

@@ -5,7 +5,7 @@
 // netipパッケージは、小さな値型であるIPアドレス型を定義します。
 // この[Addr]型をベースに、パッケージは [AddrPort] （IPアドレスとポート）と [Prefix] （IPアドレスとビット長のプレフィックス）も定義します。
 //
-// [net.IP] 型と比較して、 [Addr] 型はメモリを少なく使用し、不変であり、比較可能（==およびマップキーとしてサポート）です。
+// [net.IP] 型と比較して、 [Addr] 型はメモリーを少なく使用し、不変であり、比較可能（==およびマップキーとしてサポート）です。
 package netip
 
 import (
@@ -155,7 +155,7 @@ func (ip Addr) IsGlobalUnicast() bool
 // ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7に含まれるかどうかを
 // 報告します。これは [net.IP.IsPrivate] と同じです。
 //
-// IsPrivateはアドレスのセキュリティ特性を表すものではなく、
+// IsPrivateはアドレスのセキュリティー特性を表すものではなく、
 // アクセス制御に使用すべきではありません。
 func (ip Addr) IsPrivate() bool
 
@@ -205,7 +205,7 @@ func (ip Addr) Prev() Addr
 // IPv4マップされたIPv6アドレスは、ドット区切りの4つ組の前に"::ffff:"の接頭辞が付きます。
 func (ip Addr) String() string
 
-// AppendToは、[Addr.MarshalText] によって生成されたipのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[Addr.MarshalText] によって生成されたipのテキストエンコーディングをbに追加し、拡張されたバッファーを返します。
 func (ip Addr) AppendTo(b []byte) []byte
 
 // StringExpandedは、[Addr.String] と同様ですが、IPv6アドレスは先頭にゼロを付けて"::"の圧縮を行わずに展開されます。
@@ -246,7 +246,7 @@ type AddrPort struct {
 }
 
 // AddrPortFromは、提供されたIPとポート番号で [AddrPort] を返します。
-// アロケーションは行いません。
+// 割り当ては行いません。
 func AddrPortFrom(ip Addr, port uint16) AddrPort
 
 // Addrは、pのIPアドレスを返します。
@@ -268,14 +268,14 @@ func MustParseAddrPort(s string) AddrPort
 // ゼロを含むすべてのポートが有効です。
 func (p AddrPort) IsValid() bool
 
-// Compare returns an integer comparing two AddrPorts.
-// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
-// AddrPorts sort first by IP address, then port.
+// Compareは2つのAddrPortを比較した整数を返します。
+// p == p2の場合は0、p < p2の場合は-1、p > p2の場合は+1になります。
+// AddrPortはまずIPアドレスでソートされ、次にポートでソートされます。
 func (p AddrPort) Compare(p2 AddrPort) int
 
 func (p AddrPort) String() string
 
-// AppendToは、[AddrPort.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[AddrPort.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファーを返します。
 func (p AddrPort) AppendTo(b []byte) []byte
 
 // AppendTextは、[encoding.TextAppender] インターフェースを実装します。
@@ -319,7 +319,7 @@ type Prefix struct {
 
 // PrefixFromは、指定されたIPアドレスとビットプレフィックス長で [Prefix] を返します。
 //
-// アロケーションは行いません。[Addr.Prefix] とは異なり、[PrefixFrom] はipのホストビットをマスクしません。
+// 割り当ては行いません。[Addr.Prefix] とは異なり、[PrefixFrom] はipのホストビットをマスクしません。
 //
 // bitsが負の場合またはip.BitLenより大きい場合、[Prefix.Bits] は無効な値-1を返します。
 func PrefixFrom(ip Addr, bits int) Prefix
@@ -371,7 +371,7 @@ func (p Prefix) Contains(ip Addr) bool
 // Containsメソッドと同様に、IPv4マップされたIPv6アドレスを持つプレフィックスは、IPv6マスクとして扱われます。
 func (p Prefix) Overlaps(o Prefix) bool
 
-// AppendToは、[Prefix.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[Prefix.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファーを返します。
 func (p Prefix) AppendTo(b []byte) []byte
 
 // AppendTextは、[encoding.TextAppender] インターフェースを実装します。

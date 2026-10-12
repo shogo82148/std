@@ -23,6 +23,16 @@ var (
 	ErrNonNilReference = errors.New("value must be passed as a non-nil pointer reference")
 )
 
+// ValueError wraps the error with a Go value relevant to the error.
+// This is only used for v1 compatibility purposes.
+type ValueError struct {
+	Val any
+	Err error
+}
+
+func (ve *ValueError) Error() string
+func (ve *ValueError) Unwrap() error
+
 var (
 	// TransformMarshalError converts a v2 error into a v1 error.
 	// It is called only at the top-level of a Marshal function.

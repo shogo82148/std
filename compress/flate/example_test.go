@@ -16,7 +16,7 @@ import (
 )
 
 // パフォーマンスの重要なアプリケーションでは、Reset を使用して現在の圧縮器または伸張器の状態を破棄し、
-// 以前に割り当てられたメモリを活用してそれらを迅速に再初期化することができます。
+// 以前に割り当てられたメモリーを活用してそれらを迅速に再初期化することができます。
 func Example_reset() {
 	proverbs := []string{
 		"Don't communicate by sharing memory, share memory by communicating.\n",

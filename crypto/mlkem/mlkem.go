@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package mlkem は、[NIST FIPS 203] で指定された量子耐性鍵カプセル化方式
+// mlkemパッケージは、[NIST FIPS 203] で指定された量子耐性鍵カプセル化方式
 // ML-KEM (以前は Kyber として知られていた) を実装します。
 //
 // ほとんどのアプリケーションは、[DecapsulationKey768] と [EncapsulationKey768]
-// で実装された ML-KEM-768 パラメータセットを使用すべきです。
+// で実装された ML-KEM-768 パラメーターセットを使用すべきです。
 //
 // [NIST FIPS 203]: https://doi.org/10.6028/NIST.FIPS.203
 package mlkem

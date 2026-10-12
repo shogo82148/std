@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// gifパッケージは、GIF画像のデコーダとエンコーダを実装します。
+// gifパッケージは、GIF画像のデコーダーとエンコーダーを実装します。
 //
 // GIF仕様は https://www.w3.org/Graphics/GIF/spec-gif89a.txt にあります。
 //
@@ -28,7 +28,7 @@ const (
 //
 // 信頼できないソースから画像をデコードする場合、
 // 最初に DecodeConfig を呼び出して画像サイズをチェックして
-// 下さい。詳算外の大きなメモリ割り当てを会を回避できます。
+// 下さい。詳算外の大きなメモリー割り当てを会を回避できます。
 func Decode(r io.Reader) (image.Image, error)
 
 // GIFは、GIFファイルに保存されている可能性のある複数の画像を表します。
@@ -62,15 +62,15 @@ type GIF struct {
 // タイミング情報を返します。
 //
 // [Decode] と同様に、画像記述子の幅と高さからフレームごとに
-// パレットバッファを割り当てます。[DecodeAll] はすべてのデコードされたフレームを
-// メモリに留めます。信頼できない入力の場合、最初に [DecodeConfig] を呼び出して
-// 詰輿画面サイズを検証し、過大なメモリを要求する入力を拒否して下さい。
+// パレットバッファーを割り当てます。[DecodeAll] はすべてのデコードされたフレームを
+// メモリーに留めます。信頼できない入力の場合、最初に [DecodeConfig] を呼び出して
+// 詰輿画面サイズを検証し、過大なメモリーを要求する入力を拒否して下さい。
 func DecodeAll(r io.Reader) (*GIF, error)
 
 // DecodeConfigはGIF画像全体をデコードせずに、グローバルカラーモデルと
 // ディメンションを返します。
 //
 // 詰輿画面記述子とグローバルカラーテーブルのみを読み取り、
-// フレームのピクセルバッファを割り当てません。幅と高さを検証したい場合、
+// フレームのピクセルバッファーを割り当てません。幅と高さを検証したい場合、
 // [Decode] または [DecodeAll] を呼び出す前に使用して下さい。
 func DecodeConfig(r io.Reader) (image.Config, error)

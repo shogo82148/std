@@ -11,7 +11,7 @@ import (
 )
 
 // Equalは、aとbが同じ長さで同じバイトを含むかどうかを報告します。
-// nilの引数は空のスライスと等価です。
+// nilの引数は空のスライスと同等です。
 func Equal(a, b []byte) bool
 
 // Compare関数は2つのバイトスライスを辞書的に比較して整数を返します。
@@ -127,7 +127,7 @@ func Map(mapping func(r rune) rune, s []byte) []byte
 
 // Repeat は、bのcount回のコピーからなる新しいバイトスライスを返します。
 //
-// countが負数であるか、(len(b) * count)の結果がオーバーフローする場合、パニックが発生します。
+// countが負数であるか、(len(b) * count)の結果がオーバーフローする場合、パニックを引き起こします。
 func Repeat(b []byte, count int) []byte
 
 // ToUpperは、すべてのUnicode文字を大文字に変換したバイトスライスsのコピーを返します。

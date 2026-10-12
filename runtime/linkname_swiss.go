@@ -12,8 +12,8 @@ import (
 
 func MustSupportFIPS140(tb testing.TB)
 
-// MustMinimumFIPS140ModuleVersion skips the test if compiled against a lower
-// minor version of the FIPS 140-3 module than min (such as "v1.26.0").
+// MustMinimumFIPS140ModuleVersionは、minより低いマイナーバージョンの
+// FIPS 140-3モジュール（"v1.26.0"など）に対してコンパイルされている場合、テストをスキップします。
 func MustMinimumFIPS140ModuleVersion(tb testing.TB, min string)
 
 func RerunWithFIPS140Enabled(t *testing.T)

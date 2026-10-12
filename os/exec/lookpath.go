@@ -4,25 +4,23 @@
 
 package exec
 
-// LookPath searches for an executable named file in the current path,
-// following the conventions of the host operating system.
-// If file contains a slash, it is tried directly and the default path is not consulted.
-// Otherwise, on success the result is an absolute path.
+// LookPathは、ホストオペレーティングシステムの規約に従って、
+// 現在のパスでfileという名前の実行可能ファイルを検索します。
+// fileにスラッシュが含まれている場合は、直接試行され、デフォルトのパスは参照されません。
+// それ以外の場合、成功すると結果は絶対パスになります。
 //
-// LookPath returns an error satisfying [errors.Is](err, [ErrDot])
-// if the resolved path is relative to the current directory.
-// See the package documentation for more details.
+// 解決されたパスがカレントディレクトリーからの相対パスである場合、LookPathは
+// [errors.Is](err, [ErrDot])を満たすエラーを返します。
+// 詳細はパッケージのドキュメントを参照してください。
 //
-// LookPath looks for an executable named file in the
-// directories named by the PATH environment variable,
-// except as described below.
+// LookPathは、以下で説明する場合を除き、PATH環境変数で指定された
+// ディレクトリー内でfileという名前の実行可能ファイルを探します。
 //
-//   - On Windows, the file must have an extension named by
-//     the PATHEXT environment variable.
-//     When PATHEXT is unset, the file must have
-//     a ".com", ".exe", ".bat", or ".cmd" extension.
-//   - On Plan 9, LookPath consults the path environment variable.
-//     If file begins with "/", "#", "./", or "../", it is tried
-//     directly and the path is not consulted.
-//   - On Wasm, LookPath always returns an error.
+//   - Windowsでは、ファイルはPATHEXT環境変数で指定された拡張子を持たなければなりません。
+//     PATHEXTが設定されていない場合、ファイルは
+//     ".com"、".exe"、".bat"、".cmd"のいずれかの拡張子を持たなければなりません。
+//   - Plan 9では、LookPathはpath環境変数を参照します。
+//     fileが"/"、"#"、"./"、"../"で始まる場合は、直接試行され、
+//     pathは参照されません。
+//   - Wasmでは、LookPathは常にエラーを返します。
 func LookPath(file string) (string, error)

@@ -57,7 +57,7 @@ type ClientCodec interface {
 }
 
 // NewClientは、接続先のサービスセットに対するリクエストを処理するための新しい [Client] を返します。
-// 接続の書き込み側にはバッファが追加されるため、ヘッダとペイロードがまとめて送信されます。
+// 接続の書き込み側にはバッファーが追加されるため、ヘッダーとペイロードがまとめて送信されます。
 //
 // 接続の読み込み側と書き込み側はそれぞれ独立してシリアライズされるため、相互ロックは必要ありません。ただし、各半分は同時にアクセスされる可能性があるため、connの実装は同時読み取りや同時書き込みに対して保護する必要があります。
 func NewClient(conn io.ReadWriteCloser) *Client
@@ -68,20 +68,20 @@ func NewClientWithCodec(codec ClientCodec) *Client
 // DialHTTPは、デフォルトのHTTP RPCパスで待ち受けている、指定されたネットワークアドレスのHTTP RPCサーバーに接続します。
 func DialHTTP(network, address string) (*Client, error)
 
-// DialHTTPPathは指定したネットワークアドレスとパスでHTTP RPCサーバに接続します。
+// DialHTTPPathは指定したネットワークアドレスとパスでHTTP RPCサーバーに接続します。
 func DialHTTPPath(network, address, path string) (*Client, error)
 
-// Dialは指定されたネットワークアドレスのRPCサーバに接続します。
+// Dialは指定されたネットワークアドレスのRPCサーバーに接続します。
 func Dial(network, address string) (*Client, error)
 
 // Closeは基礎となるコーデックのCloseメソッドを呼び出します。接続がすでに
 // シャットダウン中の場合、[ErrShutdown] が返されます。
 func (client *Client) Close() error
 
-// Go invokes the function asynchronously. It returns the [Call] structure representing
-// the invocation. The done channel will signal when the call is complete by returning
-// the same Call object. If done is nil, Go will allocate a new channel.
-// If non-nil, done must be buffered or Go will deliberately crash.
+// Goは関数を非同期に呼び出します。呼び出しを表す [Call] 構造体を返します。
+// done チャネルは、呼び出しが完了したときに同じCallオブジェクトを返すことで通知します。
+// doneがnilの場合、Goは新しいチャネルを割り当てます。
+// nilでない場合、doneはバッファー付きでなければならず、そうでなければGoは意図的にクラッシュします。
 func (client *Client) Go(serviceMethod string, args any, reply any, done chan *Call) *Call
 
 // Callは指定された関数を呼び出し、その完了を待ち、エラー状態を返します。

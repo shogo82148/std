@@ -41,7 +41,7 @@ func Example() {
 // この例では、*Randの各メソッドの使用を示しています。
 // グローバル関数の使用は、レシーバーなしで同じです。
 func Example_rand() {
-	// ジェネレータを作成し、シードを設定します。
+	// ジェネレーターを作成し、シードを設定します。
 	// 通常、固定されていないシードを使用するべきで、例えばtime.Now().UnixNano()などです。
 	// 固定されたシードを使用すると、毎回の実行で同じ出力が生成されます。
 	r := rand.New(rand.NewSource(99))
@@ -112,7 +112,7 @@ func ExampleShuffle() {
 func ExampleShuffle_slicesInUnison() {
 	numbers := []byte("12345")
 	letters := []byte("ABCDE")
-	// 数字をシャッフルし、同時にlettersの対応するエントリを交換します。
+	// 数字をシャッフルし、同時にlettersの対応するエントリーを交換します。
 	rand.Shuffle(len(numbers), func(i, j int) {
 		numbers[i], numbers[j] = numbers[j], numbers[i]
 		letters[i], letters[j] = letters[j], letters[i]

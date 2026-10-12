@@ -35,7 +35,7 @@ type Func struct {
 }
 
 // Fileはパーサーで使用されるファイルの状態のラッパーです。
-// 基本的なパースツリーウォーカーは、このタイプのメソッドです。
+// 基本的な解析ツリーウォーカーは、このタイプのメソッドです。
 type File struct {
 	fset    *token.FileSet
 	name    string

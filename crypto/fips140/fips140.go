@@ -2,33 +2,31 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package fips140 provides information about the FIPS 140-3 Go Cryptographic
-// Module and FIPS 140-3 mode.
+// fips140パッケージは、FIPS 140-3 Go暗号モジュールおよびFIPS 140-3モードに関する
+// 情報を提供します。
 //
-// For more details, see the [FIPS 140-3 documentation].
+// 詳細については、[FIPS 140-3 documentation]を参照してください。
 //
 // [FIPS 140-3 documentation]: https://go.dev/doc/security/fips140
 package fips140
 
-// Enabled reports whether the cryptography libraries are operating in FIPS
-// 140-3 mode.
+// Enabledは、暗号ライブラリーがFIPS 140-3モードで動作しているかどうかを報告します。
 //
-// It can be controlled at runtime using the GODEBUG setting "fips140". If set
-// to "on", FIPS 140-3 mode is enabled. If set to "only", non-approved
-// cryptography functions will additionally return errors or panic.
+// これは実行時にGODEBUG設定"fips140"を使用して制御できます。
+// "on"に設定すると、FIPS 140-3モードが有効になります。"only"に設定すると、
+// 承認されていない暗号関数はさらにエラーを返すかパニックを引き起こします。
 //
-// This can't be changed after the program has started.
+// これはプログラムの開始後に変更することはできません。
 func Enabled() bool
 
-// Version returns the FIPS 140-3 Go Cryptographic Module version (such as
-// "v1.0.0"), as referenced in the Security Policy for the module, if building
-// against a frozen module with GOFIPS140. Otherwise, it returns "latest". If an
-// alias is in use (such as "inprogress") the actual resolved version is
-// returned.
+// Versionは、GOFIPS140を使用して凍結されたモジュールに対してビルドしている場合、
+// モジュールのセキュリティーポリシーで参照されているFIPS 140-3 Go暗号モジュールの
+// バージョン（"v1.0.0"など）を返します。それ以外の場合は"latest"を返します。
+// エイリアス（"inprogress"など）が使用されている場合は、実際に解決された
+// バージョンが返されます。
 //
-// The returned version may not uniquely identify the frozen module which was
-// used to build the program, if there are multiple copies of the frozen module
-// at the same version. The uniquely identifying version suffix can be found by
-// checking the value of the GOFIPS140 setting in
-// runtime/debug.BuildInfo.Settings.
+// 同じバージョンの凍結モジュールのコピーが複数ある場合、返されるバージョンは
+// プログラムのビルドに使用された凍結モジュールを一意に識別しない可能性があります。
+// 一意に識別するためのバージョンサフィックスは、
+// runtime/debug.BuildInfo.SettingsのGOFIPS140設定の値を確認することで見つけられます。
 func Version() string

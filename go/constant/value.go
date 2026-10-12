@@ -91,7 +91,7 @@ func Float32Val(x Value) (float32, bool)
 // xが [Unknown] の場合、結果は（0、false）です。
 func Float64Val(x Value) (float64, bool)
 
-// Valは指定された定数の基になる値を返します。インターフェースを返すため、呼び出し元が結果を期待する型にキャストすることが求められます。可能な動的な戻り値の型は次の通りです：
+// Valは指定された定数の基礎となる値を返します。インターフェースを返すため、呼び出し元が結果を期待する型にキャストすることが求められます。可能な動的な戻り値の型は次の通りです：
 //
 //	xの種類            結果の型
 //	-------------------------------------------
@@ -104,7 +104,7 @@ func Val(x Value) any
 
 // StringLenは、xが [String] の場合にxの長さを返します。
 // xが [Unknown] の場合、結果は0です。
-// それ以外の場合、この関数はパニックします。
+// それ以外の場合、この関数はパニックを引き起こします。
 func StringLen(x Value) int64
 
 // Makeはxの値に対する [Value] を返します。
@@ -133,7 +133,7 @@ func Sign(x Value) int
 // 2進表現で返します。xは [Int] 型である必要があります。
 func Bytes(x Value) []byte
 
-// MakeFromBytesは、リトルエンディアンのバイナリ表現のバイトを与えられた場合に、 [Int] 値を返します。空のバイトスライス引数は0を表します。
+// MakeFromBytesは、リトルエンディアンのバイナリー表現のバイトを与えられた場合に、 [Int] 値を返します。空のバイトスライス引数は0を表します。
 func MakeFromBytes(bytes []byte) Value
 
 // Numはxの分子を返します。xは [Int]、[Float]、または [Unknown] でなければなりません。
@@ -177,11 +177,11 @@ func ToComplex(x Value) Value
 // yが [Unknown] の場合、結果は [Unknown] です。
 func UnaryOp(op token.Token, y Value, prec uint) Value
 
-// BinaryOpは、バイナリ式x op yの結果を返します。
+// BinaryOpは、バイナリー式x op yの結果を返します。
 // 演算は、オペランドに対して定義されている必要があります。オペランドの1つが [Unknown] の場合、結果は [Unknown] です。
 // BinaryOpは比較やシフトを処理しません。代わりに [Compare] または [Shift] を使用してください。
 //
-// Intオペランドの整数除算を強制するには、[token.QUO] のかわりにop == [token.QUO_ASSIGN] を使用します。この場合、結果は [Int] が保証されます。
+// Intオペランドの整数除算を強制するには、[token.QUO] の代わりにop == [token.QUO_ASSIGN] を使用します。この場合、結果は [Int] が保証されます。
 // ゼロでの除算はランタイムパニックを引き起こします。
 func BinaryOp(x_ Value, op token.Token, y_ Value) Value
 

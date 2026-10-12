@@ -7,7 +7,7 @@
 
 package types
 
-// TypeParamはジェネリック宣言における型パラメータの型を表します。
+// TypeParamはジェネリック宣言における型パラメーターの型を表します。
 //
 // TypeParamは名前を持ちます；その [TypeName] オブジェクトにアクセスするには
 // [TypeParam.Obj] メソッドを使用してください。
@@ -19,15 +19,15 @@ type TypeParam struct {
 	bound Type
 }
 
-// NewTypeParamは新しいTypeParamを返します。型パラメータは、Named型に対してSetTypeParamsを呼び出すことによって設定できます。
-// 型パラメータを複数の型に設定するとパニックが発生します。
+// NewTypeParamは新しいTypeParamを返します。型パラメーターは、Named型に対してSetTypeParamsを呼び出すことによって設定できます。
+// 型パラメーターを複数の型に設定するとパニックを引き起こします。
 //
 // 制約引数はnilにすることもできますが、後でSetConstraintを介して設定することができます。制約が非nilの場合、完全に定義されている必要があります。func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
 
-// Obj は型パラメータ t の型名を返します。
+// Obj は型パラメーター t の型名を返します。
 func (t *TypeParam) Obj() *TypeName
 
-// Indexは、タイプパラメータがまだタイプにバインドされていない場合は、そのパラメータリスト内のタイプパラメータのインデックス、または-1を返します。
+// Indexは、タイプパラメーターがまだタイプにバインドされていない場合は、そのパラメーターリスト内のタイプパラメーターのインデックス、または-1を返します。
 func (t *TypeParam) Index() int
 
 // Constraintはtに指定された型制約を返します。
@@ -36,12 +36,12 @@ func (t *TypeParam) Constraint() Type
 // SetConstraintはtの型制約を設定します。
 //
 // これは、boundの基礎が完全に定義された後、NewTypeParamのユーザーによって呼び出される必要があります。
-// また、他のタイプを形成する以外の方法で、タイプパラメータを使用する前に呼び出す必要があります。
-// SetConstraintがレシーバを返すと、tは同時使用に安全です。
+// また、他のタイプを形成する以外の方法で、タイプパラメーターを使用する前に呼び出す必要があります。
+// SetConstraintがレシーバーを返すと、tは同時使用に安全です。
 func (t *TypeParam) SetConstraint(bound Type)
 
-// Underlyingは型パラメータtの [underlying type] を返します。これは
-// その制約の基底型です。この型は常にインターフェースです。
+// Underlyingは型パラメーターtの [underlying type] を返します。これは
+// その制約の基礎となる型です。この型は常にインターフェースです。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *TypeParam) Underlying() Type

@@ -18,7 +18,7 @@ import (
 // Base64エンコードされたバイト
 // -----END Type-----
 //
-// where [Block.Headers] is a possibly empty sequence of Key: Value lines.
+// ここで [Block.Headers] は、空の場合もあるKey: Value行の並びです。
 type Block struct {
 	Type    string
 	Headers map[string]string

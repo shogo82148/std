@@ -27,7 +27,7 @@ func ExampleListener() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// 新しいgoroutineで接続を処理する。
+		// 新しいゴルーチンで接続を処理する。
 		// ループはその後、受け付けを再開するため、
 		// 複数の接続を同時に処理することが可能です。
 		go func(c net.Conn) {
@@ -56,7 +56,7 @@ func ExampleDialer() {
 }
 
 func ExampleDialer_unix() {
-	// DialUnixはcontext.Contextパラメータを受け取りません。この例は、
+	// DialUnixはcontext.Contextパラメーターを受け取りません。この例は、
 	// Contextを使用してUnixソケットにダイヤルする方法を示しています。ただし、
 	// Contextはダイヤル操作にのみ適用されます。接続が確立された後には適用されません。
 	var d net.Dialer

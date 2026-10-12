@@ -60,8 +60,8 @@ var _ KeyExchanger = (*PrivateKey)(nil)
 
 // PrivateKeyはECDHの秘密鍵で、通常は秘密に保たれます。
 //
-// これらの鍵は [crypto/x509.ParsePKCS8PrivateKey] でパースでき、[crypto/x509.MarshalPKCS8PrivateKey]
-// でエンコードすることができます。NIST曲線の場合、パース後に[crypto/ecdsa.PrivateKey.ECDH]で変換する必要があります。
+// これらの鍵は [crypto/x509.ParsePKCS8PrivateKey] で解析でき、[crypto/x509.MarshalPKCS8PrivateKey]
+// でエンコードすることができます。NIST曲線の場合、解析後に[crypto/ecdsa.PrivateKey.ECDH]で変換する必要があります。
 type PrivateKey struct {
 	curve      Curve
 	privateKey []byte
@@ -82,7 +82,7 @@ type PrivateKey struct {
 // [X25519] の場合、これはRFC 7748 Section 6.1 で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
 func (k *PrivateKey) ECDH(remote *PublicKey) ([]byte, error)
 
-// Bytesは、プライベートキーのエンコーディングのコピーを返します。
+// Bytesは、秘密鍵のエンコーディングのコピーを返します。
 func (k *PrivateKey) Bytes() []byte
 
 // Equalは、xがkと同じ秘密鍵を表しているかどうかを返します。
@@ -97,5 +97,5 @@ func (k *PrivateKey) Curve() Curve
 
 func (k *PrivateKey) PublicKey() *PublicKey
 
-// Publicは、すべての標準ライブラリの非公開キーの暗黙のインターフェースを実装します。 [crypto.PrivateKey] のドキュメントを参照してください。
+// Publicは、すべての標準ライブラリーの秘密鍵の暗黙のインターフェースを実装します。 [crypto.PrivateKey] のドキュメントを参照してください。
 func (k *PrivateKey) Public() crypto.PublicKey

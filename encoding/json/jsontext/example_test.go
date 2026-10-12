@@ -17,7 +17,7 @@ import (
 )
 
 // この例は、[Encoder] と [Decoder] を使って、
-// JSONを具体的なGo型にアンマーシャルせずにパース・修正する方法を示します。
+// JSONを具体的なGo型にアンマーシャルせずに解析・修正する方法を示します。
 func Example_stringReplace() {
 	// 「Go」の代わりに非慣用的な「Golang」を使った例の入力。
 	const input = `{
@@ -32,7 +32,7 @@ func Example_stringReplace() {
 		]
 	}`
 
-	// DecoderとEncoderを使うことで、すべてのトークンをパースし、
+	// DecoderとEncoderを使うことで、すべてのトークンを解析し、
 	// 必要に応じてトークンをチェック・修正し、
 	// 出力にトークンを書き込むことができます。
 	var replacements []jsontext.Pointer
@@ -123,5 +123,32 @@ func ExampleEscapeForHTML() {
 	// {
 	// 	"Title": "Example Embedded Javascript",
 	// 	"Body": "\u003cscript\u003e console.log(\"Hello, world!\"); \u003c/script\u003e"
+	// }
+}
+
+func ExampleMultiline() {
+	type Pet struct {
+		Name    string
+		Species string
+		Breed   string
+	}
+
+	p := Pet{
+		Name:    "Oliver",
+		Species: "Dog",
+		Breed:   "Goldendoodle",
+	}
+
+	b, err := json.Marshal(p, jsontext.Multiline(true))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(b))
+	// Output:
+	// {
+	// 	"Name": "Oliver",
+	// 	"Species": "Dog",
+	// 	"Breed": "Goldendoodle"
 	// }
 }

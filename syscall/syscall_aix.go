@@ -16,7 +16,7 @@ func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
-// Constant expected by package but not supported
+// パッケージが期待するが、サポートされていない定数。
 const (
 	_ = iota
 	TIOCSCTTY
@@ -26,7 +26,7 @@ const (
 
 const (
 	F_DUPFD_CLOEXEC = 0
-	// AF_LOCAL doesn't exist on AIX
+	// AF_LOCALはAIXには存在しません
 	AF_LOCAL = AF_UNIX
 )
 

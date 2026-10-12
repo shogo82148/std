@@ -87,7 +87,7 @@ func ExampleNewCBCDecrypter() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。
+	// IVは一意である必要がありますが、セキュリティーは必要ありません。
 	// そのため、しばしば暗号文の先頭に含まれます。
 	if len(ciphertext) < aes.BlockSize {
 		panic("ciphertext too short")
@@ -129,7 +129,7 @@ func ExampleNewCBCEncrypter() {
 		panic(err)
 	}
 
-	// IVはユニークである必要がありますが、セキュリティは求められません。
+	// IVはユニークである必要がありますが、セキュリティーは求められません。
 	// そのため、一般的には暗号文の先頭に含めることがあります。
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
@@ -211,7 +211,7 @@ func ExampleNewCTR() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。そのため、一般的には暗号文の先頭に含まれます。
+	// IVは一意である必要がありますが、セキュリティーは必要ありません。そのため、一般的には暗号文の先頭に含まれます。
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -245,7 +245,7 @@ func ExampleNewOFB() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。そのため、一般的には
+	// IVは一意である必要がありますが、セキュリティーは必要ありません。そのため、一般的には
 	// 暗号文の先頭に含まれています。
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
@@ -256,7 +256,7 @@ func ExampleNewOFB() {
 	stream := cipher.NewOFB(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	// 暗号文だけでなく、(crypto/hmacを使用して)認証も行われる必要があることを覚えておくことは重要です。これによってセキュリティが確保されます。
+	// 暗号文だけでなく、(crypto/hmacを使用して)認証も行われる必要があることを覚えておくことは重要です。これによってセキュリティーが確保されます。
 
 	// OFBモードは暗号化と復号化の両方において同じですので、NewOFBを使ってその暗号文を復号化することも可能です。
 
@@ -319,7 +319,7 @@ func ExampleStreamWriter() {
 	var out bytes.Buffer
 
 	writer := &cipher.StreamWriter{S: stream, W: &out}
-	// 入力を出力バッファにコピーし、進行中に暗号化します。
+	// 入力を出力バッファーにコピーし、進行中に暗号化します。
 	if _, err := io.Copy(writer, bReader); err != nil {
 		panic(err)
 	}

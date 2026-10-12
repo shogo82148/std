@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package constraintはビルド制約行の解析と評価を実装しています。
+// constraintパッケージはビルド制約行の解析と評価を実装しています。
 // ビルド制約自体のドキュメントについては、https://golang.org/cmd/go/#hdr-Build_constraintsを参照してください。
 //
 // このパッケージは、オリジナルの「// +build」構文と、Go 1.17で追加された「//go:build」構文の両方を解析します。

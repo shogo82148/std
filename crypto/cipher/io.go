@@ -26,5 +26,5 @@ type StreamWriter struct {
 
 func (w StreamWriter) Write(src []byte) (n int, err error)
 
-// Closeは基礎となるWriterを閉じ、そのCloseの返り値を返します。Writerがio.Closerでもある場合は、それを返します。そうでなければnilを返します。
+// Closeは基礎となるWriterを閉じ、そのCloseの戻り値を返します。Writerがio.Closerでもある場合は、それを返します。そうでなければnilを返します。
 func (w StreamWriter) Close() error

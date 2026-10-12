@@ -34,7 +34,7 @@ var (
 // Marshalは、これらの関数やメソッドを一貫して呼び出せるよう、
 // 値が常にアドレス可能であることを保証します
 // （必要に応じて値をコピーします）。性能のため、Marshalには
-// 値への非nilポインタを渡すことが推奨されます。
+// 値への非nilポインターを渡すことが推奨されます。
 //
 // 入力値は次の規則に従ってJSONとしてエンコードされます:
 //
@@ -66,7 +66,7 @@ var (
 //   - Go の文字列は JSON 文字列としてエンコードされます。
 //
 //   - Go の []byte または [N]byte は、RFC 4648 の 4 節に従う Base64 エンコーディングを用いた
-//     バイナリ値を含む JSON 文字列としてエンコードされます。
+//     バイナリー値を含む JSON 文字列としてエンコードされます。
 //
 //   - Go の整数は、小数部や指数部を持たない JSON 数値としてエンコードされます。
 //     [StringifyNumbers] が指定されている場合、または JSON オブジェクト名を
@@ -97,11 +97,11 @@ var (
 //     JSON 配列の要素として再帰的に JSON エンコードされます。
 //     JSON 配列の長さは常に Go 配列の長さと一致します。
 //
-//   - Go のポインタは、nil なら JSON null としてエンコードされ、
-//     そうでなければ基底値を再帰的に JSON エンコードした表現になります。
+//   - Go のポインターは、nil なら JSON null としてエンコードされ、
+//     そうでなければ基礎となる値を再帰的に JSON エンコードした表現になります。
 //
 //   - Go のインターフェースは、nil なら JSON null としてエンコードされ、
-//     そうでなければ基底値を再帰的に JSON エンコードした表現になります。
+//     そうでなければ基礎となる値を再帰的に JSON エンコードした表現になります。
 //
 //   - Go の [time.Time] は、RFC 3339 に従いナノ秒精度でフォーマットされた
 //     タイムスタンプを含む JSON 文字列としてエンコードされます。
@@ -114,8 +114,7 @@ var (
 //
 //   - その他のGo型（複素数、チャネル、関数など）はデフォルト表現がなく、[SemanticError] になります。
 //
-// JSONは循環データ構造を表現できず、Marshalはそれらを扱いません。
-// 循環構造を渡すとエラーになります。
+// JSON は循環データ構造を表現できないため、Marshal はそれらを処理しません。
 func Marshal(in any, opts ...Options) (out []byte, err error)
 
 // MarshalWriteは、指定されたマーシャルおよびエンコードオプションに従って
@@ -135,7 +134,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 // Unmarshalは、指定されたアンマーシャルおよびデコードオプションに従って
 // []byte入力をGo値へデコードします（マーシャルやエンコードオプションは無視されます）。
 // 入力は、空白を含んでもよい単一のJSON値でなければなりません。
-// 出力は非nilのポインタでなければなりません。
+// 出力は非nilのポインターでなければなりません。
 //
 // 型固有のアンマーシャル関数やメソッドは、値のデフォルト表現よりも優先されます。
 // *Tを操作する関数やメソッドは、T型の値をデコードする場合
@@ -143,7 +142,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 // Unmarshalは、これらの関数やメソッドを一貫して呼び出せるよう、
 // 値が常にアドレス可能であることを保証します
 // （必要に応じて値をコピーします）。
-// ポインタレシーバの [Unmarshaler]、[UnmarshalerFrom]、または
+// ポインターレシーバーの [Unmarshaler]、[UnmarshalerFrom]、または
 // [encoding.TextUnmarshaler] メソッドを呼び出すために値を浅くコピーする必要がある場合、
 // そのメソッドによって行われた変更は、デスティネーション値へ
 // 浅いコピーとして書き戻されます。
@@ -184,7 +183,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //   - Go の文字列は JSON 文字列からデコードされます。
 //
 //   - Go の []byte または [N]byte は、RFC 4648 の 4 節に従う Base64 エンコーディングを用いた
-//     バイナリ値を含む JSON 文字列からデコードされます。
+//     バイナリー値を含む JSON 文字列からデコードされます。
 //     非 nil の []byte へデコードする場合、スライス長はゼロにリセットされ、
 //     デコードされた入力がそこへ追加されます。
 //     [N]byte へデコードする場合、入力はちょうど N バイトにデコードされなければならず、
@@ -207,8 +206,8 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //     各 JSON オブジェクト名と値の組が Go map のキーと値として再帰的にデコードされます。
 //     map はクリアされません。
 //     Go map が nil の場合、新しい map が割り当てられてデコード先になります。
-//     デコードされたキーが既存の Go map エントリと一致する場合、
-//     エントリ値は再利用され、JSON オブジェクト値がそこへデコードされます。
+//     デコードされたキーが既存の Go map エントリーと一致する場合、
+//     エントリー値は再利用され、JSON オブジェクト値がそこへデコードされます。
 //
 //   - Goの構造体はJSONオブジェクトからデコードされます。
 //     詳細はパッケージレベルの「Go構造体のJSON表現」セクション参照。
@@ -224,10 +223,10 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //     JSON 配列が Go 配列とまったく同じ数の要素を含まない場合、
 //     [SemanticError] になります。
 //
-//   - Go のポインタは、JSON の種類と基底 Go 型に基づいてデコードされます。
-//     入力が JSON null の場合、nil ポインタが格納されます。
-//     それ以外の場合、ポインタが nil なら新しい基底値が割り当てられ、
-//     その基底値へ再帰的に JSON デコードされます。
+//   - Go のポインターは、JSON の種類と基底 Go 型に基づいてデコードされます。
+//     入力が JSON null の場合、nil ポインターが格納されます。
+//     それ以外の場合、ポインターが nil なら新しい基礎となる値が割り当てられ、
+//     その基礎となる値へ再帰的に JSON デコードされます。
 //
 //   - Go のインターフェースは、JSON の種類と基底 Go 型に基づいてデコードされます。
 //     入力が JSON null の場合、nil インターフェース値が格納されます。
@@ -238,7 +237,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //     デコード先として決定できなかったため、[SemanticError] になります。
 //     たとえば、nil の io.Reader へアンマーシャルすると、
 //     インターフェース値に設定する具体型が存在しないため失敗します。
-//     それ以外では基底値が存在し、JSON 入力はそこへ再帰的にデコードされます。
+//     それ以外では基礎となる値が存在し、JSON 入力はそこへ再帰的にデコードされます。
 //
 //   - Go の [time.Time] は、RFC 3339 に従いナノ秒精度でフォーマットされた時刻を含む
 //     JSON 文字列からデコードされます。
@@ -261,7 +260,7 @@ func Unmarshal(in []byte, out any, opts ...Options) (err error)
 // [io.Reader] からGo値をデシリアライズします（マーシャルやエンコードオプションは無視されます）。
 // 入力は空白を含んでもよい単一のJSON値でなければなりません。
 // [io.Reader] 全体を [io.EOF] に達するまで消費し、EOFでエラーを報告しません。
-// 出力は非nilのポインタでなければなりません。
+// 出力は非nilのポインターでなければなりません。
 // JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
 func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 
@@ -270,9 +269,9 @@ func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 // 指定されたオプションは、[jsontext.Decoder] にすでに適用されているオプションより優先され、
 // アンマーシャル呼び出しの期間中のみ適用されます。
 //
-// 入力は0個以上のJSON値のストリームであっても構いませんが、
-// これはストリーム内の次のJSON値のみをアンマーシャルします。
-// トップレベルのJSON値がもうない場合は、[io.EOF] を報告します。
-// 出力は非nilのポインタでなければなりません。
-// JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
+// 入力は 0 個以上の JSON 値のストリームであっても構いません。
+// UnmarshalDecode はストリーム内の次の JSON 値だけをアンマーシャルします。
+// トップレベルの JSON 値がもうない場合は、[io.EOF] を報告します。
+// 出力は非 nil のポインターでなければなりません。
+// JSON を Go の値へ変換する詳細は [Unmarshal] を参照してください。
 func UnmarshalDecode(in *jsontext.Decoder, out any, opts ...Options) (err error)

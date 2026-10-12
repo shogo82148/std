@@ -10,9 +10,9 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Encoderは生のJSONトークンや値をストリームでエンコードするためのエンコーダです。
-// トップレベルのJSON値のストリームを書き込むために使用され、
-// 各値は改行文字で区切られます。
+// Encoder は、生のJSONトークンと値をストリーミングでエンコードするエンコーダーです。
+// これはトップレベルのJSON値のストリームを書き込むために使用され、
+// 各値は改行文字で終了します。
 //
 // [Encoder.WriteToken]と[Encoder.WriteValue]の呼び出しは交互に行うことができます。
 // 例えば、次のJSON値：
@@ -43,22 +43,22 @@ type Encoder struct {
 	s encoderState
 }
 
-// NewEncoderは、wに書き込む新しいストリーミングエンコーダを構築し、
+// NewEncoderは、wに書き込む新しいストリーミングエンコーダーを構築し、
 // 指定されたオプションで構成します。
-// バッファが十分に満杯になったときや、トップレベルの値が書き込まれたときに
-// 内部バッファをフラッシュします。
+// バッファーが十分に満杯になったときや、トップレベルの値が書き込まれたときに
+// 内部バッファーをフラッシュします。
 //
-// wが [bytes.Buffer] の場合、エンコーダは中間バッファから内容をコピーせず、
-// 直接バッファに追加します。
+// wが [bytes.Buffer] の場合、エンコーダーは中間バッファーから内容をコピーせず、
+// 直接バッファーに追加します。
 func NewEncoder(w io.Writer, opts ...Options) *Encoder
 
-// Resetはエンコーダをリセットし、新たにwへ書き込み、
+// Resetはエンコーダーをリセットし、新たにwへ書き込み、
 // 指定されたオプションで構成します。Resetは
 // [encoding/json/v2.MarshalerTo.MarshalJSONTo] メソッドに渡された
 // Encoderや [encoding/json/v2.MarshalToFunc] 関数に渡されたEncoderに対して呼び出してはいけません。
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
-// Options は、エンコーダの構築に使用されたオプションを返します。
+// Options は、エンコーダーの構築に使用されたオプションを返します。
 // さらに、[encoding/json/v2.MarshalEncode] 呼び出しに渡された
 // セマンティックなオプションを含む場合があります。
 //
@@ -70,34 +70,36 @@ func (e *Encoder) Options() Options
 // WriteTokenは次のトークンを書き込み、内部の書き込みオフセットを進めます。
 //
 // 渡されるトークン種別はJSON文法と一致していなければなりません。
-// 例えば、エンコーダがオブジェクト名（常に文字列）を期待している場面で
-// 数値を渡したり、配列を閉じる場面でオブジェクト終端区切りを
+// 例えば、エンコーダーがオブジェクト名（常に文字列）を期待している場面で
+// 数値を渡したり、配列を終了しようとしているときにオブジェクト終端区切りを
 // 渡したりするのはエラーです。
-// 渡されたトークンが無効な場合は [SyntacticError] を報告し、
-// 内部状態は変更されません。[SyntacticError] で報告されるオフセットは、
+// 渡されたトークンが無効な場合、WriteToken は [SyntacticError] を報告し、
+// 内部状態は変更されません。[SyntacticError] に報告されるオフセットは、
 // [Encoder.OutputOffset] に、渡されたトークンの前に入るはずだった
 // 区切り文字や空白文字を加えた位置になります。
 func (e *Encoder) WriteToken(t Token) error
 
 // WriteValueは次の生の値を書き込み、内部の書き込みオフセットを進めます。
 // Encoderは渡された値を単純にそのままコピーするのではなく、
-// 構文的に有効であることを確認するためにパースし、
+// 構文的に有効であることを確認するために解析し、
 // 空白や文字列のフォーマット方法に従って再フォーマットします。
 // [AllowInvalidUTF8] が指定されている場合、不正なUTF-8はUnicodeの置換文字U+FFFDに変換されます。
 //
 // 渡される値の種別はJSON文法と一致していなければなりません
 // （[Encoder.WriteToken] の例を参照）。渡された値が無効な場合、
-// [SyntacticError] を報告し、内部状態は変更されません。
+// WriteValue は [SyntacticError] を報告し、内部状態は変更されません。
 // [SyntacticError] で報告されるオフセットは [Encoder.OutputOffset] に、
-// v内で発生した構文エラー位置のオフセットを加えた値になります。
+// v 内で発生した構文エラー位置のオフセットを加えた値になります。
 func (e *Encoder) WriteValue(v Value) error
 
-// OutputOffsetは現在の出力バイトオフセットを返します。これは直近に書き込まれたトークンまたは値の直後の次のバイト位置を示します。
-// 実際に基礎となる [io.Writer] に書き込まれたバイト数は、内部バッファリングの影響でこのオフセットより少ない場合があります。
+// OutputOffset は現在の出力バイトオフセットを返します。
+// これは、直近に書き込まれたトークンまたは値の直後の次のバイト位置を示します。
+// 基礎となる [io.Writer] に実際に書き込まれたバイト数は、
+// 内部バッファリングの影響により、このオフセットより少ない場合があります。
 func (e *Encoder) OutputOffset() int64
 
-// AvailableBufferは長さ0で容量が0でない可能性があるバッファを返します。
-// このバッファは、直後に [Encoder.WriteValue] 呼び出しで渡す [Value] の生成に使用することを意図しています。
+// AvailableBufferは長さ0で容量が0でない可能性があるバッファーを返します。
+// このバッファーは、直後に [Encoder.WriteValue] 呼び出しで渡す [Value] の生成に使用することを意図しています。
 //
 // 使用例:
 //
@@ -107,9 +109,9 @@ func (e *Encoder) OutputOffset() int64
 //	b = append(b, '"')
 //	... := e.WriteValue(b)
 //
-// WriteValueはJSON値を期待します。AvailableBufferを使って手動で値を構築する場合は、
-// 無効なJSON値を生成してWriteValueが失敗しないよう、
-// 注意が必要です。
+// [WriteValue] は有効なJSON値を受け取ることに注意してください。
+// 生の []byte から値を構築するには、常に有効な [Token] または [Value] を返す
+// [String] のようなコンストラクタ関数を使うよりも、さらに注意が必要です。
 func (e *Encoder) AvailableBuffer() []byte
 
 // StackDepthは、書き込まれたJSONデータに対する状態機械の深さを返します。
@@ -146,11 +148,11 @@ func (e *Encoder) StackDepth() int
 //   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
 //   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
-// また、これまでにエンコードされたそのJSONオブジェクトまたは配列の長さも報告します。
+// また、このJSONオブジェクトまたは配列の、これまでにエンコードされた長さも報告します。
 // JSONオブジェクト内の各名前と値は個別に数えられるため、
 // 実際のメンバー数は長さの半分になります。
 // 完全なJSONオブジェクトは偶数の長さでなければなりません。
 func (e *Encoder) StackIndex(i int) (Kind, int64)
 
-// StackPointerは、直近に書き込まれた値へのJSONポインタ（RFC 6901）を返します。
+// StackPointerは、直近に書き込まれた値へのJSONポインター（RFC 6901）を返します。
 func (e *Encoder) StackPointer() Pointer

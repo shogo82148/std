@@ -40,7 +40,7 @@ type Printer struct {
 	TextWidth int
 }
 
-// DefaultURLは、baseURLをプレフィックスとして他のパッケージへのリンクのためにlのドキュメンテーションURLを構築して返します。
+// DefaultURLは、baseURLをプレフィックスとして他のパッケージへのリンクのためにlのドキュメントURLを構築して返します。
 //
 // DefaultURLが返す可能性のある形式は以下の通りです：
 //   - baseURL/ImportPath、他のパッケージへのリンク

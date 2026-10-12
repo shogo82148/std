@@ -27,7 +27,7 @@ type Interface struct {
 func NewInterface(methods []*Func, embeddeds []*Named) *Interface
 
 // NewInterfaceTypeは、指定されたメソッドと埋め込み型に対して新しいインターフェースを返します。
-// NewInterfaceTypeは、提供されたメソッドの所有権を受け取り、抜けているレシーバを設定することで型を変更する場合があります。
+// NewInterfaceTypeは、提供されたメソッドの所有権を受け取り、抜けているレシーバーを設定することで型を変更する場合があります。
 //
 // レースコンディションを避けるために、インターフェースの型セットは、インターフェースの並行使用前にCompleteを明示的に呼び出すことで計算する必要があります。
 func NewInterfaceType(methods []*Func, embeddeds []Type) *Interface
@@ -70,14 +70,14 @@ func (t *Interface) Empty() bool
 // IsComparableはインターフェースtの型セットの各タイプが比較可能かどうかを報告します。
 func (t *Interface) IsComparable() bool
 
-// IsMethodSetは、インタフェースtがそのメソッドセットによって完全に記述されているかどうかを報告します。
+// IsMethodSetは、インターフェースtがそのメソッドセットによって完全に記述されているかどうかを報告します。
 func (t *Interface) IsMethodSet() bool
 
 // IsImplicitは、インターフェースtが型セットリテラルのラッパーであるかどうかを報告します。
 func (t *Interface) IsImplicit() bool
 
 // Completeはインターフェースのタイプセットを計算します。これは、
-// [NewInterfaceType] と [NewInterface] のユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
+// [NewInterfaceType] と [NewInterface] のユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックを引き起こします。Completeはレシーバーを返します。
 //
 // 完了済みのインターフェース型は、同時に使用することが安全です。
 func (t *Interface) Complete() *Interface

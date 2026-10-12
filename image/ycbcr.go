@@ -22,7 +22,7 @@ const (
 
 func (s YCbCrSubsampleRatio) String() string
 
-// YCbCrは、Y'CbCr色のインメモリイメージです。ピクセルごとに1つのYサンプルがありますが、
+// YCbCrは、Y'CbCr色のインメモリーイメージです。ピクセルごとに1つのYサンプルがありますが、
 // 各CbおよびCrサンプルは1つ以上のピクセルに跨ることができます。
 // YStrideは、垂直方向の隣接ピクセル間のYスライスインデックスデルタです。
 // CStrideは、別々のクロマサンプルにマップされる垂直方向の隣接ピクセル間のCbおよびCrスライスインデックスデルタです。
@@ -67,7 +67,7 @@ func (p *YCbCr) Opaque() bool
 // NewYCbCrは、指定された境界とサブサンプル比率を持つ新しいYCbCrイメージを返します。
 func NewYCbCr(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *YCbCr
 
-// NYCbCrAは、非アルファ乗算のY'CbCr-with-alpha色のインメモリイメージです。
+// NYCbCrAは、非アルファ乗算のY'CbCr-with-alpha色のインメモリーイメージです。
 // AとAStrideは、埋め込まれたYCbCrのYとYStrideフィールドに対応します。
 type NYCbCrA struct {
 	YCbCr

@@ -4,7 +4,7 @@
 
 // pprofパッケージは、pprof可視化ツールが期待する形式で実行時プロファイリングデータをHTTPサーバー経由で提供します。
 //
-// このパッケージは通常、そのHTTPハンドラを登録する副作用のためにのみインポートされます。
+// このパッケージは通常、そのHTTPハンドラーを登録する副作用のためにのみインポートされます。
 // ハンドルされるパスはすべて/debug/pprof/で始まります。
 // Go 1.22以降、すべてのパスはGETでリクエストする必要があります。
 //
@@ -21,13 +21,13 @@
 //
 // デフォルトでは、このパッケージで定義されている[Cmdline]、[Profile]、[Symbol]、[Trace]プロファイル
 // に加えて[runtime/pprof.Profile]にリストされているすべてのプロファイルが使用可能です（[Handler]経由）。
-// DefaultServeMuxを使用していない場合は、使用しているmuxにハンドラを登録する必要があります。
+// DefaultServeMuxを使用していない場合は、使用しているmuxにハンドラーを登録する必要があります。
 //
-// ＃ パラメータ
+// ＃ パラメーター
 //
-// パラメータはGETクエリパラメータを介して渡すことができます：
+// パラメーターはGETクエリーパラメーターを介して渡すことができます：
 //
-//   - debug=N（すべてのプロファイル）：応答形式：N = 0：バイナリ（デフォルト）、N> 0：プレーンテキスト
+//   - debug=N（すべてのプロファイル）：応答形式：N = 0：バイナリー（デフォルト）、N> 0：プレーンテキスト
 //   - gc=N（ヒーププロファイル）：N> 0：プロファイリング前にガベージコレクションを実行
 //   - seconds=N（allocs、block、goroutine、heap、mutex、threadcreateプロファイル）：デルタプロファイルを返す
 //   - seconds=N（cpu（profile）、トレースプロファイル）：指定された期間のプロファイル
@@ -50,7 +50,7 @@
 //
 //	go tool pprof http://localhost:6060/debug/pprof/mutex
 //
-// このパッケージはまた、「go tool trace」コマンドに対応する実行トレースデータを提供するハンドラもエクスポートしています。
+// このパッケージはまた、「go tool trace」コマンドに対応する実行トレースデータを提供するハンドラーもエクスポートしています。
 // 5秒の実行トレースを収集するには：
 //
 //	curl -o trace.out http://localhost:6060/debug/pprof/trace?seconds=5
@@ -58,7 +58,7 @@
 //
 // 使用可能なプロファイルをすべて表示するには、ブラウザでhttp://localhost:6060/debug/pprof/を開いてください。
 //
-// 機能の詳細については、次のURLをご覧ください：
+// 機能の詳細については、次のURLを参照してください：
 // https://blog.golang.org/2011/06/profiling-go-programs.html。
 package pprof
 
@@ -71,12 +71,12 @@ import (
 func Cmdline(w http.ResponseWriter, r *http.Request)
 
 // Profile は、pprofの形式でCPUプロファイルを応答します。
-// プロファイリングは、秒数が指定されたGETパラメータで指定された期間、または指定されていない場合は30秒間続きます。
+// プロファイリングは、秒数が指定されたGETパラメーターで指定された期間、または指定されていない場合は30秒間続きます。
 // パッケージの初期化により、/debug/pprof/profile として登録されます。
 func Profile(w http.ResponseWriter, r *http.Request)
 
-// Traceはバイナリ形式の実行トレースで応答します。
-// トレースは、秒数が指定されていない場合は1秒間、指定されている場合はGETパラメータで指定された時間の間続きます。
+// Traceはバイナリー形式の実行トレースで応答します。
+// トレースは、秒数が指定されていない場合は1秒間、指定されている場合はGETパラメーターで指定された時間の間続きます。
 // パッケージの初期化により、/debug/pprof/traceとして登録されます。
 func Trace(w http.ResponseWriter, r *http.Request)
 
@@ -85,7 +85,7 @@ func Trace(w http.ResponseWriter, r *http.Request)
 // パッケージの初期化では、それを/debug/pprof/symbolとして登録します。
 func Symbol(w http.ResponseWriter, r *http.Request)
 
-// Handlerは、指定したプロファイルを提供するHTTPハンドラを返します。
+// Handlerは、指定したプロファイルを提供するHTTPハンドラーを返します。
 // 使用可能なプロファイルは[runtime/pprof.Profile]で見つけることができます。
 func Handler(name string) http.Handler
 

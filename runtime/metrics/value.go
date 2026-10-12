@@ -37,7 +37,7 @@ func (v Value) Kind() ValueKind
 
 // Uint64はメトリックの内部uint64値を返します。
 //
-// もしv.Kind() != KindUint64の場合、このメソッドはパニックします。
+// もしv.Kind() != KindUint64の場合、このメソッドはパニックを引き起こします。
 func (v Value) Uint64() uint64
 
 // Float64はメトリックの内部float64値を返します。

@@ -28,7 +28,6 @@ func InitTables()
 // any ABI wrapper that is present is nosplit, hence a precise
 // stack map is not needed there (the parameters survive only long
 // enough to call the wrapped assembly function).
-// This always returns a freshly copied ABI.
 func AbiForBodylessFuncStackMap(fn *ir.Func) *abi.ABIConfig
 
 // Branch is an unresolved branch.

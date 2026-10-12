@@ -46,14 +46,14 @@ func (e *SyscallError) Timeout() bool
 // 便利な機能として、errがnilの場合、NewSyscallErrorはnilを返します。
 func NewSyscallError(syscall string, err error) error
 
-// IsExistは、引数がファイルまたはディレクトリが既に存在することを報告するかどうかを示すブール値を返します。
+// IsExistは、引数がファイルまたはディレクトリーが既に存在することを報告するかどうかを示すブール値を返します。
 // これは[ErrExist]および一部のsyscallエラーによって満たされます。
 //
 // この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。
 // 新しいコードでは、errors.Is(err, fs.ErrExist)を使用するべきです。
 func IsExist(err error) bool
 
-// IsNotExistは、引数がファイルまたはディレクトリが存在しないことを報告するかどうかを示すブール値を返します。
+// IsNotExistは、引数がファイルまたはディレクトリーが存在しないことを報告するかどうかを示すブール値を返します。
 // これは[ErrNotExist]および一部のsyscallエラーによって満たされます。
 //
 // この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。

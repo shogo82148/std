@@ -10,25 +10,25 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// ForkLock is not used on Windows.
+// ForkLockはWindowsでは使用されません。
 var ForkLock sync.RWMutex
 
-// EscapeArg rewrites command line argument s as prescribed
-// in https://msdn.microsoft.com/en-us/library/ms880421.
-// This function returns "" (2 double quotes) if s is empty.
-// Alternatively, these transformations are done:
-//   - every back slash (\) is doubled, but only if immediately
-//     followed by double quote (");
-//   - every double quote (") is escaped by back slash (\);
-//   - finally, s is wrapped with double quotes (arg -> "arg"),
-//     but only if there is space or tab inside s.
+// EscapeArgは、https://msdn.microsoft.com/en-us/library/ms880421 で
+// 規定されているとおりにコマンドライン引数sを書き換えます。
+// sが空の場合、この関数は""（2つのダブルクォート）を返します。
+// それ以外の場合、次の変換が行われます:
+//   - すべてのバックスラッシュ（\）は、直後にダブルクォート（"）が続く場合にのみ
+//     2つに重ねられます。
+//   - すべてのダブルクォート（"）はバックスラッシュ（\）でエスケープされます。
+//   - 最後に、s内にスペースまたはタブがある場合にのみ、sはダブルクォートで
+//     囲まれます（arg -> "arg"）。
 func EscapeArg(s string) string
 
 func CloseOnExec(fd Handle)
 
 func SetNonblock(fd Handle, nonblocking bool) (err error)
 
-// FullPath retrieves the full path of the specified file.
+// FullPathは、指定されたファイルのフルパスを取得します。
 func FullPath(name string) (path string, err error)
 
 type ProcAttr struct {

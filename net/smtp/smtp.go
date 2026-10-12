@@ -65,12 +65,12 @@ func (c *Client) Hello(localName string) error
 func (c *Client) StartTLS(config *tls.Config) error
 
 // TLSConnectionState はクライアントのTLS接続状態を返します。
-// [Client.StartTLS] が成功しなかった場合、返り値はゼロ値になります。
+// [Client.StartTLS] が成功しなかった場合、戻り値はゼロ値になります。
 func (c *Client) TLSConnectionState() (state tls.ConnectionState, ok bool)
 
 // Verifyはサーバー上でメールアドレスの妥当性をチェックします。
-// Verifyがnilを返す場合、アドレスは有効です。非nilの返り値は
-// 必ずしも無効なアドレスを示すわけではありません。セキュリティ上の理由から、
+// Verifyがnilを返す場合、アドレスは有効です。非nilの戻り値は
+// 必ずしも無効なアドレスを示すわけではありません。セキュリティー上の理由から、
 // 多くのサーバーはアドレスの検証を行わない場合があります。
 func (c *Client) Verify(addr string) error
 
@@ -80,8 +80,8 @@ func (c *Client) Verify(addr string) error
 func (c *Client) Auth(a Auth) error
 
 // Mailは提供されたメールアドレスを使用してサーバーにMAILコマンドを発行します。
-// サーバーが8BITMIME拡張をサポートしている場合、MailはBODY=8BITMIMEパラメータを追加します。
-// サーバーがSMTPUTF8拡張をサポートしている場合、MailはSMTPUTF8パラメータを追加します。
+// サーバーが8BITMIME拡張をサポートしている場合、MailはBODY=8BITMIMEパラメーターを追加します。
+// サーバーがSMTPUTF8拡張をサポートしている場合、MailはSMTPUTF8パラメーターを追加します。
 // これにより、メールのトランザクションが開始され、その後に1つ以上の [Client.Rcpt] 呼び出しが続きます。
 func (c *Client) Mail(from string) error
 
@@ -92,19 +92,19 @@ func (c *Client) Rcpt(to string) error
 // DataはサーバーにDATAコマンドを送信し、メールのヘッダーと本文を書き込むために使用できるライターを返します。呼び出し元は、cの他のメソッドを呼び出す前にライターを閉じる必要があります。Dataの呼び出しは、一つ以上の [Client.Rcpt] の呼び出しに先行する必要があります。
 func (c *Client) Data() (io.WriteCloser, error)
 
-// SendMailはaddrで指定されたサーバに接続し、可能な場合はTLSに切り替え、必要に応じてオプションのメカニズムaで認証し、fromからのアドレス、toへのアドレス、メッセージmsgを送信します。
+// SendMailはaddrで指定されたサーバーに接続し、可能な場合はTLSに切り替え、必要に応じてオプションのメカニズムaで認証し、fromからのアドレス、toへのアドレス、メッセージmsgを送信します。
 // addrにはポートを含める必要があります。例："mail.example.com:smtp"
 //
-// toパラメータのアドレスは、SMTPのRCPTアドレスです。
+// toパラメーターのアドレスは、SMTPのRCPTアドレスです。
 //
-// msgパラメータは、ヘッダ、空行、メッセージ本文の順になったRFC 822スタイルの電子メールである必要があります。msgの各行はCRLFで終端する必要があります。msgのヘッダには通常、"From"、"To"、"Subject"、"Cc"などのフィールドが含まれるべきです。"Bcc"メッセージを送信するには、toパラメータにメールアドレスを含め、msgのヘッダには含めません。
+// msgパラメーターは、ヘッダー、空行、メッセージ本文の順になったRFC 822スタイルの電子メールである必要があります。msgの各行はCRLFで終端する必要があります。msgのヘッダーには通常、"From"、"To"、"Subject"、"Cc"などのフィールドが含まれるべきです。"Bcc"メッセージを送信するには、toパラメーターにメールアドレスを含め、msgのヘッダーには含めません。
 //
-// SendMail関数とnet/smtpパッケージは低レベルのメカニズムであり、DKIM署名、MIME添付ファイル（mime/multipartパッケージを参照）、その他のメール機能をサポートしていません。高レベルのパッケージは標準ライブラリの外部に存在します。
+// SendMail関数とnet/smtpパッケージは低レベルのメカニズムであり、DKIM署名、MIME添付ファイル（mime/multipartパッケージを参照）、その他のメール機能をサポートしていません。高レベルのパッケージは標準ライブラリーの外部に存在します。
 func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
 
 // Extensionはサーバーが対応している拡張機能かどうかを報告します。
 // 拡張機能名は大文字小文字を区別しません。もし拡張機能が対応されている場合、
-// Extensionは拡張機能に対してサーバーが指定する任意のパラメータを含む文字列も返します。
+// Extensionは拡張機能に対してサーバーが指定する任意のパラメーターを含む文字列も返します。
 func (c *Client) Extension(ext string) (bool, string)
 
 // Resetは、現在のメールトランザクションを中止し、サーバーにRSETコマンドを送信します。

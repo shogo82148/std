@@ -28,11 +28,11 @@ package runtime
 //
 // # Compatibility
 //
-// デフォルトのGOMAXPROCSの挙動は、スケジューラの改善に伴い変更される可能性があることに注意してください。特に以下の実装詳細に関しては変更される場合があります。
+// デフォルトのGOMAXPROCSの動作は、スケジューラーの改善に伴い変更される可能性があることに注意してください。特に以下の実装詳細に関しては変更される場合があります。
 //
 // # Implementation details
 //
-// デフォルトのGOMAXPROCSをcgroup経由で計算する場合、GoランタイムはcgroupのCPUクォータ／期間として「平均CPUスループット制限」を計算します。cgroup v2ではこれらの値はcpu.maxファイルから取得され、cgroup v1ではそれぞれcpu.cfs_quota_usとcpu.cfs_period_usから取得されます。コンテナランタイムでCPU制限を設定できる場合、この値は通常「CPUリミット」オプションに対応し、「CPUリクエスト」ではありません。
+// デフォルトのGOMAXPROCSをcgroup経由で計算する場合、GoランタイムはcgroupのCPUクォータ／期間として「平均CPUスループット制限」を計算します。cgroup v2ではこれらの値はcpu.maxファイルから取得され、cgroup v1ではそれぞれcpu.cfs_quota_usとcpu.cfs_period_usから取得されます。コンテナーランタイムでCPU制限を設定できる場合、この値は通常「CPUリミット」オプションに対応し、「CPUリクエスト」ではありません。
 //
 // Goランタイムは通常、論理CPU数、CPUアフィニティマスク数、cgroupのCPUスループット制限のうち最小値をデフォルトのGOMAXPROCSとして選択します。ただし、論理CPU数またはCPUアフィニティマスク数が2未満でない限り、GOMAXPROCSを2未満に設定することはありません。
 //

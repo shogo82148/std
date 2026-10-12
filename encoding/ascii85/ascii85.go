@@ -9,12 +9,12 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Encode encodes src into at most [MaxEncodedLen](len(src))
-// bytes of dst, returning the actual number of bytes written.
+// Encodeは、srcを最大 [MaxEncodedLen](len(src)) バイトのdstにエンコードし、
+// 実際に書き込まれたバイト数を返します。
 //
-// The encoding handles 4-byte chunks, using a special encoding
-// for the last fragment, so Encode is not appropriate for use on
-// individual blocks of a large data stream. Use [NewEncoder] instead.
+// エンコーディングは4バイトのチャンク単位で処理され、最後の断片には特別な
+// エンコーディングを使用するため、Encodeは大きなデータストリームの個々のブロックに
+// 使用するのには適していません。代わりに [NewEncoder] を使用してください。
 //
 // しばしば、ascii85でエンコードされたデータは<~と~>の記号で囲まれていますが、Encodeはこれを追加しません。
 func Encode(dst, src []byte) int
@@ -29,18 +29,18 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
-// Decode decodes src into dst, returning both the number
-// of bytes written to dst and the number consumed from src.
-// If src contains invalid ascii85 data, Decode will return the
-// number of bytes successfully written and a [CorruptInputError].
-// Decode ignores space and control characters in src.
-// Often, ascii85-encoded data is wrapped in <~ and ~> symbols.
-// Decode expects these to have been stripped by the caller.
+// Decodeは、srcをdstにデコードし、dstに書き込まれたバイト数と
+// srcから消費されたバイト数の両方を返します。
+// srcに不正なascii85データが含まれている場合、Decodeは正常に書き込まれた
+// バイト数と [CorruptInputError] を返します。
+// Decodeはsrc内の空白と制御文字を無視します。
+// ascii85でエンコードされたデータは、しばしば<~と~>の記号で囲まれています。
+// Decodeは、これらが呼び出し元によって取り除かれていることを想定しています。
 //
 // flushがtrueの場合、Decodeはsrcが入力ストリームの終わりを表し、別の32ビットブロックの完了を待つのではなく、完全に処理すると想定します。
 //
-// [NewDecoder] wraps an [io.Reader] interface around Decode.
+// [NewDecoder] は、Decodeを [io.Reader] インターフェースでラップします。
 func Decode(dst, src []byte, flush bool) (ndst, nsrc int, err error)
 
-// NewDecoder は新しい ascii85 ストリームデコーダを構築します。
+// NewDecoder は新しい ascii85 ストリームデコーダーを構築します。
 func NewDecoder(r io.Reader) io.Reader

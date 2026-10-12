@@ -10,4 +10,6 @@ package tls
 // TLSアラートを送信する代わりにAlertErrorをラップしたエラーを返します。
 type AlertError uint8
 
+var _ error = AlertError(0)
+
 func (e AlertError) Error() string

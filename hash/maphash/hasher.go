@@ -4,18 +4,15 @@
 
 package maphash
 
-// A Hasher defines the interface between a hash-based container and its elements.
-// It provides a hash function and an equivalence relation over values
-// of type T, enabling those values to be inserted in hash tables
-// and similar data structures.
+// Hasherは、ハッシュベースのコンテナーとその要素の間のインターフェースを定義します。
+// これは型Tの値に対するハッシュ関数と同値関係を提供し、それらの値を
+// ハッシュテーブルや同様のデータ構造に挿入できるようにします。
 //
-// Of course, comparable types can already be used as keys of Go's
-// built-in map type, but a Hasher enables non-comparable types to be
-// used as keys of a suitable hash table too.
-// Hashers may be useful even for comparable types, to define an
-// equivalence relation that differs from the usual one (==), such as a
-// field-based comparison for a pointer-to-struct type, or a
-// case-insensitive comparison for strings, as in this example:
+// もちろん、比較可能な型はすでにGoの組み込みのmap型のキーとして使用できますが、
+// Hasherを使用すると、比較できない型も適切なハッシュテーブルのキーとして使用できます。
+// Hasherは比較可能な型に対しても、通常の同値関係（==）とは異なる同値関係を
+// 定義するのに役立つ場合があります。例えば、構造体へのポインター型に対するフィールドベースの比較や、
+// 次の例のような文字列の大文字と小文字を区別しない比較などです:
 //
 //	// CaseInsensitive is a Hasher[string] whose
 //	// equivalence relation ignores letter case.
@@ -31,58 +28,52 @@ package maphash
 //		return strings.ToLower(x) == strings.ToLower(y)
 //	}
 //
-// A Hasher also permits values to be used with other hash-based data
-// structures such as a Bloom filter.
-// The [ComparableHasher] type makes it convenient to enable comparable
-// types to be used in such data structures under their usual (==)
-// equivalence relation.
+// Hasherを使用すると、ブルームフィルターなどの他のハッシュベースのデータ構造でも
+// 値を使用できます。
+// [ComparableHasher] 型を使用すると、比較可能な型を通常の（==）同値関係のもとで
+// そのようなデータ構造で簡単に使用できるようになります。
 //
 // # Hash invariants
 //
-// If two values are equal as defined by Equal(x, y), then they must
-// have the same hash as defined by the effects of Hash(h, x) on h.
+// 2つの値がEqual(x, y)で定義されるとおりに等しい場合、それらは
+// Hash(h, x)がhに及ぼす効果で定義されるとおりに同じハッシュを持たなければなりません。
 //
-// Hashers must be logically stateless: the behavior of the Hash and
-// Equal methods depends only on the arguments.
+// Hasherは論理的にステートレスでなければなりません。HashメソッドとEqualメソッドの
+// 動作は引数のみに依存します。
 //
 // # Writing a good function
 //
-// When defining a hash function and equivalence relation for a data
-// type, it may help to first define a canonical encoding for values
-// of that type as a sequence of elements, each being a number,
-// string, boolean, or pointer.
-// An encoding is canonical if two values that are logically equal
-// have the same encoding, even if they are represented differently.
-// For example, a canonical case-insensitive encoding of a string is
-// [strings.ToLower].
+// データ型に対するハッシュ関数と同値関係を定義する場合、まずその型の値を
+// 要素の並びとして表す正規のエンコーディングを定義すると役立つ場合があります。
+// 各要素は数値、文字列、真偽値、またはポインターです。
+// 論理的に等しい2つの値が、異なる方法で表現されていても同じエンコーディングを持つ場合、
+// そのエンコーディングは正規です。
+// 例えば、文字列の大文字と小文字を区別しない正規のエンコーディングは [strings.ToLower] です。
 //
-// Once you have defined the encoding, the Hasher's Hash method should
-// encode a value into the [Hash] using a sequence of calls to
-// [Hash.Write] for byte slices, [Hash.WriteString] for strings,
-// [Hash.WriteByte] for bytes, and [WriteComparable] for elements of
-// other types. The Hasher's Equal method should compute the
-// encodings of two values, then compare their corresponding
-// elements, returning false at the first mismatch.
+// エンコーディングを定義したら、HasherのHashメソッドは、バイトスライスには [Hash.Write]、
+// 文字列には [Hash.WriteString]、バイトには [Hash.WriteByte]、その他の型の要素には
+// [WriteComparable] の呼び出しの並びを使用して、値を [Hash] にエンコードするべきです。
+// HasherのEqualメソッドは、2つの値のエンコーディングを計算し、対応する要素を比較して、
+// 最初に不一致があった時点でfalseを返すべきです。
 //
-// A Hash method may discard information so long as it remains
-// consistent with the Equal method as defined above.
-// For example, valid implementations of CaseInsensitive.Hash might inspect
-// only the first letter of the string, or even use a constant value.
-// However, the lossier the hash function, the more frequent
-// the hash collisions and the slower the hash table.
+// Hashメソッドは、上で定義したEqualメソッドとの一貫性が保たれている限り、
+// 情報を破棄してもかまいません。
+// 例えば、CaseInsensitive.Hashの有効な実装は、文字列の最初の文字だけを調べたり、
+// 定数値を使用したりすることさえできます。
+// ただし、ハッシュ関数の情報の損失が大きいほど、ハッシュの衝突が頻繁になり、
+// ハッシュテーブルは遅くなります。
 //
-// Some data types, such as sets, are inherently unordered: the set
-// {a, b, c} is equal to the set {c, b, a}.
-// In some cases it is possible to define a canonical encoding for a
-// set by sorting the elements into some order.
-// In other cases this may inefficient, since it may require allocating
-// memory, or infeasible, as when there is no convenient order.
-// Another way to hash an unordered set is to compute the hash
-// for each element separately, then combine all the element hashes
-// using a commutative (order-independent) operator such as + or ^.
+// 集合などの一部のデータ型は本質的に順序を持ちません。集合{a, b, c}は
+// 集合{c, b, a}と等しいです。
+// 場合によっては、要素を何らかの順序でソートすることで、集合の正規のエンコーディングを
+// 定義することができます。
+// それ以外の場合、メモリーの割り当てが必要になるため非効率的であったり、
+// 便利な順序がない場合のように実現不可能であったりします。
+// 順序のない集合をハッシュするもう1つの方法は、各要素のハッシュを個別に計算し、
+// +や^などの可換（順序に依存しない）演算子を使用してすべての要素のハッシュを
+// 結合することです。
 //
-// The Hash method below, for a hypothetical Set type, illustrates
-// this approach:
+// 次の仮想的なSet型のHashメソッドは、このアプローチを示しています:
 //
 //	type Set[T comparable] struct{ ... }
 //
@@ -105,32 +96,27 @@ package maphash
 //		maphash.WriteComparable(hash, accum)
 //	}
 //
-// In many languages, a data type's hash operation simply returns an
-// integer value.
-// However, that makes it possible for an adversary to systematically
-// construct a large number of values that all have the same hash,
-// degrading the asymptotic performance of hash tables in a
-// denial-of-service attack known as "hash flooding".
-// By contrast, computing hashes as a sequence of values emitted into
-// a [Hash] with an unpredictable [Seed] that varies from one hash
-// table to another mitigates this attack.
+// 多くの言語では、データ型のハッシュ操作は単に整数値を返します。
+// しかし、それでは攻撃者が同じハッシュを持つ多数の値を体系的に構築し、
+// 「ハッシュフラッディング」として知られるサービス拒否攻撃でハッシュテーブルの
+// 漸近的な性能を低下させることが可能になります。
+// 対照的に、ハッシュテーブルごとに異なる予測不可能な [Seed] を持つ [Hash] に
+// 値の並びを出力してハッシュを計算することで、この攻撃を緩和できます。
 //
-// In effect, the Seed chooses one of 2⁶⁴ different hash functions.
-// The code example above calls SetSeed on the element's sub-Hasher
-// so that it uses the same hash function as for the Set itself, and
-// not a random one.
+// 実質的に、Seedは2⁶⁴個の異なるハッシュ関数の中から1つを選択します。
+// 上記のコード例では、要素のサブHasherでSetSeedを呼び出し、ランダムなものではなく
+// Set自体と同じハッシュ関数を使用するようにしています。
 type Hasher[T any] interface {
 	Hash(*Hash, T)
 	Equal(x, y T) bool
 }
 
-// ComparableHasher is an implementation of [Hasher] whose
-// Equal(x, y) method is consistent with x == y.
+// ComparableHasherは、Equal(x, y)メソッドがx == yと一貫性を持つ
+// [Hasher] の実装です。
 //
-// ComparableHasher is defined only for comparable types.
-// The type system will not prevent you from instantiating a type
-// such as ComparableHasher[any]; nonetheless you must not pass
-// non-comparable argument values to its Hash or Equal methods.
+// ComparableHasherは比較可能な型に対してのみ定義されます。
+// 型システムはComparableHasher[any] のような型のインスタンス化を妨げませんが、
+// それでもHashメソッドやEqualメソッドに比較できない引数の値を渡してはいけません。
 type ComparableHasher[T comparable] struct {
 	_ [0]func(T)
 }

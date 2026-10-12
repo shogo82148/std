@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/net/netip"
@@ -50,9 +51,10 @@ func Example_textMarshal() {
 		log.Fatalf("roundtrip mismatch: got %v, want %v", got, want)
 	}
 
-	// シリアライズされたJSONオブジェクトを表示します。
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -75,7 +77,7 @@ func Example_fieldNames() {
 		JSONName any `json:"jsonName"`
 		// JSON名が指定されていないため、Goフィールド名が使われます。
 		Option any `json:",case:ignore"`
-		// 非公開フィールドは常に無視されます。
+		// エクスポートされていないフィールドは常に無視されます。
 		unexported any
 	}
 
@@ -83,8 +85,11 @@ func Example_fieldNames() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -142,7 +147,7 @@ func Example_caseSensitivity() {
 // "IsZero() bool"メソッドがtrueを返す場合にフィールドを省略します。
 // "omitempty"オプションは、フィールドが空のJSON値としてエンコードされる場合に省略します。
 // ここで空のJSON値とは、JSON null、空文字列、空オブジェクト、空配列を指します。
-// 多くの場合、"omitzero"と"omitempty"の挙動は同等です。
+// 多くの場合、"omitzero"と"omitempty"の動作は同等です。
 // 両方で期待する効果が得られる場合は、"omitzero"の使用が推奨されます。
 func Example_omitFields() {
 	type MyStruct struct {
@@ -150,12 +155,12 @@ func Example_omitFields() {
 		Bar []int  `json:",omitempty"`
 		// "omitzero"と"omitempty"は両方同時に指定できます。
 		// その場合、どちらかの条件を満たせばフィールドは省略されます。
-		// この場合、Bazフィールドはnilポインタであるか、
+		// この場合、Bazフィールドはnilポインターであるか、
 		// 空のJSONオブジェクトとしてエンコードされる場合に省略されます。
 		Baz *MyStruct `json:",omitzero,omitempty"`
 	}
 
-	// "omitzero"の挙動を示します。
+	// "omitzero"の動作を示します。
 	b, err := json.Marshal(struct {
 		Bool         bool        `json:",omitzero"`
 		Int          int         `json:",omitzero"`
@@ -192,9 +197,9 @@ func Example_omitFields() {
 		MapNil: nil,
 		// Mapは、map[int]int{}がGoのマップのゼロ値ではないため省略されません。
 		Map: map[int]int{},
-		// PointerNilは、nilがGoのポインタのゼロ値であるため省略されます。
+		// PointerNilは、nilがGoのポインターのゼロ値であるため省略されます。
 		PointerNil: nil,
-		// Pointerは、new(string)がGoのポインタのゼロ値ではないため省略されません。
+		// Pointerは、new(string)がGoのポインターのゼロ値ではないため省略されません。
 		Pointer: new(string),
 		// InterfaceNilは、nilがGoのインターフェースのゼロ値であるため省略されます。
 		InterfaceNil: nil,
@@ -204,10 +209,12 @@ func Example_omitFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent()      // 可読性のためインデント
-	fmt.Println("OmitZero:", string(b)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println("OmitZero:", string(v)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
 
-	// "omitempty"の挙動を示します。
+	// "omitempty"の動作を示します。
 	b, err = json.Marshal(struct {
 		Bool         bool        `json:",omitempty"`
 		Int          int         `json:",omitempty"`
@@ -250,8 +257,10 @@ func Example_omitFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent()       // indent for readability
-	fmt.Println("OmitEmpty:", string(b)) // outputs "Bool", "Int", and "Time"
+	// Indent output for readability.
+	v = jsontext.Value(b)
+	v.Indent()
+	fmt.Println("OmitEmpty:", string(v)) // outputs "Bool", "Int", and "Time"
 
 	// Output:
 	// OmitZero: {
@@ -309,8 +318,10 @@ func Example_embeddedFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -495,8 +506,8 @@ func ExampleWithUnmarshalers_rawNumber() {
 	// [false 1e-1000 3.141592653589793238462643383279 1e+1000 true]
 }
 
-// JSONで設定ファイルをパースする場合、
-// パース処理は入力のどこでエラーが発生したかを示すために
+// JSONで設定ファイルを解析する場合、
+// 解析処理は入力のどこでエラーが発生したかを示すために
 // 行番号や列番号付きでエラーを報告する必要があることがよくあります。
 func ExampleWithUnmarshalers_recordOffsets() {
 	// 仮想的な設定ファイル。
@@ -556,4 +567,64 @@ func ExampleWithUnmarshalers_recordOffsets() {
 
 	// Output:
 	// 3:3: source and destination must both be specified
+}
+
+// UnmarshalDecode can be used to unmarshal a stream of whitespace-delimited
+// JSON values.
+func ExampleUnmarshalDecode_stream() {
+	const jsonStream = `
+	{"Name": "Platypus", "Order": "Monotremata"}
+	{"Name": "Quoll",    "Order": "Dasyuromorphia"}
+	{"Name": "Gopher",   "Order": "Rodentia"}
+`
+	type Animal struct {
+		Name  string
+		Order string
+	}
+	dec := jsontext.NewDecoder(strings.NewReader(jsonStream))
+	for {
+		var a Animal
+		if err := json.UnmarshalDecode(dec, &a); err == io.EOF {
+			break
+		} else if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s: %s\n", a.Name, a.Order)
+	}
+	// Output:
+	// Platypus: Monotremata
+	// Quoll: Dasyuromorphia
+	// Gopher: Rodentia
+}
+
+// Use [jsontext.Multiline] to create multiline, idented output for more
+// readable output for human consumption.
+//
+// See [jsontext.Multiline] for additional options that customize the multiline
+// output.
+func ExampleMarshal_multiline() {
+	type Pet struct {
+		Name    string
+		Species string
+		Breed   string
+	}
+
+	p := Pet{
+		Name:    "Oliver",
+		Species: "Dog",
+		Breed:   "Goldendoodle",
+	}
+
+	b, err := json.Marshal(p, jsontext.Multiline(true))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(b))
+	// Output:
+	// {
+	// 	"Name": "Oliver",
+	// 	"Species": "Dog",
+	// 	"Breed": "Goldendoodle"
+	// }
 }

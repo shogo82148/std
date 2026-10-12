@@ -181,7 +181,7 @@ func ExampleMkdirTemp_suffix() {
 	defer os.RemoveAll(logsDir) // クリーンアップ
 
 	// ログは必要に応じて早期にクリーニングアウトできます
-	// *-logsで終わるすべてのディレクトリを検索してください。
+	// *-logsで終わるすべてのディレクトリーを検索してください。
 	globPattern := filepath.Join(os.TempDir(), "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {

@@ -25,7 +25,7 @@ func RegisterFormat(name, magic string, decode func(io.Reader) (Image, error), d
 // フォーマット登録は通常、コーデック固有のパッケージのinit関数によって行われます。
 //
 // デコードは、すべてのピクセルデータが消費または検証される前に、
-// 画像ヘッダーの幅と高さに比例したメモリを割り当てることがあります。
+// 画像ヘッダーの幅と高さに比例したメモリーを割り当てることがあります。
 // 信頼できない入力をデコードする場合は、最初に [DecodeConfig] を呼び出して
 // ディメンションを検査し、リソース制限を超えるイメージを拒否します。
 // [image] パッケージドキュメントの「Security Considerations」セクションを参照してください。
@@ -37,6 +37,6 @@ func Decode(r io.Reader) (Image, string, error)
 // コーデック固有のパッケージのinit関数によって行われます。
 //
 // DecodeConfigはフォーマットヘッダーのみを読み取り、フルサイズの
-// ピクセルバッファを割り当てないため、[Decode] を呼び出す前に
+// ピクセルバッファーを割り当てないため、[Decode] を呼び出す前に
 // ディメンションをチェックするために使用できます。
 func DecodeConfig(r io.Reader) (Config, string, error)

@@ -20,9 +20,9 @@ type Frames struct {
 // Frameは各コールフレームごとに [Frames] によって返される情報です。
 type Frame struct {
 
-	// PCはこのフレームの位置に対するプログラムカウンタです。
+	// PCはこのフレームの位置に対するプログラムカウンターです。
 	// 別のフレームを呼び出すフレームの場合、これは
-	// 呼び出し命令のプログラムカウンタです。インライン展開のため、
+	// 呼び出し命令のプログラムカウンターです。インライン展開のため、
 	// 複数のフレームは同じPC値を持つことがありますが、異なる
 	// シンボリック情報を持ちます。
 	PC uintptr
@@ -68,7 +68,7 @@ func CallersFrames(callers []uintptr) *Frames
 // 典型的な使用法については、[Frames] の例を参照してください。
 func (ci *Frames) Next() (frame Frame, more bool)
 
-// Funcは実行中のバイナリ内のGo関数を表します。
+// Funcは実行中のバイナリー内のGo関数を表します。
 type Func struct {
 	opaque struct{}
 }

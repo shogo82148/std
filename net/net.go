@@ -31,46 +31,46 @@ Listen関数はサーバーを作成します：
 		go handleConnection(conn)
 	}
 
-# ネーム解決
+# Name Resolution
 
 ネーム解決の方法は、間接的にDialのような関数を使うか、[LookupHost] や [LookupAddr] のような関数を直接使うかによって、オペレーティングシステムによって異なります。
 
 Unixシステムでは、名前を解決するための2つのオプションがあります。
-/etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
-getaddrinfoやgetnameinfoなどのCライブラリのルーチンを呼び出すcgoベースのリゾルバを使用するか、です。
+/etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバーを使用するか、
+getaddrinfoやgetnameinfoなどのCライブラリーのルーチンを呼び出すcgoベースのリゾルバーを使用するか、です。
 
 Unixでは、ブロックされたDNSリクエストがゴルーチンだけを消費するため、
-純粋なGoリゾルバがcgoリゾルバよりも優先されます。一方、ブロックされたC呼び出しは
+純粋なGoリゾルバーがcgoリゾルバーよりも優先されます。一方、ブロックされたC呼び出しは
 オペレーティングシステムのスレッドを消費します。
-cgoが利用可能な場合、さまざまな条件下でcgoベースのリゾルバが代わりに使用されます：
+cgoが利用可能な場合、さまざまな条件下でcgoベースのリゾルバーが代わりに使用されます：
 プログラムが直接DNSリクエストを行うことを許可しないシステム（OS X）上、
 LOCALDOMAIN環境変数が存在する場合（空でも）、
 RES_OPTIONSまたはHOSTALIASES環境変数が空でない場合、
 ASR_CONFIG環境変数が空でない場合（OpenBSDのみ）、
-/etc/resolv.confまたは/etc/nsswitch.confがGoリゾルバが実装していない機能の使用を指定している場合。
+/etc/resolv.confまたは/etc/nsswitch.confがGoリゾルバーが実装していない機能の使用を指定している場合。
 
-すべてのシステム（Plan 9を除く）で、cgoリゾルバが使用されている場合、
+すべてのシステム（Plan 9を除く）で、cgoリゾルバーが使用されている場合、
 このパッケージは並行cgoルックアップ制限を適用して、システムがシステムスレッドを使い果たすのを防ぎます。
 現在、同時ルックアップは500に制限されています。
 
-リゾルバの決定は、GODEBUG環境変数のnetdns値をgoまたはcgoに設定することで
+リゾルバーの決定は、GODEBUG環境変数のnetdns値をgoまたはcgoに設定することで
 上書きすることができます（パッケージruntimeを参照）。
 
-	export GODEBUG=netdns=go    # 純粋なGoリゾルバを強制する
-	export GODEBUG=netdns=cgo   # ネイティブリゾルバを強制する（cgo、win32）
+	export GODEBUG=netdns=go    # 純粋なGoリゾルバーを強制する
+	export GODEBUG=netdns=cgo   # ネイティブリゾルバーを強制する（cgo、win32）
 
 Goソースツリーをビルドする際に、netgoまたはnetcgoビルドタグを設定することで決定を強制することもできます。
-netgoビルドタグを使用すると、ネイティブ（CGO）リゾルバの使用が完全に無効になり、
-Goリゾルバのみが使用可能になります。
-netcgoビルドタグを使用すると、ネイティブと純粋なGoリゾルバの両方がバイナリに組み込まれますが、
-ネイティブ（CGO）リゾルバがGoリゾルバよりも優先されます。
-netcgoの場合でも、GODEBUG=netdns=goを指定することで実行時にGoリゾルバを強制できます。
+netgoビルドタグを使用すると、ネイティブ（CGO）リゾルバーの使用が完全に無効になり、
+Goリゾルバーのみが使用可能になります。
+netcgoビルドタグを使用すると、ネイティブと純粋なGoリゾルバーの両方がバイナリーに組み込まれますが、
+ネイティブ（CGO）リゾルバーがGoリゾルバーよりも優先されます。
+netcgoの場合でも、GODEBUG=netdns=goを指定することで実行時にGoリゾルバーを強制できます。
 
-GODEBUG=netdns=1のような数値のnetdns設定は、リゾルバが自身の判断に関するデバッグ情報を出力します。
-特定のリゾルバを強制すると同時にデバッグ情報を出力するには、
+GODEBUG=netdns=1のような数値のnetdns設定は、リゾルバーが自身の判断に関するデバッグ情報を出力します。
+特定のリゾルバーを強制すると同時にデバッグ情報を出力するには、
 2つの設定をプラス記号で結合します。例：GODEBUG=netdns=go+1。
 
-Goリゾルバは、DNSリクエストとともにEDNS0追加ヘッダーを送信し、
+Goリゾルバーは、DNSリクエストとともにEDNS0追加ヘッダーを送信し、
 より大きなDNSパケットサイズを受け入れる意思を示します。
 これは、一部のモデムやルーターが運用するDNSサーバーで断続的な障害を引き起こすと報告されています。
 GODEBUG=netedns0=0を設定すると、追加ヘッダーの送信が無効になります。
@@ -78,9 +78,9 @@ GODEBUG=netedns0=0を設定すると、追加ヘッダーの送信が無効に�
 macOSでは、netパッケージを使用するGoコードが-buildmode=c-archiveでビルドされる場合、
 生成されたアーカイブをCプログラムにリンクする際に、Cコードをリンクするときに-lresolvを渡す必要があります。
 
-Plan 9では、リゾルバは常に/net/csと/net/dnsにアクセスします。
+Plan 9では、リゾルバーは常に/net/csと/net/dnsにアクセスします。
 
-Windowsでは、Go 1.18.x以前では、GetAddrInfoやDnsQueryなどのCライブラリ関数をリゾルバが常に使用していました。
+Windowsでは、Go 1.18.x以前では、GetAddrInfoやDnsQueryなどのCライブラリー関数をリゾルバーが常に使用していました。
 */
 package net
 
@@ -101,7 +101,7 @@ type Addr interface {
 
 // Connは汎用のストリーム指向のネットワーク接続です。
 //
-// 複数のgoroutineがConn上のメソッドを同時に呼び出すことができます。
+// 複数のゴルーチンがConn上のメソッドを同時に呼び出すことができます。
 type Conn interface {
 	Read(b []byte) (n int, err error)
 
@@ -183,7 +183,7 @@ type OpError struct {
 	Addr Addr
 
 	// Errは操作中に発生したエラーです。
-	// Errorメソッドはエラーがnilの場合にパニックを起こします。
+	// Errorメソッドはエラーがnilの場合にパニックを引き起こします。
 	Err error
 }
 
@@ -228,6 +228,8 @@ func (e UnknownNetworkError) Temporary() bool
 
 type InvalidAddrError string
 
+var _ error = InvalidAddrError("")
+
 func (e InvalidAddrError) Error() string
 func (e InvalidAddrError) Timeout() bool
 func (e InvalidAddrError) Temporary() bool
@@ -252,13 +254,12 @@ type DNSError struct {
 	IsTimeout   bool
 	IsTemporary bool
 
-	// IsNotFound is set to true when the requested name does not
-	// contain any records of the requested type (data not found),
-	// or the name itself was not found (NXDOMAIN).
+	// IsNotFoundは、要求された名前に要求された型のレコードが含まれていない場合（データが見つからない）、
+	// または名前自体が見つからなかった場合（NXDOMAIN）にtrueに設定されます。
 	IsNotFound bool
 }
 
-// Unwrap returns e.UnwrapErr.
+// Unwrapはe.UnwrapErrを返します。
 func (e *DNSError) Unwrap() error
 
 func (e *DNSError) Error() string
@@ -286,14 +287,14 @@ var (
 	_ io.Reader   = (*Buffers)(nil)
 )
 
-// WriteTo はバッファの内容を w に書き込みます。
+// WriteTo はバッファーの内容を w に書き込みます。
 //
 // WriteTo は、[Buffers] に [io.WriterTo] を実装します。
 //
 // WriteTo は、0 <= i < len(v) の範囲の v[i] およびスライス v を変更しますが、v[i][j] (i, j は任意の値) は変更しません。
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
-// バッファから読み込む。
+// バッファーから読み込む。
 //
 // Read は [Buffers] に [io.Reader] を実装します。
 //

@@ -12,7 +12,7 @@ const DevNull = "NUL"
 // もしファイルがシンボリックリンクである場合、リンクの対象のサイズを変更します。
 func Truncate(name string, size int64) error
 
-// Removeは指定されたファイルまたはディレクトリを削除します。
+// Removeは指定されたファイルまたはディレクトリーを削除します。
 // エラーが発生した場合、エラーは [*PathError] 型になります。
 func Remove(name string) error
 
@@ -26,6 +26,6 @@ func Link(oldname, newname string) error
 
 // Symlinkはnewnameをoldnameへのシンボリックリンクとして作成します。
 // Windowsでは、存在しないoldnameへのシンボリックリンクはファイルシンボリックリンクとして作成されます。
-// oldnameが後でディレクトリとして作成された場合、シンボリックリンクは機能しません。
+// oldnameが後でディレクトリーとして作成された場合、シンボリックリンクは機能しません。
 // エラーが発生した場合、*LinkErrorの型になります。
 func Symlink(oldname, newname string) error

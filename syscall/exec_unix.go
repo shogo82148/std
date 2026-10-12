@@ -12,72 +12,67 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// ForkLock is used to synchronize creation of new file descriptors
-// with fork.
+// ForkLockは、新しいファイルディスクリプターの作成をforkと同期させるために使用されます。
 //
-// We want the child in a fork/exec sequence to inherit only the
-// file descriptors we intend. To do that, we mark all file
-// descriptors close-on-exec and then, in the child, explicitly
-// unmark the ones we want the exec'ed program to keep.
-// Unix doesn't make this easy: there is, in general, no way to
-// allocate a new file descriptor close-on-exec. Instead you
-// have to allocate the descriptor and then mark it close-on-exec.
-// If a fork happens between those two events, the child's exec
-// will inherit an unwanted file descriptor.
+// fork/execのシーケンスでは、子に意図したファイルディスクリプターのみを継承させたいと考えます。
+// そのために、すべてのファイルディスクリプターをclose-on-execとしてマークし、
+// 子の中で、exec後のプログラムに保持させたいものだけを明示的にマーク解除します。
+// Unixではこれは簡単ではありません。一般に、新しいファイルディスクリプターを
+// close-on-execとして割り当てる方法はありません。代わりに、ディスクリプターを割り当ててから
+// close-on-execとしてマークする必要があります。
+// これら2つのイベントの間にforkが発生すると、子のexecは不要なファイルディスクリプターを
+// 継承してしまいます。
 //
-// This lock solves that race: the create new fd/mark close-on-exec
-// operation is done holding ForkLock for reading, and the fork itself
-// is done holding ForkLock for writing. At least, that's the idea.
-// There are some complications.
+// このロックはその競合を解決します。新しいfdの作成とclose-on-execのマーク操作は
+// ForkLockを読み取り用に保持して行われ、fork自体はForkLockを書き込み用に保持して
+// 行われます。少なくとも、それが考え方です。
+// いくつかの複雑な点があります。
 //
-// Some system calls that create new file descriptors can block
-// for arbitrarily long times: open on a hung NFS server or named
-// pipe, accept on a socket, and so on. We can't reasonably grab
-// the lock across those operations.
+// 新しいファイルディスクリプターを作成する一部のシステムコールは、任意に長い時間
+// ブロックする可能性があります。応答しないNFSサーバーや名前付きパイプでのopen、
+// ソケットでのacceptなどです。それらの操作の間ずっとロックを取得することは
+// 合理的ではありません。
 //
-// It is worse to inherit some file descriptors than others.
-// If a non-malicious child accidentally inherits an open ordinary file,
-// that's not a big deal. On the other hand, if a long-lived child
-// accidentally inherits the write end of a pipe, then the reader
-// of that pipe will not see EOF until that child exits, potentially
-// causing the parent program to hang. This is a common problem
-// in threaded C programs that use popen.
+// 一部のファイルディスクリプターを継承することは、他のものよりも悪い結果をもたらします。
+// 悪意のない子が開いている通常のファイルを誤って継承しても、大きな問題にはなりません。
+// 一方、長時間生存する子がパイプの書き込み側を誤って継承した場合、そのパイプの
+// 読み取り側はその子が終了するまでEOFを検出できず、親プログラムがハングする
+// 可能性があります。これは、popenを使用するスレッド化されたCプログラムでよくある問題です。
 //
-// Luckily, the file descriptors that are most important not to
-// inherit are not the ones that can take an arbitrarily long time
-// to create: pipe returns instantly, and the net package uses
-// non-blocking I/O to accept on a listening socket.
-// The rules for which file descriptor-creating operations use the
-// ForkLock are as follows:
+// 幸いなことに、継承しないことが最も重要なファイルディスクリプターは、作成に任意に長い
+// 時間がかかるものではありません。pipeは即座に戻り、netパッケージはリッスンしている
+// ソケットでのacceptにノンブロッキングI/Oを使用します。
+// ファイルディスクリプターを作成する操作がForkLockを使用するかどうかのルールは
+// 次のとおりです:
 //
-//   - [Pipe]. Use pipe2 if available. Otherwise, does not block,
-//     so use ForkLock.
-//   - [Socket]. Use SOCK_CLOEXEC if available. Otherwise, does not
-//     block, so use ForkLock.
-//   - [Open]. Use [O_CLOEXEC] if available. Otherwise, may block,
-//     so live with the race.
-//   - [Dup]. Use [F_DUPFD_CLOEXEC] or dup3 if available. Otherwise,
-//     does not block, so use ForkLock.
+//   - [Pipe]。利用可能であればpipe2を使用します。そうでなければ、ブロックしないため
+//     ForkLockを使用します。
+//   - [Socket]。利用可能であればSOCK_CLOEXECを使用します。そうでなければ、ブロックしないため
+//     ForkLockを使用します。
+//   - [Open]。利用可能であれば [O_CLOEXEC] を使用します。そうでなければ、ブロックする可能性があるため
+//     競合を受け入れます。
+//   - [Dup]。利用可能であれば [F_DUPFD_CLOEXEC] またはdup3を使用します。そうでなければ、
+//     ブロックしないためForkLockを使用します。
 var ForkLock sync.RWMutex
 
-// StringSlicePtr converts a slice of strings to a slice of pointers
-// to NUL-terminated byte arrays. If any string contains a NUL byte
-// this function panics instead of returning an error.
+// StringSlicePtrは、文字列のスライスをNUL終端されたバイト配列への
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// この関数はエラーを返す代わりにパニックを引き起こします。
 //
-// Deprecated: Use [SlicePtrFromStrings] instead.
+// Deprecated: 代わりに [SlicePtrFromStrings] を使用してください。
 func StringSlicePtr(ss []string) []*byte
 
-// SlicePtrFromStrings converts a slice of strings to a slice of
-// pointers to NUL-terminated byte arrays. If any string contains
-// a NUL byte, it returns (nil, [EINVAL]).
+// SlicePtrFromStringsは、文字列のスライスをNUL終端されたバイト配列への
+// ポインターのスライスに変換します。いずれかの文字列にNULバイトが含まれている場合、
+// (nil, [EINVAL])を返します。
 func SlicePtrFromStrings(ss []string) ([]*byte, error)
 
 func CloseOnExec(fd int)
 
 func SetNonblock(fd int, nonblocking bool) (err error)
 
-// Credential holds user and group identities to be assumed
-// by a child process started by [StartProcess].
+// Credentialは、[StartProcess] によって開始された子プロセスが引き受ける
+// ユーザーとグループのIDを保持します。
 type Credential struct {
 	Uid         uint32
 	Gid         uint32
@@ -85,8 +80,8 @@ type Credential struct {
 	NoSetGroups bool
 }
 
-// ProcAttr holds attributes that will be applied to a new process started
-// by [StartProcess].
+// ProcAttrは、[StartProcess] によって開始される新しいプロセスに適用される
+// 属性を保持します。
 type ProcAttr struct {
 	Dir   string
 	Env   []string
@@ -94,11 +89,11 @@ type ProcAttr struct {
 	Sys   *SysProcAttr
 }
 
-// Combination of fork and exec, careful to be thread safe.
+// forkとexecの組み合わせで、スレッドセーフになるよう注意しています。
 func ForkExec(argv0 string, argv []string, attr *ProcAttr) (pid int, err error)
 
-// StartProcess wraps [ForkExec] for package os.
+// StartProcessは、osパッケージのために [ForkExec] をラップします。
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)
 
-// Exec invokes the execve(2) system call.
+// Execはexecve(2)システムコールを呼び出します。
 func Exec(argv0 string, argv []string, envv []string) (err error)

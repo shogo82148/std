@@ -140,7 +140,7 @@ func ExampleFprint() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprint(os.Stdout, name, " is ", age, " years old.\n")
 
-	// Fprint の n と err の返り値は、基礎となる io.Writer から返されたものです。
+	// Fprint の n と err の戻り値は、基礎となる io.Writer から返されたものです。
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprint: %v\n", err)
 	}
@@ -155,7 +155,7 @@ func ExampleFprintln() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintln(os.Stdout, name, "is", age, "years old.")
 
-	// Fprintlnのnとerrの返り値は、基礎となるio.Writerから返されるものです。
+	// Fprintlnのnとerrの戻り値は、基礎となるio.Writerから返されるものです。
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintln: %v\n", err)
 	}
@@ -170,7 +170,7 @@ func ExampleFprintf() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintf(os.Stdout, "%s is %d years old.\n", name, age)
 
-	// Fprintfからのnとerrの返り値は、基になるio.Writerによって返されたものです。
+	// Fprintfからのnとerrの戻り値は、基礎となるio.Writerによって返されたものです。
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
 	}
@@ -181,7 +181,7 @@ func ExampleFprintf() {
 	// 21 bytes written.
 }
 
-// Print、Println、およびPrintfは、引数を異なるレイアウトで配置します。この例では、それらの振る舞いを比較することができます。Printlnは常に出力する項目の間に空白を追加しますが、Printは非文字列の引数の間のみ空白を追加し、Printfは正確に指示通りの出力を行います。
+// Print、Println、およびPrintfは、引数を異なるレイアウトで配置します。この例では、それらの動作を比較することができます。Printlnは常に出力する項目の間に空白を追加しますが、Printは非文字列の引数の間のみ空白を追加し、Printfは正確に指示通りの出力を行います。
 // Sprint、Sprintln、Sprintf、Fprint、Fprintln、およびFprintfは、ここに示すPrint、Println、およびPrintf関数と同じように動作します。
 func Example_printers() {
 	a, b := 3.0, 4.0
@@ -280,9 +280,9 @@ func Example_formats() {
 	fmt.Printf("%v %+v %#v\n", person, person, person)
 	// 結果: {Kim 22} {Name:Kim Age:22} struct { Name string; Age int }{Name:"Kim", Age:22}
 
-	// ポインタのデフォルトのフォーマットは、アンパサンドに続く元の値を表示します。
-	// %p フォーマット指定子はポインタの値を16進数で表示します。ここでは、
-	// %p への引数には型付きの nil を使用しています。なぜなら、非 nil のポインタ
+	// ポインターのデフォルトのフォーマットは、アンパサンドに続く元の値を表示します。
+	// %p フォーマット指定子はポインターの値を16進数で表示します。ここでは、
+	// %p への引数には型付きの nil を使用しています。なぜなら、非 nil のポインター
 	// の値は実行ごとに変化するためです；コメントアウトされた Printf 呼び出し
 	// を自分で実行するとわかります。
 	pointer := &person

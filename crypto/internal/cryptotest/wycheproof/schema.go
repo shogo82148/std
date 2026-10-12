@@ -2013,6 +2013,10 @@ const MLKEMDecapsTestGroupParameterSetMLKEM768 MLKEMDecapsTestGroupParameterSet 
 func (j *MLKEMDecapsTestGroupParameterSet) UnmarshalJSON(value []byte) error
 
 type MLKEMDecapsTestGroupTestsElem struct {
+	// If present, the shared key the implementation MUST return on a successful
+	// Decapsulate call.
+	K *string `json:"K,omitempty,omitzero"`
+
 	// An input ciphertext
 	C string `json:"c"`
 
@@ -2021,6 +2025,9 @@ type MLKEMDecapsTestGroupTestsElem struct {
 
 	// The full decapsulation key
 	Dk string `json:"dk"`
+
+	// The encapsulation key bytes of dk.
+	Ek string `json:"ek"`
 
 	// A list of flags
 	Flags []string `json:"flags"`

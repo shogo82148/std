@@ -112,11 +112,6 @@ type ABIConfig struct {
 // iRegsCount integer/pointer registers and fRegsCount floating point registers.
 func NewABIConfig(iRegsCount, fRegsCount int, offsetForLocals int64, which uint8) *ABIConfig
 
-// Copy returns config.
-//
-// TODO(mdempsky): Remove.
-func (config *ABIConfig) Copy() *ABIConfig
-
 // Which returns the ABI number
 func (config *ABIConfig) Which() obj.ABI
 

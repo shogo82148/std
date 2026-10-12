@@ -12,7 +12,7 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// Objectは名前付き言語エンティティです。
+// Objectは名前付き言語エンティティーです。
 // Objectは定数（[Const]）、型名（[TypeName]）、
 // 変数または構造体フィールド（[Var]）、関数またはメソッド（[Func]）、
 // インポートされたパッケージ（[PkgName]）、ラベル（[Label]）、
@@ -82,7 +82,7 @@ func (obj *Const) Val() constant.Value
 // TypeNameは名前を持つ型を表す [Object] です：
 // 定義済み型（[Named]）、
 // エイリアス型（[Alias]）、
-// 型パラメータ（[TypeParam]）、
+// 型パラメーター（[TypeParam]）、
 // またはintやerrorのような事前宣言された型。
 type TypeName struct {
 	object
@@ -99,7 +99,7 @@ func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
 // IsAliasは、objが型のエイリアス名であるかどうかを報告します。
 func (obj *TypeName) IsAlias() bool
 
-// Varは宣言された変数（関数のパラメータと結果、および構造体のフィールドを含む）を表します。
+// Varは宣言された変数（関数のパラメーターと結果、および構造体のフィールドを含む）を表します。
 type Var struct {
 	object
 	origin   *Var
@@ -136,7 +136,7 @@ func (v *Var) SetKind(kind VarKind)
 // その後に[Var.SetKind]を呼び出さなければなりません。
 func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
-// NewParamは関数パラメータを表す新しい変数を返します。
+// NewParamは関数パラメーターを表す新しい変数を返します。
 //
 // 呼び出し元は、希望するVarが[ParamVar]の種類でない場合、
 // その後に[Var.SetKind]を呼び出さなければなりません。例：[RecvVar]または[ResultVar]。
@@ -157,11 +157,11 @@ func (obj *Var) Embedded() bool
 // IsFieldは、変数が構造体のフィールドであるかどうかを報告します。
 func (obj *Var) IsField() bool
 
-// Originは、そのレシーバのための正規のVar、つまりInfo.Defsに記録されたVarオブジェクトを返します。
+// Originは、そのレシーバーのための正規のVar、つまりInfo.Defsに記録されたVarオブジェクトを返します。
 //
 // インスタンス化中に作成された合成Var（型引数に依存する構造体フィールドや
-// 関数パラメータなど）については、これはジェネリック（インスタンス化されていない）型上の
-// 対応するVarになります。他のすべてのVarについて、Originはレシーバを返します。
+// 関数パラメーターなど）については、これはジェネリック（インスタンス化されていない）型上の
+// 対応するVarになります。他のすべてのVarについて、Originはレシーバーを返します。
 func (obj *Var) Origin() *Var
 
 // Funcは、宣言された関数、具体的なメソッド、または抽象（インターフェース）メソッドを表します。そのType()は常に*Signatureです。
@@ -176,7 +176,7 @@ type Func struct {
 // NewFuncは与えられたシグネチャを持つ新しい関数を返します。これは関数の型を表します。
 func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 
-// Signature returns the signature (type) of the function or method.
+// Signatureは、関数またはメソッドのシグネチャ（型）を返します。
 func (obj *Func) Signature() *Signature
 
 // FullNameは関数またはメソッドobjのパッケージ名またはレシーバー型名で修飾された名前を返します。

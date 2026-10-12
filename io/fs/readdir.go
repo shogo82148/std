@@ -11,8 +11,8 @@ type ReadDirFS interface {
 	ReadDir(name string) ([]DirEntry, error)
 }
 
-// ReadDirは指定されたディレクトリを読み取り、
-// ファイル名でソートされたディレクトリエントリのリストを返します。
+// ReadDirは指定されたディレクトリーを読み取り、
+// ファイル名でソートされたディレクトリーエントリーのリストを返します。
 //
 // fsysが [ReadDirFS] を実装している場合、ReadDirはfsys.ReadDirを呼び出します。
 // そうでない場合、ReadDirはfsys.Openを呼び出し、返された [ReadDirFile] の

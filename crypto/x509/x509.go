@@ -28,7 +28,7 @@ import (
 // ParsePKIXPublicKeyはPKIX、ASN.1 DER形式の公開鍵を解析します。エンコードされた公開鍵はSubjectPublicKeyInfo構造体です（RFC 5280、セクション4.1を参照）。
 //
 // 戻り値は、*[rsa.PublicKey]、*[dsa.PublicKey]、*[ecdsa.PublicKey]、
-// [ed25519.PublicKey]（ポインタではありません）、*[mldsa.PublicKey]、
+// [ed25519.PublicKey]（ポインターではありません）、*[mldsa.PublicKey]、
 // または*[ecdh.PublicKey]（X25519用）のいずれかです。
 // 将来的に、さらに多くの型がサポートされる可能性があります。
 //
@@ -40,7 +40,7 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // （RFC 5280、セクション4.1を参照）。
 //
 // 現在サポートされている鍵型は、*[rsa.PublicKey]、
-// *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインタではありません）、
+// *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインターではありません）、
 // *[mldsa.PublicKey]、および*[ecdh.PublicKey]です。
 // サポートされていない鍵型を指定するとエラーになります。
 //
@@ -156,7 +156,7 @@ type Certificate struct {
 	// ExtraExtensionsには、任意のマーシャル化された証明書にコピーして使用される、拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。証明書の解析時にはExtraExtensionsフィールドは埋められませんが、Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 
-	// UnhandledCriticalExtensionsは、解析時に（完全に）処理されなかった拡張IDのリストを含んでいます。このスライスが空でない場合、検証は失敗します。ただし、すべての重要な拡張を理解できるOSライブラリに検証が委任されている場合は除きます。
+	// UnhandledCriticalExtensionsは、解析時に（完全に）処理されなかった拡張IDのリストを含んでいます。このスライスが空でない場合、検証は失敗します。ただし、すべての重要な拡張を理解できるOSライブラリーに検証が委任されている場合は除きます。
 	//
 	// ユーザーはExtensionsを使用してこれらの拡張にアクセスし、処理されたと信じられる要素をこのスライスから削除することができます。
 	UnhandledCriticalExtensions []asn1.ObjectIdentifier
@@ -187,7 +187,7 @@ type Certificate struct {
 	OCSPServer            []string
 	IssuingCertificateURL []string
 
-	// Subject Alternate Nameの値。（ただし、パースされた証明書に無効な値が含まれている場合、これらの値は有効ではない場合があります。例えば、DNSNamesの要素が有効なDNSドメイン名であるとは限りません。）
+	// Subject Alternate Nameの値。（ただし、解析された証明書に無効な値が含まれている場合、これらの値は有効ではない場合があります。例えば、DNSNamesの要素が有効なDNSドメイン名であるとは限りません。）
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
@@ -207,93 +207,83 @@ type Certificate struct {
 	// CRL配布ポイント
 	CRLDistributionPoints []string
 
-	// PolicyIdentifiers contains asn1.ObjectIdentifiers, the components
-	// of which are limited to int32. If a certificate contains a policy which
-	// cannot be represented by asn1.ObjectIdentifier, it will not be included in
-	// PolicyIdentifiers, but will be present in Policies, which contains all parsed
-	// policy OIDs.
-	// See CreateCertificate for context about how this field and the Policies field
-	// interact.
+	// PolicyIdentifiersにはasn1.ObjectIdentifiersが含まれ、その構成要素は
+	// int32に制限されます。証明書にasn1.ObjectIdentifierで表現できないポリシーが
+	// 含まれている場合、それはPolicyIdentifiersには含まれませんが、
+	// 解析されたすべてのポリシーOIDを含むPoliciesには含まれます。
+	// このフィールドとPoliciesフィールドの相互作用については、
+	// CreateCertificateを参照してください。
 	PolicyIdentifiers []asn1.ObjectIdentifier
 
-	// Policies contains all policy identifiers included in the certificate.
-	// See CreateCertificate for context about how this field and the PolicyIdentifiers field
-	// interact.
-	// In Go 1.22, encoding/gob cannot handle and ignores this field.
+	// Policiesには、証明書に含まれるすべてのポリシー識別子が含まれます。
+	// このフィールドとPolicyIdentifiersフィールドの相互作用については、
+	// CreateCertificateを参照してください。
+	// Go 1.22では、encoding/gobはこのフィールドを扱えず、無視します。
 	Policies []OID
 
-	// InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
-	// of the inhibitAnyPolicy extension.
+	// InhibitAnyPolicyとInhibitAnyPolicyZeroは、inhibitAnyPolicy拡張の存在と値を示します。
 	//
-	// The value of InhibitAnyPolicy indicates the number of additional
-	// certificates in the path after this certificate that may use the
-	// anyPolicy policy OID to indicate a match with any other policy.
+	// InhibitAnyPolicyの値は、この証明書の後のパス内で、anyPolicyポリシーOIDを使用して
+	// 他の任意のポリシーとの一致を示すことができる追加の証明書の数を示します。
 	//
-	// When parsing a certificate, a positive non-zero InhibitAnyPolicy means
-	// that the field was specified, -1 means it was unset, and
-	// InhibitAnyPolicyZero being true mean that the field was explicitly set to
-	// zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
-	// should be treated equivalent to -1 (unset).
+	// 証明書を解析する際、正の非ゼロのInhibitAnyPolicyはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、InhibitAnyPolicyZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// InhibitAnyPolicy==0かつInhibitAnyPolicyZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	InhibitAnyPolicy int
-	// InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// InhibitAnyPolicyZeroは、InhibitAnyPolicy==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// InhibitAnyPolicyが設定されていないものと解釈されます。
 	InhibitAnyPolicyZero bool
 
-	// InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
-	// and value of the inhibitPolicyMapping field of the policyConstraints
-	// extension.
+	// InhibitPolicyMappingとInhibitPolicyMappingZeroは、policyConstraints拡張の
+	// inhibitPolicyMappingフィールドの存在と値を示します。
 	//
-	// The value of InhibitPolicyMapping indicates the number of additional
-	// certificates in the path after this certificate that may use policy
-	// mapping.
+	// InhibitPolicyMappingの値は、この証明書の後のパス内で、ポリシーマッピングを
+	// 使用できる追加の証明書の数を示します。
 	//
-	// When parsing a certificate, a positive non-zero InhibitPolicyMapping
-	// means that the field was specified, -1 means it was unset, and
-	// InhibitPolicyMappingZero being true mean that the field was explicitly
-	// set to zero. The case of InhibitPolicyMapping==0 with
-	// InhibitPolicyMappingZero==false should be treated equivalent to -1
-	// (unset).
+	// 証明書を解析する際、正の非ゼロのInhibitPolicyMappingはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、InhibitPolicyMappingZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// InhibitPolicyMapping==0かつInhibitPolicyMappingZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	InhibitPolicyMapping int
-	// InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// InhibitPolicyMappingZeroは、InhibitPolicyMapping==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// InhibitPolicyMappingが設定されていないものと解釈されます。
 	InhibitPolicyMappingZero bool
 
-	// RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
-	// and value of the requireExplicitPolicy field of the policyConstraints
-	// extension.
+	// RequireExplicitPolicyとRequireExplicitPolicyZeroは、policyConstraints拡張の
+	// requireExplicitPolicyフィールドの存在と値を示します。
 	//
-	// The value of RequireExplicitPolicy indicates the number of additional
-	// certificates in the path after this certificate before an explicit policy
-	// is required for the rest of the path. When an explicit policy is required,
-	// each subsequent certificate in the path must contain a required policy OID,
-	// or a policy OID which has been declared as equivalent through the policy
-	// mapping extension.
+	// RequireExplicitPolicyの値は、パスの残りの部分で明示的なポリシーが必要になるまでの、
+	// この証明書の後のパス内の追加の証明書の数を示します。明示的なポリシーが必要な場合、
+	// パス内の後続の各証明書は、必要なポリシーOID、またはポリシーマッピング拡張によって
+	// 同等と宣言されたポリシーOIDを含まなければなりません。
 	//
-	// When parsing a certificate, a positive non-zero RequireExplicitPolicy
-	// means that the field was specified, -1 means it was unset, and
-	// RequireExplicitPolicyZero being true mean that the field was explicitly
-	// set to zero. The case of RequireExplicitPolicy==0 with
-	// RequireExplicitPolicyZero==false should be treated equivalent to -1
-	// (unset).
+	// 証明書を解析する際、正の非ゼロのRequireExplicitPolicyはフィールドが指定されたことを意味し、
+	// -1は未設定であることを意味し、RequireExplicitPolicyZeroがtrueであることは
+	// フィールドが明示的にゼロに設定されたことを意味します。
+	// RequireExplicitPolicy==0かつRequireExplicitPolicyZero==falseの場合は、
+	// -1（未設定）と同等に扱うべきです。
 	RequireExplicitPolicy int
-	// RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
-	// interpreted as an actual maximum path length of zero. Otherwise, that
-	// combination is interpreted as InhibitAnyPolicy not being set.
+	// RequireExplicitPolicyZeroは、RequireExplicitPolicy==0を実際の最大パス長ゼロとして
+	// 解釈すべきことを示します。そうでない場合、その組み合わせは
+	// RequireExplicitPolicyが設定されていないものと解釈されます。
 	RequireExplicitPolicyZero bool
 
-	// PolicyMappings contains a list of policy mappings included in the certificate.
+	// PolicyMappingsには、証明書に含まれるポリシーマッピングのリストが含まれます。
 	PolicyMappings []PolicyMapping
 }
 
-// PolicyMapping represents a policy mapping entry in the policyMappings extension.
+// PolicyMappingは、policyMappings拡張のポリシーマッピングエントリーを表します。
 type PolicyMapping struct {
-	// IssuerDomainPolicy contains a policy OID the issuing certificate considers
-	// equivalent to SubjectDomainPolicy in the subject certificate.
+	// IssuerDomainPolicyには、発行者の証明書がサブジェクト証明書の
+	// SubjectDomainPolicyと同等とみなすポリシーOIDが含まれます。
 	IssuerDomainPolicy OID
-	// SubjectDomainPolicy contains a OID the issuing certificate considers
-	// equivalent to IssuerDomainPolicy in the subject certificate.
+	// SubjectDomainPolicyには、発行者の証明書がサブジェクト証明書の
+	// IssuerDomainPolicyと同等とみなすOIDが含まれます。
 	SubjectDomainPolicy OID
 }
 
@@ -372,7 +362,7 @@ func (h UnhandledCriticalExtension) Error() string
 //   - URIs
 //   - UnknownExtKeyUsage
 //
-// 証明書は親によって署名されます。親がテンプレートと等しい場合、証明書は自己署名です。pubパラメータは生成される証明書の公開鍵であり、privは署名者の秘密鍵です。
+// 証明書は親によって署名されます。親がテンプレートと等しい場合、証明書は自己署名です。pubパラメーターは生成される証明書の公開鍵であり、privは署名者の秘密鍵です。
 //
 // 返されるスライスはDERエンコーディングされた証明書です。
 //
@@ -406,7 +396,7 @@ func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv 
 // Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
-// ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLをパースします。
+// ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLを解析します。
 //
 // Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
@@ -485,10 +475,10 @@ func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 // CheckSignatureはcの署名が有効かどうかを報告します。
 func (c *CertificateRequest) CheckSignature() error
 
-// RevocationListEntryは、CRLのrevokedCertificatesシーケンスのエントリを表します。
+// RevocationListEntryは、CRLのrevokedCertificatesシーケンスのエントリーを表します。
 type RevocationListEntry struct {
 
-	// Raw は revokedCertificates エントリの生のバイトを含んでいます。
+	// Raw は revokedCertificates エントリーの生のバイトを含んでいます。
 	// CRL を解析する際に設定され、CRL を生成する際には無視されます。
 	Raw []byte
 
@@ -504,12 +494,12 @@ type RevocationListEntry struct {
 	// ReasonCodeは、RFC 5280 Section 5.3.1 で指定された整数の列挙値を使用して、回復の理由を表します。CRLを作成する場合、ゼロ値はreasonCode拡張機能が省略される結果になります。CRLを解析する際、ゼロ値はreasonCode拡張機能が存在しないこと（0/Unspecifiedのデフォルト回収理由を意味する）を表すか、reasonCode拡張機能が存在し、明示的に0/Unspecifiedの値を含んでいることを表す可能性があります（これはDERエンコーディングルールによらないで発生する可能性がありますが、実際に発生することがあります）。
 	ReasonCode int
 
-	// Extensionsには生のX.509拡張が含まれています。CRLエントリを解析する際、
-	// このフィールドを使用して、このパッケージでパースされない非クリティカルな拡張を取得できます。
-	// CRLエントリをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
+	// Extensionsには生のX.509拡張が含まれています。CRLエントリーを解析する際、
+	// このフィールドを使用して、このパッケージで解析されない非クリティカルな拡張を取得できます。
+	// CRLエントリーをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
 
-	// ExtraExtensionsには、任意のマーシャルされたCRLエントリにコピーするための拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。ExtraExtensionsフィールドは、CRLエントリの解析時には値が設定されません。Extensionsを参照してください。
+	// ExtraExtensionsには、任意のマーシャルされたCRLエントリーにコピーするための拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。ExtraExtensionsフィールドは、CRLエントリーの解析時には値が設定されません。Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 }
 
@@ -523,8 +513,8 @@ type RevocationList struct {
 	RawTBSRevocationList []byte
 	// RawIssuerにはDERエンコードされた発行者が含まれています。
 	RawIssuer []byte
-	// RawSignatureAlgorithm contains the DER encoded signature algorithm as a
-	// PKIX AlgorithmIdentifier.
+	// RawSignatureAlgorithmには、PKIX AlgorithmIdentifierとしてDERエンコードされた
+	// 署名アルゴリズムが含まれます。
 	RawSignatureAlgorithm []byte
 
 	// Issuerには発行証明書のDNが含まれています。

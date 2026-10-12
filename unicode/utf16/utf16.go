@@ -27,7 +27,7 @@ func RuneLen(r rune) int
 func Encode(s []rune) []uint16
 
 // AppendRuneはUnicodeのコードポイントrのUTF-16エンコーディングを
-// pの末尾に追加し、拡張されたバッファを返します。コードポイントが有効な
+// pの末尾に追加し、拡張されたバッファーを返します。コードポイントが有効な
 // Unicodeのコードポイントでない場合、U+FFFDのエンコーディングを追加します。
 func AppendRune(a []uint16, r rune) []uint16
 

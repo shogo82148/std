@@ -126,16 +126,16 @@ func (c *Conn) SetReadDeadline(t time.Time) error
 // 書き込みがタイムアウトした後、TLSの状態が壊れるため、以降の書き込みは同じエラーを返します。
 func (c *Conn) SetWriteDeadline(t time.Time) error
 
-// NetConnはcによってラップされた基になる接続を返します。
+// NetConnはcによってラップされた基礎となる接続を返します。
 // ただし、この接続に直接書き込みまたは読み込みを行うと、TLSセッションが破損することに注意してください。
 func (c *Conn) NetConn() net.Conn
 
-// RecordHeaderError は、TLS レコードヘッダが無効な場合に返されます。
+// RecordHeaderError は、TLS レコードヘッダーが無効な場合に返されます。
 type RecordHeaderError struct {
 	// Msgはエラーを説明する人が読みやすい文字列を含んでいます。
 	Msg string
 
-	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダの5バイトが含まれています。
+	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダーの5バイトが含まれています。
 	RecordHeader [5]byte
 
 	// Connは、クライアントが初期ハンドシェイクを送信しているが、TLSのように見えない場合の基礎となるnet.Connを提供します。
@@ -156,7 +156,7 @@ func (c *Conn) Write(b []byte) (int, error)
 // Readは接続からデータを読み込みます。
 //
 // [Conn.Handshake] を呼び出すため、ハンドシェイクがまだ完了していない場合、
-// Readが呼び出される前にReadと [Conn.Write] の両方にデッドラインを設定する必要があります
+// Readが呼び出される前にReadと [Conn.Write] の両方に期限を設定する必要があります
 // 無制限のブロッキングを防ぐためです。
 // [Conn.SetDeadline] 、 [Conn.SetReadDeadline] 、および [Conn.SetWriteDeadline] を参照してください。
 func (c *Conn) Read(b []byte) (int, error)

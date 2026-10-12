@@ -17,13 +17,13 @@ func ExampleFrames() {
 		pc := make([]uintptr, 10)
 		n := runtime.Callers(0, pc)
 		if n == 0 {
-			// PC（プログラムカウンタ）が利用できません。これは、runtime.Callersの最初の引数が大きい場合に発生する可能性があります。
+			// PC（プログラムカウンター）が利用できません。これは、runtime.Callersの最初の引数が大きい場合に発生する可能性があります。
 			//
 			// frames.Next以下で返されるはずのゼロのフレームを処理しないため、ここでリターンします。
 			return
 		}
 
-		pc = pc[:n] // runtime.CallersFramesには有効なプログラムカウンタ（pcs）のみを渡してください。
+		pc = pc[:n] // runtime.CallersFramesには有効なプログラムカウンター（pcs）のみを渡してください。
 		frames := runtime.CallersFrames(pc)
 
 		// フレームを取得するためのループ。

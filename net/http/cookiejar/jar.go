@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package cookiejarは、メモリ上で [RFC 6265] に準拠した [http.CookieJar] を実装します。
+// cookiejarパッケージは、メモリー上で [RFC 6265] に準拠した [http.CookieJar] を実装します。
 //
 // [RFC 6265]: https://www.rfc-editor.org/info/rfc6265
 package cookiejar
@@ -20,7 +20,7 @@ import (
 //
 // PublicSuffixListの実装は、複数のゴルーチンに対して安全に同時に使用できる必要があります。
 //
-// 常に""を返す実装は有効であり、テストには便利ですが、安全ではありません。これは、foo.comのHTTPサーバがbar.comのためにクッキーを設定できることを意味します。
+// 常に""を返す実装は有効であり、テストには便利ですが、安全ではありません。これは、foo.comのHTTPサーバーがbar.comのためにクッキーを設定できることを意味します。
 //
 // 公開サフィックスリストの実装は、次のパッケージにあります。
 // [golang.org/x/net/publicsuffix].
@@ -33,9 +33,9 @@ type PublicSuffixList interface {
 // Optionsは新しい [Jar] を作成するためのオプションです。
 type Options struct {
 
-	// PublicSuffixListは、ドメインに対してHTTPサーバがクッキーを設定できるかどうかを決定する公開サフィックスリストです。
+	// PublicSuffixListは、ドメインに対してHTTPサーバーがクッキーを設定できるかどうかを決定する公開サフィックスリストです。
 	//
-	// nilの値は有効であり、テストには便利ですが、セキュリティ上の理由から使用するべきではありません。これは、foo.co.ukのHTTPサーバがbar.co.ukに対してクッキーを設定できることを意味します。
+	// nilの値は有効であり、テストには便利ですが、セキュリティー上の理由から使用するべきではありません。これは、foo.co.ukのHTTPサーバーがbar.co.ukに対してクッキーを設定できることを意味します。
 	PublicSuffixList PublicSuffixList
 }
 
@@ -46,7 +46,7 @@ type Jar struct {
 	// muは残りのフィールドをロックします。
 	mu sync.Mutex
 
-	// entriesは、eTLD+1でキー付けされ、その名前/ドメイン/パスでサブキー付けされたエントリのセットです。
+	// entriesは、eTLD+1でキー付けされ、その名前/ドメイン/パスでサブキー付けされたエントリーのセットです。
 	entries map[string]map[string]entry
 
 	// nextSeqNumは新しいクッキーが作成されたSetCookiesに割り当てられる次のシーケンス番号です。

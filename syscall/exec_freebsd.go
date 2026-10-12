@@ -9,21 +9,21 @@ type SysProcAttr struct {
 	Credential *Credential
 	Ptrace     bool
 	Setsid     bool
-	// Setpgid sets the process group ID of the child to Pgid,
-	// or, if Pgid == 0, to the new child's process ID.
+	// Setpgidは、子のプロセスグループIDをPgidに設定します。
+	// Pgid == 0の場合は、新しい子のプロセスIDに設定します。
 	Setpgid bool
-	// Setctty sets the controlling terminal of the child to
-	// file descriptor Ctty. Ctty must be a descriptor number
-	// in the child process: an index into ProcAttr.Files.
-	// This is only meaningful if Setsid is true.
+	// Setcttyは、子の制御端末をファイルディスクリプターCttyに設定します。
+	// Cttyは子プロセス内のディスクリプター番号、つまりProcAttr.Filesへの
+	// インデックスでなければなりません。
+	// これはSetsidがtrueの場合にのみ意味を持ちます。
 	Setctty bool
 	Noctty  bool
 	Ctty    int
-	// Foreground places the child process group in the foreground.
-	// This implies Setpgid. The Ctty field must be set to
-	// the descriptor of the controlling TTY.
-	// Unlike Setctty, in this case Ctty must be a descriptor
-	// number in the parent process.
+	// Foregroundは、子プロセスグループをフォアグラウンドに配置します。
+	// これはSetpgidを暗黙的に含みます。Cttyフィールドには
+	// 制御TTYのディスクリプターを設定しなければなりません。
+	// Setcttyとは異なり、この場合Cttyは親プロセス内の
+	// ディスクリプター番号でなければなりません。
 	Foreground bool
 	Pgid       int
 	Pdeathsig  Signal

@@ -5,26 +5,24 @@
 //go:build goexperiment.arenas
 
 /*
-The arena package provides the ability to allocate memory for a collection
-of Go values and free that space manually all at once, safely. The purpose
-of this functionality is to improve efficiency: manually freeing memory
-before a garbage collection delays that cycle. Less frequent cycles means
-the CPU cost of the garbage collector is incurred less frequently.
+arenaパッケージは、Goの値のコレクションのためのメモリーを割り当て、その領域を
+手動で一度にまとめて安全に解放する機能を提供します。この機能の目的は効率の向上です。
+ガベージコレクションの前にメモリーを手動で解放すると、そのサイクルが遅れます。
+サイクルの頻度が下がれば、ガベージコレクターのCPUコストが発生する頻度も下がります。
 
-This functionality in this package is mostly captured in the Arena type.
-Arenas allocate large chunks of memory for Go values, so they're likely to
-be inefficient for allocating only small amounts of small Go values. They're
-best used in bulk, on the order of MiB of memory allocated on each use.
+このパッケージの機能は、主にArena型に集約されています。
+ArenaはGoの値のために大きなメモリーチャンクを割り当てるため、小さなGoの値を
+少量だけ割り当てる用途には非効率になりがちです。1回の使用ごとにMiB単位のメモリーを
+割り当てるような、まとまった使い方に最も適しています。
 
-Note that by allowing for this limited form of manual memory allocation
-that use-after-free bugs are possible with regular Go values. This package
-limits the impact of these use-after-free bugs by preventing reuse of freed
-memory regions until the garbage collector is able to determine that it is
-safe. Typically, a use-after-free bug will result in a fault and a helpful
-error message, but this package reserves the right to not force a fault on
-freed memory. That means a valid implementation of this package is to just
-allocate all memory the way the runtime normally would, and in fact, it
-reserves the right to occasionally do so for some Go values.
+このような限定的な形での手動メモリー割り当てを許可することで、通常のGoの値でも
+解放後使用（use-after-free）のバグが起こりうることに注意してください。このパッケージは、
+解放されたメモリー領域を、ガベージコレクターが安全であると判断できるまで再利用しないことで、
+こうした解放後使用のバグの影響を抑えています。通常、解放後使用のバグはフォールトと
+有用なエラーメッセージを引き起こしますが、このパッケージは解放されたメモリーに対して
+フォールトを強制しない権利を留保しています。つまり、ランタイムが通常行うのと同じ方法で
+すべてのメモリーを割り当てるだけでも、このパッケージの有効な実装となります。実際、
+一部のGoの値については、時折そのようにする権利を留保しています。
 */
 package arena
 
@@ -32,40 +30,39 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Arena represents a collection of Go values allocated and freed together.
-// Arenas are useful for improving efficiency as they may be freed back to
-// the runtime manually, though any memory obtained from freed arenas must
-// not be accessed once that happens. An Arena is automatically freed once
-// it is no longer referenced, so it must be kept alive (see runtime.KeepAlive)
-// until any memory allocated from it is no longer needed.
+// Arenaは、まとめて割り当てられ、まとめて解放されるGoの値のコレクションを表します。
+// Arenaは手動でランタイムに解放できるため、効率の向上に役立ちますが、
+// 解放されたArenaから取得したメモリーには、解放後にアクセスしてはいけません。
+// Arenaは参照されなくなると自動的に解放されるため、そこから割り当てられたメモリーが
+// 不要になるまで生存させておく必要があります（runtime.KeepAliveを参照）。
 //
-// An Arena must never be used concurrently by multiple goroutines.
+// Arenaを複数のゴルーチンから並行して使用してはいけません。
 type Arena struct {
 	a unsafe.Pointer
 }
 
-// NewArena allocates a new arena.
+// NewArenaは新しいArenaを割り当てます。
 func NewArena() *Arena
 
-// Free frees the arena (and all objects allocated from the arena) so that
-// memory backing the arena can be reused fairly quickly without garbage
-// collection overhead. Applications must not call any method on this
-// arena after it has been freed.
+// FreeはArena（およびArenaから割り当てられたすべてのオブジェクト）を解放し、
+// Arenaを支えるメモリーをガベージコレクションのオーバーヘッドなしにかなり速やかに
+// 再利用できるようにします。アプリケーションは、解放後にこのArenaのメソッドを
+// 呼び出してはいけません。
 func (a *Arena) Free()
 
-// New creates a new *T in the provided arena. The *T must not be used after
-// the arena is freed. Accessing the value after free may result in a fault,
-// but this fault is also not guaranteed.
+// Newは、指定されたArenaに新しい*Tを作成します。*TはArenaが解放された後に
+// 使用してはいけません。解放後に値にアクセスするとフォールトが発生する可能性がありますが、
+// このフォールトも保証されていません。
 func New[T any](a *Arena) *T
 
-// MakeSlice creates a new []T with the provided capacity and length. The []T must
-// not be used after the arena is freed. Accessing the underlying storage of the
-// slice after free may result in a fault, but this fault is also not guaranteed.
+// MakeSliceは、指定された容量と長さを持つ新しい[]Tを作成します。[]TはArenaが
+// 解放された後に使用してはいけません。解放後にスライスの基礎となるストレージに
+// アクセスするとフォールトが発生する可能性がありますが、このフォールトも保証されていません。
 func MakeSlice[T any](a *Arena, len, cap int) []T
 
-// Clone makes a shallow copy of the input value that is no longer bound to any
-// arena it may have been allocated from, returning the copy. If it was not
-// allocated from an arena, it is returned untouched. This function is useful
-// to more easily let an arena-allocated value out-live its arena.
-// T must be a pointer, a slice, or a string, otherwise this function will panic.
+// Cloneは、入力値の浅いコピーを作成し、そのコピーを返します。コピーは、
+// 元の値が割り当てられたArenaにはもはや束縛されません。元の値がArenaから
+// 割り当てられていない場合は、そのまま返されます。この関数は、Arenaで割り当てられた値を
+// そのArenaよりも長く生存させるのに役立ちます。
+// Tはポインター、スライス、文字列のいずれかでなければならず、そうでない場合この関数はパニックを引き起こします。
 func Clone[T any](s T) T

@@ -21,7 +21,7 @@ func ExampleB_RunParallel() {
 		// RunParallelはGOMAXPROCSのゴルーチンを作成し、
 		// それらに作業を分散させます。
 		b.RunParallel(func(pb *testing.PB) {
-			// 各goroutineは独自のbytes.Bufferを持っています。
+			// 各ゴルーチンは独自のbytes.Bufferを持っています。
 			var buf bytes.Buffer
 			for pb.Next() {
 				// ループ本体はすべてのゴルーチンを通じて合計で b.N 回実行されます。

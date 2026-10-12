@@ -97,33 +97,33 @@ func AnyValue(v any) Value
 func (v Value) Any() any
 
 // Stringは、Valueの値を [fmt.Sprint] のようにフォーマットした文字列として返します。
-// Int64、Float64などのメソッドは、vが間違った種類の場合にpanicしますが、
-// Stringは決してpanicしません。
+// Int64、Float64などのメソッドは、vが間違った種類の場合にパニックを引き起こしますが、
+// Stringは決してパニックを引き起こしません。
 func (v Value) String() string
 
-// Int64は、vの値をint64として返します。vが符号付き整数でない場合はpanicします。
+// Int64は、vの値をint64として返します。vが符号付き整数でない場合はパニックを引き起こします。
 func (v Value) Int64() int64
 
-// Uint64は、vの値をuint64として返します。vが符号なし整数でない場合はpanicします。
+// Uint64は、vの値をuint64として返します。vが符号なし整数でない場合はパニックを引き起こします。
 func (v Value) Uint64() uint64
 
-// Boolは、vの値をboolとして返します。vがboolでない場合はpanicします。
+// Boolは、vの値をboolとして返します。vがboolでない場合はパニックを引き起こします。
 func (v Value) Bool() bool
 
-// Durationは、vの値をtime.Durationとして返します。vが [time.Duration] でない場合はpanicします。
+// Durationは、vの値をtime.Durationとして返します。vが [time.Duration] でない場合はパニックを引き起こします。
 func (a Value) Duration() time.Duration
 
-// Float64は、vの値をfloat64として返します。vがfloat64でない場合はpanicします。
+// Float64は、vの値をfloat64として返します。vがfloat64でない場合はパニックを引き起こします。
 func (v Value) Float64() float64
 
-// Timeは、vの値をtime.Timeとして返します。vが [time.Time] でない場合はpanicします。
+// Timeは、vの値をtime.Timeとして返します。vが [time.Time] でない場合はパニックを引き起こします。
 func (v Value) Time() time.Time
 
-// LogValuerは、vの値をLogValuerとして返します。vがLogValuerでない場合はpanicします。
+// LogValuerは、vの値をLogValuerとして返します。vがLogValuerでない場合はパニックを引き起こします。
 func (v Value) LogValuer() LogValuer
 
 // Groupは、vの値を[]Attrとして返します。
-// vの [Kind] が [KindGroup] でない場合はpanicします。
+// vの [Kind] が [KindGroup] でない場合はパニックを引き起こします。
 func (v Value) Group() []Attr
 
 // Equalは、vとwが同じGo値を表しているかどうかを報告します。

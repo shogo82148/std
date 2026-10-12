@@ -6,57 +6,50 @@
 
 package secret
 
-// Do invokes f.
+// Doはfを呼び出します。
 //
-// Do ensures that any temporary storage used by f is erased in a
-// timely manner. (In this context, "f" is shorthand for the
-// entire call tree initiated by f.)
-//   - Any registers used by f are erased before Do returns.
-//   - Any stack used by f is erased before Do returns.
-//   - Heap allocations done by f are erased as soon as the garbage
-//     collector realizes that all allocated values are no longer reachable.
-//   - Do works even if f panics or calls runtime.Goexit.  As part of
-//     that, any panic raised by f will appear as if it originates from
-//     Do itself.
+// Doは、fが使用した一時的なストレージが適時に消去されることを保証します。
+// （この文脈では、"f"はfによって開始された呼び出しツリー全体の略です。）
+//   - fが使用したレジスターは、Doが戻る前に消去されます。
+//   - fが使用したスタックは、Doが戻る前に消去されます。
+//   - fが行ったヒープ割り当ては、割り当てられたすべての値がもはや到達不能であることを
+//     ガベージコレクターが認識するとすぐに消去されます。
+//   - Doは、fがパニックを引き起こしたりruntime.Goexitを呼び出したりした場合でも機能します。
+//     その一環として、fが発生させたパニックはDo自体から発生したかのように見えます。
 //
-// Any goroutine spawned while executing f will act as if the entire goroutine
-// is wrapped inside another call to Do.
+// fの実行中に生成されたゴルーチンは、ゴルーチン全体が別のDoの呼び出しで
+// ラップされているかのように動作します。
 //
-// Users should be cautious of allocating inside Do.
-// Erasing heap memory after Do returns may increase garbage collector sweep times and
-// requires additional memory to keep track of allocations until they are to be erased.
-// These costs can compound when an allocation is done in the service of growing a value,
-// like appending to a slice or inserting into a map. In these cases, the entire new allocation is erased rather
-// than just the secret parts of it.
+// ユーザーはDo内での割り当てに注意するべきです。
+// Doが戻った後にヒープメモリーを消去すると、ガベージコレクターのスイープ時間が増加する可能性があり、
+// 消去されるまで割り当てを追跡するための追加のメモリーが必要になります。
+// スライスへの追加やマップへの挿入のように、値を拡張するために割り当てが行われる場合、
+// これらのコストは累積する可能性があります。このような場合、秘密の部分だけでなく
+// 新しい割り当て全体が消去されます。
 //
-// To reduce lifetimes of allocations and avoid unexpected performance issues,
-// if a function invoked by Do needs to yield a result that shouldn't be erased,
-// it should do so by copying the result into an allocation created by the caller.
+// 割り当ての生存期間を短くし、予期しないパフォーマンスの問題を回避するために、
+// Doによって呼び出される関数が消去されるべきでない結果を生成する必要がある場合は、
+// 呼び出し元が作成した割り当てに結果をコピーすることでそうするべきです。
 //
-// Limitations:
-//   - Currently only supported on linux/amd64 and linux/arm64.  On unsupported
-//     platforms, Do will invoke f directly.
-//   - Protection does not extend to any global variables written by f.
-//   - If f calls runtime.Goexit, erasure can be delayed by defers
-//     higher up on the call stack.
-//   - Heap allocations will only be erased if the program drops all
-//     references to those allocations, and then the garbage collector
-//     notices that those references are gone. The former is under
-//     control of the program, but the latter is at the whim of the
-//     runtime.
-//   - Any value panicked by f may point to allocations from within
-//     f. Those allocations will not be erased until (at least) the
-//     panicked value is dead.
-//   - Pointer addresses may leak into data buffers used by the runtime
-//     to perform garbage collection. Users should not encode confidential
-//     information into pointers. For example, if an offset into an array or
-//     struct is confidential, then users should not create a pointer into
-//     the object. Since this function is intended to be used with constant-time
-//     cryptographic code, this requirement is usually fulfilled implicitly.
+// 制限事項:
+//   - 現在、linux/amd64とlinux/arm64でのみサポートされています。サポートされていない
+//     プラットフォームでは、Doはfを直接呼び出します。
+//   - fによって書き込まれたグローバル変数には保護が及びません。
+//   - fがruntime.Goexitを呼び出した場合、コールスタックの上位にあるdeferによって
+//     消去が遅れる可能性があります。
+//   - ヒープ割り当ては、プログラムがそれらの割り当てへのすべての参照を破棄し、
+//     ガベージコレクターがそれらの参照がなくなったことに気付いた場合にのみ消去されます。
+//     前者はプログラムの制御下にありますが、後者はランタイム次第です。
+//   - fによってパニックされた値は、f内からの割り当てを指している可能性があります。
+//     それらの割り当ては、（少なくとも）パニックされた値が死ぬまで消去されません。
+//   - ポインターアドレスが、ランタイムがガベージコレクションを実行するために使用する
+//     データバッファーに漏洩する可能性があります。ユーザーは機密情報をポインターに
+//     エンコードするべきではありません。例えば、配列や構造体へのオフセットが機密である場合、
+//     ユーザーはそのオブジェクトへのポインターを作成するべきではありません。この関数は
+//     定数時間の暗号コードで使用することを意図しているため、この要件は通常暗黙的に満たされます。
 func Do(f func())
 
-// Enabled reports whether the current goroutine
-// is running in secret mode. This is usually through a call to
-// [Do], but can also occur when a goroutine already running in
-// secret mode launches another goroutine.
+// Enabledは、現在のゴルーチンがシークレットモードで実行されているかどうかを報告します。
+// これは通常 [Do] の呼び出しによるものですが、すでにシークレットモードで実行されている
+// ゴルーチンが別のゴルーチンを起動した場合にも発生する可能性があります。
 func Enabled() bool

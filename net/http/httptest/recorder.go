@@ -20,11 +20,11 @@ type ResponseRecorder struct {
 	// これは内部の詳細です。
 	//
 	// Deprecated: HeaderMapは歴史的な互換性のために存在しており、使用すべきではありません。
-	// ハンドラによって返されるヘッダーにアクセスするためには、Resultメソッドによって返される
+	// ハンドラーによって返されるヘッダーにアクセスするためには、Resultメソッドによって返される
 	// Response.Headerマップを使用してください。
 	HeaderMap http.Header
 
-	// BodyはHandlerのWrite呼び出しで送信されるバッファです。
+	// BodyはHandlerのWrite呼び出しで送信されるバッファーです。
 	// nilの場合、書き込みは黙って破棄されます。
 	Body *bytes.Buffer
 
@@ -43,7 +43,7 @@ func NewRecorder() *ResponseRecorder
 // RemoteAddrで返すデフォルトのリモートアドレスです。
 const DefaultRemoteAddr = "1.2.3.4"
 
-// Headerは [http.ResponseWriter] を実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、[ResponseRecorder.Result] メソッドを使用し、返されたResponse値のHeaderを確認してください。
+// Headerは [http.ResponseWriter] を実装します。ハンドラー内で変更するためにレスポンスヘッダーを返します。ハンドラーが完了した後に書き込まれたヘッダーをテストするには、[ResponseRecorder.Result] メソッドを使用し、返されたResponse値のHeaderを確認してください。
 func (rw *ResponseRecorder) Header() http.Header
 
 // Writeはhttp.ResponseWriterを実装します。buf内のデータは、rw.Bodyがnilでない場合にrw.Bodyに書き込まれます。
@@ -58,14 +58,14 @@ func (rw *ResponseRecorder) WriteHeader(code int)
 // Flushは [http.Flusher] を実装します。Flushが呼び出されたかどうかをテストするには、rw.Flushedを参照してください。
 func (rw *ResponseRecorder) Flush()
 
-// Resultはハンドラによって生成されたレスポンスを返します。
+// Resultはハンドラーによって生成されたレスポンスを返します。
 //
 // 返されるレスポンスには、少なくともStatusCode、Header、Body、およびオプションでTrailerが含まれます。
 // 将来的にはさらなるフィールドが追加される可能性があるため、テストでは結果をDeepEqualで比較しないよう注意してください。
 //
-// Response.Headerは、最初の書き込み呼び出し時またはこの呼び出し時のヘッダのスナップショットですが、ハンドラが書き込みを行っていない場合は呼び出し時のものになります。
+// Response.Headerは、最初の書き込み呼び出し時またはこの呼び出し時のヘッダーのスナップショットですが、ハンドラーが書き込みを行っていない場合は呼び出し時のものになります。
 //
 // Response.Bodyは非nilであり、Body.Read呼び出しは [io.EOF] 以外のエラーを返さないことが保証されています。
 //
-// Resultは、ハンドラの実行が完了した後にのみ呼び出す必要があります。
+// Resultは、ハンドラーの実行が完了した後にのみ呼び出す必要があります。
 func (rw *ResponseRecorder) Result() *http.Response

@@ -6,5 +6,5 @@ package reflect
 
 // Swapperは、与えられたスライス内の要素を交換する関数を返します。
 //
-// 与えられたインターフェースがスライスでない場合、Swapperはパニックを起こします。
+// 与えられたインターフェースがスライスでない場合、Swapperはパニックを引き起こします。
 func Swapper(slice any) func(i, j int)

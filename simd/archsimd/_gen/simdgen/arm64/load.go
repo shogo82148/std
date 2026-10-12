@@ -7,7 +7,7 @@
 package arm64
 
 import (
-	"github.com/shogo82148/std/_gen/unify"
+	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
 // ParseInstructions loads and parses ARM64 instruction definitions from XML files at given path.

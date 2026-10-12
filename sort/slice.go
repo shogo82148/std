@@ -5,7 +5,7 @@
 package sort
 
 // Sliceは与えられたless関数に基づいてスライスxをソートします。
-// xがスライスでない場合はパニックを起こします。
+// xがスライスでない場合はパニックを引き起こします。
 //
 // このソートは安定していることは保証されません：等しい要素は
 // 元の順序から逆になる場合があります。
@@ -17,7 +17,7 @@ package sort
 func Slice(x any, less func(i, j int) bool)
 
 // SliceStableは、与えられた比較関数を使用してスライスxをソートし、等しい要素を元の順序で保持します。
-// xがスライスでない場合、パニックを起こします。
+// xがスライスでない場合、パニックを引き起こします。
 //
 // less関数は、Interface型のLessメソッドと同じ要件を満たす必要があります。
 //
@@ -25,7 +25,7 @@ func Slice(x any, less func(i, j int) bool)
 func SliceStable(x any, less func(i, j int) bool)
 
 // SliceIsSortedは、提供されたless関数に従ってスライスxがソートされているかどうかを報告します。
-// xがスライスでない場合、panicします。
+// xがスライスでない場合、パニックを引き起こします。
 //
 // 注意：多くの場合、より新しい [slices.IsSortedFunc] 関数の方が操作性が高く、実行速度も速くなります。
 func SliceIsSorted(x any, less func(i, j int) bool) bool

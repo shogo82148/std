@@ -40,7 +40,7 @@ import (
 //
 // [NewTestServer] で作成されたサーバーは次の動作をします。
 //
-//   - サーバーハンドラが [http.ErrAbortHandler] 以外の値でパニックした場合、
+//   - サーバーハンドラーが [http.ErrAbortHandler] 以外の値でパニックを引き起こした場合、
 //     テストを失敗させます。
 //   - テスト終了時にサーバーを停止するためのCleanup関数を登録します。
 //
@@ -48,15 +48,15 @@ import (
 //
 // # In-Memory Network
 //
-// Serverは、インメモリネットワーク実装を使うことも、
+// Serverは、インメモリーネットワーク実装を使うことも、
 // ローカルネットワークのループバックインターフェースで待ち受けることもできます。
 // 多くのテストでは、ポート枯渇や一時的なネットワーク問題を避けられ、
-// [testing/synctest] パッケージとも相性のよいインメモリネットワークを使うべきです。
+// [testing/synctest] パッケージとも相性のよいインメモリーネットワークを使うべきです。
 //
-// インメモリネットワークを使うには、[NewTestServer] でサーバーを作成します。
+// インメモリーネットワークを使うには、[NewTestServer] でサーバーを作成します。
 // [Server.Start] や [Server.StartTLS] は呼び出さないでください。
 //
-// インメモリネットワーク使用時、[Server.Client] が返す [http.Client] は
+// インメモリーネットワーク使用時、[Server.Client] が返す [http.Client] は
 // すべてのリクエストをこのサーバーへ送るよう設定されます。
 // クライアントは宛先アドレスやホスト名に関係なく、
 // HTTPおよびHTTPSのリクエストをサーバーへ向けます。
@@ -66,12 +66,12 @@ import (
 //	client := server.Client()
 //
 //	// これらのリクエストはすべてテストサーバーに送信される。
-//	// https:// のリクエストはインメモリネットワーク上でTLSを使用する。
+//	// https:// のリクエストはインメモリーネットワーク上でTLSを使用する。
 //	_, _ = client.Get("http://www.example.com/")
 //	_, _ = client.Get("https://go.dev/")
 //	_, _ = client.Get("http://10.0.0.1/")
 //
-// インメモリネットワーク使用時は、[Server.Listener] フィールドは設定されません。
+// インメモリーネットワーク使用時は、[Server.Listener] フィールドは設定されません。
 //
 // # Loopback Network
 //
@@ -106,13 +106,13 @@ type Server struct {
 	//
 	// ループバックで待ち受けるサーバーでは、アドレスはサーバーのループバックIPアドレスです。
 	//
-	// インメモリネットワークを使うサーバーでは、このアドレスは "example.com" です。
-	// インメモリネットワークを使うサーバーへのリクエストでは任意のアドレスを使用でき、
+	// インメモリーネットワークを使うサーバーでは、このアドレスは "example.com" です。
+	// インメモリーネットワークを使うサーバーへのリクエストでは任意のアドレスを使用でき、
 	// このベースURLを使う必要はありません。
 	URL string
 
 	// Listenerは、ループバックで待ち受けるサーバーのネットワークリスナーです。
-	// インメモリネットワークを使うサーバーでは設定されません。
+	// インメモリーネットワークを使うサーバーでは設定されません。
 	Listener net.Listener
 
 	// EnableHTTP2は、サーバーでHTTP/2を有効にするかどうかを制御します。
@@ -155,7 +155,7 @@ type Server struct {
 }
 
 // NewTestServerは、テスト用の新しい [Server] を返します。
-// サーバーはデフォルトでインメモリネットワーク実装を使用します。
+// サーバーはデフォルトでインメモリーネットワーク実装を使用します。
 //
 // handlerがnilの場合、サーバーはすべてのリクエストに500レスポンスを返します。
 // [http.DefaultServeMux] は使用しません。
@@ -167,7 +167,7 @@ func NewTestServer(t testing.TB, handler http.Handler) *Server
 // 新しい [Server] を起動して返します。
 // これは [NewUnstartedServer] を呼び出してから [Server.Start] を呼ぶのと同等です。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。
@@ -176,10 +176,10 @@ func NewServer(handler http.Handler) *Server
 // NewUnstartedServerは、ローカルネットワークのループバックインターフェースで待ち受ける
 // 新しい [Server] を返します。サーバーは起動しません。
 //
-// サーバー設定を変更した後、呼び出し側は [Server.Start] または [Server.StartTLS] を
+// サーバー設定を変更した後、呼び出し元は [Server.Start] または [Server.StartTLS] を
 // 呼び出す必要があります。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。
@@ -199,7 +199,7 @@ func (s *Server) StartTLS()
 // 新しい [Server] を起動して返します。
 // これは [NewUnstartedServer] を呼び出してから [Server.StartTLS] を呼ぶのと同等です。
 //
-// 呼び出し側は、終了時に [Server.Close] を呼んで停止する必要があります。
+// 呼び出し元は、終了時に [Server.Close] を呼んで停止する必要があります。
 //
 // ほとんどのユーザーは代わりに [NewTestServer] を使うべきです。
 // 詳細は [Server] のドキュメントを参照してください。

@@ -18,8 +18,8 @@ type TextHandler struct {
 // optsがnilの場合、デフォルトのオプションが使用されます。
 func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 
-// Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
-// ハンドラは、レベルが低いレコードを無視します。
+// Enabledは、ハンドラーが指定されたレベルのレコードを処理するかどうかを報告します。
+// ハンドラーは、レベルが低いレコードを無視します。
 func (h *TextHandler) Enabled(_ context.Context, level Level) bool
 
 // WithAttrsは、hの属性に続くattrsで構成される新しい [TextHandler] を返します。

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package cryptotestは決定論的な乱数ソースのテストを提供します。
+// cryptotestパッケージは決定論的な乱数ソースのテストを提供します。
 package cryptotest
 
 import (

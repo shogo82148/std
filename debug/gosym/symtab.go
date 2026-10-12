@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// gosymパッケージは、gcコンパイラによって生成されたGoバイナリに埋め込まれた
+// gosymパッケージは、gcコンパイラーによって生成されたGoバイナリーに埋め込まれた
 // Goのシンボルと行番号のテーブルへのアクセスを実装します。
 package gosym
 
-// Symは、単一のシンボルテーブルエントリを表します。
+// Symは、単一のシンボルテーブルエントリーを表します。
 type Sym struct {
 	Value  uint64
 	Type   byte
@@ -25,12 +25,12 @@ func (s *Sym) Static() bool
 // パッケージ部分がない場合は空の文字列を返します。
 func (s *Sym) PackageName() string
 
-// ReceiverNameは、このシンボルのレシーバタイプ名を返します。
-// レシーバ名がない場合は空の文字列を返します。レシーバ名は、
+// ReceiverNameは、このシンボルのレシーバータイプ名を返します。
+// レシーバー名がない場合は空の文字列を返します。レシーバー名は、
 // s.Nameがパッケージ名で完全に指定されている場合にのみ検出されます。
 func (s *Sym) ReceiverName() string
 
-// BaseNameは、パッケージ名やレシーバ名を除いたシンボル名を返します。
+// BaseNameは、パッケージ名やレシーバー名を除いたシンボル名を返します。
 func (s *Sym) BaseName() string
 
 // Funcは、単一の関数に関する情報を収集します。
@@ -47,7 +47,7 @@ type Func struct {
 
 // Objは、シンボルテーブル内の一連の関数を表します。
 //
-// バイナリを別々のObjに分割する具体的な方法は、シンボルテーブル形式の内部詳細です。
+// バイナリーを別々のObjに分割する具体的な方法は、シンボルテーブル形式の内部詳細です。
 //
 // Goの初期のバージョンでは、各ソースファイルが異なるObjになりました。
 //
@@ -77,20 +77,20 @@ type Table struct {
 }
 
 // NewTableはGoシンボルテーブル（ELFの".gosymtab"セクション）をデコードし、
-// インメモリ表現を返します。
+// インメモリー表現を返します。
 // Go 1.3以降、Goシンボルテーブルにはもはやシンボルデータが含まれていません。
-// 呼び出し側はsymtabパラメータにnilを渡すべきです。
+// 呼び出し元はsymtabパラメーターにnilを渡すべきです。
 func NewTable(symtab []byte, pcln *LineTable) (*Table, error)
 
-// PCToFuncは、プログラムカウンタpcを含む関数を返します。
+// PCToFuncは、プログラムカウンターpcを含む関数を返します。
 // そのような関数がない場合はnilを返します。
 func (t *Table) PCToFunc(pc uint64) *Func
 
-// PCToLineは、プログラムカウンタに対する行番号情報を検索します。
+// PCToLineは、プログラムカウンターに対する行番号情報を検索します。
 // 情報がない場合は、fn == nilを返します。
 func (t *Table) PCToLine(pc uint64) (file string, line int, fn *Func)
 
-// LineToPCは、指定されたファイルの指定された行で最初のプログラムカウンタを検索します。
+// LineToPCは、指定されたファイルの指定された行で最初のプログラムカウンターを検索します。
 // この行を検索中にエラーが発生した場合、[UnknownPathError] または [UnknownLineError] を返します。
 func (t *Table) LineToPC(file string, line int) (pc uint64, fn *Func, err error)
 
@@ -110,7 +110,7 @@ type UnknownFileError string
 
 func (e UnknownFileError) Error() string
 
-// UnknownLineErrorは、行をプログラムカウンタにマッピングできなかったことを表すエラーです。
+// UnknownLineErrorは、行をプログラムカウンターにマッピングできなかったことを表すエラーです。
 // これは、行がファイルの範囲を超えているか、指定された行にコードがないためです。
 type UnknownLineError struct {
 	File string
@@ -119,8 +119,7 @@ type UnknownLineError struct {
 
 func (e *UnknownLineError) Error() string
 
-// DecodingError represents an error during the decoding of
-// the symbol table.
+// DecodingErrorは、シンボルテーブルのデコード中のエラーを表します。
 type DecodingError struct {
 	off int
 	msg string

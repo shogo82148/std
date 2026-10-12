@@ -25,7 +25,7 @@ import (
 // Newは、与えられた [hash.Hash] タイプとキーを使用して新しいHMACハッシュを返します。
 // [crypto/sha256.New] のようなNew関数をhとして使用できます。
 // hは呼び出されるたびに新しいHashを返す必要があります。
-// 標準ライブラリの他のハッシュ実装とは異なり、
+// 標準ライブラリーの他のハッシュ実装とは異なり、
 // 返されるHashは [encoding.BinaryMarshaler]
 // または [encoding.BinaryUnmarshaler] を実装していないことに注意してください。
 func New(h func() hash.Hash, key []byte) hash.Hash

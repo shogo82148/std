@@ -4,7 +4,7 @@
 
 package types
 
-// Unionは、インタフェースに埋め込まれた項のユニオンを表します。
+// Unionは、インターフェースに埋め込まれた項のユニオンを表します。
 type Union struct {
 	terms []*Term
 }

@@ -103,8 +103,8 @@ syntaxパッケージは正規表現を解析木に解析し、解析木をプ�
 	[^\D]          英数字以外（== \d）
 	[[:name:]]     文字クラス[:name:]内の名前付きASCIIクラス（== [:name:]）
 	[^[:name:]]    否定文字クラス[:name:]内の名前付きASCIIクラス（== [:^name:]）
-	[\p{Name}]     文字クラス内の名前付きUnicodeプロパティ（== \p{Name}）
-	[^\p{Name}]    否定文字クラス内の名前付きUnicodeプロパティ（== \P{Name}）
+	[\p{Name}]     文字クラス内の名前付きUnicodeプロパティー（== \p{Name}）
+	[^\p{Name}]    否定文字クラス内の名前付きUnicodeプロパティー（== \P{Name}）
 
 Perl文字クラス（すべてASCIIのみ）：
 

@@ -55,18 +55,18 @@ type Reader struct {
 	suffix [1 << maxWidth]uint8
 	prefix [1 << maxWidth]uint16
 
-	// outputは一時的な出力バッファです。
-	// 文字コードはバッファの先頭から蓄積されます。
-	// リテラルコードは、バッファの末尾から右から左にデコードされ、
-	// バッファの先頭にコピーされる接尾辞のシーケンスにデコードされます。
-	// バッファに >= 1<<maxWidth バイトが含まれている場合、フラッシュされます。
+	// outputは一時的な出力バッファーです。
+	// 文字コードはバッファーの先頭から蓄積されます。
+	// リテラルコードは、バッファーの末尾から右から左にデコードされ、
+	// バッファーの先頭にコピーされる接尾辞のシーケンスにデコードされます。
+	// バッファーに >= 1<<maxWidth バイトが含まれている場合、フラッシュされます。
 	// したがって、常にコード全体をデコードするためのスペースがあります。
 	output [2 * 1 << maxWidth]byte
 	o      int
 	toRead []byte
 }
 
-// Readは[io.Reader]を実装し、基になるリーダーから非圧縮バイトを読み取ります。
+// Readは[io.Reader]を実装し、基礎となるリーダーから非圧縮バイトを読み取ります。
 func (r *Reader) Read(b []byte) (int, error)
 
 // Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
@@ -84,5 +84,5 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // [2,8]の範囲でなければならず、通常は8です。これは圧縮時に
 // 使用されたlitWidthと等しくなければなりません。
 //
-// 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
+// 返された [io.ReadCloser] の基礎となる型は、*[Reader] であることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
