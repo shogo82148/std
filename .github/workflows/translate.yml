@@ -1,0 +1,165 @@
+name: translate
+
+# sync ワークフローが upstream/<branch> を更新したあとに、
+# upstream の変更を <branch> にマージし、Claude Code で和訳して PR を作ります。
+# GITHUB_TOKEN による push では push イベントが発火しないため、workflow_run で連携します。
+on:
+  workflow_run:
+    workflows: [sync]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  translate:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - master
+          - release-branch.go1.27
+          - release-branch.go1.26
+          - release-branch.go1.25
+    concurrency:
+      group: translate-${{ matrix.branch }}
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ matrix.branch }}
+          fetch-depth: 0
+
+      - name: check updates
+        id: check
+        env:
+          BASE: ${{ matrix.branch }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          count=$(git rev-list --count "HEAD..origin/upstream/$BASE")
+          if [[ "$count" -eq 0 ]]; then
+            echo "upstream/$BASE has no new commits."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 未マージの取り込み PR が残っている場合は、重複を避けるためスキップします。
+          open=$(gh pr list --base "$BASE" --state open --json headRefName \
+            --jq '[.[] | select(.headRefName | startswith("merge-to-'"$BASE"'-"))] | length')
+          if [[ "$open" -ne 0 ]]; then
+            echo "an open merge PR for $BASE already exists."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "head=merge-to-$BASE-$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - name: merge upstream
+        id: merge
+        if: steps.check.outputs.skip == 'false'
+        env:
+          BASE: ${{ matrix.branch }}
+          HEAD_BRANCH: ${{ steps.check.outputs.head }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git switch -c "$HEAD_BRANCH"
+          merge_base=$(git merge-base HEAD "origin/upstream/$BASE")
+          echo "merge_base=$merge_base" >> "$GITHUB_OUTPUT"
+
+          # コンフリクトしても止めずに、作業ツリーに残して Claude に解消させます。
+          git merge --no-ff --no-commit "origin/upstream/$BASE" || true
+
+          git diff --name-only --diff-filter=U > "$RUNNER_TEMP/conflicts.txt"
+          git diff --name-only "$merge_base" "origin/upstream/$BASE" > "$RUNNER_TEMP/changed.txt"
+          echo "conflicts: $(wc -l < "$RUNNER_TEMP/conflicts.txt"), changed: $(wc -l < "$RUNNER_TEMP/changed.txt")"
+
+      - uses: actions/setup-go@v7
+        if: steps.check.outputs.skip == 'false'
+        with:
+          go-version-file: go.mod
+      - name: install gotip
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          go install golang.org/dl/gotip@latest
+          gotip download
+
+      - name: translate
+        if: steps.check.outputs.skip == 'false'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          claude_args: |
+            --max-turns 300
+            --allowedTools "Read,Edit,Write,Glob,Grep,Bash(git diff:*),Bash(git show:*),Bash(git log:*),Bash(git status:*),Bash(git add:*),Bash(git checkout:*),Bash(gotip doc:*),Bash(gotip list:*),Bash(gotip mod:*),Bash(gotip vet:*)"
+          prompt: |
+            このリポジトリは Go 標準ライブラリの godoc を日本語に翻訳したものです。
+            まず AGENTS.md と glossary.md を読み、翻訳ルールと推奨訳を確認してください。
+
+            いま `${{ matrix.branch }}` ブランチに `origin/upstream/${{ matrix.branch }}`（英語の原文）を
+            `git merge --no-commit` した状態です。マージはまだコミットされていません。
+
+            - コンフリクトしたファイル一覧: ${{ runner.temp }}/conflicts.txt
+            - upstream 側で変更されたファイル一覧: ${{ runner.temp }}/changed.txt
+            - upstream 側の変更内容は `git diff ${{ steps.merge.outputs.merge_base }} origin/upstream/${{ matrix.branch }} -- <file>` で確認できます。
+
+            次の作業をしてください。
+
+            1. コンフリクトしたファイルについて、upstream の変更内容を反映した和訳にしてコンフリクトを解消し、
+               `git add` してください。コンフリクトマーカーや英語の原文を残さないでください。
+            2. コンフリクトしなかったファイルにも、upstream で追加・変更された英語のドキュメントコメントが
+               そのまま取り込まれています。changed.txt の各ファイルについて upstream 側の差分を確認し、
+               英語のまま残っているコメントを和訳してください（すでに和訳されている部分は、
+               upstream の変更で意味が変わった場合のみ直します）。
+            3. 翻訳するのはコメントだけです。ただし宣言や import、go.mod などのコードは upstream の内容に合わせてください。
+            4. 変更したパッケージについて `gotip doc -all <package>` がエラーなく実行できることを確認してください。
+            5. 最後に、リポジトリのルートに `pr-body.md` を作成し、PR の本文として
+               コンフリクトを解消したファイルと変更内容の要約を日本語で書いてください。
+
+            `git commit`、`git merge`、`git push` は実行しないでください。コミットとPRの作成はワークフローが行います。
+
+      - name: verify
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          set -euo pipefail
+          if git grep -nE '^(<<<<<<<|>>>>>>>)( |$)' -- ':!pr-body.md'; then
+            echo "::error::conflict markers remain"
+            exit 1
+          fi
+          gotip list ./... | xargs -n1 gotip doc -all > /dev/null
+
+      - name: commit and create PR
+        if: steps.check.outputs.skip == 'false'
+        env:
+          BASE: ${{ matrix.branch }}
+          HEAD_BRANCH: ${{ steps.check.outputs.head }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          body="$RUNNER_TEMP/pr-body.md"
+          if [[ -f pr-body.md ]]; then
+            mv pr-body.md "$body"
+          else
+            echo "upstream/$BASE の変更を取り込みました。" > "$body"
+          fi
+          printf '\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n' >> "$body"
+
+          git add -A
+          git commit --no-edit
+          git push origin "$HEAD_BRANCH"
+          gh pr create \
+            --base "$BASE" \
+            --head "$HEAD_BRANCH" \
+            --title "Merge upstream/$BASE into $BASE ($(date -u +%Y-%m-%d))" \
+            --body-file "$body"
