@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ matrix.branch }}
           fetch-depth: 0
@@ -84,10 +84,10 @@ jobs:
           git diff --name-only "$merge_base" "origin/upstream/$BASE" > "$RUNNER_TEMP/changed.txt"
           echo "conflicts: $(wc -l < "$RUNNER_TEMP/conflicts.txt"), changed: $(wc -l < "$RUNNER_TEMP/changed.txt")"
 
-      - uses: actions/setup-go@v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         if: steps.check.outputs.skip == 'false'
         with:
-          go-version-file: go.mod
+          go-version: stable
       - name: install gotip
         if: steps.check.outputs.skip == 'false'
         run: |
@@ -96,7 +96,7 @@ jobs:
 
       - name: translate
         if: steps.check.outputs.skip == 'false'
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ github.token }}
