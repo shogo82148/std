@@ -11,17 +11,17 @@ package template
 // オプション文字列には最大で一つの等号が含まれていることができます。
 // オプション文字列が認識できないものや無効なものである場合、Optionはパニックを起こします。
 //
-// Known options:
+// 既知のオプション:
 //
-// missingkey: Control the behavior during execution if a map is
-// indexed with a key that is not present in the map.
+// missingkey: マップに存在しないキーでマップがインデックスされた場合の、
+// 実行時の動作を制御します。
 //
-//	"missingkey=default" or "missingkey=invalid"
-//		The default behavior: Do nothing and continue execution.
-//		If printed, the result of the index operation is the string
-//		"<no value>".
+//	"missingkey=default" または "missingkey=invalid"
+//		デフォルトの動作: 何もせずに実行を続けます。
+//		出力された場合、インデックス操作の結果は文字列
+//		"<no value>" になります。
 //	"missingkey=zero"
-//		The operation returns the zero value for the map type's element.
+//		操作はマップ型の要素のゼロ値を返します。
 //	"missingkey=error"
-//		Execution stops immediately with an error.
+//		エラーで即座に実行を停止します。
 func (t *Template) Option(opt ...string) *Template

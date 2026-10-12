@@ -22,7 +22,7 @@ import (
 //		Context uintptr
 //	}
 //
-// In C syntax, this struct will be
+// C言語の構文では、この構造体は次のようになります。
 //
 //	struct {
 //		uintptr_t Context;
@@ -50,7 +50,7 @@ import (
 //		Max        uintptr
 //	}
 //
-// In C syntax, this struct will be
+// C言語の構文では、この構造体は次のようになります。
 //
 //	struct {
 //		uintptr_t  Context;

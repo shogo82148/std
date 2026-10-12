@@ -6,8 +6,7 @@ package asn1
 
 // MarshalはvalのASN.1エンコーディングを返します。
 //
-// In addition to the struct tags recognized by Unmarshal, the following can be
-// used:
+// Unmarshalが認識する構造体タグに加えて、以下のタグを使用できます。
 //
 //	ia5:         文字列をASN.1 IA5String値としてマーシャルします
 //	omitempty:   空のスライスをスキップします

@@ -135,7 +135,7 @@ type StructType struct {
 
 // StructFieldは、構造体、共用体、またはC++クラス型のフィールドを表します。
 //
-// # ビットフィールド
+// # Bit Fields
 //
 // BitSize、BitOffset、DataBitOffsetフィールドは、C/C++のstruct/union/class型でビットフィールドとして宣言されたデータメンバーのビットサイズとオフセットを記述します。
 //

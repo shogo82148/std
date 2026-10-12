@@ -4,7 +4,7 @@
 
 // strconv パッケージは基本データ型の文字列表現への変換を実装します。
 //
-// # 数値の変換
+// # Numeric Conversions
 //
 // 最も一般的な数値の変換は [Atoi] (文字列から整数へ) と [Itoa] (整数から文字列へ) です。
 //
@@ -38,7 +38,7 @@
 // [AppendBool]、[AppendFloat]、[AppendInt]、および [AppendUint] は類似していますが、
 // フォーマットされた値を宛先スライスに追加します。
 //
-// # 文字列の変換
+// # String Conversions
 //
 // [Quote] および [QuoteToASCII] は文字列をクォートされたGo文字リテラルに変換します。
 // 後者は非ASCII Unicodeを \u でエスケープして、結果がASCII文字列であることを保証します：

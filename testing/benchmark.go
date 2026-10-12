@@ -131,7 +131,6 @@ type BenchmarkResult struct {
 	MemAllocs uint64
 	MemBytes  uint64
 
-	// Extra records additional metrics reported by ReportMetric.
 	// ExtraはReportMetricによって報告された追加のメトリクスを記録します。
 	Extra map[string]float64
 }

@@ -93,7 +93,7 @@ var CategoryAliases = map[string]string{
 	"punct":                 "P",
 }
 
-// These variables have type *RangeTable.
+// これらの変数は *RangeTable 型を持ちます。
 var (
 	Cc     = _Cc
 	Cf     = _Cf

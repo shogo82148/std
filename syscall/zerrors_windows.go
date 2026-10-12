@@ -3,7 +3,7 @@
 
 package syscall
 
-// Go names for Windows errors.
+// Windowsエラーに対するGoでの名前。
 const (
 	ENOENT  Errno = ERROR_FILE_NOT_FOUND
 	ENOTDIR Errno = ERROR_PATH_NOT_FOUND
@@ -12,7 +12,7 @@ const (
 // Windowsは1<<29以上のエラーをアプリケーション用に予約しています。
 const APPLICATION_ERROR = 1 << 29
 
-// Invented values to support what package os and others expects.
+// osパッケージなどが期待するものをサポートするために作られた値。
 const (
 	E2BIG Errno = APPLICATION_ERROR + iota
 	EACCES

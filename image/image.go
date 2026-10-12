@@ -22,7 +22,7 @@
 // 詳細については「The Go image package」を参照してください:
 // https://golang.org/doc/articles/image_package.html
 //
-// # セキュリティに関する考慮事項
+// # Security Considerations
 //
 // imageパッケージは任意の大きさの画像をパースするために使用できますが、
 // それらを格納するのに十分なメモリを持たないマシンではリソースの枯渇を引き起こす可能性があります。

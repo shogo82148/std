@@ -233,7 +233,7 @@ func (n NullTime) Value() (driver.Value, error)
 //	   // NULL value
 //	}
 //
-// T should be one of the types accepted by [driver.Value].
+// Tは、 [driver.Value] で受け入れられる型のいずれかである必要があります。
 type Null[T any] struct {
 	V     T
 	Valid bool

@@ -7,7 +7,7 @@ dwarfパッケージは、実行可能ファイルからロードされたDWARF�
 これは、DWARF 2.0標準で定義されています。
 http://dwarfstd.org/doc/dwarf-2.0.0.pdf
 
-# セキュリティ
+# Security
 
 このパッケージは、敵対的な入力に対して強化されていないため、https://go.dev/security/policy の範囲外です。
 特に、オブジェクトファイルを解析する際には基本的な検証しか行われません。

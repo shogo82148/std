@@ -24,7 +24,7 @@ var (
 	ErrInsecurePath    = errors.New("archive/tar: insecure file path")
 )
 
-// Type flags for Header.Typeflag.
+// Header.Typeflag のためのタイプフラグ。
 const (
 	// Type '0' は通常のファイルを示します。
 	TypeReg = '0'
