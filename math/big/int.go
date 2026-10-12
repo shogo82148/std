@@ -217,7 +217,7 @@ func (x *Int) Bytes() []byte
 // FillBytesは、bufをxの絶対値に設定し、それをゼロ拡張のビッグエンディアンのバイトスライスとして格納し、
 // bufを返します。
 //
-// もしxの絶対値がbufに収まらない場合、FillBytesはパニックを起こします。
+// もしxの絶対値がbufに収まらない場合、FillBytesはパニックを引き起こします。
 func (x *Int) FillBytes(buf []byte) []byte
 
 // BitLenは、xの絶対値の長さをビット単位で返します。
@@ -264,7 +264,7 @@ func Jacobi(x, y *Int) int
 
 // ModSqrtは、存在する場合、zをx mod pの平方根に設定し、zを返します。
 // 剰余pは奇数の素数でなければなりません。もしxがp modの平方でない場合、
-// ModSqrtはzを変更せず、nilを返します。この関数は、pが奇数でない場合にパニックを起こします。
+// ModSqrtはzを変更せず、nilを返します。この関数は、pが奇数でない場合にパニックを引き起こします。
 // pが奇数だが素数でない場合の動作は未定義です。
 func (z *Int) ModSqrt(x, p *Int) *Int
 
@@ -301,5 +301,5 @@ func (z *Int) Xor(x, y *Int) *Int
 func (z *Int) Not(x *Int) *Int
 
 // Sqrtは、zを⌊√x⌋（つまり、z² ≤ xとなる最大の整数）に設定し、zを返します。
-// xが負の場合、パニックを起こします。
+// xが負の場合、パニックを引き起こします。
 func (z *Int) Sqrt(x *Int) *Int

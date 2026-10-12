@@ -11,7 +11,7 @@ import (
 )
 
 // Mustは、([*Template], error)を返す関数への呼び出しをラップし、
-// エラーが非nilの場合にパニックを起こすヘルパーです。これは変数の
+// エラーが非nilの場合にパニックを引き起こすヘルパーです。これは変数の
 // 初期化などで使用することを意図しています。
 //
 //	var t = template.Must(template.New("name").Parse("text"))

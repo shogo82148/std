@@ -220,8 +220,8 @@ type Seq2[K, V any] func(yield func(K, V) bool)
 //
 // nextまたはstopを複数のゴルーチンから同時に呼び出すことはエラーです。
 //
-// イテレーターがnext（またはstop）の呼び出し中にパニックを起こした場合、
-// next（またはstop）自体も同じ値でパニックを起こします。
+// イテレーターがnext（またはstop）の呼び出し中にパニックを引き起こした場合、
+// next（またはstop）自体も同じ値でパニックを引き起こします。
 func Pull[V any](seq Seq[V]) (next func() (V, bool), stop func())
 
 // Pull2は、「プッシュスタイル」のイテレーターシーケンスseqを、
@@ -239,6 +239,6 @@ func Pull[V any](seq Seq[V]) (next func() (V, bool), stop func())
 //
 // nextまたはstopを複数のゴルーチンから同時に呼び出すことはエラーです。
 //
-// イテレーターがnext（またはstop）の呼び出し中にパニックを起こした場合、
-// next（またはstop）自体も同じ値でパニックを起こします。
+// イテレーターがnext（またはstop）の呼び出し中にパニックを引き起こした場合、
+// next（またはstop）自体も同じ値でパニックを引き起こします。
 func Pull2[K, V any](seq Seq2[K, V]) (next func() (K, V, bool), stop func())

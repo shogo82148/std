@@ -26,7 +26,7 @@
 package syscall
 
 // StringByteSliceは、文字列をNUL終端された[]byteに変換します。
-// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックを引き起こします。
 //
 // Deprecated: 代わりにByteSliceFromStringを使用してください。
 func StringByteSlice(s string) []byte
@@ -36,7 +36,7 @@ func StringByteSlice(s string) []byte
 func ByteSliceFromString(s string) ([]byte, error)
 
 // StringBytePtrは、NUL終端されたバイト配列へのポインターを返します。
-// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックを引き起こします。
 //
 // Deprecated: 代わりに [BytePtrFromString] を使用してください。
 func StringBytePtr(s string) *byte

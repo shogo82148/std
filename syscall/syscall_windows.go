@@ -15,7 +15,7 @@ type Handle uintptr
 const InvalidHandle = ^Handle(0)
 
 // StringToUTF16は、UTF-8文字列sのUTF-16エンコーディングに終端のNULを追加したものを返します。
-// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックします。
+// sにNULバイトが含まれている場合、この関数はエラーを返す代わりにパニックを引き起こします。
 //
 // Deprecated: 代わりに [UTF16FromString] を使用してください。
 func StringToUTF16(s string) []uint16
@@ -32,7 +32,7 @@ func UTF16ToString(s []uint16) string
 
 // StringToUTF16Ptrは、UTF-8文字列sのUTF-16エンコーディングに終端のNULを
 // 追加したものへのポインターを返します。sにNULバイトが含まれている場合、
-// この関数はエラーを返す代わりにパニックします。
+// この関数はエラーを返す代わりにパニックを引き起こします。
 //
 // Deprecated: 代わりに [UTF16PtrFromString] を使用してください。
 func StringToUTF16Ptr(s string) *uint16

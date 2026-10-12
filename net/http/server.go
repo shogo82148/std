@@ -51,9 +51,9 @@ var (
 //
 // ボディーを読み取る以外の場合、ハンドラーは提供されたRequestを変更してはいけません。
 //
-// ServeHTTPがパニックを起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
+// ServeHTTPがパニックを引き起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
 // サーバーはパニックを回復し、サーバーエラーログにスタックトレースを記録し、ネットワーク接続を閉じるか、HTTP/2 RST_STREAMを送信します。
-// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを発生させることで、ハンドラーを中止できます。
+// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを引き起こすことで、ハンドラーを中止できます。
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -143,7 +143,7 @@ var _ closeWriter = (*net.TCPConn)(nil)
 
 // ErrAbortHandlerは、ハンドラーを中止するための番兵パニック値です。
 // ServeHTTPで発生したパニックはどれもクライアントへの応答を中止しますが、
-// ErrAbortHandlerでパニックすると、サーバーのエラーログへのスタック
+// ErrAbortHandlerでパニックを引き起こすと、サーバーのエラーログへのスタック
 // トレースの記録も抑制されます。
 var ErrAbortHandler = internal.ErrAbortHandler
 
@@ -328,11 +328,11 @@ func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
 // Handleは、指定されたパターンのハンドラーを登録します。
-// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを起こします。
+// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを引き起こします。
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFuncは、指定されたパターンのハンドラー関数を登録します。
-// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを起こします。
+// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを引き起こします。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Handleは、[DefaultServeMux]に指定されたパターンのハンドラーを登録します。

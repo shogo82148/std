@@ -16,7 +16,7 @@ package runtime
 // [testing] パッケージの-test.cpuprofileフラグを直接呼び出す代わりに使用するべきです。
 func SetCPUProfileRate(hz int)
 
-// CPUProfileはパニックします。
+// CPUProfileはパニックを引き起こします。
 // 以前はランタイムによって生成されたpprof形式のプロファイルの
 // チャンクへの直接的なアクセスを提供していました。
 // その形式を生成する方法が変更されたため、

@@ -133,7 +133,7 @@ func Socketpair(domain, typ, proto int) (fd [2]int, err error)
 // 書き込まれたバイト数を反映するように更新されます。
 // nilでないエラーは通常、バイトが書き込まれなかったことを意味します。
 //
-// BSD派生システム（macOSを含む）では、offsetがnilの場合、Sendfileはパニックします。
+// BSD派生システム（macOSを含む）では、offsetがnilの場合、Sendfileはパニックを引き起こします。
 // offset引数はシステムコールによって更新されないため、呼び出し元は書き込まれたバイト数を
 // 使用して手動でoffsetを更新する必要があります。これらのシステムは、
 // ゼロでないバイト数とエラー（例えばEAGAIN）を同時に返す場合があります。

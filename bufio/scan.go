@@ -87,7 +87,7 @@ var ErrFinalToken = errors.New("final token")
 // 入力の終わりに到達するかエラーが発生すると、falseを返します。
 // Scanがfalseを返した後、 [Scanner.Err] メソッドはスキャン中に発生したエラーを返しますが、
 // エラーが[io.EOF]の場合、 [Scanner.Err] はnilを返します。
-// スキャンが進まずに空のトークンを多数返す場合、スキャナーはpanicします。
+// スキャンが進まずに空のトークンを多数返す場合、スキャナーはパニックを引き起こします。
 // これは、スキャナーの一般的なエラーモードです。
 func (s *Scanner) Scan() bool
 
@@ -101,7 +101,7 @@ func (s *Scanner) Scan() bool
 //
 // デフォルトでは、[Scanner.Scan] は内部バッファーを使用し、最大トークンサイズを [MaxScanTokenSize] に設定します。
 //
-// Bufferはスキャンの開始後に呼び出された場合、パニックを発生させます。
+// Bufferはスキャンの開始後に呼び出された場合、パニックを引き起こします。
 func (s *Scanner) Buffer(buf []byte, max int)
 
 // Splitは [Scanner] の分割関数を設定します。

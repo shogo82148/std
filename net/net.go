@@ -183,7 +183,7 @@ type OpError struct {
 	Addr Addr
 
 	// Errは操作中に発生したエラーです。
-	// Errorメソッドはエラーがnilの場合にパニックを起こします。
+	// Errorメソッドはエラーがnilの場合にパニックを引き起こします。
 	Err error
 }
 

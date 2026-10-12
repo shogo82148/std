@@ -54,14 +54,14 @@ func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool
 // s[i:]の要素は、挿入のための空きを作るために後ろへずらされます。
 // 返されるスライスrでは、r[i] == v[0]であり、
 // さらにi < len(s)の場合、r[i+len(v)] == もともとのs[i]の値です。
-// i > len(s)の場合、Insertはパニックを起こします。
+// i > len(s)の場合、Insertはパニックを引き起こします。
 // この関数の計算量はO(len(s) + len(v))です。
 // 結果が空の場合、sと同じnil性を保ちます。
 func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
 // Deleteは、要素s[i:j]を削除してsをその場で変更し、
 // 変更後のスライスを返します。
-// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Deleteはパニックを起こします。
+// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Deleteはパニックを引き起こします。
 // DeleteはO(len(s)-i)なので、多数の要素を削除する必要がある場合は、
 // 1つずつ削除するより、まとめて1回で削除する方が効率的です。
 // Deleteはs[len(s)-(j-i):len(s)]の要素をゼロ化します。
@@ -76,7 +76,7 @@ func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
 
 // Replaceは、要素s[i:j]を与えられたvで置き換えてsをその場で変更し、
 // 変更後のスライスを返します。
-// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Replaceはパニックを起こします。
+// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Replaceはパニックを引き起こします。
 // len(v) < (j-i)のとき、Replaceは新しい長さから元の長さまでの要素をゼロ化します。
 // 結果が空の場合、sと同じnil性を保ちます。
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
@@ -103,7 +103,7 @@ func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
 
 // Growは、必要に応じてスライスの容量を増やし、
 // 追加でn個の要素分の空き容量を保証します。Grow(n)の後は、追加の割り当てなしで少なくともn個の要素をスライスに追加できます。
-// nが負またはメモリー割り当てが大きすぎる場合、Growはパニックを起こします。
+// nが負またはメモリー割り当てが大きすぎる場合、Growはパニックを引き起こします。
 // 結果はsのnil性を保持します。
 func Grow[S ~[]E, E any](s S, n int) S
 
@@ -121,5 +121,5 @@ func Concat[S ~[]E, E any](slices ...S) S
 // Repeatは、指定されたスライスを指定された回数だけ繰り返す新しいスライスを返します。
 // 結果の長さと容量は (len(x) * count) です。
 // 結果は決してnilになりません。
-// countが負の場合、または(len(x) * count)の結果がオーバーフローする場合、Repeatはパニックを起こします。
+// countが負の場合、または(len(x) * count)の結果がオーバーフローする場合、Repeatはパニックを引き起こします。
 func Repeat[S ~[]E, E any](x S, count int) S { return nil }

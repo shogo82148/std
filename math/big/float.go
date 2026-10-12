@@ -72,7 +72,7 @@ var _ error = ErrNaN{}
 func (err ErrNaN) Error() string
 
 // NewFloatは、精度53と丸めモード [ToNearestEven] でxに設定された新しい [Float] を割り当てて返します。
-// xがNaNの場合、NewFloatは [ErrNaN] でパニックを起こします。
+// xがNaNの場合、NewFloatは [ErrNaN] でパニックを引き起こします。
 func NewFloat(x float64) *Float
 
 // 指数と精度の制限。
@@ -193,7 +193,7 @@ func (z *Float) SetInt64(x int64) *Float
 
 // SetFloat64は、zをxの（可能性のある丸められた）値に設定し、zを返します。
 // zの精度が0の場合、それは53に変更されます（そして丸めは影響を及ぼしません）。
-// xがNaNの場合、SetFloat64は [ErrNaN] でパニックを起こします。
+// xがNaNの場合、SetFloat64は [ErrNaN] でパニックを引き起こします。
 func (z *Float) SetFloat64(x float64) *Float
 
 // SetIntは、zをxの（可能性のある丸められた）値に設定し、zを返します。
@@ -271,25 +271,25 @@ func (z *Float) Neg(x *Float) *Float
 // 操作前にxの精度またはyの精度の大きい方に変更されます。
 // 丸めはzの精度と丸めモードに従って行われ、
 // zの精度は正確な（丸められていない）結果に対する結果のエラーを報告します。
-// xとyが逆の符号の無限大である場合、Addは [ErrNaN] でパニックを起こします。
+// xとyが逆の符号の無限大である場合、Addは [ErrNaN] でパニックを引き起こします。
 // その場合、zの値は未定義です。
 func (z *Float) Add(x, y *Float) *Float
 
 // Subは、zを丸められた差分x-yに設定し、zを返します。
 // 精度、丸め、および精度報告は [Float.Add] と同様です。
-// xとyが同じ符号の無限大である場合、Subは [ErrNaN] でパニックを起こします。
+// xとyが同じ符号の無限大である場合、Subは [ErrNaN] でパニックを引き起こします。
 // その場合、zの値は未定義です。
 func (z *Float) Sub(x, y *Float) *Float
 
 // Mulは、zを丸められた積x*yに設定し、zを返します。
 // 精度、丸め、および精度報告は [Float.Add] と同様です。
-// 一方のオペランドがゼロで、他方のオペランドが無限大である場合、Mulは [ErrNaN] でパニックを起こします。
+// 一方のオペランドがゼロで、他方のオペランドが無限大である場合、Mulは [ErrNaN] でパニックを引き起こします。
 // その場合、zの値は未定義です。
 func (z *Float) Mul(x, y *Float) *Float
 
 // Quoは、zを丸められた商x/yに設定し、zを返します。
 // 精度、丸め、および精度報告は [Float.Add] と同様です。
-// 両方のオペランドがゼロまたは無限大である場合、Quoは [ErrNaN] でパニックを起こします。
+// 両方のオペランドがゼロまたは無限大である場合、Quoは [ErrNaN] でパニックを引き起こします。
 // その場合、zの値は未定義です。
 func (z *Float) Quo(x, y *Float) *Float
 

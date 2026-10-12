@@ -62,7 +62,7 @@ func Global() Value
 //	| []interface{}          | new array              |
 //	| map[string]interface{} | new object             |
 //
-// xが期待される型のいずれでもない場合はパニックします。
+// xが期待される型のいずれでもない場合はパニックを引き起こします。
 func ValueOf(x any) Value
 
 // Typeは、ValueのJavaScriptの型を表します。
@@ -86,54 +86,54 @@ func (t Type) String() string
 func (v Value) Type() Type
 
 // Getは、値vのJavaScriptのプロパティーpを返します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) Get(p string) Value
 
 // Setは、値vのJavaScriptのプロパティーpをValueOf(x)に設定します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) Set(p string, x any)
 
 // Deleteは、値vのJavaScriptのプロパティーpを削除します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) Delete(p string)
 
 // Indexは、値vのJavaScriptのインデックスiを返します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) Index(i int) Value
 
 // SetIndexは、値vのJavaScriptのインデックスiをValueOf(x)に設定します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) SetIndex(i int, x any)
 
 // Lengthは、vのJavaScriptのプロパティー"length"を返します。
-// vがJavaScriptのオブジェクトでない場合はパニックします。
+// vがJavaScriptのオブジェクトでない場合はパニックを引き起こします。
 func (v Value) Length() int
 
 // Callは、指定された引数で値vのメソッドmをJavaScriptで呼び出します。
-// vがメソッドmを持たない場合はパニックします。
+// vがメソッドmを持たない場合はパニックを引き起こします。
 // 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) Call(m string, args ...any) Value
 
 // Invokeは、指定された引数で値vをJavaScriptで呼び出します。
-// vがJavaScriptの関数でない場合はパニックします。
+// vがJavaScriptの関数でない場合はパニックを引き起こします。
 // 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) Invoke(args ...any) Value
 
 // Newは、値vをコンストラクタとし、指定された引数でJavaScriptの"new"演算子を使用します。
-// vがJavaScriptの関数でない場合はパニックします。
+// vがJavaScriptの関数でない場合はパニックを引き起こします。
 // 引数は、ValueOf関数に従ってJavaScriptの値にマッピングされます。
 func (v Value) New(args ...any) Value
 
 // Floatは、値vをfloat64として返します。
-// vがJavaScriptの数値でない場合はパニックします。
+// vがJavaScriptの数値でない場合はパニックを引き起こします。
 func (v Value) Float() float64
 
 // Intは、値vをintに切り捨てて返します。
-// vがJavaScriptの数値でない場合はパニックします。
+// vがJavaScriptの数値でない場合はパニックを引き起こします。
 func (v Value) Int() int
 
 // Boolは、値vをboolとして返します。
-// vがJavaScriptの真偽値でない場合はパニックします。
+// vがJavaScriptの真偽値でない場合はパニックを引き起こします。
 func (v Value) Bool() bool
 
 // Truthyは、値vのJavaScriptの「truthiness」を返します。JavaScriptでは、
@@ -143,7 +143,7 @@ func (v Value) Truthy() bool
 
 // Stringは、値vを文字列として返します。
 // GoのStringメソッドの慣例のため、Stringは特別なケースです。他のゲッターとは異なり、
-// vのTypeがTypeStringでない場合でもパニックしません。代わりに、"<T>"または
+// vのTypeがTypeStringでない場合でもパニックを引き起こしません。代わりに、"<T>"または
 // "<T: V>"の形式の文字列を返します。ここでTはvの型、Vはvの値の文字列表現です。
 func (v Value) String() string
 
@@ -160,11 +160,11 @@ type ValueError struct {
 func (e *ValueError) Error() string
 
 // CopyBytesToGoは、srcからdstにバイトをコピーします。
-// srcがUint8ArrayまたはUint8ClampedArrayでない場合はパニックします。
+// srcがUint8ArrayまたはUint8ClampedArrayでない場合はパニックを引き起こします。
 // コピーされたバイト数を返します。これはsrcとdstの長さの最小値になります。
 func CopyBytesToGo(dst []byte, src Value) int
 
 // CopyBytesToJSは、srcからdstにバイトをコピーします。
-// dstがUint8ArrayまたはUint8ClampedArrayでない場合はパニックします。
+// dstがUint8ArrayまたはUint8ClampedArrayでない場合はパニックを引き起こします。
 // コピーされたバイト数を返します。これはsrcとdstの長さの最小値になります。
 func CopyBytesToJS(dst Value, src []byte) int

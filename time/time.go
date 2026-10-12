@@ -293,7 +293,7 @@ func (t Time) Local() Time
 
 // In は、同じ時刻インスタンスを表す t のコピーを返しますが、表示目的でコピーの場所情報を loc に設定します。
 //
-// loc が nil の場合、In はパニックを発生させます。
+// loc が nil の場合、In はパニックを引き起こします。
 func (t Time) In(loc *Location) Time
 
 // Locationは、tに関連付けられたタイムゾーン情報を返します。
@@ -392,7 +392,7 @@ func (t Time) IsDST() bool
 // Date関数は、変遷に関与する2つのタイムゾーンのうちの1つで正確な時間を返しますが、
 // どちらかは保証されません。
 //
-// locがnilの場合、Date関数はパニックを発生させます。
+// locがnilの場合、Date関数はパニックを引き起こします。
 func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time
 
 // Truncate関数は、tをd（ゼロ時点からの倍数）に切り捨てた結果を返します。

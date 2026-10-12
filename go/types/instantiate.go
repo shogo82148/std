@@ -30,7 +30,7 @@ package types
 //
 // validateが設定されていない場合、Instantiateはorigがジェネリックかどうかの確認、
 // 型引数の個数検証、または型引数が制約を満たすかどうかの確認を行いません。
-// この場合、Instantiateはエラーを返さないことが保証されますが、panicする可能性があります。
-// 具体的には、*Signature型では型引数の個数が不正な場合に即座にpanicし、
-// *Named型では *Named API の内部で後からpanicが発生することがあります。
+// この場合、Instantiateはエラーを返さないことが保証されますが、パニックを引き起こす可能性があります。
+// 具体的には、*Signature型では型引数の個数が不正な場合に即座にパニックを引き起こし、
+// *Named型では *Named API の内部で後からパニックを引き起こすことがあります。
 func Instantiate(ctxt *Context, orig Type, targs []Type, validate bool) (Type, error)

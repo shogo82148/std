@@ -44,5 +44,5 @@ func SortedStableFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 // 最後の部分スライス以外はすべてサイズnになります。
 // すべての部分スライスは、長さを超える容量を持たないようにクリップされます。
 // sが空の場合、シーケンスも空です：シーケンスに空のスライスはありません。
-// nが1未満の場合、Chunkはパニックを起こします。
+// nが1未満の場合、Chunkはパニックを引き起こします。
 func Chunk[Slice ~[]E, E any](s Slice, n int) iter.Seq[Slice]

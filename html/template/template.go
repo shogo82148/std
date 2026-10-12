@@ -31,7 +31,7 @@ func (t *Template) Templates() []*Template
 // Optionは、テンプレートのオプションを設定します。オプションは
 // 文字列で記述され、単純な文字列または "key=value" の形式を取ります。オプション文字列には
 // 最大で一つの等号が含まれます。オプション文字列が認識できない、または無効な場合、
-// Optionはパニックを起こします。
+// Optionはパニックを引き起こします。
 //
 // 既知のオプション:
 //
@@ -116,7 +116,7 @@ type FuncMap = template.FuncMap
 // 解析される前に追加しておく必要があります。Funcsは、解析後であっても（
 // 例えば [Template.Clone] の後でも）同名の関数を置き換えるために、
 // 複数回呼び出すことができます。置き換え後の関数はテンプレート実行時に使用されます。
-// マップ内の値が適切な戻り値型を持つ関数でない場合、パニックを起こします。
+// マップ内の値が適切な戻り値型を持つ関数でない場合、パニックを引き起こします。
 // 戻り値はテンプレート自身なので、呼び出しをチェーンできます。
 func (t *Template) Funcs(funcMap FuncMap) *Template
 
@@ -131,7 +131,7 @@ func (t *Template) Delims(left, right string) *Template
 func (t *Template) Lookup(name string) *Template
 
 // Mustは、([*Template], error)を返す関数への呼び出しをラップし、
-// エラーが非nilの場合にパニックを起こすヘルパーです。これは変数の初期化での使用を意図しています。
+// エラーが非nilの場合にパニックを引き起こすヘルパーです。これは変数の初期化での使用を意図しています。
 // 例えば、
 //
 //	var t = template.Must(template.New("name").Parse("html"))

@@ -25,7 +25,7 @@ import (
 
 // Registerは、指定された名前でデータベースドライバーを利用可能にします。
 // Registerが同じ名前で2回呼び出された場合、またはdriverがnilの場合、
-// panicが発生します。
+// パニックを引き起こします。
 func Register(name string, driver driver.Driver)
 
 // Driversは、登録されたドライバーの名前のソートされたリストを返します。

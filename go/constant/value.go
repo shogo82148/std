@@ -104,7 +104,7 @@ func Val(x Value) any
 
 // StringLenは、xが [String] の場合にxの長さを返します。
 // xが [Unknown] の場合、結果は0です。
-// それ以外の場合、この関数はパニックします。
+// それ以外の場合、この関数はパニックを引き起こします。
 func StringLen(x Value) int64
 
 // Makeはxの値に対する [Value] を返します。

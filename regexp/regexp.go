@@ -118,11 +118,11 @@ func CompilePOSIX(expr string) (*Regexp, error)
 // このメソッドは [Regexp] を修正するため、他のメソッドと同時に呼び出すことはできません。
 func (re *Regexp) Longest()
 
-// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックします。
+// MustCompileは [Compile] と似ていますが、式を解析できない場合はパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化が簡素化されます。
 func MustCompile(str string) *Regexp
 
-// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはpanicを発生させます。
+// MustCompilePOSIXは、 [CompilePOSIX] と似ていますが、式が解析できない場合にはパニックを引き起こします。
 // これにより、コンパイルされた正規表現を保持するグローバル変数の安全な初期化を簡素化します。
 func MustCompilePOSIX(str string) *Regexp
 

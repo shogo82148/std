@@ -29,7 +29,7 @@ func NewRequest(method, target string, body io.Reader) *http.Request
 // [strings.Reader]、[bytes.Buffer] 型、または値が [http.NoBody] の場合、
 // Request.ContentLength が設定されます。
 //
-// NewRequestはエラー時にパニックを発生させます。テストではパニックが許容されるため、使用の便宜上です。
+// NewRequestはエラー時にパニックを引き起こします。テストではパニックが許容されるため、使用の便宜上です。
 //
 // サーバーリクエストの代わりにクライアントHTTPリクエストを生成するには、
 // net/httpパッケージのNewRequest関数を参照してください。

@@ -55,7 +55,7 @@ func (b *Buffer) Cap() int
 func (b *Buffer) Available() int
 
 // Truncateはバッファーから最初のnバイト以外の未読データを削除し、同じ割り当てられたストレージを使用し続けます。
-// nが負数またはバッファーの長さよりも大きい場合、パニックが発生します。
+// nが負数またはバッファーの長さよりも大きい場合、パニックを引き起こします。
 func (b *Buffer) Truncate(n int)
 
 // Resetはバッファーを空にリセットしますが、将来の書き込みのために基礎となるストレージは保持されます。
@@ -67,10 +67,10 @@ func (b *Buffer) Reset()
 // バッファーを拡大できない場合、 [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) Grow(n int)
 
-// Write はバッファーに p の内容を追加し、必要に応じてバッファーを拡張します。戻り値 n は p の長さであり、err は常に nil です。バッファーが大きすぎる場合、Write は [ErrTooLarge] とともにパニックを発生させます。
+// Write はバッファーに p の内容を追加し、必要に応じてバッファーを拡張します。戻り値 n は p の長さであり、err は常に nil です。バッファーが大きすぎる場合、Write は [ErrTooLarge] とともにパニックを引き起こします。
 func (b *Buffer) Write(p []byte) (n int, err error)
 
-// WriteStringは、必要に応じてバッファーを拡張し、sの内容をバッファーに追加します。戻り値nはsの長さであり、errは常にnilです。バッファーが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを発生させます。
+// WriteStringは、必要に応じてバッファーを拡張し、sの内容をバッファーに追加します。戻り値nはsの長さであり、errは常にnilです。バッファーが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを引き起こします。
 func (b *Buffer) WriteString(s string) (n int, err error)
 
 // MinReadは、[Buffer.ReadFrom] によって [Buffer.Read] 呼び出しに渡される最小スライスサイズです。
@@ -87,13 +87,13 @@ func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 
 // WriteByteはバイトcをバッファーに追加し、必要に応じてバッファーを拡張します。
 // 返されるエラーは常にnilですが、 [bufio.Writer] のWriteByteに合わせるために含まれています。
-// バッファーが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックします。
+// バッファーが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) WriteByte(c byte) error
 
 // WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファーに追加し、
 // 書き込まれたバイト数とnilエラーを返します。nilエラーは
 // [bufio.Writer] のWriteRuneに合わせるために含まれています。バッファーは必要に応じて拡張され、
-// 大きくなりすぎるとWriteRuneは [ErrTooLarge] でパニックします。
+// 大きくなりすぎるとWriteRuneは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
 // Readは、バッファーから次のlen(p)バイトを読み取るか、バッファーが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファーに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。

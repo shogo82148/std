@@ -55,14 +55,14 @@ type DLL struct {
 // システムDLLを安全にロードするには、golang.org/x/sys/windowsの [LazyDLL] を使用してください。
 func LoadDLL(name string) (*DLL, error)
 
-// MustLoadDLLは [LoadDLL] と同様ですが、ロード操作が失敗した場合はパニックします。
+// MustLoadDLLは [LoadDLL] と同様ですが、ロード操作が失敗した場合はパニックを引き起こします。
 func MustLoadDLL(name string) *DLL
 
 // FindProcは、[DLL] dからnameという名前のプロシージャを検索し、
 // 見つかった場合は [*Proc] を返します。検索に失敗した場合はエラーを返します。
 func (d *DLL) FindProc(name string) (proc *Proc, err error)
 
-// MustFindProcは [DLL.FindProc] と同様ですが、検索に失敗した場合はパニックします。
+// MustFindProcは [DLL.FindProc] と同様ですが、検索に失敗した場合はパニックを引き起こします。
 func (d *DLL) MustFindProc(name string) *Proc
 
 // Releaseは、[DLL] dをメモリーからアンロードします。

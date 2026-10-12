@@ -78,7 +78,7 @@ func (r *Rand) UintN(n uint) uint
 
 // Nは半開区間 [0,n) の擬似乱数を返します。
 // 型パラメーターIntには任意の整数型を指定できます。
-// n <= 0 の場合、パニックします。
+// n <= 0 の場合、パニックを引き起こします。
 func (r *Rand) N[Int intType](n Int) Int
 
 // Float64は、半開放区間[0.0,1.0)内の擬似乱数をfloat64として返します。

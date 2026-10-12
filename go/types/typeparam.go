@@ -20,7 +20,7 @@ type TypeParam struct {
 }
 
 // NewTypeParamは新しいTypeParamを返します。型パラメーターは、Named型に対してSetTypeParamsを呼び出すことによって設定できます。
-// 型パラメーターを複数の型に設定するとパニックが発生します。
+// 型パラメーターを複数の型に設定するとパニックを引き起こします。
 //
 // 制約引数はnilにすることもできますが、後でSetConstraintを介して設定することができます。制約が非nilの場合、完全に定義されている必要があります。func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
 

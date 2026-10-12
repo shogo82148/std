@@ -77,10 +77,10 @@ func (o *Options) HashFunc() crypto.Hash
 // それらを [NewKeyFromSeed] に渡すのと同等です。
 func GenerateKey(random io.Reader) (PublicKey, PrivateKey, error)
 
-// NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが [SeedSize] でない場合、パニックを発生させます。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
+// NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが [SeedSize] でない場合、パニックを引き起こします。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
 func NewKeyFromSeed(seed []byte) PrivateKey
 
-// SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが [PrivateKeySize] でない場合はパニックを起こします。
+// SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが [PrivateKeySize] でない場合はパニックを引き起こします。
 func Sign(privateKey PrivateKey, message []byte) []byte
 
 // Verifyは、publicKeyによってメッセージのsigが有効な署名かどうかを検証します。
@@ -89,7 +89,7 @@ func Sign(privateKey PrivateKey, message []byte) []byte
 // 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
-// VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が [PublicKeySize] でない場合、パニックが発生します。
+// VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が [PublicKeySize] でない場合、パニックを引き起こします。
 //
 // もしopts.Hashが [crypto.SHA512] である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは [crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
 //
