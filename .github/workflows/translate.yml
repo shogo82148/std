@@ -21,7 +21,6 @@ jobs:
           - master
           - release-branch.go1.27
           - release-branch.go1.26
-          - release-branch.go1.25
     concurrency:
       group: translate-${{ matrix.branch }}
     permissions:
