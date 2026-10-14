@@ -51,7 +51,7 @@ var (
 	FlagDataAddr   = flag.Int64("D", -1, "set the start address of data symbols")
 	FlagFuncAlign  = flag.Int("funcalign", 0, "set function align to `N` bytes")
 
-	FlagSplitDWARF = flag.Bool("splitdwarf", false, "emit DWARF in a separate file (darwin only)")
+	FlagSplitDWARF = flag.Bool("splitdwarf", true, "emit DWARF in a separate file (darwin only)")
 
 	FlagW = new(bool)
 )
