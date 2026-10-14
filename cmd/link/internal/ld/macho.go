@@ -197,7 +197,7 @@ const (
 
 // AddMachoSym adds s to Mach-O symbol table, used in GenSymLate.
 // Currently only used on ARM64 when external linking.
-func AddMachoSym(ldr *loader.Loader, s loader.Sym)
+func AddMachoSym(ctxt *Link, s loader.Sym)
 
 func MachoAddRebase(s loader.Sym, off int64)
 
