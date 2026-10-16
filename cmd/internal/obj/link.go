@@ -622,6 +622,14 @@ func (s *LSym) TextAttrString() string
 
 func (s *LSym) String() string
 
+// IsGoType reports whether s is a Go type descriptor symbol, based on its name.
+//
+// Other kinds of symbol share the "type:" prefix, in particular the closures
+// for the generated equality and hash functions, type:.eqfunc.* and
+// type:.hashfunc.*. Those are not type descriptors; what tells them apart is
+// the "." that follows the prefix.
+func (s *LSym) IsGoType() bool
+
 // The compiler needs *LSym to be assignable to cmd/compile/internal/ssa.Sym.
 func (*LSym) CanBeAnSSASym()
 func (*LSym) CanBeAnSSAAux()

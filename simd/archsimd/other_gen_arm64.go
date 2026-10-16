@@ -194,110 +194,110 @@ func (x Uint64x2) RotateAllRight(shift uint64) (z Uint64x2)
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int8x16) ReduceSum() (z int8)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int16x8) ReduceSum() (z int16)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int32x4) ReduceSum() (z int32)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint8x16) ReduceSum() (z uint8)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint16x8) ReduceSum() (z uint16)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint32x4) ReduceSum() (z uint32)
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int8x16) ReduceMax() int8
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int8x16) ReduceMin() int8
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int16x8) ReduceMax() int16
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int16x8) ReduceMin() int16
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int32x4) ReduceMax() int32
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Int32x4) ReduceMin() int32
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint8x16) ReduceMax() uint8
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint8x16) ReduceMin() uint8
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint16x8) ReduceMax() uint16
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint16x8) ReduceMin() uint16
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint32x4) ReduceMax() uint32
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Uint32x4) ReduceMin() uint32
 
 // ReduceMax reduces x by taking the maximum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Float32x4) ReduceMax() float32
 
 // ReduceMin reduces x by taking the minimum of all elements.
 //
-// Emulated, CPU Feature: NEON
+// Emulated
 func (x Float32x4) ReduceMin() float32

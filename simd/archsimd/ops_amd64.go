@@ -2962,69 +2962,87 @@ func (x Float64x4) FloorScaledResidue(prec uint8) Float64x4
 // Asm: VREDUCEPD, CPU Feature: AVX512
 func (x Float64x8) FloorScaledResidue(prec uint8) Float64x8
 
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2^8).
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of x is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
 // Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
 func (x Uint8x16) GaloisFieldAffineTransform(A Uint64x2, b uint8) Uint8x16
 
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2^8).
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of x is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
 // Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
 func (x Uint8x32) GaloisFieldAffineTransform(A Uint64x4, b uint8) Uint8x32
 
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2^8).
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of x is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
 // Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
 func (x Uint8x64) GaloisFieldAffineTransform(A Uint64x8, b uint8) Uint8x64
 
-// GaloisFieldAffineTransformInverse returns the affine transformation A * (x⁻¹ mod P) + b in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
+// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
+// P = x^8 + x^4 + x^3 + x + 1, and the affine
+// transformation is performed in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of inv(x) is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
 // Asm: VGF2P8AFFINEINVQB, CPU Feature: AVX512GFNI
 func (x Uint8x16) GaloisFieldAffineTransformInverse(A Uint64x2, b uint8) Uint8x16
 
-// GaloisFieldAffineTransformInverse returns the affine transformation A * (x⁻¹ mod P) + b in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
+// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
+// P = x^8 + x^4 + x^3 + x + 1, and the affine
+// transformation is performed in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of inv(x) is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
 // Asm: VGF2P8AFFINEINVQB, CPU Feature: AVX512GFNI
 func (x Uint8x32) GaloisFieldAffineTransformInverse(A Uint64x4, b uint8) Uint8x32
 
-// GaloisFieldAffineTransformInverse returns the affine transformation A * (x⁻¹ mod P) + b in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-// Each element of A is interpreted as an 8x8 matrix of bits.
-// Each element of x is interpreted as an 8-element vector of bits.
-// The b argument is likewise an 8-element vector of bits.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF2.
+// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
+// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
+// P = x^8 + x^4 + x^3 + x + 1, and the affine
+// transformation is performed in GF(2)^8.
+// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
+// Each element of inv(x) is interpreted as a vector of 8 bits.
+// The b argument is likewise a vector of 8 bits.
+// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
+// The * and + operators in GF(2) are defined as AND and XOR.
+// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
 //
 // Performance: A non-constant value of b may result in significantly worse performance for this operation.
 //
@@ -10882,24 +10900,34 @@ func (x Mask8x16) ToInt8x16() (z Int8x16)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX
 func (x Mask8x16) And(y Mask8x16) (z Mask8x16)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask8x16) AndNot(y Mask8x16) (z Mask8x16)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX
 func (x Mask8x16) Equal(y Mask8x16) (z Mask8x16)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX
 func (x Mask8x16) Or(y Mask8x16) (z Mask8x16)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask8x16) Xor(y Mask8x16) (z Mask8x16)
 
 // ToInt8x32 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -10909,24 +10937,34 @@ func (x Mask8x32) ToInt8x32() (z Int8x32)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX2
 func (x Mask8x32) And(y Mask8x32) (z Mask8x32)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask8x32) AndNot(y Mask8x32) (z Mask8x32)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX2
 func (x Mask8x32) Equal(y Mask8x32) (z Mask8x32)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX2
 func (x Mask8x32) Or(y Mask8x32) (z Mask8x32)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask8x32) Xor(y Mask8x32) (z Mask8x32)
 
 // ToInt8x64 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -10936,24 +10974,34 @@ func (x Mask8x64) ToInt8x64() (z Int8x64)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX512
 func (x Mask8x64) And(y Mask8x64) (z Mask8x64)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask8x64) AndNot(y Mask8x64) (z Mask8x64)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX512
 func (x Mask8x64) Equal(y Mask8x64) (z Mask8x64)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX512
 func (x Mask8x64) Or(y Mask8x64) (z Mask8x64)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask8x64) Xor(y Mask8x64) (z Mask8x64)
 
 // ToInt16x8 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -10963,24 +11011,34 @@ func (x Mask16x8) ToInt16x8() (z Int16x8)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX
 func (x Mask16x8) And(y Mask16x8) (z Mask16x8)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask16x8) AndNot(y Mask16x8) (z Mask16x8)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX
 func (x Mask16x8) Equal(y Mask16x8) (z Mask16x8)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX
 func (x Mask16x8) Or(y Mask16x8) (z Mask16x8)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask16x8) Xor(y Mask16x8) (z Mask16x8)
 
 // ToInt16x16 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -10990,24 +11048,34 @@ func (x Mask16x16) ToInt16x16() (z Int16x16)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX2
 func (x Mask16x16) And(y Mask16x16) (z Mask16x16)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask16x16) AndNot(y Mask16x16) (z Mask16x16)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX2
 func (x Mask16x16) Equal(y Mask16x16) (z Mask16x16)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX2
 func (x Mask16x16) Or(y Mask16x16) (z Mask16x16)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask16x16) Xor(y Mask16x16) (z Mask16x16)
 
 // ToInt16x32 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11017,24 +11085,34 @@ func (x Mask16x32) ToInt16x32() (z Int16x32)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX512
 func (x Mask16x32) And(y Mask16x32) (z Mask16x32)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask16x32) AndNot(y Mask16x32) (z Mask16x32)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX512
 func (x Mask16x32) Equal(y Mask16x32) (z Mask16x32)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX512
 func (x Mask16x32) Or(y Mask16x32) (z Mask16x32)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask16x32) Xor(y Mask16x32) (z Mask16x32)
 
 // ToInt32x4 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11044,24 +11122,34 @@ func (x Mask32x4) ToInt32x4() (z Int32x4)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX
 func (x Mask32x4) And(y Mask32x4) (z Mask32x4)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask32x4) AndNot(y Mask32x4) (z Mask32x4)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX
 func (x Mask32x4) Equal(y Mask32x4) (z Mask32x4)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX
 func (x Mask32x4) Or(y Mask32x4) (z Mask32x4)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask32x4) Xor(y Mask32x4) (z Mask32x4)
 
 // ToInt32x8 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11071,24 +11159,34 @@ func (x Mask32x8) ToInt32x8() (z Int32x8)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX2
 func (x Mask32x8) And(y Mask32x8) (z Mask32x8)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask32x8) AndNot(y Mask32x8) (z Mask32x8)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX2
 func (x Mask32x8) Equal(y Mask32x8) (z Mask32x8)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX2
 func (x Mask32x8) Or(y Mask32x8) (z Mask32x8)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask32x8) Xor(y Mask32x8) (z Mask32x8)
 
 // ToInt32x16 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11098,24 +11196,34 @@ func (x Mask32x16) ToInt32x16() (z Int32x16)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX512
 func (x Mask32x16) And(y Mask32x16) (z Mask32x16)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask32x16) AndNot(y Mask32x16) (z Mask32x16)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX512
 func (x Mask32x16) Equal(y Mask32x16) (z Mask32x16)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX512
 func (x Mask32x16) Or(y Mask32x16) (z Mask32x16)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask32x16) Xor(y Mask32x16) (z Mask32x16)
 
 // ToInt64x2 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11125,24 +11233,34 @@ func (x Mask64x2) ToInt64x2() (z Int64x2)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX
 func (x Mask64x2) And(y Mask64x2) (z Mask64x2)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask64x2) AndNot(y Mask64x2) (z Mask64x2)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX
 func (x Mask64x2) Equal(y Mask64x2) (z Mask64x2)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX
 func (x Mask64x2) Or(y Mask64x2) (z Mask64x2)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX
 func (x Mask64x2) Xor(y Mask64x2) (z Mask64x2)
 
 // ToInt64x4 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11152,24 +11270,34 @@ func (x Mask64x4) ToInt64x4() (z Int64x4)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX2
 func (x Mask64x4) And(y Mask64x4) (z Mask64x4)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask64x4) AndNot(y Mask64x4) (z Mask64x4)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX2
 func (x Mask64x4) Equal(y Mask64x4) (z Mask64x4)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX2
 func (x Mask64x4) Or(y Mask64x4) (z Mask64x4)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX2
 func (x Mask64x4) Xor(y Mask64x4) (z Mask64x4)
 
 // ToInt64x8 converts the mask to a vector, where element i is set to ^0 (all bits
@@ -11179,22 +11307,32 @@ func (x Mask64x8) ToInt64x8() (z Int64x8)
 // And returns the bitwise AND of x and y.
 //
 //	z[i] = x[i] & y[i]
+//
+// CPU Feature: AVX512
 func (x Mask64x8) And(y Mask64x8) (z Mask64x8)
 
 // AndNot returns the bitwise AND NOT of x and y.
 //
 //	z[i] = x[i] &^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask64x8) AndNot(y Mask64x8) (z Mask64x8)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+// CPU Feature: AVX512
 func (x Mask64x8) Equal(y Mask64x8) (z Mask64x8)
 
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
+//
+// CPU Feature: AVX512
 func (x Mask64x8) Or(y Mask64x8) (z Mask64x8)
 
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
+//
+// CPU Feature: AVX512
 func (x Mask64x8) Xor(y Mask64x8) (z Mask64x8)

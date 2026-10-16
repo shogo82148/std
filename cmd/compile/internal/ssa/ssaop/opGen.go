@@ -4748,6 +4748,22 @@ const (
 	OpARM64ZDUPIH
 	OpARM64ZDUPIS
 	OpARM64ZDUPID
+	OpARM64ZCPYBconst
+	OpARM64ZCPYHconst
+	OpARM64ZCPYSconst
+	OpARM64ZCPYDconst
+	OpARM64ZCPYMergingBconst
+	OpARM64ZCPYMergingHconst
+	OpARM64ZCPYMergingSconst
+	OpARM64ZCPYMergingDconst
+	OpARM64ZCPYMergingB
+	OpARM64ZCPYMergingH
+	OpARM64ZCPYMergingS
+	OpARM64ZCPYMergingD
+	OpARM64ZCPYIMergingB
+	OpARM64ZCPYIMergingH
+	OpARM64ZCPYIMergingS
+	OpARM64ZCPYIMergingD
 	OpARM64RDVL
 	OpARM64PWHILELTB
 	OpARM64PWHILELTH
@@ -82011,6 +82027,254 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZCPYBconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  1,
+		asm:     arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZCPYHconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  1,
+		asm:     arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZCPYSconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  1,
+		asm:     arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "ZCPYDconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  1,
+		asm:     arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingBconst",
+		AuxType:      AuxTypeInt8,
+		ArgLen:       2,
+		ResultInArg0: true,
+		asm:          arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingHconst",
+		AuxType:      AuxTypeInt8,
+		ArgLen:       2,
+		ResultInArg0: true,
+		asm:          arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingSconst",
+		AuxType:      AuxTypeInt8,
+		ArgLen:       2,
+		ResultInArg0: true,
+		asm:          arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingDconst",
+		AuxType:      AuxTypeInt8,
+		ArgLen:       2,
+		ResultInArg0: true,
+		asm:          arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 335544319, V2: 0}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 335544319, V2: 0}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 335544319, V2: 0}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPY,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 335544319, V2: 0}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYIMergingB",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYIMergingH",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYH,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYIMergingS",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "ZCPYIMergingD",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm64.AZCPYD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},

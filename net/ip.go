@@ -165,6 +165,8 @@ func (m IPMask) String() string
 
 // MarshalText implements the [encoding.TextMarshaler] interface.
 // We marshal an IPMask as though it were an IP address.
+// For backward compatibility invalid IPMask values are
+// always encoded as base64 strings, with no error.
 func (m IPMask) MarshalText() ([]byte, error)
 
 // UnmarshalText implements the [encoding.TextUnmarshaler] interface.
