@@ -11,4 +11,5 @@ func Default() Cache
 // DefaultDir returns the effective GOCACHE setting.
 // It returns "off" if the cache is disabled,
 // and reports whether the effective value differs from GOCACHE.
+// When GOCACHEPROG is set, cache entries may be stored outside this directory.
 func DefaultDir() (string, bool, error)

@@ -10,8 +10,3 @@ package archsimd
 //
 // Emulated
 func (x Float32x4) ReduceSum() (z float32)
-
-// ReduceSum returns the sum of all elements in x.
-//
-// Emulated
-func (x Float64x2) ReduceSum() (z float64)

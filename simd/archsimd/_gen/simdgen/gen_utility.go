@@ -22,6 +22,7 @@ const (
 	OneKmaskOut
 	OneVregOutAtIn
 	OneVregOutScalar
+	OneFpregOut
 )
 
 const (
