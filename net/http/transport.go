@@ -79,19 +79,10 @@ const DefaultMaxIdleConnsPerHost = 2
 // value is a zero-length slice, the request is treated as idempotent but the
 // header is not sent on the wire.
 type Transport struct {
-	idleMu       sync.Mutex
-	closeIdle    bool
-	idleConn     map[connectMethodKey][]*persistConn
-	idleConnWait map[connectMethodKey]wantConnQueue
-	idleLRU      connLRU
+	pool clientConnPool
 
 	altMu    sync.Mutex
 	altProto atomic.Value
-
-	connsPerHostMu   sync.Mutex
-	connsPerHost     map[connectMethodKey]int
-	connsPerHostWait map[connectMethodKey]wantConnQueue
-	dialsInProgress  wantConnQueue
 
 	// Proxy specifies a function to return a proxy for a given
 	// Request. If the function returns a non-nil error, the
