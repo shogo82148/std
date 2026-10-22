@@ -14,8 +14,6 @@ func Run(f func())
 func Wait()
 
 // IsInBubble reports whether the current goroutine is in a bubble.
-//
-//go:linkname IsInBubble
 func IsInBubble() bool
 
 // Association is the state of a pointer's bubble association.
