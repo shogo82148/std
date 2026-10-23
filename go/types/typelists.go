@@ -10,6 +10,10 @@ package types
 // TypeParamList holds a list of type parameters.
 type TypeParamList struct{ tparams []*TypeParam }
 
+// NewTypeParamList returns a new TypeParamList
+// with the type parameters in list.
+func NewTypeParamList(list []*TypeParam) *TypeParamList
+
 // Len returns the number of type parameters in the list.
 // It is safe to call on a nil receiver.
 func (l *TypeParamList) Len() int
@@ -21,6 +25,9 @@ func (l *TypeParamList) String() string
 
 // TypeList holds a list of types.
 type TypeList struct{ types []Type }
+
+// NewTypeList returns a new TypeList with the types in list.
+func NewTypeList(list []Type) *TypeList
 
 // Len returns the number of types in the list.
 // It is safe to call on a nil receiver.
