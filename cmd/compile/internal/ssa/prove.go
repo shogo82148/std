@@ -45,6 +45,8 @@ func ConvertIntWithBitsize[Target uint64 | int64, Source uint64 | int64](x Sourc
 
 func NoLimitForBitsize(bitsize uint) Limit
 
+func (l Limit) PropagateUnsignedSignedRelationship(bitsize uint) Limit
+
 func (l Limit) String() string
 
 func (l Limit) Intersect(l2 Limit) Limit
