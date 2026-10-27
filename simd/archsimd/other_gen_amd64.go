@@ -263,6 +263,13 @@ func (x Int8x16) Neg() (z Int8x16)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
+func (x Mask8x16) Not() (z Mask8x16)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX
 func (x Int16x8) Not() (z Int16x8)
 
 // Neg returns the elementwise negation of x.
@@ -271,6 +278,13 @@ func (x Int16x8) Not() (z Int16x8)
 //
 // Emulated, CPU Feature: AVX
 func (x Int16x8) Neg() (z Int16x8)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX
+func (x Mask16x8) Not() (z Mask16x8)
 
 // Not returns the bitwise negation of x.
 //
@@ -291,6 +305,13 @@ func (x Int32x4) Neg() (z Int32x4)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX
+func (x Mask32x4) Not() (z Mask32x4)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX
 func (x Int64x2) Not() (z Int64x2)
 
 // Neg returns the elementwise negation of x.
@@ -299,6 +320,13 @@ func (x Int64x2) Not() (z Int64x2)
 //
 // Emulated, CPU Feature: AVX
 func (x Int64x2) Neg() (z Int64x2)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX
+func (x Mask64x2) Not() (z Mask64x2)
 
 // Not returns the bitwise negation of x.
 //
@@ -319,6 +347,13 @@ func (x Int8x32) Neg() (z Int8x32)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
+func (x Mask8x32) Not() (z Mask8x32)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX2
 func (x Int16x16) Not() (z Int16x16)
 
 // Neg returns the elementwise negation of x.
@@ -327,6 +362,13 @@ func (x Int16x16) Not() (z Int16x16)
 //
 // Emulated, CPU Feature: AVX2
 func (x Int16x16) Neg() (z Int16x16)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX2
+func (x Mask16x16) Not() (z Mask16x16)
 
 // Not returns the bitwise negation of x.
 //
@@ -347,6 +389,13 @@ func (x Int32x8) Neg() (z Int32x8)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX2
+func (x Mask32x8) Not() (z Mask32x8)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX2
 func (x Int64x4) Not() (z Int64x4)
 
 // Neg returns the elementwise negation of x.
@@ -355,6 +404,13 @@ func (x Int64x4) Not() (z Int64x4)
 //
 // Emulated, CPU Feature: AVX2
 func (x Int64x4) Neg() (z Int64x4)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX2
+func (x Mask64x4) Not() (z Mask64x4)
 
 // Not returns the bitwise negation of x.
 //
@@ -375,6 +431,13 @@ func (x Int8x64) Neg() (z Int8x64)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
+func (x Mask8x64) Not() (z Mask8x64)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX512
 func (x Int16x32) Not() (z Int16x32)
 
 // Neg returns the elementwise negation of x.
@@ -383,6 +446,13 @@ func (x Int16x32) Not() (z Int16x32)
 //
 // Emulated, CPU Feature: AVX512
 func (x Int16x32) Neg() (z Int16x32)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX512
+func (x Mask16x32) Not() (z Mask16x32)
 
 // Not returns the bitwise negation of x.
 //
@@ -403,6 +473,13 @@ func (x Int32x16) Neg() (z Int32x16)
 //	z[i] = ^x[i]
 //
 // Emulated, CPU Feature: AVX512
+func (x Mask32x16) Not() (z Mask32x16)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX512
 func (x Int64x8) Not() (z Int64x8)
 
 // Neg returns the elementwise negation of x.
@@ -411,6 +488,13 @@ func (x Int64x8) Not() (z Int64x8)
 //
 // Emulated, CPU Feature: AVX512
 func (x Int64x8) Neg() (z Int64x8)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Emulated, CPU Feature: AVX512
+func (x Mask64x8) Not() (z Mask64x8)
 
 // Not returns the bitwise negation of x.
 //

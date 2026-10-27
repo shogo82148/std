@@ -1593,11 +1593,24 @@ func (x Mask8s) All() bool
 //	z[i] = x[i] & y[i]
 func (x Mask8s) And(y Mask8s) (z Mask8s)
 
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+func (x Mask8s) AndNot(y Mask8s) (z Mask8s)
+
 // Any returns true when any position in mask x is true.
 func (x Mask8s) Any() bool
 
+// Equal returns a mask indicating which elements of x and y are equal.
+func (x Mask8s) Equal(y Mask8s) (z Mask8s)
+
 // None returns true when no positions in mask x are set.
 func (x Mask8s) None() bool
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+func (x Mask8s) Not() (z Mask8s)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -1615,6 +1628,11 @@ func (x Mask8s) ToInt8s() (z Int8s)
 // x. If the mask is entirely false, it returns x.Len().
 func (x Mask8s) TrailingZeros() int
 
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+func (x Mask8s) Xor(y Mask8s) (z Mask8s)
+
 // All returns true when all positions in mask x are true.
 func (x Mask16s) All() bool
 
@@ -1623,11 +1641,24 @@ func (x Mask16s) All() bool
 //	z[i] = x[i] & y[i]
 func (x Mask16s) And(y Mask16s) (z Mask16s)
 
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+func (x Mask16s) AndNot(y Mask16s) (z Mask16s)
+
 // Any returns true when any position in mask x is true.
 func (x Mask16s) Any() bool
 
+// Equal returns a mask indicating which elements of x and y are equal.
+func (x Mask16s) Equal(y Mask16s) (z Mask16s)
+
 // None returns true when no positions in mask x are set.
 func (x Mask16s) None() bool
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+func (x Mask16s) Not() (z Mask16s)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -1645,6 +1676,11 @@ func (x Mask16s) ToInt16s() (z Int16s)
 // x. If the mask is entirely false, it returns x.Len().
 func (x Mask16s) TrailingZeros() int
 
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+func (x Mask16s) Xor(y Mask16s) (z Mask16s)
+
 // All returns true when all positions in mask x are true.
 func (x Mask32s) All() bool
 
@@ -1653,11 +1689,24 @@ func (x Mask32s) All() bool
 //	z[i] = x[i] & y[i]
 func (x Mask32s) And(y Mask32s) (z Mask32s)
 
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+func (x Mask32s) AndNot(y Mask32s) (z Mask32s)
+
 // Any returns true when any position in mask x is true.
 func (x Mask32s) Any() bool
 
+// Equal returns a mask indicating which elements of x and y are equal.
+func (x Mask32s) Equal(y Mask32s) (z Mask32s)
+
 // None returns true when no positions in mask x are set.
 func (x Mask32s) None() bool
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+func (x Mask32s) Not() (z Mask32s)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -1675,6 +1724,11 @@ func (x Mask32s) ToInt32s() (z Int32s)
 // x. If the mask is entirely false, it returns x.Len().
 func (x Mask32s) TrailingZeros() int
 
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+func (x Mask32s) Xor(y Mask32s) (z Mask32s)
+
 // All returns true when all positions in mask x are true.
 func (x Mask64s) All() bool
 
@@ -1683,11 +1737,24 @@ func (x Mask64s) All() bool
 //	z[i] = x[i] & y[i]
 func (x Mask64s) And(y Mask64s) (z Mask64s)
 
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+func (x Mask64s) AndNot(y Mask64s) (z Mask64s)
+
 // Any returns true when any position in mask x is true.
 func (x Mask64s) Any() bool
 
+// Equal returns a mask indicating which elements of x and y are equal.
+func (x Mask64s) Equal(y Mask64s) (z Mask64s)
+
 // None returns true when no positions in mask x are set.
 func (x Mask64s) None() bool
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+func (x Mask64s) Not() (z Mask64s)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -1704,3 +1771,8 @@ func (x Mask64s) ToInt64s() (z Int64s)
 // TrailingZeros returns the number of low-order false (zero) elements in mask
 // x. If the mask is entirely false, it returns x.Len().
 func (x Mask64s) TrailingZeros() int
+
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+func (x Mask64s) Xor(y Mask64s) (z Mask64s)

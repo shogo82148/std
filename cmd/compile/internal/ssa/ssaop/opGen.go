@@ -958,6 +958,10 @@ const (
 	OpAMD64KANDW
 	OpAMD64KANDD
 	OpAMD64KANDQ
+	OpAMD64KANDNB
+	OpAMD64KANDNW
+	OpAMD64KANDND
+	OpAMD64KANDNQ
 	OpAMD64KORB
 	OpAMD64KORW
 	OpAMD64KORD
@@ -970,6 +974,10 @@ const (
 	OpAMD64KXNORW
 	OpAMD64KXNORD
 	OpAMD64KXNORQ
+	OpAMD64KNOTB
+	OpAMD64KNOTW
+	OpAMD64KNOTD
+	OpAMD64KNOTQ
 	OpAMD64VPTEST
 	OpAMD64SHA1MSG1128
 	OpAMD64SHA1MSG2128
@@ -23871,6 +23879,62 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "KANDNB",
+		ArgLen: 2,
+		asm:    x86.AKANDNB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KANDNW",
+		ArgLen: 2,
+		asm:    x86.AKANDNW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KANDND",
+		ArgLen: 2,
+		asm:    x86.AKANDND,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KANDNQ",
+		ArgLen: 2,
+		asm:    x86.AKANDNQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "KORB",
 		ArgLen: 2,
 		asm:    x86.AKORB,
@@ -24032,6 +24096,58 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 71494644084506624, V2: 0}},
 				{1, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KNOTB",
+		ArgLen: 1,
+		asm:    x86.AKNOTB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KNOTW",
+		ArgLen: 1,
+		asm:    x86.AKNOTW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KNOTD",
+		ArgLen: 1,
+		asm:    x86.AKNOTD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "KNOTQ",
+		ArgLen: 1,
+		asm:    x86.AKNOTQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 71494644084506624, V2: 0}},
