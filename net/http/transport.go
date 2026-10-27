@@ -266,7 +266,7 @@ type Transport struct {
 	closeIdleFunc      closeIdleConnectionser
 	h2Transport        *http2Transport
 	h2Config           http2ExternalTransportConfig
-	h3Transport        dialClientConner
+	h3Transport        http3Transport
 	tlsNextProtoWasNil bool
 
 	// ForceAttemptHTTP2 controls whether HTTP/2 is enabled when a non-zero

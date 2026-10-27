@@ -17,7 +17,6 @@ type Package struct {
 	writer      io.Writer
 	name        string
 	userPath    string
-	pkg         *ast.Package
 	file        *ast.File
 	doc         *doc.Package
 	build       *load.Package

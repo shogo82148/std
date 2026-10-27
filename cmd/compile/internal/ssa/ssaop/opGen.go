@@ -6169,7 +6169,6 @@ const (
 	OpRISCV64MOVBUreg
 	OpRISCV64MOVHUreg
 	OpRISCV64MOVWUreg
-	OpRISCV64MOVDnop
 	OpRISCV64SLL
 	OpRISCV64SLLW
 	OpRISCV64SRA
@@ -102753,20 +102752,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:  1,
 		EarlyOk: true,
 		asm:     riscv.AMOVWU,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 1006632944, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 1006632944, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "MOVDnop",
-		ArgLen:       1,
-		ResultInArg0: true,
-		EarlyOk:      true,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1006632944, V2: 0}},
