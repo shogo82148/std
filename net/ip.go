@@ -151,6 +151,8 @@ func (m IPMask) String() string
 
 // MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 // IPMaskはIPアドレスであるかのようにマーシャルされます。
+// 後方互換性のため、無効なIPMask値は
+// エラーなしで常にbase64文字列としてエンコードされます。
 func (m IPMask) MarshalText() ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。

@@ -92,6 +92,11 @@ type Operand struct {
 	isList bool
 	// regName is the inner register symbol, e.g. "Zdn", "Zm", "Pg".
 	regName string
+	// immLink is the <a> link of an immediate's symbol, which names the
+	// explanation of it for this encoding; immDesc is that explanation, which
+	// simdgen turns into the immediate's range.
+	immLink string
+	immDesc string
 	// predRegName is the symbol this operand has in each paired predicated
 	// encoding, indexed to match the operation's predicated variants (and so the
 	// inVariant tuple the def carries). It is nil when the operation has no

@@ -127,61 +127,61 @@ func BroadcastFloat64x4(x float64) (z Float64x4)
 // BroadcastInt8x64 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512BW
+// Emulated, CPU Feature: AVX512
 func BroadcastInt8x64(x int8) (z Int8x64)
 
 // BroadcastInt16x32 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512BW
+// Emulated, CPU Feature: AVX512
 func BroadcastInt16x32(x int16) (z Int16x32)
 
 // BroadcastInt32x16 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastInt32x16(x int32) (z Int32x16)
 
 // BroadcastInt64x8 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastInt64x8(x int64) (z Int64x8)
 
 // BroadcastUint8x64 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512BW
+// Emulated, CPU Feature: AVX512
 func BroadcastUint8x64(x uint8) (z Uint8x64)
 
 // BroadcastUint16x32 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512BW
+// Emulated, CPU Feature: AVX512
 func BroadcastUint16x32(x uint16) (z Uint16x32)
 
 // BroadcastUint32x16 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastUint32x16(x uint32) (z Uint32x16)
 
 // BroadcastUint64x8 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastUint64x8(x uint64) (z Uint64x8)
 
 // BroadcastFloat32x16 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastFloat32x16(x float32) (z Float32x16)
 
 // BroadcastFloat64x8 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX512F
+// Emulated, CPU Feature: AVX512
 func BroadcastFloat64x8(x float64) (z Float64x8)
 
 // ToMask returns a mask indicating which elements of x are non-zero.

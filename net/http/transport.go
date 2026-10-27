@@ -69,19 +69,10 @@ const DefaultMaxIdleConnsPerHost = 2
 // 長さゼロのスライスの場合、リクエストは冪等として扱われますが、
 // ヘッダーは回線上に送信されません。
 type Transport struct {
-	idleMu       sync.Mutex
-	closeIdle    bool
-	idleConn     map[connectMethodKey][]*persistConn
-	idleConnWait map[connectMethodKey]wantConnQueue
-	idleLRU      connLRU
+	pool clientConnPool
 
 	altMu    sync.Mutex
 	altProto atomic.Value
-
-	connsPerHostMu   sync.Mutex
-	connsPerHost     map[connectMethodKey]int
-	connsPerHostWait map[connectMethodKey]wantConnQueue
-	dialsInProgress  wantConnQueue
 
 	// Proxyは、指定されたRequestに対するプロキシーを返す関数を指定します。
 	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。
@@ -231,7 +222,7 @@ type Transport struct {
 	closeIdleFunc      closeIdleConnectionser
 	h2Transport        *http2Transport
 	h2Config           http2ExternalTransportConfig
-	h3Transport        dialClientConner
+	h3Transport        http3Transport
 	tlsNextProtoWasNil bool
 
 	// ForceAttemptHTTP2は、非ゼロの

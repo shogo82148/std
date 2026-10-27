@@ -10,6 +10,10 @@ package types
 // TypeParamListは型パラメーターのリストを保持します。
 type TypeParamList struct{ tparams []*TypeParam }
 
+// NewTypeParamList は、list 内の型パラメーターを持つ
+// 新しい TypeParamList を返します。
+func NewTypeParamList(list []*TypeParam) *TypeParamList
+
 // Lenはリスト内の型パラメーターの数を返します。
 // nilなレシーバーでも安全に呼び出すことができます。
 func (l *TypeParamList) Len() int
@@ -22,8 +26,11 @@ func (l *TypeParamList) String() string
 // TypeListは型のリストを保持します。
 type TypeList struct{ types []Type }
 
+// NewTypeList は、list 内の型を持つ新しい TypeList を返します。
+func NewTypeList(list []Type) *TypeList
+
 // Lenはリスト内の要素数を返します。
-// nilの受信側で呼び出しても安全です。
+// nilのレシーバーで呼び出しても安全です。
 func (l *TypeList) Len() int
 
 // Atはリスト内のi番目のタイプを返します。

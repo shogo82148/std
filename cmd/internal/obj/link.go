@@ -622,6 +622,14 @@ func (s *LSym) TextAttrString() string
 
 func (s *LSym) String() string
 
+// IsGoType は、s が Go の型ディスクリプターのシンボルかどうかを、その名前に基づいて報告します。
+//
+// 他の種類のシンボルも "type:" プレフィックスを共有しています。特に、生成された
+// 等価関数とハッシュ関数のクロージャである type:.eqfunc.* と type:.hashfunc.* がそうです。
+// これらは型ディスクリプターではありません。両者を区別するのは、
+// プレフィックスの後ろに続く "." です。
+func (s *LSym) IsGoType() bool
+
 // The compiler needs *LSym to be assignable to cmd/compile/internal/ssa.Sym.
 func (*LSym) CanBeAnSSASym()
 func (*LSym) CanBeAnSSAAux()
