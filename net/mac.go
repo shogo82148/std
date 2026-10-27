@@ -23,9 +23,11 @@ func (a HardwareAddr) String() string
 //	00005e005301
 func ParseMAC(s string) (hw HardwareAddr, err error)
 
-// MarshalText implements the [encoding.TextMarshaler] interface.
-// The encoding is the same as the one returned by [HardwareAddr.String].
-// This will be enabled in a future Go release; see issue #29678.
+// MarshalText は [encoding.TextMarshaler] インターフェースを実装します。
+// エンコーディングは [HardwareAddr.String] が返すものと同じです。
+// これは将来の Go リリースで有効になります。issue #29678 を参照してください。
+// 後方互換性のため、無効な HardwareAddr の値は
+// エラーなしで常に base64 文字列としてエンコードされます。
 func (a HardwareAddr) MarshalText() ([]byte, error)
 
 // UnmarshalText implements the [encoding.TextUnmarshaler] interface.

@@ -209,6 +209,11 @@ func Neg[E Ints | Floats, W Width](x Vec[E, W]) (z Vec[E, W])
 //	z = x[0] + x[1] + ...
 func ReduceSum[E Elt, W Width](x Vec[E, W]) (z E)
 
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+func ReduceMax[E Elt, W Width](x Vec[E, W]) (z E)
+
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])

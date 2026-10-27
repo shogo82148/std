@@ -48,7 +48,7 @@ func UTF16PtrFromString(s string) (*uint16, error)
 // Errnoの値は、[errors.Is] を使用してエラー値と比較できます。
 // 例えば:
 //
-//	_, _, err := syscall.Syscall(...)
+//	_, _, err := syscall.SyscallN(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
 type Errno uintptr
 

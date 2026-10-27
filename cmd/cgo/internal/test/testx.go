@@ -49,5 +49,14 @@ func GoFunc37033(handle C.uintptr_t)
 // No runtime test; just make sure it compiles.
 var _ C.PIssue38408 = &C.Issue38408{i: 1}
 
+//export Issue44648A
+func Issue44648A(issue44648F C.issue44648F, data unsafe.Pointer) C.int
+
+//export Issue44648B
+func Issue44648B(issue44648T C.issue44648T) (C.issue44648T, C.issue44648T)
+
+//export Issue44648C
+func Issue44648C(r C.int) (a, b C.int)
+
 //export GoFunc49633
 func GoFunc49633(context unsafe.Pointer)

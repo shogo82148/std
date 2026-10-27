@@ -48,6 +48,9 @@ func (f *File) Section(name string) *Section
 
 func (f *File) DWARF() (*dwarf.Data, error)
 
+// ImportDirectory は、PE ファイルのインポートディレクトリーテーブルのエントリーを表します。
+//
+// Deprecated: ImportDirectory は内部の詳細であり、直接使用すべきではありません。
 type ImportDirectory struct {
 	OriginalFirstThunk uint32
 	TimeDateStamp      uint32
