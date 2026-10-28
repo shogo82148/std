@@ -28,6 +28,12 @@ func MSanSupported(goos, goarch string) bool
 // sanitizer option.
 func ASanSupported(goos, goarch string) bool
 
+// FIPS140Supported は、goos/goarch が FIPS 140-3 モードをサポートしているかどうかを報告します。
+// purego ビルドタグ、-asan、GOEXPERIMENT=boringcrypto といった
+// プラットフォーム以外の制約は考慮しません。
+// この関数のコピーが cmd/dist/test.go にあります。
+func FIPS140Supported(goos, goarch string) bool
+
 // FuzzSupported reports whether goos/goarch supports fuzzing
 // ('go test -fuzz=.').
 func FuzzSupported(goos, goarch string) bool
