@@ -534,3 +534,8 @@ type MoveToHeapExpr struct {
 }
 
 func NewMoveToHeapExpr(pos src.XPos, slice Node) *MoveToHeapExpr
+
+func IsSideEffect(n Node) bool
+
+// AnySideEffects reports whether n contains any operations that could have observable side effects.
+func AnySideEffects(n Node) bool

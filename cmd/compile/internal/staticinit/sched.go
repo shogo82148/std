@@ -52,9 +52,6 @@ func StaticName(t *types.Type) *ir.Name
 // StaticLoc returns the static address of n, if n has one, or else nil.
 func StaticLoc(n ir.Node) (name *ir.Name, offset int64, ok bool)
 
-// AnySideEffects reports whether n contains any operations that could have observable side effects.
-func AnySideEffects(n ir.Node) bool
-
 // AddKeepRelocations adds a dummy "R_KEEP" relocation from each
 // global map variable V to its associated outlined init function.
 // These relocation ensure that if the map var itself is determined to
