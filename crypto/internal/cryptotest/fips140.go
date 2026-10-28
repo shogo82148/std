@@ -9,3 +9,7 @@ import (
 )
 
 func MustSupportFIPS140(t *testing.T)
+
+// MustMinimumFIPS140ModuleVersion skips the test if compiled against a lower
+// minor version of the FIPS 140-3 module than min (such as "v1.26.0").
+func MustMinimumFIPS140ModuleVersion(tb testing.TB, min string)
