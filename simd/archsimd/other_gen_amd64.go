@@ -580,130 +580,142 @@ func (x Uint32x16) Not() (z Uint32x16)
 // Emulated, CPU Feature: AVX512
 func (x Uint64x8) Not() (z Uint64x8)
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int8x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int16x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int32x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int64x2) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint8x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint16x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint32x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint64x2) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float32x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float64x2) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int8x32) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int16x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int32x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int64x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint8x32) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint16x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint32x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint64x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float32x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float64x4) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int8x64) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int16x32) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int32x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int64x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint8x64) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint16x32) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint32x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint64x8) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float32x16) String() string
 
-// String returns a string representation of SIMD vector x.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float64x8) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask8x16) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask16x8) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask32x4) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask64x2) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask8x32) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask16x16) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask32x8) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask64x4) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask8x64) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask16x32) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask32x16) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask64x8) String() string
 
 // RotateAllLeft rotates each element of x left by shift bits.
