@@ -12,7 +12,7 @@ type Float32s struct {
 	vals      [8]float32
 }
 
-// Len returns the number of elements in a Float32s.
+// Len returns the number of elements in x.
 func (x Float32s) Len() int
 
 // LoadFloat32s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -59,8 +59,7 @@ func (x Float32s) Masked(mask Mask32s) (z Float32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat32s(x float32) (z Float32s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float32s) String() string
 
 // Float64s is a scalable SIMD vector of float64s.
@@ -71,7 +70,7 @@ type Float64s struct {
 	vals      [4]float64
 }
 
-// Len returns the number of elements in a Float64s.
+// Len returns the number of elements in x.
 func (x Float64s) Len() int
 
 // LoadFloat64s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -118,8 +117,7 @@ func (x Float64s) Masked(mask Mask64s) (z Float64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat64s(x float64) (z Float64s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Float64s) String() string
 
 // Int8s is a scalable SIMD vector of int8s.
@@ -130,7 +128,7 @@ type Int8s struct {
 	vals    [32]int8
 }
 
-// Len returns the number of elements in an Int8s.
+// Len returns the number of elements in x.
 func (x Int8s) Len() int
 
 // LoadInt8s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -184,8 +182,7 @@ func BroadcastInt8s(x int8) (z Int8s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int8s) ToMask() (z Mask8s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int8s) String() string
 
 // Int16s is a scalable SIMD vector of int16s.
@@ -196,7 +193,7 @@ type Int16s struct {
 	vals     [16]int16
 }
 
-// Len returns the number of elements in an Int16s.
+// Len returns the number of elements in x.
 func (x Int16s) Len() int
 
 // LoadInt16s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -250,8 +247,7 @@ func BroadcastInt16s(x int16) (z Int16s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int16s) ToMask() (z Mask16s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int16s) String() string
 
 // Int32s is a scalable SIMD vector of int32s.
@@ -262,7 +258,7 @@ type Int32s struct {
 	vals    [8]int32
 }
 
-// Len returns the number of elements in an Int32s.
+// Len returns the number of elements in x.
 func (x Int32s) Len() int
 
 // LoadInt32s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -316,8 +312,7 @@ func BroadcastInt32s(x int32) (z Int32s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int32s) ToMask() (z Mask32s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int32s) String() string
 
 // Int64s is a scalable SIMD vector of int64s.
@@ -328,7 +323,7 @@ type Int64s struct {
 	vals    [4]int64
 }
 
-// Len returns the number of elements in an Int64s.
+// Len returns the number of elements in x.
 func (x Int64s) Len() int
 
 // LoadInt64s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -382,8 +377,7 @@ func BroadcastInt64s(x int64) (z Int64s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int64s) ToMask() (z Mask64s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Int64s) String() string
 
 // Uint8s is a scalable SIMD vector of uint8s.
@@ -394,7 +388,7 @@ type Uint8s struct {
 	vals     [32]uint8
 }
 
-// Len returns the number of elements in a Uint8s.
+// Len returns the number of elements in x.
 func (x Uint8s) Len() int
 
 // LoadUint8s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -441,8 +435,7 @@ func (x Uint8s) Masked(mask Mask8s) (z Uint8s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint8s(x uint8) (z Uint8s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint8s) String() string
 
 // Uint16s is a scalable SIMD vector of uint16s.
@@ -453,7 +446,7 @@ type Uint16s struct {
 	vals      [16]uint16
 }
 
-// Len returns the number of elements in a Uint16s.
+// Len returns the number of elements in x.
 func (x Uint16s) Len() int
 
 // LoadUint16s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -500,8 +493,7 @@ func (x Uint16s) Masked(mask Mask16s) (z Uint16s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint16s(x uint16) (z Uint16s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint16s) String() string
 
 // Uint32s is a scalable SIMD vector of uint32s.
@@ -512,7 +504,7 @@ type Uint32s struct {
 	vals     [8]uint32
 }
 
-// Len returns the number of elements in a Uint32s.
+// Len returns the number of elements in x.
 func (x Uint32s) Len() int
 
 // LoadUint32s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -559,8 +551,7 @@ func (x Uint32s) Masked(mask Mask32s) (z Uint32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint32s(x uint32) (z Uint32s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint32s) String() string
 
 // Uint64s is a scalable SIMD vector of uint64s.
@@ -571,7 +562,7 @@ type Uint64s struct {
 	vals     [4]uint64
 }
 
-// Len returns the number of elements in a Uint64s.
+// Len returns the number of elements in x.
 func (x Uint64s) Len() int
 
 // LoadUint64s loads a slice into a vector. If len(s) < z.Len(), it panics.
@@ -618,8 +609,7 @@ func (x Uint64s) Masked(mask Mask64s) (z Uint64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint64s(x uint64) (z Uint64s)
 
-// String returns a string representation of SIMD vector x. Only the x.Len()
-// elements that exist at the runtime vector length are shown.
+// String returns x in the form "{x[0],x[1],...}".
 func (x Uint64s) String() string
 
 // Mask8s is a scalable mask for a SIMD vector of 8-bit elements.
@@ -684,9 +674,8 @@ func (x Mask8s) Any() bool
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask8s) ToInt8s() (z Int8s)
 
-// String returns a string representation of SIMD mask x: 1 for an active lane,
-// 0 for an inactive one. Only the vl() lanes that exist at the runtime
-// vector length are shown.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask8s) String() string
 
 // Mask16s is a scalable mask for a SIMD vector of 16-bit elements.
@@ -751,9 +740,8 @@ func (x Mask16s) Any() bool
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask16s) ToInt16s() (z Int16s)
 
-// String returns a string representation of SIMD mask x: 1 for an active lane,
-// 0 for an inactive one. Only the vl() / 2 lanes that exist at the runtime
-// vector length are shown.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask16s) String() string
 
 // Mask32s is a scalable mask for a SIMD vector of 32-bit elements.
@@ -818,9 +806,8 @@ func (x Mask32s) Any() bool
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask32s) ToInt32s() (z Int32s)
 
-// String returns a string representation of SIMD mask x: 1 for an active lane,
-// 0 for an inactive one. Only the vl() / 4 lanes that exist at the runtime
-// vector length are shown.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask32s) String() string
 
 // Mask64s is a scalable mask for a SIMD vector of 64-bit elements.
@@ -885,7 +872,6 @@ func (x Mask64s) Any() bool
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask64s) ToInt64s() (z Int64s)
 
-// String returns a string representation of SIMD mask x: 1 for an active lane,
-// 0 for an inactive one. Only the vl() / 8 lanes that exist at the runtime
-// vector length are shown.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask64s) String() string

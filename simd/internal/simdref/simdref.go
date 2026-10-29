@@ -63,6 +63,358 @@ type (
 	Uint8x64   struct{ v []uint8 }
 )
 
+// Len returns the number of elements in x.
+func (x Float32x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Float32x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Float32x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Float32s) Len() int
+
+// Len returns the number of elements in x.
+func (x Float64x2) Len() int
+
+// Len returns the number of elements in x.
+func (x Float64x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Float64x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Float64s) Len() int
+
+// Len returns the number of elements in x.
+func (x Int8x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Int8x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Int8x64) Len() int
+
+// Len returns the number of elements in x.
+func (x Int8s) Len() int
+
+// Len returns the number of elements in x.
+func (x Int16x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Int16x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Int16x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Int16s) Len() int
+
+// Len returns the number of elements in x.
+func (x Int32x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Int32x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Int32x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Int32s) Len() int
+
+// Len returns the number of elements in x.
+func (x Int64x2) Len() int
+
+// Len returns the number of elements in x.
+func (x Int64x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Int64x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Int64s) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint8x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint8x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint8x64) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint8s) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint16x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint16x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint16x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint16s) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint32x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint32x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint32x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint32s) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint64x2) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint64x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint64x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Uint64s) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask8x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask8x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask8x64) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask8s) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask16x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask16x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask16x32) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask16s) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask32x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask32x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask32x16) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask32s) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask64x2) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask64x4) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask64x8) Len() int
+
+// Len returns the number of elements in x.
+func (x Mask64s) Len() int
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float32x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float32x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float32x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float32s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float64x2) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float64x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float64x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Float64s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int8x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int8x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int8x64) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int8s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int16x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int16x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int16x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int16s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int32x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int32x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int32x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int32s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int64x2) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int64x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int64x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Int64s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint8x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint8x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint8x64) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint8s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint16x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint16x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint16x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint16s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint32x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint32x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint32x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint32s) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint64x2) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint64x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint64x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}".
+func (x Uint64s) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask8x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask8x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask8x64) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask8s) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask16x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask16x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask16x32) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask16s) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask32x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask32x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask32x16) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask32s) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask64x2) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask64x4) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask64x8) String() string
+
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
+func (x Mask64s) String() string
+
 // OnesCount counts the number of one bits ("population count") in
 // each element.
 //
@@ -9786,78 +10138,6 @@ func (x Uint64s) Average(y Uint64s) (z Uint64s)
 //
 //	z[i] = x[i] / y[i]
 //
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float32x4) Div(y Float32x4) (z Float32x4)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float32x8) Div(y Float32x8) (z Float32x8)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float32x16) Div(y Float32x16) (z Float32x16)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float32s) Div(y Float32s) (z Float32s)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float64x2) Div(y Float64x2) (z Float64x2)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float64x4) Div(y Float64x4) (z Float64x4)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float64x8) Div(y Float64x8) (z Float64x8)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-func (x Float64s) Div(y Float64s) (z Float64s)
-
-// Div divides x by y elementwise.
-//
-//	z[i] = x[i] / y[i]
-//
 // The result is rounded toward zero (truncated division), just like Go's /
 // operator. Also like Go's / operator, dividing MinInt8
 // by -1 results in MinInt8, since the true result is unrepresentable.
@@ -10189,6 +10469,78 @@ func (x Uint64x8) Div(y Uint64x8) (z Uint64x8)
 // Unlike Go's / operator, division by zero does not panic and instead produces
 // a zero result for that element.
 func (x Uint64s) Div(y Uint64s) (z Uint64s)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float32x4) Div(y Float32x4) (z Float32x4)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float32x8) Div(y Float32x8) (z Float32x8)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float32x16) Div(y Float32x16) (z Float32x16)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float32s) Div(y Float32s) (z Float32s)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float64x2) Div(y Float64x2) (z Float64x2)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float64x4) Div(y Float64x4) (z Float64x4)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float64x8) Div(y Float64x8) (z Float64x8)
+
+// Div divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+func (x Float64s) Div(y Float64s) (z Float64s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
 // adjacent pairs, returning a vector of half as many elements, each with twice
@@ -11113,46 +11465,6 @@ func (x Uint64s) Mul(y Uint64s) (z Uint64s)
 // MulAdd returns x * y + z elementwise.
 //
 //	w[i] = x[i] * y[i] + z[i]
-func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float32x8) MulAdd(y Float32x8, z Float32x8) (w Float32x8)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float32x16) MulAdd(y Float32x16, z Float32x16) (w Float32x16)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float64x4) MulAdd(y Float64x4, z Float64x4) (w Float64x4)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float64x8) MulAdd(y Float64x8, z Float64x8) (w Float64x8)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
-func (x Float64s) MulAdd(y Float64s, z Float64s) (w Float64s)
-
-// MulAdd returns x * y + z elementwise.
-//
-//	w[i] = x[i] * y[i] + z[i]
 func (x Int8x16) MulAdd(y Int8x16, z Int8x16) (w Int8x16)
 
 // MulAdd returns x * y + z elementwise.
@@ -11309,6 +11621,70 @@ func (x Uint64x8) MulAdd(y Uint64x8, z Uint64x8) (w Uint64x8)
 //
 //	w[i] = x[i] * y[i] + z[i]
 func (x Uint64s) MulAdd(y Uint64s, z Uint64s) (w Uint64s)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float32x8) MulAdd(y Float32x8, z Float32x8) (w Float32x8)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float32x16) MulAdd(y Float32x16, z Float32x16) (w Float32x16)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float64x4) MulAdd(y Float64x4, z Float64x4) (w Float64x4)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float64x8) MulAdd(y Float64x8, z Float64x8) (w Float64x8)
+
+// MulAdd returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+func (x Float64s) MulAdd(y Float64s, z Float64s) (w Float64s)
 
 // Neg returns the elementwise negation of x.
 //

@@ -134,17 +134,9 @@ func ConcatSubPairsSaturatedGrouped[E Ints | Uints, W Width](x, y Vec[E, W]) (z 
 //	z[i] = (x[i] + y[i] + 1) / 2
 func Average[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
-// Div divides x by y elementwise.
+// DivInts divides x by y elementwise.
 //
 //	z[i] = x[i] / y[i]
-//
-// {{if eq .xB "float"}}
-//
-// Division by zero does not panic, and the result follows IEEE 754. That is,
-// dividing a non-zero value by zero results in +/- infinity, and dividing zero
-// by zero results in NaN.
-//
-// {{else}}
 //
 // The result is rounded toward zero (truncated division), just like Go's /
 // operator.{{if eq .xB "int"}} Also like Go's / operator, dividing Min{{title .xE}}
@@ -152,8 +144,19 @@ func Average[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 // Unlike Go's / operator, division by zero does not panic and instead produces
 // a zero result for that element.
 //
-// {{end}}
-func Div[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+//specgen:name Div
+func DivInts[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// DivFloats divides x by y elementwise.
+//
+//	z[i] = x[i] / y[i]
+//
+// Division by zero does not panic, and the result follows IEEE 754. That is,
+// dividing a non-zero value by zero results in +/- infinity, and dividing zero
+// by zero results in NaN.
+//
+//specgen:name Div
+func DivFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
 // adjacent pairs, returning a vector of half as many elements, each with twice
@@ -194,10 +197,22 @@ func Min[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //specgen:commutative
 func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
-// MulAdd returns x * y + z elementwise.
+// MulAddInts returns x * y + z elementwise.
 //
 //	w[i] = x[i] * y[i] + z[i]
-func MulAdd[E Elt, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+//
+//specgen:name MulAdd
+func MulAddInts[E Ints | Uints, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+
+// MulAddFloats returns x * y + z elementwise.
+//
+//	w[i] = x[i] * y[i] + z[i]
+//
+// This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
+// rounding rather than two and no intermediate overflow.
+//
+//specgen:name MulAdd
+func MulAddFloats[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
 
 // Neg returns the elementwise negation of x.
 //

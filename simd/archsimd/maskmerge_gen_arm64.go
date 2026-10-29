@@ -124,14 +124,18 @@ func (x Float64x2) Masked(mask Mask64x2) (z Float64x2)
 //	z[i] = if mask[i] { x[i] } else { y[i] }
 func (x Float64x2) IfElse(mask Mask64x2, y Float64x2) (z Float64x2)
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask8x16) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask16x8) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask32x4) String() string
 
-// String returns a string representation of SIMD mask x.
+// String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
+// means true.
 func (x Mask64x2) String() string
