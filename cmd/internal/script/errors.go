@@ -6,6 +6,7 @@ package script
 
 import (
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/time"
 )
 
 // ErrUnexpectedSuccess indicates that a script command that was expected to
@@ -15,11 +16,13 @@ var ErrUnexpectedSuccess = errors.New("unexpected success")
 // A CommandError describes an error resulting from attempting to execute a
 // specific command.
 type CommandError struct {
-	File string
-	Line int
-	Op   string
-	Args []string
-	Err  error
+	File       string
+	Line       int
+	Op         string
+	Args       []string
+	Err        error
+	Background bool
+	Duration   time.Duration
 }
 
 func (e *CommandError) Error() string
