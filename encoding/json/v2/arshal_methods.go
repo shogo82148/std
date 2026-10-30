@@ -41,6 +41,7 @@ type Marshaler interface {
 // そのメソッドを呼び出す "json" パッケージは、
 // レシーバー型の次に利用可能なJSON表現を使います。
 // これは [Marshal] で説明されている通りです。
+//
 // 実装は [jsontext.Encoder] へのポインターを保持してはいけません。
 //
 // 返されたエラーが [SemanticError] の場合、未設定のフィールドには
@@ -109,7 +110,9 @@ type Unmarshaler interface {
 // あるいは、Decoder を変更せずに [errors.ErrUnsupported] を返しても構いません。
 // そのメソッドを呼び出す "json" パッケージは、
 // レシーバー型の次に利用可能なJSON表現を使います。
-// 実装は [jsontext.Decoder] へのポインターを保持してはいけません。
+//
+// UnmarshalJSONFrom の実装は、メソッドのレシーバーおよび
+// [jsontext.Decoder] へのポインターを保持してはいけません。
 //
 // 返されたエラーが [SemanticError] の場合、未設定のフィールドには
 // [json] によって追加のコンテキストが設定されることがあります。

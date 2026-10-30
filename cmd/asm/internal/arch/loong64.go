@@ -12,6 +12,8 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
+func IsLoong64JIRL(op obj.As) bool
+
 // IsLoong64RDTIME reports whether the op (as defined by an loong64.A*
 // constant) is one of the RDTIMELW/RDTIMEHW/RDTIMED instructions that
 // require special handling.

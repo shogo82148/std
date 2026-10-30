@@ -52,9 +52,28 @@ type Poset struct {
 	values  map[ID]uint32
 	nodes   []posetNode
 	roots   []uint32
-	noneq   map[uint32]bitset
+	noneq   map[uint32]Bitset
 	undo    []posetUndo
 }
+
+// bitset is a bit array for dense indexes.
+type Bitset []uint
+
+func NewBitset(n int) Bitset
+
+func (c *Cache) AllocBitset(n int) Bitset
+
+func (c *Cache) FreeBitset(bs Bitset)
+
+func (bs Bitset) Reset()
+
+func (bs Bitset) Set(idx uint32)
+
+func (bs Bitset) Clear(idx uint32)
+
+func (bs Bitset) Test(idx uint32) bool
+
+func (bs Bitset) Cap() int
 
 // CheckIntegrity verifies internal integrity of a poset. It is intended
 // for debugging purposes.

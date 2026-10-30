@@ -96,6 +96,10 @@ func OP_IRIR(op uint32, i1 uint32, r2 uint32, i3 uint32, r4 uint32) uint32
 // Encoding for the 'b' or 'bl' instruction.
 func OP_B_BL(op uint32, i uint32) uint32
 
+// The following functions are used only within the linker's
+// gentxt, elfsetupplt, addpltsym, gentramp, and gentrampgot.
+func OpCodeI(a obj.As) uint32
+
 func OpCodeIR(a obj.As) uint32
 
 func OpCodeIRR(a obj.As) uint32
