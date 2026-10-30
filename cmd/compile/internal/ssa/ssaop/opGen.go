@@ -5070,6 +5070,9 @@ const (
 	OpARM64VSHRN2_8H
 	OpARM64VSHRN4S
 	OpARM64VSHRN8H
+	OpARM64VSMOVBextr
+	OpARM64VSMOVHextr
+	OpARM64VSMOVSextr
 	OpARM64VSQSHL2Dconst
 	OpARM64VSQSHL4Sconst
 	OpARM64VSQSHL8Hconst
@@ -86640,6 +86643,48 @@ var OpcodeTable = [...]OpInfo{
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VSMOVBextr",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AVSMOV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VSMOVHextr",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AVSMOV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VSMOVSextr",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  1,
+		asm:     arm64.AVSMOV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
 			},
 		},
 	},

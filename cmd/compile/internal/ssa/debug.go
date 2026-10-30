@@ -5,7 +5,6 @@
 package ssa
 
 import (
-	"github.com/shogo82148/std/cmd/compile/internal/abt"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
@@ -15,7 +14,7 @@ import (
 type BlockDebug struct {
 	// State at the start and end of the block. These are initialized,
 	// and updated from new information that flows on back edges.
-	startState, endState abt.T
+	startState, endState slotSet
 	// Use these to avoid excess work in the merge. If none of the
 	// predecessors has changed since the last check, the old answer is
 	// still good.

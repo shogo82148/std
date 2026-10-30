@@ -239,8 +239,9 @@ const (
 	BIG_9  = 256 - 2
 	BIG_10 = 512 - 2
 	BIG_11 = 1024 - 2
-	BIG_12 = 2046
+	BIG_12 = 2048 - 2
 	BIG_16 = 32768 - 2
+	BIG_18 = 131072 - 2
 	BIG_32 = 2147483648 - 2
 )
 
@@ -399,6 +400,7 @@ const (
 	C_SOREG_11
 	C_SOREG_12
 	C_SOREG_16
+	C_SOREG_18
 	C_LOREG_32
 	C_LOREG_64
 	C_ROFF
