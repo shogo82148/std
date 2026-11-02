@@ -16,7 +16,7 @@ workflows:
     '.github/workflows/translate.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
-        - 'anthropics/claude-code-action@v1.0.261'
+        - 'anthropics/claude-code-action@v1.0.265'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -28,9 +28,9 @@ dependencies:
         commit: 'sha1-b7ad1dad31e06c5925ef5d2fc7ad053ef454303e'
         owner_id: 44036562
         repo_id: 192624594
-    'anthropics/claude-code-action@v1.0.261':
-        ref: 'v1.0.261'
-        commit: 'sha1-16f9f71ab9c490faf367f94dd294897edc25be33'
+    'anthropics/claude-code-action@v1.0.265':
+        ref: 'v1.0.265'
+        commit: 'sha1-6d5ae526d25ce88daa2200be073e1a373167f064'
         owner_id: 76263028
         repo_id: 986421638
         uses:
