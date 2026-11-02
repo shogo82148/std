@@ -43,8 +43,9 @@ const DefaultPhysPageSize = _DefaultPhysPageSize
 // The various PC tables record PC deltas pre-divided by PCQuantum.
 const PCQuantum = _PCQuantum
 
-// Int64Align is the required alignment for a 64-bit integer (4 on 32-bit systems, 8 on 64-bit).
-const Int64Align = PtrSize
+// Int64Align は 64 ビット整数に必要なアラインメントです。
+// wasm32 と 64 ビットシステムでは 8、それ以外の 32 ビットシステムでは 4 です。
+const Int64Align = PtrSize + 4*IsWasm32
 
 // MinFrameSize is the size of the system-reserved words at the bottom
 // of a frame (just above the architectural stack pointer).

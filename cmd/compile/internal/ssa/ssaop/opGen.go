@@ -564,8 +564,10 @@ const (
 	OpAMD64NOTQ
 	OpAMD64NOTL
 	OpAMD64BSFQ
-	OpAMD64BSFL
 	OpAMD64BSRQ
+	OpAMD64BSFQinit
+	OpAMD64BSRQinit
+	OpAMD64BSFL
 	OpAMD64BSRL
 	OpAMD64CMOVQEQ
 	OpAMD64CMOVQNE
@@ -6647,11 +6649,15 @@ const (
 	OpWasmF32Sub
 	OpWasmF32Mul
 	OpWasmF32Div
+	OpWasmF32Min
+	OpWasmF32Max
 	OpWasmF64Neg
 	OpWasmF64Add
 	OpWasmF64Sub
 	OpWasmF64Mul
 	OpWasmF64Div
+	OpWasmF64Min
+	OpWasmF64Max
 	OpWasmI64TruncSatF64S
 	OpWasmI64TruncSatF64U
 	OpWasmI64TruncSatF32S
@@ -17923,16 +17929,65 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:    "BSFQ",
-		ArgLen:  1,
-		EarlyOk: true,
-		asm:     x86.ABSFQ,
+		Name:         "BSFQ",
+		ArgLen:       1,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ABSFQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 49135, V2: 0}},
 			},
 			Outputs: []OutputInfo{
-				{1, RegMask{V1: 0, V2: 0}},
+				{0, RegMask{V1: 49135, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "BSRQ",
+		ArgLen:       1,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ABSRQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 49135, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 49135, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "BSFQinit",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ABSFQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 49135, V2: 0}},
+				{1, RegMask{V1: 49135, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 49135, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:         "BSRQinit",
+		ArgLen:       2,
+		ResultInArg0: true,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ABSRQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 49135, V2: 0}},
+				{1, RegMask{V1: 49135, V2: 0}},
+			},
+			Outputs: []OutputInfo{
 				{0, RegMask{V1: 49135, V2: 0}},
 			},
 		},
@@ -17948,21 +18003,6 @@ var OpcodeTable = [...]OpInfo{
 				{0, RegMask{V1: 49135, V2: 0}},
 			},
 			Outputs: []OutputInfo{
-				{0, RegMask{V1: 49135, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:    "BSRQ",
-		ArgLen:  1,
-		EarlyOk: true,
-		asm:     x86.ABSRQ,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 49135, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{1, RegMask{V1: 0, V2: 0}},
 				{0, RegMask{V1: 49135, V2: 0}},
 			},
 		},
@@ -101616,7 +101656,7 @@ var OpcodeTable = [...]OpInfo{
 	{
 		Name:           "LoweredZero",
 		AuxType:        AuxTypeInt64,
-		ArgLen:         3,
+		ArgLen:         2,
 		ClobberFlags:   true,
 		FaultOnNilArg0: true,
 		AddrSinkArg0:   true,
@@ -101624,9 +101664,8 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1048576, V2: 0}},
-				{1, RegMask{V1: 0, V2: 4294967295}},
 			},
-			Clobbers: RegMask{V1: 1048576, V2: 0},
+			Clobbers: RegMask{V1: 1048576, V2: 1},
 		},
 	},
 	{
@@ -109808,6 +109847,36 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "F32Min",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     wasm.AF32Min,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "F32Max",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     wasm.AF32Max,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "F64Neg",
 		ArgLen:  1,
 		EarlyOk: true,
@@ -109871,6 +109940,36 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:  2,
 		EarlyOk: true,
 		asm:     wasm.AF64Div,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281470681743360, V2: 0}},
+				{1, RegMask{V1: 281470681743360, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281470681743360, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "F64Min",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     wasm.AF64Min,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281470681743360, V2: 0}},
+				{1, RegMask{V1: 281470681743360, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281470681743360, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "F64Max",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     wasm.AF64Max,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 281470681743360, V2: 0}},
