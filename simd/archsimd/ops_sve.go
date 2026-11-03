@@ -577,12 +577,44 @@ func (x Uint64s) GreaterEqual(y Uint64s) (z Mask64s)
 //
 //	z[i] = max(x[i], y[i])
 //
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+//
 // Asm: ZFMAX, CPU Feature: SVE
 func (x Float32s) Max(y Float32s) (z Float32s)
 
 // Max returns the elementwise maximum of x and y.
 //
 //	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
 //
 // Asm: ZFMAX, CPU Feature: SVE
 func (x Float64s) Max(y Float64s) (z Float64s)
@@ -647,12 +679,44 @@ func (x Uint64s) Max(y Uint64s) (z Uint64s)
 //
 //	z[i] = min(x[i], y[i])
 //
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+//
 // Asm: ZFMIN, CPU Feature: SVE
 func (x Float32s) Min(y Float32s) (z Float32s)
 
 // Min returns the elementwise minimum of x and y.
 //
 //	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
 //
 // Asm: ZFMIN, CPU Feature: SVE
 func (x Float64s) Min(y Float64s) (z Float64s)
@@ -788,7 +852,8 @@ func (x Uint64s) Mul(y Uint64s) (z Uint64s)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 //
 // Asm: ZFMLA, CPU Feature: SVE
 func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
@@ -798,7 +863,8 @@ func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 //
 // Asm: ZFMLA, CPU Feature: SVE
 func (x Float64s) MulAdd(y Float64s, z Float64s) (w Float64s)
@@ -1063,14 +1129,20 @@ func (x Float64s) ReduceMax() (z float64)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
-//	z = x[0] + x[1] + ...
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
 //
 // Asm: ZFADDVS, CPU Feature: SVE
 func (x Float32s) ReduceSum() (z float32)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
-//	z = x[0] + x[1] + ...
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
 //
 // Asm: ZFADDVD, CPU Feature: SVE
 func (x Float64s) ReduceSum() (z float64)
@@ -1153,12 +1225,20 @@ func (x Uint64s) ShiftAllLeft(shift uint64) (z Uint64s)
 //
 //	z[i] = sqrt(x[i])
 //
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
+//
 // Asm: ZFSQRT, CPU Feature: SVE
 func (x Float32s) Sqrt() (z Float32s)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 //
 // Asm: ZFSQRT, CPU Feature: SVE
 func (x Float64s) Sqrt() (z Float64s)
@@ -1359,9 +1439,13 @@ func (x Uint64s) Xor(y Uint64s) (z Uint64s)
 func (x Uint8s) BitsToInt8() (z Int8s)
 
 // ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
 func (x Uint8s) ConvertToInt8() (z Int8s)
 
 // ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
 func (x Int8s) ConvertToUint8() (z Uint8s)
 
 // ToBits reinterprets the bits of each element of x as type uint8.
@@ -1404,9 +1488,13 @@ func (x Uint8s) ReshapeToUint64s() (z Uint64s)
 func (x Uint16s) BitsToInt16() (z Int16s)
 
 // ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
 func (x Uint16s) ConvertToInt16() (z Int16s)
 
 // ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
 func (x Int16s) ConvertToUint16() (z Uint16s)
 
 // ToBits reinterprets the bits of each element of x as type uint16.
@@ -1455,9 +1543,13 @@ func (x Float32s) ToBits() (z Uint32s)
 func (x Uint32s) BitsToInt32() (z Int32s)
 
 // ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
 func (x Uint32s) ConvertToInt32() (z Int32s)
 
 // ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
 func (x Int32s) ConvertToUint32() (z Uint32s)
 
 // ToBits reinterprets the bits of each element of x as type uint32.
@@ -1506,9 +1598,13 @@ func (x Float64s) ToBits() (z Uint64s)
 func (x Uint64s) BitsToInt64() (z Int64s)
 
 // ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
 func (x Uint64s) ConvertToInt64() (z Int64s)
 
 // ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
 func (x Int64s) ConvertToUint64() (z Uint64s)
 
 // ToBits reinterprets the bits of each element of x as type uint64.

@@ -6,15 +6,25 @@
 
 package spec
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down ({{if eq .xB "int"}}arithmetic{{else}}logical{{end}} shift right).
 //
+// {{if eq .xN 8}}
+//
 //	z[i] = sat(x[i] * 2^scale[i])
 //
-//specgen:require scale=Int{xN}x{xL}
-func ScaleSaturated[E Ints | Uints, W Width, yE Ints](x Vec[E, W], scale Vec[yE, W]) (z Vec[E, W])
+// {{else}}
+//
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k={{.xN}}/{{.scaleN}}. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+//
+// {{end}}
+func ScaleSaturated[E Ints | Uints, W Width](x Vec[E, W], scale Vec[int8, W]) (z Vec[E, W])
 
 // {{if eq .xB "int" -}}
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.

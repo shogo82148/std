@@ -3906,6 +3906,29 @@ func (x Uint64s) IfElse(mask Mask64s, y Uint64s) (z Uint64s)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Float32x4) ConvertToFloat64() (z Float64x4)
 
+// ConvertToFloat64 converts each element of x to float64.
+func (x Float32x8) ConvertToFloat64() (z Float64x8)
+
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
+//
+// The low 2 elements of the result are set. The rest are zero.
+func (x Float64x2) ConvertToFloat32() (z Float32x4)
+
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
+func (x Float64x4) ConvertToFloat32() (z Float32x4)
+
+// ConvertToFloat32 converts each element of x to float32.
+//
+// The results are rounded to the nearest representable value, or ±inf if they
+// cannot be represented.
+func (x Float64x8) ConvertToFloat32() (z Float32x8)
+
 // ConvertToInt8 converts each element of x to int8.
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
@@ -3969,9 +3992,6 @@ func (x Float32x4) ConvertToUint32() (z Uint32x4)
 // If the converted result would be outside the representable range, the result
 // is architecture-dependent.
 func (x Float32x4) ConvertToUint64() (z Uint64x4)
-
-// ConvertToFloat64 converts each element of x to float64.
-func (x Float32x8) ConvertToFloat64() (z Float64x8)
 
 // ConvertToInt8 converts each element of x to int8.
 //
@@ -4089,14 +4109,6 @@ func (x Float32s) ConvertToInt32() (z Int32s)
 // is architecture-dependent.
 func (x Float32s) ConvertToUint32() (z Uint32s)
 
-// ConvertToFloat32 converts each element of x to float32.
-//
-// The results are rounded to the nearest representable value, or ±inf if they
-// cannot be represented.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Float64x2) ConvertToFloat32() (z Float32x4)
-
 // ConvertToInt8 converts each element of x to int8.
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
@@ -4165,12 +4177,6 @@ func (x Float64x2) ConvertToUint32() (z Uint32x4)
 // is architecture-dependent.
 func (x Float64x2) ConvertToUint64() (z Uint64x2)
 
-// ConvertToFloat32 converts each element of x to float32.
-//
-// The results are rounded to the nearest representable value, or ±inf if they
-// cannot be represented.
-func (x Float64x4) ConvertToFloat32() (z Float32x4)
-
 // ConvertToInt8 converts each element of x to int8.
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
@@ -4234,12 +4240,6 @@ func (x Float64x4) ConvertToUint32() (z Uint32x4)
 // If the converted result would be outside the representable range, the result
 // is architecture-dependent.
 func (x Float64x4) ConvertToUint64() (z Uint64x4)
-
-// ConvertToFloat32 converts each element of x to float32.
-//
-// The results are rounded to the nearest representable value, or ±inf if they
-// cannot be represented.
-func (x Float64x8) ConvertToFloat32() (z Float32x8)
 
 // ConvertToInt8 converts each element of x to int8.
 //
@@ -4318,96 +4318,14 @@ func (x Float64s) ConvertToUint64() (z Uint64s)
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int8x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt16 converts each element of x to int16.
-func (x Int8x16) ConvertToInt16() (z Int16x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Int8x16) ConvertToInt32() (z Int32x16)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int8x16) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int8x16) ConvertToUint16() (z Uint16x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int8x16) ConvertToUint32() (z Uint32x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Int8x32) ConvertToInt16() (z Int16x32)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int8x32) ConvertToUint8() (z Uint8x32)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int8x32) ConvertToUint16() (z Uint16x32)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int8x64) ConvertToUint8() (z Uint8x64)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int8s) ConvertToUint8() (z Uint8s)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int16x8) ConvertToFloat32() (z Float32x8)
 
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int16x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Int16x8) ConvertToInt32() (z Int32x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Int16x8) ConvertToInt64() (z Int64x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int16x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int16x8) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int16x8) ConvertToUint32() (z Uint32x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int16x8) ConvertToUint64() (z Uint64x8)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int16x16) ConvertToFloat32() (z Float32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Int16x16) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Int16x16) ConvertToInt32() (z Int32x16)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int16x16) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int16x16) ConvertToUint16() (z Uint16x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int16x16) ConvertToUint32() (z Uint32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Int16x32) ConvertToInt8() (z Int8x32)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int16x32) ConvertToUint8() (z Uint8x32)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int16x32) ConvertToUint16() (z Uint16x32)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int16s) ConvertToUint16() (z Uint16s)
 
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int32x4) ConvertToFloat32() (z Float32x4)
@@ -4415,89 +4333,17 @@ func (x Int32x4) ConvertToFloat32() (z Float32x4)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int32x4) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int32x4) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Int32x4) ConvertToInt64() (z Int64x4)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int32x4) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int32x4) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int32x4) ConvertToUint32() (z Uint32x4)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int32x4) ConvertToUint64() (z Uint64x4)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int32x8) ConvertToFloat32() (z Float32x8)
 
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int32x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Int32x8) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Int32x8) ConvertToInt64() (z Int64x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int32x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int32x8) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int32x8) ConvertToUint32() (z Uint32x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int32x8) ConvertToUint64() (z Uint64x8)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts each element of x to int8.
-func (x Int32x16) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Int32x16) ConvertToInt16() (z Int16x16)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Int32x16) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int32x16) ConvertToUint16() (z Uint16x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int32x16) ConvertToUint32() (z Uint32x16)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int32s) ConvertToFloat32() (z Float32s)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int32s) ConvertToUint32() (z Uint32s)
 
 // ConvertToFloat32 converts each element of x to float32.
 //
@@ -4507,73 +4353,11 @@ func (x Int64x2) ConvertToFloat32() (z Float32x4)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToInt32() (z Int32x4)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Int64x2) ConvertToUint32() (z Uint32x4)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int64x2) ConvertToUint64() (z Uint64x2)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int64x4) ConvertToFloat32() (z Float32x4)
 
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int64x4) ConvertToFloat64() (z Float64x4)
-
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int64x4) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int64x4) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Int64x4) ConvertToInt32() (z Int32x4)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int64x4) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Int64x4) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int64x4) ConvertToUint32() (z Uint32x4)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int64x4) ConvertToUint64() (z Uint64x4)
 
 // ConvertToFloat32 converts each element of x to float32.
 func (x Int64x8) ConvertToFloat32() (z Float32x8)
@@ -4581,69 +4365,11 @@ func (x Int64x8) ConvertToFloat32() (z Float32x8)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int64x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Int64x8) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Int64x8) ConvertToInt32() (z Int32x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Int64x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Int64x8) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Int64x8) ConvertToUint32() (z Uint32x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int64x8) ConvertToUint64() (z Uint64x8)
-
 // ConvertToFloat64 converts each element of x to float64.
 func (x Int64s) ConvertToFloat64() (z Float64s)
 
-// ConvertToUint64 converts each element of x to uint64.
-func (x Int64s) ConvertToUint64() (z Uint64s)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint8x16) ConvertToFloat32() (z Float32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint8x16) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint8x16) ConvertToInt16() (z Int16x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint8x16) ConvertToInt32() (z Int32x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Uint8x16) ConvertToUint16() (z Uint16x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Uint8x16) ConvertToUint32() (z Uint32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint8x32) ConvertToInt8() (z Int8x32)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint8x32) ConvertToInt16() (z Int16x32)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Uint8x32) ConvertToUint16() (z Uint16x32)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint8x64) ConvertToInt8() (z Int8x64)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint8s) ConvertToInt8() (z Int8s)
 
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint16x8) ConvertToFloat32() (z Float32x8)
@@ -4651,60 +4377,8 @@ func (x Uint16x8) ConvertToFloat32() (z Float32x8)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint16x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint16x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint16x8) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint16x8) ConvertToInt32() (z Int32x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint16x8) ConvertToInt64() (z Int64x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint16x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Uint16x8) ConvertToUint32() (z Uint32x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Uint16x8) ConvertToUint64() (z Uint64x8)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint16x16) ConvertToFloat32() (z Float32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint16x16) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint16x16) ConvertToInt16() (z Int16x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint16x16) ConvertToInt32() (z Int32x16)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Uint16x16) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Uint16x16) ConvertToUint32() (z Uint32x16)
-
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint16x32) ConvertToInt8() (z Int8x32)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint16x32) ConvertToInt16() (z Int16x32)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Uint16x32) ConvertToUint8() (z Uint8x32)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint16s) ConvertToInt16() (z Int16s)
 
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x4) ConvertToFloat32() (z Float32x4)
@@ -4712,89 +4386,17 @@ func (x Uint32x4) ConvertToFloat32() (z Float32x4)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint32x4) ConvertToFloat64() (z Float64x4)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint32x4) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint32x4) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint32x4) ConvertToInt32() (z Int32x4)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint32x4) ConvertToInt64() (z Int64x4)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint32x4) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint32x4) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Uint32x4) ConvertToUint64() (z Uint64x4)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x8) ConvertToFloat32() (z Float32x8)
 
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint32x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint32x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint32x8) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint32x8) ConvertToInt32() (z Int32x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint32x8) ConvertToInt64() (z Int64x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint32x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Uint32x8) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint64 converts each element of x to uint64.
-func (x Uint32x8) ConvertToUint64() (z Uint64x8)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint32x16) ConvertToFloat32() (z Float32x16)
 
-// ConvertToInt8 converts each element of x to int8.
-func (x Uint32x16) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint32x16) ConvertToInt16() (z Int16x16)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint32x16) ConvertToInt32() (z Int32x16)
-
-// ConvertToUint8 converts each element of x to uint8.
-func (x Uint32x16) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Uint32x16) ConvertToUint16() (z Uint16x16)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint32s) ConvertToFloat32() (z Float32s)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint32s) ConvertToInt32() (z Int32s)
 
 // ConvertToFloat32 converts each element of x to float32.
 //
@@ -4804,73 +4406,11 @@ func (x Uint64x2) ConvertToFloat32() (z Float32x4)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x2) ConvertToFloat64() (z Float64x2)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToInt32() (z Int32x4)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint64x2) ConvertToInt64() (z Int64x2)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-//
-// The low 2 elements of the result are set. The rest are zero.
-func (x Uint64x2) ConvertToUint32() (z Uint32x4)
-
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint64x4) ConvertToFloat32() (z Float32x4)
 
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x4) ConvertToFloat64() (z Float64x4)
-
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint64x4) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint64x4) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint64x4) ConvertToInt32() (z Int32x4)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint64x4) ConvertToInt64() (z Int64x4)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint64x4) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-//
-// The low 4 elements of the result are set. The rest are zero.
-func (x Uint64x4) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Uint64x4) ConvertToUint32() (z Uint32x4)
 
 // ConvertToFloat32 converts each element of x to float32.
 func (x Uint64x8) ConvertToFloat32() (z Float32x8)
@@ -4878,35 +4418,167 @@ func (x Uint64x8) ConvertToFloat32() (z Float32x8)
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint64x8) ConvertToFloat64() (z Float64x8)
 
-// ConvertToInt8 converts each element of x to int8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint64x8) ConvertToInt8() (z Int8x16)
-
-// ConvertToInt16 converts each element of x to int16.
-func (x Uint64x8) ConvertToInt16() (z Int16x8)
-
-// ConvertToInt32 converts each element of x to int32.
-func (x Uint64x8) ConvertToInt32() (z Int32x8)
-
-// ConvertToInt64 converts each element of x to int64.
-func (x Uint64x8) ConvertToInt64() (z Int64x8)
-
-// ConvertToUint8 converts each element of x to uint8.
-//
-// The low 8 elements of the result are set. The rest are zero.
-func (x Uint64x8) ConvertToUint8() (z Uint8x16)
-
-// ConvertToUint16 converts each element of x to uint16.
-func (x Uint64x8) ConvertToUint16() (z Uint16x8)
-
-// ConvertToUint32 converts each element of x to uint32.
-func (x Uint64x8) ConvertToUint32() (z Uint32x8)
-
 // ConvertToFloat64 converts each element of x to float64.
 func (x Uint64s) ConvertToFloat64() (z Float64s)
 
+// ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
+func (x Int8x16) ConvertToUint8() (z Uint8x16)
+
+// ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
+func (x Int8x32) ConvertToUint8() (z Uint8x32)
+
+// ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
+func (x Int8x64) ConvertToUint8() (z Uint8x64)
+
+// ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
+func (x Int8s) ConvertToUint8() (z Uint8s)
+
+// ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
+func (x Int16x8) ConvertToUint16() (z Uint16x8)
+
+// ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
+func (x Int16x16) ConvertToUint16() (z Uint16x16)
+
+// ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
+func (x Int16x32) ConvertToUint16() (z Uint16x32)
+
+// ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
+func (x Int16s) ConvertToUint16() (z Uint16s)
+
+// ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
+func (x Int32x4) ConvertToUint32() (z Uint32x4)
+
+// ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
+func (x Int32x8) ConvertToUint32() (z Uint32x8)
+
+// ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
+func (x Int32x16) ConvertToUint32() (z Uint32x16)
+
+// ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
+func (x Int32s) ConvertToUint32() (z Uint32s)
+
+// ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
+func (x Int64x2) ConvertToUint64() (z Uint64x2)
+
+// ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
+func (x Int64x4) ConvertToUint64() (z Uint64x4)
+
+// ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
+func (x Int64x8) ConvertToUint64() (z Uint64x8)
+
+// ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
+func (x Int64s) ConvertToUint64() (z Uint64s)
+
+// ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
+func (x Uint8x16) ConvertToInt8() (z Int8x16)
+
+// ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
+func (x Uint8x32) ConvertToInt8() (z Int8x32)
+
+// ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
+func (x Uint8x64) ConvertToInt8() (z Int8x64)
+
+// ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
+func (x Uint8s) ConvertToInt8() (z Int8s)
+
+// ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
+func (x Uint16x8) ConvertToInt16() (z Int16x8)
+
+// ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
+func (x Uint16x16) ConvertToInt16() (z Int16x16)
+
+// ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
+func (x Uint16x32) ConvertToInt16() (z Int16x32)
+
+// ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
+func (x Uint16s) ConvertToInt16() (z Int16s)
+
+// ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
+func (x Uint32x4) ConvertToInt32() (z Int32x4)
+
+// ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
+func (x Uint32x8) ConvertToInt32() (z Int32x8)
+
+// ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
+func (x Uint32x16) ConvertToInt32() (z Int32x16)
+
+// ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
+func (x Uint32s) ConvertToInt32() (z Int32s)
+
 // ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
+func (x Uint64x2) ConvertToInt64() (z Int64x2)
+
+// ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
+func (x Uint64x4) ConvertToInt64() (z Int64x4)
+
+// ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
+func (x Uint64x8) ConvertToInt64() (z Int64x8)
+
+// ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
 func (x Uint64s) ConvertToInt64() (z Int64s)
 
 // ExtendLo8ToInt16 sign-extends
@@ -10548,38 +10220,10 @@ func (x Float64s) Div(y Float64s) (z Float64s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
-func (x Float32x4) DotProductPairs(y Float32x4) (z Float64x2)
-
-// DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, returning a vector of half as many elements, each with twice
-// the input element size.
 //
-//	w[i] = x[i] * y[i]        // Double width
-//	z[j] = w[2*j] + w[2*j+1]
-func (x Float32x8) DotProductPairs(y Float32x8) (z Float64x4)
-
-// DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, returning a vector of half as many elements, each with twice
-// the input element size.
+// While the products can never overflow, the sum wraps on overflow.
 //
-//	w[i] = x[i] * y[i]        // Double width
-//	z[j] = w[2*j] + w[2*j+1]
-func (x Float32x16) DotProductPairs(y Float32x16) (z Float64x8)
-
-// DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, returning a vector of half as many elements, each with twice
-// the input element size.
-//
-//	w[i] = x[i] * y[i]        // Double width
-//	z[j] = w[2*j] + w[2*j+1]
-func (x Float32s) DotProductPairs(y Float32s) (z Float64s)
-
-// DotProductPairs multiplies corresponding elements of x and y, and sums
-// adjacent pairs, returning a vector of half as many elements, each with twice
-// the input element size.
-//
-//	w[i] = x[i] * y[i]        // Double width
-//	z[j] = w[2*j] + w[2*j+1]
+// This happens in exactly one situation: if all four input elements are MinInt8.
 func (x Int8x16) DotProductPairs(y Int8x16) (z Int16x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10588,6 +10232,10 @@ func (x Int8x16) DotProductPairs(y Int8x16) (z Int16x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt8.
 func (x Int8x32) DotProductPairs(y Int8x32) (z Int16x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10596,6 +10244,10 @@ func (x Int8x32) DotProductPairs(y Int8x32) (z Int16x16)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt8.
 func (x Int8x64) DotProductPairs(y Int8x64) (z Int16x32)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10604,6 +10256,10 @@ func (x Int8x64) DotProductPairs(y Int8x64) (z Int16x32)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt8.
 func (x Int8s) DotProductPairs(y Int8s) (z Int16s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10612,6 +10268,10 @@ func (x Int8s) DotProductPairs(y Int8s) (z Int16s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt16.
 func (x Int16x8) DotProductPairs(y Int16x8) (z Int32x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10620,6 +10280,10 @@ func (x Int16x8) DotProductPairs(y Int16x8) (z Int32x4)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt16.
 func (x Int16x16) DotProductPairs(y Int16x16) (z Int32x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10628,6 +10292,10 @@ func (x Int16x16) DotProductPairs(y Int16x16) (z Int32x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt16.
 func (x Int16x32) DotProductPairs(y Int16x32) (z Int32x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10636,6 +10304,10 @@ func (x Int16x32) DotProductPairs(y Int16x32) (z Int32x16)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt16.
 func (x Int16s) DotProductPairs(y Int16s) (z Int32s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10644,6 +10316,10 @@ func (x Int16s) DotProductPairs(y Int16s) (z Int32s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt32.
 func (x Int32x4) DotProductPairs(y Int32x4) (z Int64x2)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10652,6 +10328,10 @@ func (x Int32x4) DotProductPairs(y Int32x4) (z Int64x2)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt32.
 func (x Int32x8) DotProductPairs(y Int32x8) (z Int64x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10660,6 +10340,10 @@ func (x Int32x8) DotProductPairs(y Int32x8) (z Int64x4)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt32.
 func (x Int32x16) DotProductPairs(y Int32x16) (z Int64x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10668,6 +10352,10 @@ func (x Int32x16) DotProductPairs(y Int32x16) (z Int64x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
+//
+// This happens in exactly one situation: if all four input elements are MinInt32.
 func (x Int32s) DotProductPairs(y Int32s) (z Int64s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10676,6 +10364,8 @@ func (x Int32s) DotProductPairs(y Int32s) (z Int64s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint8x16) DotProductPairs(y Uint8x16) (z Uint16x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10684,6 +10374,8 @@ func (x Uint8x16) DotProductPairs(y Uint8x16) (z Uint16x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint8x32) DotProductPairs(y Uint8x32) (z Uint16x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10692,6 +10384,8 @@ func (x Uint8x32) DotProductPairs(y Uint8x32) (z Uint16x16)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint8x64) DotProductPairs(y Uint8x64) (z Uint16x32)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10700,6 +10394,8 @@ func (x Uint8x64) DotProductPairs(y Uint8x64) (z Uint16x32)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint8s) DotProductPairs(y Uint8s) (z Uint16s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10708,6 +10404,8 @@ func (x Uint8s) DotProductPairs(y Uint8s) (z Uint16s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint16x8) DotProductPairs(y Uint16x8) (z Uint32x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10716,6 +10414,8 @@ func (x Uint16x8) DotProductPairs(y Uint16x8) (z Uint32x4)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint16x16) DotProductPairs(y Uint16x16) (z Uint32x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10724,6 +10424,8 @@ func (x Uint16x16) DotProductPairs(y Uint16x16) (z Uint32x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint16x32) DotProductPairs(y Uint16x32) (z Uint32x16)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10732,6 +10434,8 @@ func (x Uint16x32) DotProductPairs(y Uint16x32) (z Uint32x16)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint16s) DotProductPairs(y Uint16s) (z Uint32s)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10740,6 +10444,8 @@ func (x Uint16s) DotProductPairs(y Uint16s) (z Uint32s)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint32x4) DotProductPairs(y Uint32x4) (z Uint64x2)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10748,6 +10454,8 @@ func (x Uint32x4) DotProductPairs(y Uint32x4) (z Uint64x2)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint32x8) DotProductPairs(y Uint32x8) (z Uint64x4)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10756,6 +10464,8 @@ func (x Uint32x8) DotProductPairs(y Uint32x8) (z Uint64x4)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint32x16) DotProductPairs(y Uint32x16) (z Uint64x8)
 
 // DotProductPairs multiplies corresponding elements of x and y, and sums
@@ -10764,6 +10474,8 @@ func (x Uint32x16) DotProductPairs(y Uint32x16) (z Uint64x8)
 //
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
+//
+// While the products can never overflow, the sum wraps on overflow.
 func (x Uint32s) DotProductPairs(y Uint32s) (z Uint64s)
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
@@ -10861,46 +10573,6 @@ func (x Uint32x16) DotProductPairsSaturated(y Int32x16) (z Int64x8)
 //	w[i] = sat(x[i] * y[i])        // Double width
 //	z[j] = sat(w[2*j] + w[2*j+1])
 func (x Uint32s) DotProductPairsSaturated(y Int32s) (z Int64s)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float32x4) Max(y Float32x4) (z Float32x4)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float32x8) Max(y Float32x8) (z Float32x8)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float32x16) Max(y Float32x16) (z Float32x16)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float32s) Max(y Float32s) (z Float32s)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float64x2) Max(y Float64x2) (z Float64x2)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float64x4) Max(y Float64x4) (z Float64x4)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float64x8) Max(y Float64x8) (z Float64x8)
-
-// Max returns the elementwise maximum of x and y.
-//
-//	z[i] = max(x[i], y[i])
-func (x Float64s) Max(y Float64s) (z Float64s)
 
 // Max returns the elementwise maximum of x and y.
 //
@@ -11062,45 +10734,173 @@ func (x Uint64x8) Max(y Uint64x8) (z Uint64x8)
 //	z[i] = max(x[i], y[i])
 func (x Uint64s) Max(y Uint64s) (z Uint64s)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float32x4) Min(y Float32x4) (z Float32x4)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float32x4) Max(y Float32x4) (z Float32x4)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float32x8) Min(y Float32x8) (z Float32x8)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float32x8) Max(y Float32x8) (z Float32x8)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float32x16) Min(y Float32x16) (z Float32x16)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float32x16) Max(y Float32x16) (z Float32x16)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float32s) Min(y Float32s) (z Float32s)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float32s) Max(y Float32s) (z Float32s)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float64x2) Min(y Float64x2) (z Float64x2)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float64x2) Max(y Float64x2) (z Float64x2)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float64x4) Min(y Float64x4) (z Float64x4)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float64x4) Max(y Float64x4) (z Float64x4)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float64x8) Min(y Float64x8) (z Float64x8)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float64x8) Max(y Float64x8) (z Float64x8)
 
-// Min returns the elementwise minimum of x and y.
+// Max returns the elementwise maximum of x and y.
 //
-//	z[i] = min(x[i], y[i])
-func (x Float64s) Min(y Float64s) (z Float64s)
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+func (x Float64s) Max(y Float64s) (z Float64s)
 
 // Min returns the elementwise minimum of x and y.
 //
@@ -11261,6 +11061,174 @@ func (x Uint64x8) Min(y Uint64x8) (z Uint64x8)
 //
 //	z[i] = min(x[i], y[i])
 func (x Uint64s) Min(y Uint64s) (z Uint64s)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float32x4) Min(y Float32x4) (z Float32x4)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float32x8) Min(y Float32x8) (z Float32x8)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float32x16) Min(y Float32x16) (z Float32x16)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float32s) Min(y Float32s) (z Float32s)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float64x2) Min(y Float64x2) (z Float64x2)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float64x4) Min(y Float64x4) (z Float64x4)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float64x8) Min(y Float64x8) (z Float64x8)
+
+// Min returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+func (x Float64s) Min(y Float64s) (z Float64s)
 
 // Mul returns the elementwise product of x and y.
 //
@@ -11627,7 +11595,8 @@ func (x Uint64s) MulAdd(y Uint64s, z Uint64s) (w Uint64s)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
 
 // MulAdd returns x * y + z elementwise.
@@ -11635,7 +11604,8 @@ func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float32x8) MulAdd(y Float32x8, z Float32x8) (w Float32x8)
 
 // MulAdd returns x * y + z elementwise.
@@ -11643,7 +11613,8 @@ func (x Float32x8) MulAdd(y Float32x8, z Float32x8) (w Float32x8)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float32x16) MulAdd(y Float32x16, z Float32x16) (w Float32x16)
 
 // MulAdd returns x * y + z elementwise.
@@ -11651,7 +11622,8 @@ func (x Float32x16) MulAdd(y Float32x16, z Float32x16) (w Float32x16)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
 
 // MulAdd returns x * y + z elementwise.
@@ -11659,7 +11631,8 @@ func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
 
 // MulAdd returns x * y + z elementwise.
@@ -11667,7 +11640,8 @@ func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float64x4) MulAdd(y Float64x4, z Float64x4) (w Float64x4)
 
 // MulAdd returns x * y + z elementwise.
@@ -11675,7 +11649,8 @@ func (x Float64x4) MulAdd(y Float64x4, z Float64x4) (w Float64x4)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float64x8) MulAdd(y Float64x8, z Float64x8) (w Float64x8)
 
 // MulAdd returns x * y + z elementwise.
@@ -11683,7 +11658,8 @@ func (x Float64x8) MulAdd(y Float64x8, z Float64x8) (w Float64x8)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 func (x Float64s) MulAdd(y Float64s, z Float64s) (w Float64s)
 
 // Neg returns the elementwise negation of x.
@@ -11805,46 +11781,6 @@ func (x Float64x8) Neg() (z Float64x8)
 //
 //	z[i] = -x[i]
 func (x Float64s) Neg() (z Float64s)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float32x4) ReduceSum() (z float32)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float32x8) ReduceSum() (z float32)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float32x16) ReduceSum() (z float32)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float32s) ReduceSum() (z float32)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float64x2) ReduceSum() (z float64)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float64x4) ReduceSum() (z float64)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float64x8) ReduceSum() (z float64)
-
-// ReduceSum returns the scalar sum of the elements of x.
-//
-//	z = x[0] + x[1] + ...
-func (x Float64s) ReduceSum() (z float64)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
@@ -12005,6 +11941,67 @@ func (x Uint64x8) ReduceSum() (z uint64)
 //
 //	z = x[0] + x[1] + ...
 func (x Uint64s) ReduceSum() (z uint64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = (x[0] + x[1]) + (x[2] + x[3])
+func (x Float32x4) ReduceSum() (z float32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+func (x Float32x8) ReduceSum() (z float32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+func (x Float32x16) ReduceSum() (z float32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+func (x Float32s) ReduceSum() (z float32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1]
+func (x Float64x2) ReduceSum() (z float64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = (x[0] + x[1]) + (x[2] + x[3])
+func (x Float64x4) ReduceSum() (z float64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+func (x Float64x8) ReduceSum() (z float64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+func (x Float64s) ReduceSum() (z float64)
 
 // ReduceMax returns the largest element of x.
 //
@@ -12209,41 +12206,73 @@ func (x Uint64s) ReduceMax() (z uint64)
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float32x4) Sqrt() (z Float32x4)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float32x8) Sqrt() (z Float32x8)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float32x16) Sqrt() (z Float32x16)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float32s) Sqrt() (z Float32s)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float64x2) Sqrt() (z Float64x2)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float64x4) Sqrt() (z Float64x4)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float64x8) Sqrt() (z Float64x8)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func (x Float64s) Sqrt() (z Float64s)
 
 // ToBits reinterprets the bits of each element of x as type uint8.
@@ -12918,7 +12947,8 @@ func (x Uint64s) ReshapeToUint16s() (z Uint16s)
 //	⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64s) ReshapeToUint32s() (z Uint32s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
@@ -12926,7 +12956,8 @@ func (x Uint64s) ReshapeToUint32s() (z Uint32s)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x16) ScaleSaturated(scale Int8x16) (z Int8x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
@@ -12934,7 +12965,8 @@ func (x Int8x16) ScaleSaturated(scale Int8x16) (z Int8x16)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x32) ScaleSaturated(scale Int8x32) (z Int8x32)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
@@ -12942,7 +12974,8 @@ func (x Int8x32) ScaleSaturated(scale Int8x32) (z Int8x32)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8x64) ScaleSaturated(scale Int8x64) (z Int8x64)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
@@ -12950,103 +12983,152 @@ func (x Int8x64) ScaleSaturated(scale Int8x64) (z Int8x64)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Int8s) ScaleSaturated(scale Int8s) (z Int8s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int16x8) ScaleSaturated(scale Int16x8) (z Int16x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int16x8) ScaleSaturated(scale Int8x16) (z Int16x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int16x16) ScaleSaturated(scale Int16x16) (z Int16x16)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int16x16) ScaleSaturated(scale Int8x32) (z Int16x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int16x32) ScaleSaturated(scale Int16x32) (z Int16x32)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int16x32) ScaleSaturated(scale Int8x64) (z Int16x32)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int16s) ScaleSaturated(scale Int16s) (z Int16s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int16s) ScaleSaturated(scale Int8s) (z Int16s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int32x4) ScaleSaturated(scale Int32x4) (z Int32x4)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int32x4) ScaleSaturated(scale Int8x16) (z Int32x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int32x8) ScaleSaturated(scale Int32x8) (z Int32x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int32x8) ScaleSaturated(scale Int8x32) (z Int32x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int32x16) ScaleSaturated(scale Int32x16) (z Int32x16)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int32x16) ScaleSaturated(scale Int8x64) (z Int32x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int32s) ScaleSaturated(scale Int32s) (z Int32s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int32s) ScaleSaturated(scale Int8s) (z Int32s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int64x2) ScaleSaturated(scale Int64x2) (z Int64x2)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int64x2) ScaleSaturated(scale Int8x16) (z Int64x2)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int64x4) ScaleSaturated(scale Int64x4) (z Int64x4)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int64x4) ScaleSaturated(scale Int8x32) (z Int64x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int64x8) ScaleSaturated(scale Int64x8) (z Int64x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int64x8) ScaleSaturated(scale Int8x64) (z Int64x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Int64s) ScaleSaturated(scale Int64s) (z Int64s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Int64s) ScaleSaturated(scale Int8s) (z Int64s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
@@ -13054,7 +13136,8 @@ func (x Int64s) ScaleSaturated(scale Int64s) (z Int64s)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x16) ScaleSaturated(scale Int8x16) (z Uint8x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
@@ -13062,7 +13145,8 @@ func (x Uint8x16) ScaleSaturated(scale Int8x16) (z Uint8x16)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x32) ScaleSaturated(scale Int8x32) (z Uint8x32)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
@@ -13070,7 +13154,8 @@ func (x Uint8x32) ScaleSaturated(scale Int8x32) (z Uint8x32)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8x64) ScaleSaturated(scale Int8x64) (z Uint8x64)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
@@ -13078,101 +13163,149 @@ func (x Uint8x64) ScaleSaturated(scale Int8x64) (z Uint8x64)
 //	z[i] = sat(x[i] * 2^scale[i])
 func (x Uint8s) ScaleSaturated(scale Int8s) (z Uint8s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint16x8) ScaleSaturated(scale Int16x8) (z Uint16x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint16x8) ScaleSaturated(scale Int8x16) (z Uint16x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint16x16) ScaleSaturated(scale Int16x16) (z Uint16x16)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint16x16) ScaleSaturated(scale Int8x32) (z Uint16x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint16x32) ScaleSaturated(scale Int16x32) (z Uint16x32)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint16x32) ScaleSaturated(scale Int8x64) (z Uint16x32)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint16s) ScaleSaturated(scale Int16s) (z Uint16s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint16s) ScaleSaturated(scale Int8s) (z Uint16s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint32x4) ScaleSaturated(scale Int32x4) (z Uint32x4)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint32x4) ScaleSaturated(scale Int8x16) (z Uint32x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint32x8) ScaleSaturated(scale Int32x8) (z Uint32x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint32x8) ScaleSaturated(scale Int8x32) (z Uint32x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint32x16) ScaleSaturated(scale Int32x16) (z Uint32x16)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint32x16) ScaleSaturated(scale Int8x64) (z Uint32x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint32s) ScaleSaturated(scale Int32s) (z Uint32s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint32s) ScaleSaturated(scale Int8s) (z Uint32s)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint64x2) ScaleSaturated(scale Int64x2) (z Uint64x2)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint64x2) ScaleSaturated(scale Int8x16) (z Uint64x2)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint64x4) ScaleSaturated(scale Int64x4) (z Uint64x4)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint64x4) ScaleSaturated(scale Int8x32) (z Uint64x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint64x8) ScaleSaturated(scale Int64x8) (z Uint64x8)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint64x8) ScaleSaturated(scale Int8x64) (z Uint64x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
-func (x Uint64s) ScaleSaturated(scale Int64s) (z Uint64s)
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
+func (x Uint64s) ScaleSaturated(scale Int8s) (z Uint64s)
 
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
 // If shift is greater than the element width, the result is 0 or -1.

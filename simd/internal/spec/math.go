@@ -165,9 +165,14 @@ func DivFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //	w[i] = x[i] * y[i]        // Double width
 //	z[j] = w[2*j] + w[2*j+1]
 //
+// While the products can never overflow, the sum wraps on overflow.
+// {{if eq .xB "int"}}
+// This happens in exactly one situation: if all four input elements are Min{{title .xE}}.
+// {{end}}
+//
 //specgen:commutative
 //specgen:require z={xB}{xN*2}x{xL/2}
-func DotProductPairs[E Nums, W Width, zE Nums](x, y Vec[E, W]) (z Vec[zE, W])
+func DotProductPairs[E Ints | Uints, W Width, zE Nums](x, y Vec[E, W]) (z Vec[zE, W])
 
 // DotProductPairsSaturated multiplies corresponding elements of x and y, and
 // sums adjacent pairs, all with saturation. It returns a vector of half as many
@@ -180,15 +185,67 @@ func DotProductPairs[E Nums, W Width, zE Nums](x, y Vec[E, W]) (z Vec[zE, W])
 //specgen:require y=Int{xN}x{xL} z=Int{xN*2}x{xL/2}
 func DotProductPairsSaturated[xE Uints, xW Width, yE Ints, zE Ints](x Vec[xE, xW], y Vec[yE, xW]) (z Vec[zE, xW])
 
-// Max returns the elementwise maximum of x and y.
+// MaxInts returns the elementwise maximum of x and y.
 //
 //	z[i] = max(x[i], y[i])
-func Max[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+//
+//specgen:name Max
+//specgen:commutative
+func MaxInts[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
-// Min returns the elementwise minimum of x and y.
+// MaxFloats returns the elementwise maximum of x and y.
+//
+//	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+//
+//specgen:name Max
+func MaxFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[Variation[E], W])
+
+// MinInts returns the elementwise minimum of x and y.
 //
 //	z[i] = min(x[i], y[i])
-func Min[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+//
+//specgen:name Min
+//specgen:commutative
+func MinInts[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// MinFloats returns the elementwise minimum of x and y.
+//
+//	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+//
+//specgen:name Min
+func MinFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[Variation[E], W])
 
 // Mul returns the elementwise product of x and y.
 //
@@ -209,20 +266,49 @@ func MulAddInts[E Ints | Uints, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 //
 //specgen:name MulAdd
-func MulAddFloats[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+func MulAddFloats[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[Variation[E], W])
 
 // Neg returns the elementwise negation of x.
 //
 //	z[i] = -x[i]
 func Neg[E Ints | Floats, W Width](x Vec[E, W]) (z Vec[E, W])
 
-// ReduceSum returns the scalar sum of the elements of x.
+// ReduceSumInts returns the scalar sum of the elements of x.
 //
 //	z = x[0] + x[1] + ...
-func ReduceSum[E Elt, W Width](x Vec[E, W]) (z E)
+//
+//specgen:name ReduceSum
+func ReduceSumInts[E Ints | Uints, W Width](x Vec[E, W]) (z E)
+
+// ReduceSumFloats returns the scalar sum of the elements of x.
+//
+// {{if eq .xL 2}}
+//
+//	z = x[0] + x[1]
+//
+// {{else}}
+//
+// This uses repeated pairwise summation, which may affect the final precision
+// of the result.
+//
+// {{if eq .xL 4}}
+//
+//	z = (x[0] + x[1]) + (x[2] + x[3])
+//
+// {{else}}
+//
+//	z = ((x[0] + x[1]) + (x[2] + x[3])) + ...
+//
+// {{end}}
+//
+// {{end}}
+//
+//specgen:name ReduceSum
+func ReduceSumFloats[E Floats, W Width](x Vec[E, W]) (z E)
 
 // ReduceMax returns the largest element of x.
 //
@@ -232,4 +318,8 @@ func ReduceMax[E Elt, W Width](x Vec[E, W]) (z E)
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 func Sqrt[E Floats, W Width](x Vec[E, W]) (z Vec[E, W])
