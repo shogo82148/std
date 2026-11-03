@@ -1301,12 +1301,44 @@ func (table Uint8x16) LookupOrZero(indices Uint8x16) Uint8x16
 //
 //	z[i] = max(x[i], y[i])
 //
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
+//
 // Asm: VFMAX
 func (x Float32x4) Max(y Float32x4) (z Float32x4)
 
 // Max returns the elementwise maximum of x and y.
 //
 //	z[i] = max(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 maximum algorithm, which also agrees with Go's
+// max built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     y     y
+//	x     -Inf  x     x
+//	+Inf  y     +Inf  +Inf
+//	x     +Inf  +Inf  +Inf
+//	+0    -0    +0    -0
+//	-0    +0    +0    +0
 //
 // Asm: VFMAX
 func (x Float64x2) Max(y Float64x2) (z Float64x2)
@@ -1357,12 +1389,44 @@ func (x Uint32x4) Max(y Uint32x4) (z Uint32x4)
 //
 //	z[i] = min(x[i], y[i])
 //
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
+//
 // Asm: VFMIN
 func (x Float32x4) Min(y Float32x4) (z Float32x4)
 
 // Min returns the elementwise minimum of x and y.
 //
 //	z[i] = min(x[i], y[i])
+//
+// The handling of NaN and signed zeroes is architecture-dependent. ARM64 and
+// WASM follow the IEEE 754-2019 minimum algorithm, which also agrees with Go's
+// min built-in. AMD64 handles these differently. Notably, AMD64 is
+// non-commutative.
+//
+//	x     y     IEEE  AMD64
+//	----- ----- ----- -----
+//	NaN   y     NaN   y
+//	x     NaN   NaN   NaN
+//	-Inf  y     -Inf  -Inf
+//	x     -Inf  -Inf  -Inf
+//	+Inf  y     y     y
+//	x     +Inf  x     x
+//	+0    -0    -0    -0
+//	-0    +0    -0    +0
 //
 // Asm: VFMIN
 func (x Float64x2) Min(y Float64x2) (z Float64x2)
@@ -1470,7 +1534,8 @@ func (x Uint32x4) Mul(y Uint32x4) (z Uint32x4)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 //
 // Asm: VFMLA
 func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
@@ -1480,7 +1545,8 @@ func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
 //	w[i] = x[i] * y[i] + z[i]
 //
 // This performs a fused multiply-add, computing x[i]*y[i] + z[i] with a single
-// rounding rather than two and no intermediate overflow.
+// rounding rather than two and no intermediate overflow, except on wasm, where
+// it rounds x[i]*y[i] before adding z[i].
 //
 // Asm: VFMLA
 func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
@@ -1849,7 +1915,8 @@ func (x Int64x2) SaturateToUint32() Uint32x4
 // Asm: VUQXTN
 func (x Uint64x2) SaturateToUint32() Uint32x4
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
@@ -1859,37 +1926,50 @@ func (x Uint64x2) SaturateToUint32() Uint32x4
 // Asm: VSQSHL
 func (x Int8x16) ScaleSaturated(scale Int8x16) (z Int8x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VSQSHL
-func (x Int16x8) ScaleSaturated(scale Int16x8) (z Int16x8)
+func (x Int16x8) ScaleSaturated(scale Int8x16) (z Int16x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VSQSHL
-func (x Int32x4) ScaleSaturated(scale Int32x4) (z Int32x4)
+func (x Int32x4) ScaleSaturated(scale Int8x16) (z Int32x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (arithmetic shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VSQSHL
-func (x Int64x2) ScaleSaturated(scale Int64x2) (z Int64x2)
+func (x Int64x2) ScaleSaturated(scale Int8x16) (z Int64x2)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
@@ -1899,35 +1979,47 @@ func (x Int64x2) ScaleSaturated(scale Int64x2) (z Int64x2)
 // Asm: VUQSHL
 func (x Uint8x16) ScaleSaturated(scale Int8x16) (z Uint8x16)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=16/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VUQSHL
-func (x Uint16x8) ScaleSaturated(scale Int16x8) (z Uint16x8)
+func (x Uint16x8) ScaleSaturated(scale Int8x16) (z Uint16x8)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=32/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VUQSHL
-func (x Uint32x4) ScaleSaturated(scale Int32x4) (z Uint32x4)
+func (x Uint32x4) ScaleSaturated(scale Int8x16) (z Uint32x4)
 
-// ScaleSaturated multiplies x[i] by 2^scale[i], with saturation.
+// ScaleSaturated multiplies each element of x by a power of two given by scale,
+// with saturation.
 //
 // Positive exponents scale up (shift left with saturation). Negative exponents
 // scale down (logical shift right).
 //
-//	z[i] = sat(x[i] * 2^scale[i])
+// scale has the same total width as x, but its elements are int8. Only every
+// k'th element of scale is used, where k=64/8. The rest are ignored.
+//
+//	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // Asm: VUQSHL
-func (x Uint64x2) ScaleSaturated(scale Int64x2) (z Uint64x2)
+func (x Uint64x2) ScaleSaturated(scale Int8x16) (z Uint64x2)
 
 // SetElem returns x with the index'th element set to y.
 //
@@ -2179,12 +2271,20 @@ func (x Uint64x2) ShiftAllRight(shift uint64) (z Uint64x2)
 //
 //	z[i] = sqrt(x[i])
 //
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
+//
 // Asm: VFSQRT
 func (x Float32x4) Sqrt() (z Float32x4)
 
 // Sqrt returns the elementwise square root of x.
 //
 //	z[i] = sqrt(x[i])
+//
+// The result is correctly rounded. Sqrt(+Inf) = +Inf, Sqrt(±0) = ±0, and
+// Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
+// are unspecified.
 //
 // Asm: VFSQRT
 func (x Float64x2) Sqrt() (z Float64x2)
@@ -2421,9 +2521,13 @@ func (x Uint64x2) Xor(y Uint64x2) (z Uint64x2)
 func (x Uint8x16) BitsToInt8() (z Int8x16)
 
 // ConvertToInt8 converts each element of x to int8.
+//
+// This wraps unrepresentable values.
 func (x Uint8x16) ConvertToInt8() (z Int8x16)
 
 // ConvertToUint8 converts each element of x to uint8.
+//
+// This wraps unrepresentable values.
 func (x Int8x16) ConvertToUint8() (z Uint8x16)
 
 // ToBits reinterprets the bits of each element of x as type uint8.
@@ -2466,9 +2570,13 @@ func (x Uint8x16) ReshapeToUint64s() (z Uint64x2)
 func (x Uint16x8) BitsToInt16() (z Int16x8)
 
 // ConvertToInt16 converts each element of x to int16.
+//
+// This wraps unrepresentable values.
 func (x Uint16x8) ConvertToInt16() (z Int16x8)
 
 // ConvertToUint16 converts each element of x to uint16.
+//
+// This wraps unrepresentable values.
 func (x Int16x8) ConvertToUint16() (z Uint16x8)
 
 // ToBits reinterprets the bits of each element of x as type uint16.
@@ -2517,9 +2625,13 @@ func (x Float32x4) ToBits() (z Uint32x4)
 func (x Uint32x4) BitsToInt32() (z Int32x4)
 
 // ConvertToInt32 converts each element of x to int32.
+//
+// This wraps unrepresentable values.
 func (x Uint32x4) ConvertToInt32() (z Int32x4)
 
 // ConvertToUint32 converts each element of x to uint32.
+//
+// This wraps unrepresentable values.
 func (x Int32x4) ConvertToUint32() (z Uint32x4)
 
 // ToBits reinterprets the bits of each element of x as type uint32.
@@ -2568,9 +2680,13 @@ func (x Float64x2) ToBits() (z Uint64x2)
 func (x Uint64x2) BitsToInt64() (z Int64x2)
 
 // ConvertToInt64 converts each element of x to int64.
+//
+// This wraps unrepresentable values.
 func (x Uint64x2) ConvertToInt64() (z Int64x2)
 
 // ConvertToUint64 converts each element of x to uint64.
+//
+// This wraps unrepresentable values.
 func (x Int64x2) ConvertToUint64() (z Uint64x2)
 
 // ToBits reinterprets the bits of each element of x as type uint64.

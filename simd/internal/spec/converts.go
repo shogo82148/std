@@ -6,17 +6,9 @@
 
 package spec
 
-// ConvertToZ converts each element of x to {{.zE}}.
+// ConvertFloatToFloat converts each element of x to {{.zE}}.
 //
-// {{/* float -> int/uint rounding */}}
-// {{ if and (eq .xB "float") (or (eq .zB "int") (eq .zB "uint")) }}
-// When a conversion is inexact, this truncates the result (rounds toward zero).
-// If the converted result would be outside the representable range, the result
-// is architecture-dependent.
-// {{ end }}
-//
-// {{/* float -> float rounding */}}
-// {{ if and (eq .xB "float") (eq .zB "float") (lt .zN .xN) }}
+// {{ if lt .zN .xN }}
 // The results are rounded to the nearest representable value, or ±inf if they
 // cannot be represented.
 // {{ end }}
@@ -27,7 +19,43 @@ package spec
 //
 //specgen:name ConvertTo{{.zE | title}}
 //specgen:require z={zB}{zN}x{xL} zE!=xE
-func ConvertToZ[xE Nums, xW Width, zE Nums, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+func ConvertFloatToFloat[xE Floats, xW Width, zE Floats, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+
+// ConvertFloatToInt converts each element of x to {{.zE}}.
+//
+// When a conversion is inexact, this truncates the result (rounds toward zero).
+// If the converted result would be outside the representable range, the result
+// is architecture-dependent.
+//
+// {{if lt .xL .zL}}
+// The low {{.xL}} elements of the result are set. The rest are zero.
+// {{end}}
+//
+//specgen:name ConvertTo{{.zE | title}}
+//specgen:require z={zB}{zN}x{xL}
+func ConvertFloatToInt[xE Floats, xW Width, zE Ints | Uints, zW Width](x Vec[xE, xW]) (z Vec[Variation[zE], zW])
+
+// ConvertIntToFloat converts each element of x to {{.zE}}.
+//
+// {{if lt .xL .zL}}
+// The low {{.xL}} elements of the result are set. The rest are zero.
+// {{end}}
+//
+//specgen:name ConvertTo{{.zE | title}}
+//specgen:require z={zB}{zN}x{xL}
+func ConvertIntToFloat[xE Ints | Uints, xW Width, zE Floats, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+
+// ConvertIntToUint converts each element of x to {{.zE}}.
+//
+// This wraps unrepresentable values.
+//
+// {{if lt .xL .zL}}
+// The low {{.xL}} elements of the result are set. The rest are zero.
+// {{end}}
+//
+//specgen:name ConvertTo{{.zE | title}}
+//specgen:require z={zB}{zN}x{xL} zB!=xB zN=xN
+func ConvertIntToUint[xE Ints | Uints, xW Width, zE Ints | Uints, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
 
 // ExtendLoLToZ {{if eq .xB "int"}}sign-{{else}}zero-{{end}}extends
 // the lowest {{.zL}} vector elements to {{.zE}}.

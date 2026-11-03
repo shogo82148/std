@@ -278,6 +278,8 @@ func (f *Func) ConstNil(t *types.Type) *Value
 
 func (f *Func) ConstEmptyString(t *types.Type) *Value
 
+func (f *Func) ConstSIMD(t *types.Type) *Value
+
 func (f *Func) ConstOffPtrSP(t *types.Type, c int64, sp *Value) *Value
 
 func (f *Func) Frontend() Frontend

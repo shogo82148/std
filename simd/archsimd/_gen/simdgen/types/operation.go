@@ -19,9 +19,39 @@ type RawOperation struct {
 	Asm          string
 	Arrangement  *string
 	OperandOrder *string
-	// Optional tag to indicate this operation is paired with special generic->machine ssa lowering rules.
-	// Should be paired with special templates in gen_simdrules.go
-	SpecialLower *string
+
+	// Sftimm, if true, adds rules that fold a shift by a constant scalar into
+	// the immediate form of the machine op (Asm + "const").
+	Sftimm *bool
+	// AsmRules are rules on the machine op, each of the form
+	// "<cond> => <result>", where <cond> is required. simdgen supplies the
+	// left-hand side: the machine op applied to a pattern variable for each
+	// of its operands. These are named by position, as in the default
+	// lowering rule:
+	//
+	//	[a]      the immediate, if the operation has a variable immediate
+	//	         (for a constVarImm operation, a includes the constant offset)
+	//	x, y, z  the vector operands, in order (there are at most three)
+	//	mask     the mask, if the machine op is masked
+	//
+	// <cond> and <result> refer to these variables. For example, "a==0 => x"
+	// on VSSHR4S produces
+	//
+	//	(VSSHR4S [a] x) && a==0 => x
+	//
+	// Since the left-hand side comes from the operation's shape, one asm rule
+	// covers every machine op the operation expands to, including masked
+	// variants, which add "mask" to the left-hand side. Format specifiers are
+	// not expanded in asm rules.
+	AsmRules *[]string
+	// LowerRules replace the default lowering rule of the generic op. They are
+	// complete rules, usually on %g, and are emitted in order, so a rule for a
+	// special case can precede a general rule.
+	LowerRules *[]string
+	// PeepholeRules are complete rules in addition to the default lowering
+	// rule, usually on the machine op (%h).
+	PeepholeRules *[]string
+
 	// HiHalfAsm is the assembly mnemonic for the hi-half "2" variant of this operation,
 	// specified in go_arm64.yaml (e.g., "VSHRN2", "VUMULL2").
 	// When non-nil, simdgen generates the "2" variant machine op and folding rules.
