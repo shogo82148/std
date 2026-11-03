@@ -83,7 +83,7 @@ func ScalableWidth() int
 // executing the spec (for example, to match the runtime vector length of a
 // target hardware architecture during conformance testing).
 //
-// bits must be a positive multiple of 128 and at most 2048 bits.
+// bits must be a power of two between 128 and 2048, inclusive.
 //
 // SetScalableWidth returns a restore function that clears the scalable width.
 //
@@ -105,7 +105,7 @@ type WidthScalable struct{}
 // This is implemented as a Go slice, which must have length `width[W]() / elemBits[E]()`.
 //
 // This type is known to specgen.
-type Vec[E EltOrMask, W Width] []E
+type Vec[E any, W Width] []E
 
 // Array represents an array of lanes[E,W]() elements.
 //

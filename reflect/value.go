@@ -72,17 +72,24 @@ func (v Value) Bool() bool
 // vの基礎となる値がバイトのスライスまたはアドレスのつけられたバイトの配列でない場合、パニックを引き起こします。
 func (v Value) Bytes() []byte
 
-// CanAddr関数は、値のアドレスを [Value.Addr] で取得できるかどうかを報告します。
-// このような値は、addressableと呼ばれます。値がaddressableであるとは、
-// スライスの要素、addressableな配列の要素、addressableな構造体のフィールド、
+// CanAddr は、値のアドレスを [Value.Addr] で取得できるかどうかを報告します。
+// このような値はアドレス可能 (addressable) と呼ばれます。値がアドレス可能であるとは、
+// スライスの要素、アドレス可能な配列の要素、アドレス可能な構造体のフィールド、
 // またはポインターの参照結果である場合を指します。
-// CanAddrがfalseを返す場合、 [Value.Addr] を呼び出すとパニックを引き起こします。
+// インターフェースの基礎となる値はアドレス可能ではなく、
+// マップのキーや値もアドレス可能ではありません。
+//
+// CanAddr が false を返す場合、次のメソッドを呼び出すとパニックを引き起こします。
+//   - [Value.Addr]、[Value.UnsafeAddr]、[Value.Grow]
+//   - [Value.Set] および関連するメソッド（[Value.CanSet] を参照）
+//   - v が配列の場合の [Value.Bytes]、[Value.Slice]、[Value.Slice3]
 func (v Value) CanAddr() bool
 
-// CanSetはvの値を変更できるかどうかを報告します。
-// 値はアドレス可能であり、エクスポートされていない構造体フィールドの使用では
+// CanSet は v の値を変更できるかどうかを報告します。
+// [Value] はアドレス可能であり、エクスポートされていない構造体フィールドの使用では
 // 取得されていない場合にのみ変更できます。
-// CanSetがfalseを返す場合、Setや任意のタイプ固有のセッター（例： [Value.SetBool] 、 [Value.SetInt] ）を呼び出すとパニックを引き起こします。
+// CanSet が false を返す場合、[Value.Set] や任意の型固有のセッター（例: [Value.SetBool]、[Value.SetInt]）を呼び出すとパニックを引き起こします。
+// [Value.Grow] を呼び出した場合もパニックを引き起こします。
 func (v Value) CanSet() bool
 
 // Callは、入力引数inを使って関数vを呼び出します。

@@ -30,7 +30,7 @@ type UUID [16]byte
 //	urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
 //	f81d4fae7dec11d0a76500a0c91e6bf6
 //
-// 十六進法のアルファベット文字は大小文字で使用できます。
+// 英字は大文字でも小文字でも構いません。
 func Parse(s string) (UUID, error)
 
 // MustParseはsで表されたUUIDを返します。

@@ -5,6 +5,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This file implements typechecking of builtin function calls.
+// This file implements typechecking of built-in function calls.
 
 package types
