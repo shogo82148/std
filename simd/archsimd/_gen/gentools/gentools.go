@@ -28,7 +28,6 @@ import (
 	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/flag"
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/sync"
 )
 
 // Options contains standard options and CLI flags for code generators.
@@ -83,9 +82,8 @@ type Files struct {
 	fileSet map[string]*fileInfo
 
 	// tmpDir is a temporary directory used for communicating with subprocess
-	// gentools.
-	tmpDirOnce sync.Once
-	tmpDir     string
+	// gentools. It is created by ExecFlags and removed by Flush.
+	tmpDir string
 }
 
 // NewGoFile registers a Go source file at relPath (relative to GOROOT/src). It

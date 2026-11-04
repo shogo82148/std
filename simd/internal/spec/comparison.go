@@ -53,7 +53,7 @@ func GreaterEqual[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 //specgen:require zN=xN
 func ToMask[E Elt, W Width, zE MaskElt](x Vec[E, W]) (z Vec[zE, W])
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 //

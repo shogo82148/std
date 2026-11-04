@@ -3383,42 +3383,42 @@ func (x Uint64x8) ToMask() (z Mask64x8)
 //	z[i] = x[i] != 0
 func (x Uint64s) ToMask() (z Mask64s)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float32x4) IsNaN() (z Mask32x4)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float32x8) IsNaN() (z Mask32x8)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float32x16) IsNaN() (z Mask32x16)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float32s) IsNaN() (z Mask32s)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float64x2) IsNaN() (z Mask64x2)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float64x4) IsNaN() (z Mask64x4)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float64x8) IsNaN() (z Mask64x8)
 
-// IsNan returns a mask indicating which elements of x are NaN.
+// IsNaN returns a mask indicating which elements of x are NaN.
 //
 //	z[i] = math.IsNaN(x[i])
 func (x Float64s) IsNaN() (z Mask64s)
@@ -8881,49 +8881,49 @@ func (x Uint64s) ConcatAddPairsSaturated(y Uint64s) (z Uint64s)
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int8x16) ConcatSubPairsSaturated(y Int8x16) (z Int8x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int8x32) ConcatSubPairsSaturated(y Int8x32) (z Int8x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int8x64) ConcatSubPairsSaturated(y Int8x64) (z Int8x64)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int8s) ConcatSubPairsSaturated(y Int8s) (z Int8s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int16x8) ConcatSubPairsSaturated(y Int16x8) (z Int16x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int16x16) ConcatSubPairsSaturated(y Int16x16) (z Int16x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int16x32) ConcatSubPairsSaturated(y Int16x32) (z Int16x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int16s) ConcatSubPairsSaturated(y Int16s) (z Int16s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
@@ -8935,25 +8935,25 @@ func (x Int32x4) ConcatSubPairsSaturated(y Int32x4) (z Int32x4)
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int32x8) ConcatSubPairsSaturated(y Int32x8) (z Int32x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int32x16) ConcatSubPairsSaturated(y Int32x16) (z Int32x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int32s) ConcatSubPairsSaturated(y Int32s) (z Int32s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], y[0]-y[1]}
+//	z = {sat(x[0]-x[1]), sat(y[0]-y[1])}
 func (x Int64x2) ConcatSubPairsSaturated(y Int64x2) (z Int64x2)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
@@ -8965,61 +8965,61 @@ func (x Int64x4) ConcatSubPairsSaturated(y Int64x4) (z Int64x4)
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int64x8) ConcatSubPairsSaturated(y Int64x8) (z Int64x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Int64s) ConcatSubPairsSaturated(y Int64s) (z Int64s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint8x16) ConcatSubPairsSaturated(y Uint8x16) (z Uint8x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint8x32) ConcatSubPairsSaturated(y Uint8x32) (z Uint8x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint8x64) ConcatSubPairsSaturated(y Uint8x64) (z Uint8x64)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint8s) ConcatSubPairsSaturated(y Uint8s) (z Uint8s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint16x8) ConcatSubPairsSaturated(y Uint16x8) (z Uint16x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint16x16) ConcatSubPairsSaturated(y Uint16x16) (z Uint16x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint16x32) ConcatSubPairsSaturated(y Uint16x32) (z Uint16x32)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint16s) ConcatSubPairsSaturated(y Uint16s) (z Uint16s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
@@ -9031,25 +9031,25 @@ func (x Uint32x4) ConcatSubPairsSaturated(y Uint32x4) (z Uint32x4)
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint32x8) ConcatSubPairsSaturated(y Uint32x8) (z Uint32x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint32x16) ConcatSubPairsSaturated(y Uint32x16) (z Uint32x16)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint32s) ConcatSubPairsSaturated(y Uint32s) (z Uint32s)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], y[0]-y[1]}
+//	z = {sat(x[0]-x[1]), sat(y[0]-y[1])}
 func (x Uint64x2) ConcatSubPairsSaturated(y Uint64x2) (z Uint64x2)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
@@ -9061,13 +9061,13 @@ func (x Uint64x4) ConcatSubPairsSaturated(y Uint64x4) (z Uint64x4)
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint64x8) ConcatSubPairsSaturated(y Uint64x8) (z Uint64x8)
 
 // ConcatSubPairsSaturated horizontally subtracts adjacent pairs of elements in
 // x and y with saturation and returns the concatenated result.
 //
-//	z = {x[0]-x[1], x[2]-x[3], ..., y[0]-y[1], y[2]-y[3], ...}
+//	z = {sat(x[0]-x[1]), sat(x[2]-x[3]), ..., sat(y[0]-y[1]), sat(y[2]-y[3]), ...}
 func (x Uint64s) ConcatSubPairsSaturated(y Uint64s) (z Uint64s)
 
 // ConcatAddPairsGrouped divides x, y, and z into groups of 128 bits and

@@ -29,7 +29,7 @@ import (
 //
 // which is analogous to creating a single entry map:
 //
-//	opt := Options{"Deterministic": true}
+//	opt := Options{Deterministic: true}
 //
 // [JoinOptions] composes multiple options values together:
 //
@@ -50,7 +50,7 @@ import (
 //
 // which is analogous to a Go map lookup:
 //
-//	v, ok := Options["Deterministic"]
+//	v, ok := opts[Deterministic]
 //
 // There is a single Options type, which is used with both marshal and unmarshal.
 // Some options affect both operations, while others only affect one operation:

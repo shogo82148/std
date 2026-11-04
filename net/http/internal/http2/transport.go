@@ -11,7 +11,6 @@ import (
 	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
-
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
