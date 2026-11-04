@@ -42,5 +42,6 @@ type StreamError struct {
 
 func (e StreamError) Error() string
 
-// This As function permits converting a StreamError into a x/net/http2.StreamError.
+// This As function permits converting a StreamError into a x/net/http2.StreamError
+// (as well as reporting retryable errors).
 func (e StreamError) As(target any) bool

@@ -8,62 +8,62 @@ package archsimd
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX
+// Emulated, CPU Feature: AVX
 func (x Float32x4) Abs() (z Float32x4)
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX2
+// Emulated, CPU Feature: AVX2
 func (x Float32x8) Abs() (z Float32x8)
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX512
+// Emulated, CPU Feature: AVX512
 func (x Float32x16) Abs() (z Float32x16)
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX
+// Emulated, CPU Feature: AVX
 func (x Float64x2) Abs() (z Float64x2)
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX2
+// Emulated, CPU Feature: AVX2
 func (x Float64x4) Abs() (z Float64x4)
 
 // Abs returns the absolute values of the elements of x
 //
-// Emulated, CPU Feature AVX512
+// Emulated, CPU Feature: AVX512
 func (x Float64x8) Abs() (z Float64x8)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX
+// Emulated, CPU Feature: AVX
 func (x Float32x4) Neg() (z Float32x4)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX2
+// Emulated, CPU Feature: AVX2
 func (x Float32x8) Neg() (z Float32x8)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX512
+// Emulated, CPU Feature: AVX512
 func (x Float32x16) Neg() (z Float32x16)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX
+// Emulated, CPU Feature: AVX
 func (x Float64x2) Neg() (z Float64x2)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX2
+// Emulated, CPU Feature: AVX2
 func (x Float64x4) Neg() (z Float64x4)
 
 // Neg returns the negation of the elements of x
 //
-// Emulated, CPU Feature AVX512
+// Emulated, CPU Feature: AVX512
 func (x Float64x8) Neg() (z Float64x8)
 
 // Mul multiplies corresponding elements of two vectors, modulo 2ⁿ.

@@ -28,7 +28,7 @@ import (
 //
 // これは単一エントリーのマップを作ることに相当します:
 //
-//	opt := Options{"Deterministic": true}
+//	opt := Options{Deterministic: true}
 //
 // [JoinOptions] は複数のオプション値を1つにまとめます:
 //
@@ -49,7 +49,7 @@ import (
 //
 // これはGoのマップ検索に相当します:
 //
-//	v, ok := Options["Deterministic"]
+//	v, ok := opts[Deterministic]
 //
 // Options型はマーシャルとアンマーシャルの両方で使われます。
 // 一部のオプションは両方に影響し、他はどちらか一方だけに影響します:
