@@ -90,6 +90,9 @@ var Register = map[string]int16{
 	"PC_B": REG_PC_B,
 }
 
+// The index at which to insert special continuation and its block type, for WasmFX extension.
+const ContinuationTypeIndex = 2
+
 var Linkwasm = obj.LinkArch{
 	Arch:       sys.ArchWasm,
 	Init:       instinit,

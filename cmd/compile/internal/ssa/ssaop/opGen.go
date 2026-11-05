@@ -4135,6 +4135,7 @@ const (
 	OpARMMULAD
 	OpARMMULSF
 	OpARMMULSD
+	OpARMFMULAF
 	OpARMFMULAD
 	OpARMAND
 	OpARMANDconst
@@ -7105,6 +7106,7 @@ const (
 	OpMax64FSel
 	OpMax32FSel
 	OpFMA
+	OpFMA32
 	OpPhi
 	OpCopy
 	OpConvert
@@ -11241,10 +11243,11 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:    "SBBLcarrymask",
-		ArgLen:  1,
-		EarlyOk: true,
-		asm:     x86.ASBBL,
+		Name:         "SBBLcarrymask",
+		ArgLen:       1,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ASBBL,
 		Reg: RegInfo{
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 239, V2: 0}},
@@ -19019,10 +19022,11 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:    "SBBQcarrymask",
-		ArgLen:  1,
-		EarlyOk: true,
-		asm:     x86.ASBBQ,
+		Name:         "SBBQcarrymask",
+		ArgLen:       1,
+		ClobberFlags: true,
+		EarlyOk:      true,
+		asm:          x86.ASBBQ,
 		Reg: RegInfo{
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 49135, V2: 0}},
@@ -19032,6 +19036,7 @@ var OpcodeTable = [...]OpInfo{
 	{
 		Name:          "SBBLcarrymask",
 		ArgLen:        1,
+		ClobberFlags:  true,
 		EarlyOk:       true,
 		asm:           x86.ASBBL,
 		ZeroUpperBits: 32,
@@ -73264,6 +73269,22 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:         "FMULAF",
+		ArgLen:       3,
+		ResultInArg0: true,
+		asm:          arm.AFMULAF,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+				{2, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 4294901760, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:         "FMULAD",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -114568,6 +114589,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "FMA",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "FMA32",
 		ArgLen:  3,
 		Generic: true,
 	},

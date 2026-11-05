@@ -7,3 +7,7 @@ package math
 // FMAは、一度の丸めのみを使用して計算されたx * y + zを返します。
 // （つまり、FMAはx、y、およびzの融合乗算-加算結果を返します。）
 func FMA(x, y, z float64) float64
+
+// FMA32は、一度の丸めのみを使用して計算されたx * y + zを返します。
+// （つまり、FMA32はx、y、およびzの融合乗算-加算結果を返します。）
+func FMA32(x, y, z float32) float32
