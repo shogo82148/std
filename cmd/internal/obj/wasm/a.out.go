@@ -215,6 +215,18 @@ const (
 	AI64Extend16S
 	AI64Extend32S
 
+	ARefNull
+	ARefIsNull
+	ARefFunc
+
+	AContNew
+	AContBind
+	ASuspend
+	AResume
+	AResumeThrow
+	AResumeThrowRef
+	ASwitch
+
 	AI32TruncSatF32S
 	AI32TruncSatF32U
 	AI32TruncSatF64S

@@ -7,3 +7,7 @@ package math
 // FMA returns x * y + z, computed with only one rounding.
 // (That is, FMA returns the fused multiply-add of x, y, and z.)
 func FMA(x, y, z float64) float64
+
+// FMA32 returns x*y + z, computed with only one rounding.
+// (That is, FMA32 returns the fused multiply-add of x, y, and z.)
+func FMA32(x, y, z float32) float32

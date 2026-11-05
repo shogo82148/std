@@ -59,3 +59,6 @@ func ToMask[E Elt, W Width, zE MaskElt](x Vec[E, W]) (z Vec[zE, W])
 //
 //specgen:require zN=xN
 func IsNaN[E Floats, W Width, zE MaskElt](x Vec[E, W]) (z Vec[zE, W])
+
+// IsZero returns true if all elements of x are zeros.
+func IsZero[E Ints | Uints, W Width](x Vec[E, W]) bool

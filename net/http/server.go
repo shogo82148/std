@@ -735,6 +735,18 @@ func (s *Server) Serve(l net.Listener) error
 // returned error is [ErrServerClosed].
 func (s *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
+// HandleRequest handles a request as if it was received by the server.
+//
+//   - If Server.DisableGeneralOptionsHandler is not true,
+//     it responds to "OPTIONS *" requests with 200 OK and Content-Length: 0.
+//   - If Server.Handler is nil, it uses [DefaultServeMux].
+//   - Panics in the handler are recovered.
+//     If the panic is not [ErrAbortHandler], the panic is logged.
+//
+// HandleRequest returns a non-nil error if the handler panics.
+// It returns [ErrAbortHandler] if the handler panicked with that value.
+func (s *Server) HandleRequest(w ResponseWriter, req *Request) error
+
 // SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
 // By default, keep-alives are always enabled. Only very
 // resource-constrained environments or servers in the process of
