@@ -608,6 +608,18 @@ func (s *Server) Serve(l net.Listener) error
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
 func (s *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
+// HandleRequest は、サーバーが受信したかのようにリクエストを処理します。
+//
+//   - Server.DisableGeneralOptionsHandler が true でない場合、
+//     "OPTIONS *" リクエストに対して 200 OK と Content-Length: 0 で応答します。
+//   - Server.Handler が nil の場合、[DefaultServeMux] を使用します。
+//   - ハンドラー内のパニックは recover されます。
+//     パニックの値が [ErrAbortHandler] でない場合、そのパニックはログに記録されます。
+//
+// ハンドラーがパニックを引き起こした場合、HandleRequest は非 nil のエラーを返します。
+// ハンドラーが [ErrAbortHandler] の値でパニックを引き起こした場合は、[ErrAbortHandler] を返します。
+func (s *Server) HandleRequest(w ResponseWriter, req *Request) error
+
 // SetKeepAlivesEnabledは、HTTP keep-alivesが有効かどうかを制御します。
 // デフォルトでは、keep-alivesは常に有効になっています。非常にリソースが制限された環境またはシャットダウン中のサーバーのみ、それらを無効にする必要があります。
 func (s *Server) SetKeepAlivesEnabled(v bool)

@@ -41,8 +41,8 @@ type ServeConnOpts struct {
 	// which is serving this connection.
 	BaseConfig ServerConfig
 
-	// Handler specifies which handler to use for processing requests.
-	Handler Handler
+	// HandleRequest specifies which function to use for processing requests.
+	HandleRequest func(*ResponseWriter, *ServerRequest) error
 
 	// Settings is the decoded contents of the HTTP2-Settings header
 	// in an h2c upgrade request.

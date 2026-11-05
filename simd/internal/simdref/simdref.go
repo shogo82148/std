@@ -3423,6 +3423,102 @@ func (x Float64x8) IsNaN() (z Mask64x8)
 //	z[i] = math.IsNaN(x[i])
 func (x Float64s) IsNaN() (z Mask64s)
 
+// IsZero returns true if all elements of x are zeros.
+func (x Int8x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int8x32) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int8x64) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int8s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int16x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int16x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int16x32) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int16s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int32x4) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int32x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int32x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int32s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int64x2) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int64x4) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int64x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Int64s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint8x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint8x32) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint8x64) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint8s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint16x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint16x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint16x32) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint16s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint32x4) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint32x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint32x16) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint32s) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint64x2) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint64x4) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint64x8) IsZero() bool
+
+// IsZero returns true if all elements of x are zeros.
+func (x Uint64s) IsZero() bool
+
 // Masked returns a vector with elements from x where mask is true, and zero
 // elsewhere.
 //
