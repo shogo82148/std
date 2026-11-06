@@ -131,7 +131,6 @@ HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋
 	<a href="?q={{.}}">              O&#39;Reilly%3a%20How%20are%3ci%3e...%3f
 	<a onx='f("{{.}}")'>             O\x27Reilly: How are \x3ci\x3eyou...?
 	<a onx='f({{.}})'>               "O\x27Reilly: How are \x3ci\x3eyou...?"
-	<a onx='pattern = /{{.}}/;'>     O\x27Reilly: How are \x3ci\x3eyou...\x3f
 
 安全でないコンテキストで使用された場合、その値はフィルタリングされる可能性があります：
 
@@ -199,6 +198,82 @@ exempted from escaping.
 
 とは異なります。
 
+# JavaScript
+
+このパッケージは、JavaScript コンテキスト内のテンプレートアクションを、
+アクションが現れる位置に応じてエスケープします。
+例えば、次のテンプレートで
+
+	<script>
+	let x = {{.}};
+	let y = "{{.}}, world.";
+	let z = `{{.}}, world.`;
+	</script>
+
+{{.}} が "hello" である場合、テンプレートの出力は次のようになります。
+
+	<script>
+	let x = "hello";
+	let y = "hello, world.";
+	let z = `hello, world.`;
+	</script>
+
+ダブルクォートが追加されるのは 1 つ目の置換だけで、2 つ目と 3 つ目には追加されません。
+
+JavaScript 内のテンプレートアクションは、<script> 要素
+（type 属性がないか、下に示す type のいずれか）
+または HTML の on* ハンドラーの中に記述できます。
+それ以外の場所に記述されたアクションは検出されない場合があります。
+
+	<script>let x = {{.}};</script>                               // script
+	<script type="module">let x = {{.}};</script>                 // script
+	<script type="text/javascript">let x = {{.}};</script>        // script
+	<script type="application/javascript">let x = {{.}};</script> // script
+	<script type="application/json">{{.}}</script>                // JSON
+	<script type="application/ld+json">{{.}}</script>             // JSON
+	<button onclick="f({{.}})">                                   // event handler
+
+このパッケージは、JavaScript 構文のサブセットを解釈します。
+JavaScript 内のテンプレートアクションは、次のすべてが成り立つ場合に安全です。
+
+  - アクションが現れるスクリプトが、宣言、代入、リテラル、呼び出しだけで構成されている。
+
+  - アクションが単独の値であるか、引用符で囲まれた文字列
+    またはテンプレートリテラル（${...} を含まないもの）の内側にある。
+
+  - 展開された値がデータとして使われており、オブジェクトのプロパティーキーとしては使われておらず、
+    文字列をコード、HTML、URL として解釈する API にも渡されていない。
+    このパッケージは、JavaScript 内の HTML や URL をサニタイズしません。
+
+JavaScript 内でのアクションの安全な使用例を次に示します。
+
+	let a = {{.}};                 // entire initializer
+	window.b = {{.}};              // entire right-hand side
+	const c = [{{.X}}, {{.Y}}];    // entire array element
+	const d = {key: {{.}}};        // entire property value
+	f({{.}});                      // entire call argument
+	let e = "Hello, {{.}}.";       // double-quoted string
+	let g = 'Hello, {{.}}.';       // single-quoted string
+	let h = `Hello, {{.}}.`;       // template literal, no ${...}
+
+上で説明したケース以外では、エスケープはベストエフォートであり、
+安全性は保証できません。
+
+JavaScript 内でのアクションの安全でない使用例を、網羅的ではありませんが次に示します。
+
+	let a = x + {{.}};             // UNSAFE: operator
+	let b = /{{.}}/;               // UNSAFE: regular expression
+	let c = `${x}{{.}}`;           // UNSAFE: template literal with ${...}
+	let d = { {{.}}: 1 };          // UNSAFE: property key
+	let e = obj[{{.}}];            // UNSAFE: property lookup
+	if ({{.}}) { ... }             // UNSAFE: control flow
+	el.innerHTML = {{.}};          // UNSAFE: value interpreted as HTML
+
+テンプレートのデータを複雑な JavaScript プログラムに渡すには、
+専用の <script> 要素で変数を初期化し、
+複雑なプログラムのロジックは別の要素
+または外部ファイルに記述してください。
+
 # Security Model
 
 https://web.archive.org/web/20160501113828/http://js-quasis-libraries-and-repl.googlecode.com/svn/trunk/safetemplate.html#problem_definition は、このパッケージが使用する「安全」を定義しています。
@@ -218,7 +293,8 @@ Code Effect Property:
 Least Surprise Property:
 "HTML、CSS、JavaScriptに精通し、コンテキストに応じた自動エスケープが行われることを知っている開発者（またはコードレビュアー）は、{{.}}を見て、どのようなサニタイゼーションが行われるかを正しく推測することができるべきです。"
 
-以前は、ECMAScript 6のテンプレートリテラルはデフォルトで無効にされており、GODEBUG=jstmpllitinterp=1 環境変数で有効にすることができました。
-テンプレートリテラルは現在デフォルトでサポートされており、jstmpllitinterpを設定しても効果はありません。
+上記の JavaScript のセクションで説明した安全なサブセットの外側にある JavaScript コンテキストへのテンプレートアクションの展開は、
+このパッケージのセキュリティーモデルの対象外です。
+安全なサブセットの外側での不正なエスケープはバグである可能性がありますが、セキュリティー上の問題とはみなされません。
 */
 package template
