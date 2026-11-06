@@ -6217,6 +6217,8 @@ const (
 	OpRISCV64MAX
 	OpRISCV64MINU
 	OpRISCV64MAXU
+	OpRISCV64BEXT
+	OpRISCV64BEXTI
 	OpRISCV64SEQZ
 	OpRISCV64SNEZ
 	OpRISCV64SLT
@@ -103488,6 +103490,36 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1006632944, V2: 0}},
 				{1, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BEXT",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     riscv.ABEXT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+				{1, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BEXTI",
+		AuxType: AuxTypeInt64,
+		ArgLen:  1,
+		EarlyOk: true,
+		asm:     riscv.ABEXTI,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 1006632944, V2: 0}},
