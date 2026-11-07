@@ -53,6 +53,10 @@ func Int64s() []int64
 
 func Uint64s() []uint64
 
+func RoundingFloat32s() []float32
+
+func RoundingFloat64s() []float64
+
 func Float32s() []float32
 
 func Int32s() []int32

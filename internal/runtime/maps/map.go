@@ -70,13 +70,14 @@ type Map struct {
 const Use64BitHash = goarch.PtrSize == 8 && goarch.IsWasm == 0
 
 // If m is non-nil, it should be used rather than allocating.
-//
-// maxAlloc should be runtime.maxAlloc.
-//
-// TODO(prattmic): Put maxAlloc somewhere accessible.
-func NewMap(mt *abi.MapType, hint uintptr, m *Map, maxAlloc uintptr) *Map
+func NewMap(mt *abi.MapType, hint uintptr, m *Map) *Map
 
 func NewEmptyMap() *Map
+
+// Grow increases m's capacity, if necessary, so that at least n more
+// entries can be added without further growth in the typical case, as if
+// allocated via NewMap(typ, m.Used()+n, ...). Never shrinks m.
+func (m *Map) Grow(typ *abi.MapType, n uintptr)
 
 func (m *Map) Used() uint64
 

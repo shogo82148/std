@@ -1016,6 +1016,14 @@ const (
 	OpAMD64VAESENCLAST256
 	OpAMD64VAESENCLAST512
 	OpAMD64VAESIMC128
+	OpAMD64VANDPD128
+	OpAMD64VANDPD256
+	OpAMD64VANDPS128
+	OpAMD64VANDPS256
+	OpAMD64VBLENDVPD128
+	OpAMD64VBLENDVPD256
+	OpAMD64VBLENDVPS128
+	OpAMD64VBLENDVPS256
 	OpAMD64VBROADCASTSD256
 	OpAMD64VBROADCASTSD512
 	OpAMD64VBROADCASTSDMasked256
@@ -1362,9 +1370,17 @@ const (
 	OpAMD64VPAVGWMasked128
 	OpAMD64VPAVGWMasked256
 	OpAMD64VPAVGWMasked512
+	OpAMD64VPBLENDMBMasked128
+	OpAMD64VPBLENDMBMasked256
 	OpAMD64VPBLENDMBMasked512
+	OpAMD64VPBLENDMDMasked128
+	OpAMD64VPBLENDMDMasked256
 	OpAMD64VPBLENDMDMasked512
+	OpAMD64VPBLENDMQMasked128
+	OpAMD64VPBLENDMQMasked256
 	OpAMD64VPBLENDMQMasked512
+	OpAMD64VPBLENDMWMasked128
+	OpAMD64VPBLENDMWMasked256
 	OpAMD64VPBLENDMWMasked512
 	OpAMD64VPBLENDVB128
 	OpAMD64VPBLENDVB256
@@ -2218,16 +2234,24 @@ const (
 	OpAMD64SHA1RNDS4128
 	OpAMD64VAESKEYGENASSIST128
 	OpAMD64VCMPPD128
+	OpAMD64VCMPPD128k
 	OpAMD64VCMPPD256
+	OpAMD64VCMPPD256k
 	OpAMD64VCMPPD512
 	OpAMD64VCMPPDMasked128
+	OpAMD64VCMPPDMasked128k
 	OpAMD64VCMPPDMasked256
+	OpAMD64VCMPPDMasked256k
 	OpAMD64VCMPPDMasked512
 	OpAMD64VCMPPS128
+	OpAMD64VCMPPS128k
 	OpAMD64VCMPPS256
+	OpAMD64VCMPPS256k
 	OpAMD64VCMPPS512
 	OpAMD64VCMPPSMasked128
+	OpAMD64VCMPPSMasked128k
 	OpAMD64VCMPPSMasked256
+	OpAMD64VCMPPSMasked256k
 	OpAMD64VCMPPSMasked512
 	OpAMD64VEXTRACTF64X4256
 	OpAMD64VEXTRACTF128128
@@ -2258,14 +2282,20 @@ const (
 	OpAMD64VPCLMULQDQ128
 	OpAMD64VPCLMULQDQ256
 	OpAMD64VPCLMULQDQ512
+	OpAMD64VPCMPB128
+	OpAMD64VPCMPB256
 	OpAMD64VPCMPB512
 	OpAMD64VPCMPBMasked128
 	OpAMD64VPCMPBMasked256
 	OpAMD64VPCMPBMasked512
+	OpAMD64VPCMPD128
+	OpAMD64VPCMPD256
 	OpAMD64VPCMPD512
 	OpAMD64VPCMPDMasked128
 	OpAMD64VPCMPDMasked256
 	OpAMD64VPCMPDMasked512
+	OpAMD64VPCMPQ128
+	OpAMD64VPCMPQ256
 	OpAMD64VPCMPQ512
 	OpAMD64VPCMPQMasked128
 	OpAMD64VPCMPQMasked256
@@ -2286,6 +2316,8 @@ const (
 	OpAMD64VPCMPUWMasked128
 	OpAMD64VPCMPUWMasked256
 	OpAMD64VPCMPUWMasked512
+	OpAMD64VPCMPW128
+	OpAMD64VPCMPW256
 	OpAMD64VPCMPW512
 	OpAMD64VPCMPWMasked128
 	OpAMD64VPCMPWMasked256
@@ -2497,6 +2529,10 @@ const (
 	OpAMD64VAESENCLAST128load
 	OpAMD64VAESENCLAST256load
 	OpAMD64VAESIMC128load
+	OpAMD64VANDPD128load
+	OpAMD64VANDPD256load
+	OpAMD64VANDPS128load
+	OpAMD64VANDPS256load
 	OpAMD64VBROADCASTSD256load
 	OpAMD64VBROADCASTSD512load
 	OpAMD64VBROADCASTSDMasked256load
@@ -2801,8 +2837,16 @@ const (
 	OpAMD64VPAVGW256load
 	OpAMD64VPAVGWMasked128load
 	OpAMD64VPAVGWMasked256load
+	OpAMD64VPBLENDMBMasked128load
+	OpAMD64VPBLENDMBMasked256load
+	OpAMD64VPBLENDMDMasked128load
+	OpAMD64VPBLENDMDMasked256load
 	OpAMD64VPBLENDMDMasked512load
+	OpAMD64VPBLENDMQMasked128load
+	OpAMD64VPBLENDMQMasked256load
 	OpAMD64VPBLENDMQMasked512load
+	OpAMD64VPBLENDMWMasked128load
+	OpAMD64VPBLENDMWMasked256load
 	OpAMD64VPBROADCASTB128load
 	OpAMD64VPBROADCASTB256load
 	OpAMD64VPBROADCASTB512load
@@ -3396,16 +3440,24 @@ const (
 	OpAMD64VSUBPSMasked256load
 	OpAMD64VSUBPSMasked512load
 	OpAMD64VAESKEYGENASSIST128load
+	OpAMD64VCMPPD128kload
 	OpAMD64VCMPPD128load
+	OpAMD64VCMPPD256kload
 	OpAMD64VCMPPD256load
 	OpAMD64VCMPPD512load
+	OpAMD64VCMPPDMasked128kload
 	OpAMD64VCMPPDMasked128load
+	OpAMD64VCMPPDMasked256kload
 	OpAMD64VCMPPDMasked256load
 	OpAMD64VCMPPDMasked512load
+	OpAMD64VCMPPS128kload
 	OpAMD64VCMPPS128load
+	OpAMD64VCMPPS256kload
 	OpAMD64VCMPPS256load
 	OpAMD64VCMPPS512load
+	OpAMD64VCMPPSMasked128kload
 	OpAMD64VCMPPSMasked128load
+	OpAMD64VCMPPSMasked256kload
 	OpAMD64VCMPPSMasked256load
 	OpAMD64VCMPPSMasked512load
 	OpAMD64VGF2P8AFFINEINVQB128load
@@ -3430,12 +3482,18 @@ const (
 	OpAMD64VPALIGNRMasked256load
 	OpAMD64VPCLMULQDQ128load
 	OpAMD64VPCLMULQDQ256load
+	OpAMD64VPCMPB128load
+	OpAMD64VPCMPB256load
 	OpAMD64VPCMPBMasked128load
 	OpAMD64VPCMPBMasked256load
+	OpAMD64VPCMPD128load
+	OpAMD64VPCMPD256load
 	OpAMD64VPCMPD512load
 	OpAMD64VPCMPDMasked128load
 	OpAMD64VPCMPDMasked256load
 	OpAMD64VPCMPDMasked512load
+	OpAMD64VPCMPQ128load
+	OpAMD64VPCMPQ256load
 	OpAMD64VPCMPQ512load
 	OpAMD64VPCMPQMasked128load
 	OpAMD64VPCMPQMasked256load
@@ -3452,6 +3510,8 @@ const (
 	OpAMD64VPCMPUQMasked512load
 	OpAMD64VPCMPUWMasked128load
 	OpAMD64VPCMPUWMasked256load
+	OpAMD64VPCMPW128load
+	OpAMD64VPCMPW256load
 	OpAMD64VPCMPWMasked128load
 	OpAMD64VPCMPWMasked256load
 	OpAMD64VPERM2F128256load
@@ -3615,7 +3675,6 @@ const (
 	OpAMD64VCVTDQ2PSMasked256Merging
 	OpAMD64VCVTDQ2PSMasked512Merging
 	OpAMD64VCVTPD2PSMasked256Merging
-	OpAMD64VCVTPD2PSXMasked128Merging
 	OpAMD64VCVTPD2PSYMasked128Merging
 	OpAMD64VCVTPS2PDMasked256Merging
 	OpAMD64VCVTPS2PDMasked512Merging
@@ -3623,16 +3682,13 @@ const (
 	OpAMD64VCVTQQ2PDMasked256Merging
 	OpAMD64VCVTQQ2PDMasked512Merging
 	OpAMD64VCVTQQ2PSMasked256Merging
-	OpAMD64VCVTQQ2PSXMasked128Merging
 	OpAMD64VCVTQQ2PSYMasked128Merging
 	OpAMD64VCVTTPD2DQMasked256Merging
-	OpAMD64VCVTTPD2DQXMasked128Merging
 	OpAMD64VCVTTPD2DQYMasked128Merging
 	OpAMD64VCVTTPD2QQMasked128Merging
 	OpAMD64VCVTTPD2QQMasked256Merging
 	OpAMD64VCVTTPD2QQMasked512Merging
 	OpAMD64VCVTTPD2UDQMasked256Merging
-	OpAMD64VCVTTPD2UDQXMasked128Merging
 	OpAMD64VCVTTPD2UDQYMasked128Merging
 	OpAMD64VCVTTPD2UQQMasked128Merging
 	OpAMD64VCVTTPD2UQQMasked256Merging
@@ -3656,7 +3712,6 @@ const (
 	OpAMD64VCVTUQQ2PDMasked256Merging
 	OpAMD64VCVTUQQ2PDMasked512Merging
 	OpAMD64VCVTUQQ2PSMasked256Merging
-	OpAMD64VCVTUQQ2PSXMasked128Merging
 	OpAMD64VCVTUQQ2PSYMasked128Merging
 	OpAMD64VDIVPDMasked128Merging
 	OpAMD64VDIVPDMasked256Merging
@@ -3811,37 +3866,18 @@ const (
 	OpAMD64VPMINUWMasked128Merging
 	OpAMD64VPMINUWMasked256Merging
 	OpAMD64VPMINUWMasked512Merging
-	OpAMD64VPMOVDBMasked128_128Merging
-	OpAMD64VPMOVDBMasked128_256Merging
 	OpAMD64VPMOVDBMasked128_512Merging
-	OpAMD64VPMOVDWMasked128_128Merging
 	OpAMD64VPMOVDWMasked128_256Merging
 	OpAMD64VPMOVDWMasked256Merging
-	OpAMD64VPMOVQBMasked128_128Merging
-	OpAMD64VPMOVQBMasked128_256Merging
-	OpAMD64VPMOVQBMasked128_512Merging
-	OpAMD64VPMOVQDMasked128_128Merging
 	OpAMD64VPMOVQDMasked128_256Merging
 	OpAMD64VPMOVQDMasked256Merging
-	OpAMD64VPMOVQWMasked128_128Merging
-	OpAMD64VPMOVQWMasked128_256Merging
 	OpAMD64VPMOVQWMasked128_512Merging
-	OpAMD64VPMOVSDBMasked128_128Merging
-	OpAMD64VPMOVSDBMasked128_256Merging
 	OpAMD64VPMOVSDBMasked128_512Merging
-	OpAMD64VPMOVSDWMasked128_128Merging
 	OpAMD64VPMOVSDWMasked128_256Merging
 	OpAMD64VPMOVSDWMasked256Merging
-	OpAMD64VPMOVSQBMasked128_128Merging
-	OpAMD64VPMOVSQBMasked128_256Merging
-	OpAMD64VPMOVSQBMasked128_512Merging
-	OpAMD64VPMOVSQDMasked128_128Merging
 	OpAMD64VPMOVSQDMasked128_256Merging
 	OpAMD64VPMOVSQDMasked256Merging
-	OpAMD64VPMOVSQWMasked128_128Merging
-	OpAMD64VPMOVSQWMasked128_256Merging
 	OpAMD64VPMOVSQWMasked128_512Merging
-	OpAMD64VPMOVSWBMasked128_128Merging
 	OpAMD64VPMOVSWBMasked128_256Merging
 	OpAMD64VPMOVSWBMasked256Merging
 	OpAMD64VPMOVSXBDMasked128Merging
@@ -3862,25 +3898,14 @@ const (
 	OpAMD64VPMOVSXWQMasked128Merging
 	OpAMD64VPMOVSXWQMasked256Merging
 	OpAMD64VPMOVSXWQMasked512Merging
-	OpAMD64VPMOVUSDBMasked128_128Merging
-	OpAMD64VPMOVUSDBMasked128_256Merging
 	OpAMD64VPMOVUSDBMasked128_512Merging
-	OpAMD64VPMOVUSDWMasked128_128Merging
 	OpAMD64VPMOVUSDWMasked128_256Merging
 	OpAMD64VPMOVUSDWMasked256Merging
-	OpAMD64VPMOVUSQBMasked128_128Merging
-	OpAMD64VPMOVUSQBMasked128_256Merging
-	OpAMD64VPMOVUSQBMasked128_512Merging
-	OpAMD64VPMOVUSQDMasked128_128Merging
 	OpAMD64VPMOVUSQDMasked128_256Merging
 	OpAMD64VPMOVUSQDMasked256Merging
-	OpAMD64VPMOVUSQWMasked128_128Merging
-	OpAMD64VPMOVUSQWMasked128_256Merging
 	OpAMD64VPMOVUSQWMasked128_512Merging
-	OpAMD64VPMOVUSWBMasked128_128Merging
 	OpAMD64VPMOVUSWBMasked128_256Merging
 	OpAMD64VPMOVUSWBMasked256Merging
-	OpAMD64VPMOVWBMasked128_128Merging
 	OpAMD64VPMOVWBMasked128_256Merging
 	OpAMD64VPMOVWBMasked256Merging
 	OpAMD64VPMOVZXBDMasked128Merging
@@ -5418,6 +5443,22 @@ const (
 	OpARM64ZUQSUBMergingH
 	OpARM64ZUQSUBMergingS
 	OpARM64ZUQSUBS
+	OpARM64ZUZP1B
+	OpARM64ZUZP1D
+	OpARM64ZUZP1H
+	OpARM64ZUZP1S
+	OpARM64ZUZP2B
+	OpARM64ZUZP2D
+	OpARM64ZUZP2H
+	OpARM64ZUZP2S
+	OpARM64ZZIP1B
+	OpARM64ZZIP1D
+	OpARM64ZZIP1H
+	OpARM64ZZIP1S
+	OpARM64ZZIP2B
+	OpARM64ZZIP2D
+	OpARM64ZZIP2H
+	OpARM64ZZIP2S
 	OpARM64ZLSLBconst
 	OpARM64ZLSLDconst
 	OpARM64ZLSLHconst
@@ -7143,6 +7184,18 @@ const (
 	OpStoreMasked16
 	OpStoreMasked32
 	OpStoreMasked64
+	OpMasked8
+	OpMasked16
+	OpMasked32
+	OpMasked64
+	OpMaskedFloat32
+	OpMaskedFloat64
+	OpIfElse8
+	OpIfElse16
+	OpIfElse32
+	OpIfElse64
+	OpIfElseFloat32
+	OpIfElseFloat64
 	OpMove
 	OpZero
 	OpStoreWB
@@ -7589,11 +7642,13 @@ const (
 	OpBroadcastInt64x2
 	OpBroadcastInt8x16
 	OpCeilFloat32s
+	OpCeilFloat32x16
 	OpCeilFloat32x4
 	OpCeilFloat32x8
 	OpCeilFloat64s
 	OpCeilFloat64x2
 	OpCeilFloat64x4
+	OpCeilFloat64x8
 	OpCeilScaledFloat32x16
 	OpCeilScaledFloat32x4
 	OpCeilScaledFloat32x8
@@ -7654,13 +7709,21 @@ const (
 	OpConcatAddPairsUint32x4
 	OpConcatAddPairsUint64x2
 	OpConcatAddPairsUint8x16
+	OpConcatEvenInt16s
 	OpConcatEvenInt16x8
+	OpConcatEvenInt32s
 	OpConcatEvenInt32x4
+	OpConcatEvenInt64s
 	OpConcatEvenInt64x2
+	OpConcatEvenInt8s
 	OpConcatEvenInt8x16
+	OpConcatEvenUint16s
 	OpConcatEvenUint16x8
+	OpConcatEvenUint32s
 	OpConcatEvenUint32x4
+	OpConcatEvenUint64s
 	OpConcatEvenUint64x2
+	OpConcatEvenUint8s
 	OpConcatEvenUint8x16
 	OpConcatMaxPairsFloat32x4
 	OpConcatMaxPairsFloat64x2
@@ -7678,13 +7741,21 @@ const (
 	OpConcatMinPairsUint16x8
 	OpConcatMinPairsUint32x4
 	OpConcatMinPairsUint8x16
+	OpConcatOddInt16s
 	OpConcatOddInt16x8
+	OpConcatOddInt32s
 	OpConcatOddInt32x4
+	OpConcatOddInt64s
 	OpConcatOddInt64x2
+	OpConcatOddInt8s
 	OpConcatOddInt8x16
+	OpConcatOddUint16s
 	OpConcatOddUint16x8
+	OpConcatOddUint32s
 	OpConcatOddUint32x4
+	OpConcatOddUint64s
 	OpConcatOddUint64x2
+	OpConcatOddUint8s
 	OpConcatOddUint8x16
 	OpConcatPermute128ScalarsFloat32x8
 	OpConcatPermute128ScalarsFloat64x4
@@ -7933,11 +8004,13 @@ const (
 	OpExtendToUint64Uint32x4
 	OpExtendToUint64Uint32x8
 	OpFloorFloat32s
+	OpFloorFloat32x16
 	OpFloorFloat32x4
 	OpFloorFloat32x8
 	OpFloorFloat64s
 	OpFloorFloat64x2
 	OpFloorFloat64x4
+	OpFloorFloat64x8
 	OpFloorScaledFloat32x16
 	OpFloorScaledFloat32x4
 	OpFloorScaledFloat32x8
@@ -8101,13 +8174,21 @@ const (
 	OpInterleaveHiGroupedUint64x8
 	OpInterleaveHiGroupedUint8x32
 	OpInterleaveHiGroupedUint8x64
+	OpInterleaveHiInt16s
 	OpInterleaveHiInt16x8
+	OpInterleaveHiInt32s
 	OpInterleaveHiInt32x4
+	OpInterleaveHiInt64s
 	OpInterleaveHiInt64x2
+	OpInterleaveHiInt8s
 	OpInterleaveHiInt8x16
+	OpInterleaveHiUint16s
 	OpInterleaveHiUint16x8
+	OpInterleaveHiUint32s
 	OpInterleaveHiUint32x4
+	OpInterleaveHiUint64s
 	OpInterleaveHiUint64x2
+	OpInterleaveHiUint8s
 	OpInterleaveHiUint8x16
 	OpInterleaveLoGroupedInt16x16
 	OpInterleaveLoGroupedInt16x32
@@ -8125,13 +8206,21 @@ const (
 	OpInterleaveLoGroupedUint64x8
 	OpInterleaveLoGroupedUint8x32
 	OpInterleaveLoGroupedUint8x64
+	OpInterleaveLoInt16s
 	OpInterleaveLoInt16x8
+	OpInterleaveLoInt32s
 	OpInterleaveLoInt32x4
+	OpInterleaveLoInt64s
 	OpInterleaveLoInt64x2
+	OpInterleaveLoInt8s
 	OpInterleaveLoInt8x16
+	OpInterleaveLoUint16s
 	OpInterleaveLoUint16x8
+	OpInterleaveLoUint32s
 	OpInterleaveLoUint32x4
+	OpInterleaveLoUint64s
 	OpInterleaveLoUint64x2
+	OpInterleaveLoUint8s
 	OpInterleaveLoUint8x16
 	OpInterleaveOddInt16x8
 	OpInterleaveOddInt32x4
@@ -8572,11 +8661,13 @@ const (
 	OpRotateRightUint64x4
 	OpRotateRightUint64x8
 	OpRoundFloat32s
+	OpRoundFloat32x16
 	OpRoundFloat32x4
 	OpRoundFloat32x8
 	OpRoundFloat64s
 	OpRoundFloat64x2
 	OpRoundFloat64x4
+	OpRoundFloat64x8
 	OpRoundScaledFloat32x16
 	OpRoundScaledFloat32x4
 	OpRoundScaledFloat32x8
@@ -8939,11 +9030,13 @@ const (
 	OpSumOf8AbsDiffUint8x32
 	OpSumOf8AbsDiffUint8x64
 	OpTruncFloat32s
+	OpTruncFloat32x16
 	OpTruncFloat32x4
 	OpTruncFloat32x8
 	OpTruncFloat64s
 	OpTruncFloat64x2
 	OpTruncFloat64x4
+	OpTruncFloat64x8
 	OpTruncScaledFloat32x16
 	OpTruncScaledFloat32x4
 	OpTruncScaledFloat32x8
@@ -9026,12 +9119,6 @@ const (
 	OpXorUint8x64
 	OpbitSelectInt8x16
 	OpbitSelectNotInt8x16
-	OpblendInt8x16
-	OpblendInt8x32
-	OpblendMaskedInt16x32
-	OpblendMaskedInt32x16
-	OpblendMaskedInt64x8
-	OpblendMaskedInt8x64
 	Opbroadcast1To16Float32x4
 	Opbroadcast1To16Int16x8
 	Opbroadcast1To16Int32x4
@@ -24794,6 +24881,126 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:        "VANDPD128",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         x86.AVANDPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VANDPD256",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         x86.AVANDPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VANDPS128",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         x86.AVANDPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VANDPS256",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         x86.AVANDPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VBLENDVPD128",
+		ArgLen: 3,
+		asm:    x86.AVBLENDVPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+				{2, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VBLENDVPD256",
+		ArgLen: 3,
+		asm:    x86.AVBLENDVPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+				{2, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VBLENDVPS128",
+		ArgLen: 3,
+		asm:    x86.AVBLENDVPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+				{2, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VBLENDVPS256",
+		ArgLen: 3,
+		asm:    x86.AVBLENDVPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 4294901760, V2: 0}},
+				{2, RegMask{V1: 4294901760, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VBROADCASTSD256",
 		ArgLen: 1,
 		asm:    x86.AVBROADCASTSD,
@@ -29819,9 +30026,69 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "VPBLENDMBMasked128",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMBMasked256",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VPBLENDMBMasked512",
 		ArgLen: 3,
 		asm:    x86.AVPBLENDMB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMDMasked128",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMDMasked256",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -29849,9 +30116,69 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "VPBLENDMQMasked128",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMQMasked256",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "VPBLENDMQMasked512",
 		ArgLen: 3,
 		asm:    x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMWMasked128",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "VPBLENDMWMasked256",
+		ArgLen: 3,
+		asm:    x86.AVPBLENDMW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -42231,6 +42558,21 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VCMPPD128k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VCMPPD256",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -42242,6 +42584,21 @@ var OpcodeTable = [...]OpInfo{
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VCMPPD256k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
 			},
 		},
 	},
@@ -42277,7 +42634,39 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VCMPPDMasked128k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  3,
+		asm:     x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VCMPPDMasked256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  3,
+		asm:     x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VCMPPDMasked256k",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  3,
 		asm:     x86.AVCMPPD,
@@ -42324,6 +42713,21 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VCMPPS128k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VCMPPS256",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -42335,6 +42739,21 @@ var OpcodeTable = [...]OpInfo{
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VCMPPS256k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
 			},
 		},
 	},
@@ -42370,7 +42789,39 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VCMPPSMasked128k",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  3,
+		asm:     x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VCMPPSMasked256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  3,
+		asm:     x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VCMPPSMasked256k",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  3,
 		asm:     x86.AVCMPPS,
@@ -42842,6 +43293,36 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VPCMPB128",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPB256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VPCMPB512",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -42905,6 +43386,36 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:    "VPCMPD128",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPD256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "VPCMPD512",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -42959,6 +43470,36 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPQ128",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPQ256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
 				{1, RegMask{V1: 281474976645120, V2: 0}},
 			},
@@ -43274,6 +43815,36 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPW128",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+				{1, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "VPCMPW256",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		asm:     x86.AVPCMPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
 				{0, RegMask{V1: 281474976645120, V2: 0}},
 				{1, RegMask{V1: 281474976645120, V2: 0}},
 			},
@@ -46436,6 +47007,70 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 72057594037977087, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VANDPD128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVANDPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VANDPD256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVANDPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VANDPS128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVANDPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VANDPS256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVANDPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 2147418112, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
@@ -51399,6 +52034,74 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VPBLENDMBMasked128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMBMasked256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMDMasked128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMDMasked256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VPBLENDMDMasked512load",
 		AuxType:   AuxTypeSymOff,
 		ArgLen:    4,
@@ -51416,11 +52119,79 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VPBLENDMQMasked128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMQMasked256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VPBLENDMQMasked512load",
 		AuxType:   AuxTypeSymOff,
 		ArgLen:    4,
 		symEffect: SymRead,
 		asm:       x86.AVPBLENDMQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMWMasked128load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 281472829161472, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPBLENDMWMasked256load",
+		AuxType:   AuxTypeSymOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVPBLENDMW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -61162,6 +61933,22 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VCMPPD128kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VCMPPD128load",
 		AuxType:   AuxTypeSymValAndOff,
 		ArgLen:    3,
@@ -61174,6 +61961,22 @@ var OpcodeTable = [...]OpInfo{
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VCMPPD256kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
 			},
 		},
 	},
@@ -61210,7 +62013,41 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VCMPPDMasked128kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VCMPPDMasked128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VCMPPDMasked256kload",
 		AuxType:   AuxTypeSymValAndOff,
 		ArgLen:    4,
 		symEffect: SymRead,
@@ -61261,6 +62098,22 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VCMPPS128kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VCMPPS128load",
 		AuxType:   AuxTypeSymValAndOff,
 		ArgLen:    3,
@@ -61273,6 +62126,22 @@ var OpcodeTable = [...]OpInfo{
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 2147418112, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VCMPPS256kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
 			},
 		},
 	},
@@ -61309,7 +62178,41 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VCMPPSMasked128kload",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VCMPPSMasked128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    4,
+		symEffect: SymRead,
+		asm:       x86.AVCMPPS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VCMPPSMasked256kload",
 		AuxType:   AuxTypeSymValAndOff,
 		ArgLen:    4,
 		symEffect: SymRead,
@@ -61720,6 +62623,38 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:      "VPCMPB128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPB256load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPB,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:      "VPCMPBMasked128load",
 		AuxType:   AuxTypeSymValAndOff,
 		ArgLen:    4,
@@ -61745,6 +62680,38 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPD128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPD256load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
 				{1, RegMask{V1: 72057594037977087, V2: 0}},
 				{0, RegMask{V1: 281474976645120, V2: 0}},
 			},
@@ -61812,6 +62779,38 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPQ128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPQ256load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPQ,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
 				{1, RegMask{V1: 72057594037977087, V2: 0}},
 				{0, RegMask{V1: 281474976645120, V2: 0}},
 			},
@@ -62081,6 +63080,38 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPW128load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 72057594037977087, V2: 0}},
+				{0, RegMask{V1: 281474976645120, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 71494644084506624, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:      "VPCMPW256load",
+		AuxType:   AuxTypeSymValAndOff,
+		ArgLen:    3,
+		symEffect: SymRead,
+		asm:       x86.AVPCMPW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
 				{1, RegMask{V1: 72057594037977087, V2: 0}},
 				{0, RegMask{V1: 281474976645120, V2: 0}},
 			},
@@ -64691,22 +65722,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VCVTPD2PSXMasked128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVCVTPD2PSX,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VCVTPD2PSYMasked128Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -64819,22 +65834,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VCVTQQ2PSXMasked128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVCVTQQ2PSX,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VCVTQQ2PSYMasked128Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -64855,22 +65854,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVCVTTPD2DQ,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VCVTTPD2DQXMasked128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVCVTTPD2DQX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -64951,22 +65934,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVCVTTPD2UDQ,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VCVTTPD2UDQXMasked128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVCVTTPD2UDQX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -65335,22 +66302,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVCVTUQQ2PS,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VCVTUQQ2PSXMasked128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVCVTUQQ2PSX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -67950,58 +68901,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVDBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVDBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVDBMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVDWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVDW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -68046,70 +68949,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVQBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVQBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVQBMasked128_512Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVQDMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQD,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVQDMasked128_256Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -68142,38 +68981,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVQWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVQWMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVQWMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -68190,58 +68997,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVSDBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSDBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVSDBMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSDWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSDW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -68286,70 +69045,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVSQBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSQBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSQBMasked128_512Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSQDMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQD,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVSQDMasked128_256Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -68382,58 +69077,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVSQWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSQWMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVSQWMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVSWBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVSWB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -68766,58 +69413,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVUSDBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSDBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVUSDBMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVUSDB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSDWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSDW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -68862,70 +69461,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVUSQBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSQBMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSQBMasked128_512Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSQDMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQD,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVUSQDMasked128_256Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
@@ -68958,58 +69493,10 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "VPMOVUSQWMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSQWMasked128_256Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:         "VPMOVUSQWMasked128_512Merging",
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVUSQW,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVUSWBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVUSWB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -69042,22 +69529,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:       3,
 		ResultInArg0: true,
 		asm:          x86.AVPMOVUSWB,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 71494644084506624, V2: 0}},
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-				{1, RegMask{V1: 281474976645120, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 281472829161472, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:         "VPMOVWBMasked128_128Merging",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          x86.AVPMOVWB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{2, RegMask{V1: 71494644084506624, V2: 0}},
@@ -92095,6 +92566,230 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:   "ZUZP1B",
+		ArgLen: 2,
+		asm:    arm64.AZUZP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP1D",
+		ArgLen: 2,
+		asm:    arm64.AZUZP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP1H",
+		ArgLen: 2,
+		asm:    arm64.AZUZP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP1S",
+		ArgLen: 2,
+		asm:    arm64.AZUZP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP2B",
+		ArgLen: 2,
+		asm:    arm64.AZUZP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP2D",
+		ArgLen: 2,
+		asm:    arm64.AZUZP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP2H",
+		ArgLen: 2,
+		asm:    arm64.AZUZP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZUZP2S",
+		ArgLen: 2,
+		asm:    arm64.AZUZP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP1B",
+		ArgLen: 2,
+		asm:    arm64.AZZIP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP1D",
+		ArgLen: 2,
+		asm:    arm64.AZZIP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP1H",
+		ArgLen: 2,
+		asm:    arm64.AZZIP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP1S",
+		ArgLen: 2,
+		asm:    arm64.AZZIP1,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP2B",
+		ArgLen: 2,
+		asm:    arm64.AZZIP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP2D",
+		ArgLen: 2,
+		asm:    arm64.AZZIP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP2H",
+		ArgLen: 2,
+		asm:    arm64.AZZIP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZZIP2S",
+		ArgLen: 2,
+		asm:    arm64.AZZIP2,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:    "ZLSLBconst",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  1,
@@ -114848,6 +115543,66 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "Masked8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "Masked16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "Masked32",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "Masked64",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "MaskedFloat32",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "MaskedFloat64",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "IfElse8",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "IfElse16",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "IfElse32",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "IfElse64",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "IfElseFloat32",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "IfElseFloat64",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "Move",
 		AuxType: AuxTypeTypSize,
 		ArgLen:  3,
@@ -117323,6 +118078,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "CeilFloat32x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
 		Name:    "CeilFloat32x4",
 		ArgLen:  1,
 		Generic: true,
@@ -117344,6 +118104,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "CeilFloat64x4",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "CeilFloat64x8",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -117660,7 +118425,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatEvenInt16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatEvenInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatEvenInt32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117670,7 +118445,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatEvenInt64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatEvenInt64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatEvenInt8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117680,7 +118465,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatEvenUint16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatEvenUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatEvenUint32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117690,7 +118485,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatEvenUint64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatEvenUint64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatEvenUint8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117780,7 +118585,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatOddInt16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatOddInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatOddInt32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117790,7 +118605,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatOddInt64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatOddInt64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatOddInt8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117800,7 +118625,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatOddUint16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatOddUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatOddUint32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -117810,7 +118645,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ConcatOddUint64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ConcatOddUint64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ConcatOddUint8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -119108,6 +119953,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "FloorFloat32x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
 		Name:    "FloorFloat32x4",
 		ArgLen:  1,
 		Generic: true,
@@ -119129,6 +119979,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "FloorFloat64x4",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "FloorFloat64x8",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -119976,7 +120831,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveHiInt16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveHiInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveHiInt32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -119986,7 +120851,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveHiInt64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveHiInt64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveHiInt8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -119996,7 +120871,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveHiUint16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveHiUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveHiUint32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -120006,7 +120891,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveHiUint64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveHiUint64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveHiUint8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -120096,7 +120991,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveLoInt16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveLoInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveLoInt32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -120106,7 +121011,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveLoInt64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveLoInt64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveLoInt8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -120116,7 +121031,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveLoUint16s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveLoUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveLoUint32s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -120126,7 +121051,17 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "InterleaveLoUint64s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "InterleaveLoUint64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "InterleaveLoUint8s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -122525,6 +123460,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "RoundFloat32x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
 		Name:    "RoundFloat32x4",
 		ArgLen:  1,
 		Generic: true,
@@ -122546,6 +123486,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "RoundFloat64x4",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "RoundFloat64x8",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -124419,6 +125364,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "TruncFloat32x16",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
 		Name:    "TruncFloat32x4",
 		ArgLen:  1,
 		Generic: true,
@@ -124440,6 +125390,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "TruncFloat64x4",
+		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "TruncFloat64x8",
 		ArgLen:  1,
 		Generic: true,
 	},
@@ -124894,36 +125849,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "bitSelectNotInt8x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendInt8x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendInt8x32",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendMaskedInt16x32",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendMaskedInt32x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendMaskedInt64x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "blendMaskedInt8x64",
 		ArgLen:  3,
 		Generic: true,
 	},

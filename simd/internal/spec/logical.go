@@ -25,6 +25,11 @@ func AndNot[E Ints | Uints | MaskElt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //specgen:commutative
 func Or[E Ints | Uints | MaskElt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
+// OrNot returns the bitwise OR NOT of x and y.
+//
+//	z[i] = x[i] | ^y[i]
+func OrNot[E Ints | Uints | MaskElt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
 // Xor returns the bitwise XOR of x and y.
 //
 //	z[i] = x[i] ^ y[i]
@@ -36,3 +41,12 @@ func Xor[E Ints | Uints | MaskElt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //
 //	z[i] = ^x[i]
 func Not[E Ints | Uints | MaskElt, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// BitSelect returns the bitwise selection of x and y controlled by cond,
+// choosing each bit from x where the corresponding bit of cond is 1 and from y
+// where it is 0.
+//
+//	z[i] = (x[i] & cond[i]) | (y[i] &^ cond[i])
+//
+//specgen:require cond=Uint{xN}x{xL}
+func BitSelect[E Ints | Uints, W Width, CondE Uints](x, y Vec[E, W], cond Vec[CondE, W]) (z Vec[E, W])
