@@ -12,6 +12,11 @@ import (
 
 func ReduceSum[S number](s []S) S
 
+func Round[S float](x S) S
+func Ceil[S float](x S) S
+func Floor[S float](x S) S
+func Trunc[S float](x S) S
+
 func Neg[S number](x S) S
 
 func Abs[S, S2 number](x S) S2

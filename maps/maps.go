@@ -25,5 +25,15 @@ func Clone[M ~map[K]V, K comparable, V any](m M) M
 // dstの値はsrcのキーに関連付けられた値によって上書きされます。
 func Copy[M1 ~map[K]V, M2 ~map[K]V, K comparable, V any](dst M1, src M2)
 
+// Growは、必要に応じてmの容量を増やし、
+// 通常の場合、make(M, len(m)+n) で作成されたかのように、
+// さらに増加することなく少なくともn個の要素を追加できるようにします。
+// Growはmを縮小することはありません。
+// これはベストエフォートであり、追加の増加が発生しないことを保証するものではありません。
+//
+// nが負の場合、Growはパニックを引き起こします。
+// また、mがnilでn > 0の場合も、nilマップの要素への代入と同様にパニックを引き起こします。
+func Grow[M ~map[K]V, K comparable, V any](m M, n int)
+
 // DeleteFuncは、delがtrueを返す場合、mから任意のキー/値ペアを削除します。
 func DeleteFunc[M ~map[K]V, K comparable, V any](m M, del func(K, V) bool)
