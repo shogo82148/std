@@ -9,6 +9,17 @@ package spec
 // Len returns the number of elements in x.
 func Len[E EltOrMask, W Width](x Vec[E, W]) int
 
+// GetElem returns the i'th element x. If i >= {{lanes .x "x"}}, it panics.
+//
+//	z = x[i]
+func GetElem[E Elt, W Width](x Vec[E, W], i uint8) (z E)
+
+// SetElem returns x with its i'th element set to y. If i >= {{lanes .x "x"}}, it panics.
+//
+//	z = x
+//	z[i] = y
+func SetElem[E Elt, W Width](x Vec[E, W], i uint8, y E) (z Vec[E, W])
+
 // String returns x in the form "{x[0],x[1],...}".
 func String[E Nums, W Width](x Vec[E, W]) string
 

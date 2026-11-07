@@ -12,3 +12,106 @@ package spec
 //
 //specgen:require indices=Uint{xN}x{xL}
 func Permute[E Elt, W Width, E2 Uints](x Vec[E, W], indices Vec[E2, W]) (z Vec[E, W])
+
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+// {{if eq .xL 2}}
+//
+//	z = {x[1], 0}
+//
+// {{else if eq .xL 4}}
+//
+//	z = {x[2], x[3], 0, 0}
+//
+// {{else}}
+//
+//	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = {{lanes .x "x"}}
+//
+// {{end}}
+func HiToLo[E Elt, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if 0 <= indices[i] && indices[i] < {{lanes .x "x"}} {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+func LookupOrZero[E Ints | Uints, W Width](x, indices Vec[E, W]) (z Vec[E, W])
+
+// InterleaveLo interleaves the elements of the low halves of x and y.
+//
+// {{if eq .xL 2}}
+//
+//	z = {x[0], y[0]}
+//
+// {{else if eq .xL 4}}
+//
+//	z = {x[0], y[0], x[1], y[1]}
+//
+// {{else}}
+//
+//	z = {x[0], y[0], x[1], y[1], ..., x[n/2-1], y[n/2-1]}, where n = {{lanes .x "x"}}
+//
+// {{end}}
+//
+//specgen:experiment
+func InterleaveLo[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// InterleaveHi interleaves the elements of the high halves of x and y.
+//
+// {{if eq .xL 2}}
+//
+//	z = {x[1], y[1]}
+//
+// {{else if eq .xL 4}}
+//
+//	z = {x[2], y[2], x[3], y[3]}
+//
+// {{else}}
+//
+//	z = {x[n/2], y[n/2], x[n/2+1], y[n/2+1], ..., x[n-1], y[n-1]}, where n = {{lanes .x "x"}}
+//
+// {{end}}
+//
+//specgen:experiment
+func InterleaveHi[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// ConcatEven concatenates the even-indexed elements of x and y.
+//
+// {{if eq .xL 2}}
+//
+//	z = {x[0], y[0]}
+//
+// {{else if eq .xL 4}}
+//
+//	z = {x[0], x[2], y[0], y[2]}
+//
+// {{else}}
+//
+//	z = {x[0], x[2], ..., x[n-2], y[0], y[2], ..., y[n-2]}, where n = {{lanes .x "x"}}
+//
+// {{end}}
+//
+//specgen:experiment
+func ConcatEven[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
+// ConcatOdd concatenates the odd-indexed elements of x and y.
+//
+// {{if eq .xL 2}}
+//
+//	z = {x[1], y[1]}
+//
+// {{else if eq .xL 4}}
+//
+//	z = {x[1], x[3], y[1], y[3]}
+//
+// {{else}}
+//
+//	z = {x[1], x[3], ..., x[n-1], y[1], y[3], ..., y[n-1]}, where n = {{lanes .x "x"}}
+//
+// {{end}}
+//
+//specgen:experiment
+func ConcatOdd[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])

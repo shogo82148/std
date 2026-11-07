@@ -64,6 +64,14 @@ func ConvertIntToUint[xE Ints | Uints, xW Width, zE Ints | Uints, zW Width](x Ve
 //specgen:require zB=xB zN>xN
 func ExtendLoLToZ[E Ints | Uints, W FixedWidth, zE Ints | Uints](x Vec[E, W]) (z Vec[zE, W])
 
+// ExtendHiLToZ {{if eq .xB "int"}}sign-{{else}}zero-{{end}}extends the high-indexed {{.zL}} elements of x to {{.zE}}.
+//
+//	z[i] = {{.zE}}(x[{{.zL}}+i])
+//
+//specgen:name ExtendHi{{.zL}}To{{.zE | title}}
+//specgen:require zB=xB zN=xN*2
+func ExtendHiLToZ[E Ints | Uints, zE Ints | Uints](x Vec[E, Width128]) (z Vec[zE, Width128])
+
 // ConvertLoLToZ converts the low-indexed {{.zL}} elements of x to {{.zE}}.
 //
 //	z[i] = {{.zE}}(x[i])

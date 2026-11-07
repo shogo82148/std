@@ -58,7 +58,8 @@ type ValueError struct {
 func (e *ValueError) Error() string
 
 // Addrはvのアドレスを表すポインター値を返します。
-// [Value.CanAddr] がfalseを返す場合にはパニックを引き起こします。
+// vがアドレス可能でない場合にはパニックを引き起こします。
+// アドレス可能な値かどうかは [Value.CanAddr] で確認できます。
 // Addrは通常、構造体のフィールドやスライスの要素に対して
 // ポインターレシーバーを必要とするメソッドを呼び出すために
 // ポインターを取得するために使用されます。
@@ -129,19 +130,24 @@ func (v Value) CanComplex() bool
 func (v Value) Complex() complex128
 
 // Elemは、インターフェースvに格納されている値またはvのポインターが指す値を返します。
+// vがnilでないポインターの場合、返されるValueはアドレス可能です。
+// vがインターフェースの場合、返されるValueはアドレス可能ではありません。
 // vのKindが [Interface] または [Pointer] でない場合、パニックを引き起こします。
 // vがnilの場合、ゼロのValueを返します。
 func (v Value) Elem() Value
 
 // Fieldはvのi番目のフィールドを返します。
+// アドレス可能な構造体のフィールド値はアドレス可能です。
 // vのKindが [Struct] でない場合や、iが範囲外の場合にはパニックを引き起こします。
 func (v Value) Field(i int) Value
 
 // FieldByIndexは、インデックスに対応するネストされたフィールドを返します。
+// アドレス可能な構造体のフィールド値はアドレス可能です。
 // 評価にはnilポインターを通過する必要があるか、または構造体でないフィールドの場合、パニックを引き起こします。
 func (v Value) FieldByIndex(index []int) Value
 
 // FieldByIndexErrは、インデックスに対応するネストしたフィールドを返します。
+// アドレス可能な構造体のフィールド値はアドレス可能です。
 // 評価によってnilポインターを進める必要がある場合はエラーを返し、
 // structではないフィールドを進める必要がある場合はパニックを引き起こします。
 func (v Value) FieldByIndexErr(index []int) (Value, error)
@@ -164,6 +170,7 @@ func (v Value) CanFloat() bool
 func (v Value) Float() float64
 
 // Indexはvのi番目の要素を返します。
+// スライスの要素、またはアドレス可能な配列の要素はアドレス可能です。
 // vのKindが [Array] 、 [Slice] 、または [String] でない場合、またはiが範囲外の場合はパニックを引き起こします。
 func (v Value) Index(i int) Value
 

@@ -210,6 +210,10 @@ func (x Int8x16) GreaterEqual(y Int8x16) Mask8x16
 
 func (x Int8x16nclm) GreaterEqual(y Int8x16nclm) Mask8x16nclm
 
+func (x Int8x16) HiToLo() Int8x16
+
+func (x Int8x16nclm) HiToLo() Int8x16nclm
+
 func (x Int8x16) IfElse(mask Mask8x16, y Int8x16) Int8x16
 
 func (x Int8x16nclm) IfElse(mask Mask8x16nclm, y Int8x16nclm) Int8x16nclm
@@ -333,6 +337,10 @@ func (x Int16x8nclm) Greater(y Int16x8nclm) Mask16x8nclm
 func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
 
 func (x Int16x8nclm) GreaterEqual(y Int16x8nclm) Mask16x8nclm
+
+func (x Int16x8) HiToLo() Int16x8
+
+func (x Int16x8nclm) HiToLo() Int16x8nclm
 
 func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
 
@@ -462,6 +470,10 @@ func (x Int32x4) GreaterEqual(y Int32x4) Mask32x4
 
 func (x Int32x4nclm) GreaterEqual(y Int32x4nclm) Mask32x4nclm
 
+func (x Int32x4) HiToLo() Int32x4
+
+func (x Int32x4nclm) HiToLo() Int32x4nclm
+
 func (x Int32x4) IfElse(mask Mask32x4, y Int32x4) Int32x4
 
 func (x Int32x4nclm) IfElse(mask Mask32x4nclm, y Int32x4nclm) Int32x4nclm
@@ -578,6 +590,10 @@ func (x Int64x2) GreaterEqual(y Int64x2) Mask64x2
 
 func (x Int64x2nclm) GreaterEqual(y Int64x2nclm) Mask64x2nclm
 
+func (x Int64x2) HiToLo() Int64x2
+
+func (x Int64x2nclm) HiToLo() Int64x2nclm
+
 func (x Int64x2) IfElse(mask Mask64x2, y Int64x2) Int64x2
 
 func (x Int64x2nclm) IfElse(mask Mask64x2nclm, y Int64x2nclm) Int64x2nclm
@@ -677,6 +693,10 @@ func (x Uint8x16nclm) ConvertToInt8() Int8x16nclm
 func (x Uint8x16) Equal(y Uint8x16) Mask8x16
 
 func (x Uint8x16nclm) Equal(y Uint8x16nclm) Mask8x16nclm
+
+func (x Uint8x16) HiToLo() Uint8x16
+
+func (x Uint8x16nclm) HiToLo() Uint8x16nclm
 
 func (x Uint8x16) IfElse(mask Mask8x16, y Uint8x16) Uint8x16
 
@@ -797,6 +817,10 @@ func (x Uint16x8nclm) Greater(y Uint16x8nclm) Mask16x8nclm
 func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x8nclm) GreaterEqual(y Uint16x8nclm) Mask16x8nclm
+
+func (x Uint16x8) HiToLo() Uint16x8
+
+func (x Uint16x8nclm) HiToLo() Uint16x8nclm
 
 func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
 
@@ -934,6 +958,10 @@ func (x Uint32x4) GreaterEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x4nclm) GreaterEqual(y Uint32x4nclm) Mask32x4nclm
 
+func (x Uint32x4) HiToLo() Uint32x4
+
+func (x Uint32x4nclm) HiToLo() Uint32x4nclm
+
 func (x Uint32x4) IfElse(mask Mask32x4, y Uint32x4) Uint32x4
 
 func (x Uint32x4nclm) IfElse(mask Mask32x4nclm, y Uint32x4nclm) Uint32x4nclm
@@ -1070,6 +1098,10 @@ func (x Uint64x2) GreaterEqual(y Uint64x2) Mask64x2
 
 func (x Uint64x2nclm) GreaterEqual(y Uint64x2nclm) Mask64x2nclm
 
+func (x Uint64x2) HiToLo() Uint64x2
+
+func (x Uint64x2nclm) HiToLo() Uint64x2nclm
+
 func (x Uint64x2) IfElse(mask Mask64x2, y Uint64x2) Uint64x2
 
 func (x Uint64x2nclm) IfElse(mask Mask64x2nclm, y Uint64x2nclm) Uint64x2nclm
@@ -1158,6 +1190,10 @@ func (x Float32x4) Add(y Float32x4) Float32x4
 
 func (x Float32x4nclm) Add(y Float32x4nclm) Float32x4nclm
 
+func (x Float32x4) Ceil() Float32x4
+
+func (x Float32x4nclm) Ceil() Float32x4nclm
+
 func (x Float32x4) ConvertToInt32() Int32x4
 
 func (x Float32x4nclm) ConvertToInt32() Int32x4nclm
@@ -1170,6 +1206,10 @@ func (x Float32x4) Equal(y Float32x4) Mask32x4
 
 func (x Float32x4nclm) Equal(y Float32x4nclm) Mask32x4nclm
 
+func (x Float32x4) Floor() Float32x4
+
+func (x Float32x4nclm) Floor() Float32x4nclm
+
 func (x Float32x4) Greater(y Float32x4) Mask32x4
 
 func (x Float32x4nclm) Greater(y Float32x4nclm) Mask32x4nclm
@@ -1177,6 +1217,10 @@ func (x Float32x4nclm) Greater(y Float32x4nclm) Mask32x4nclm
 func (x Float32x4) GreaterEqual(y Float32x4) Mask32x4
 
 func (x Float32x4nclm) GreaterEqual(y Float32x4nclm) Mask32x4nclm
+
+func (x Float32x4) HiToLo() Float32x4
+
+func (x Float32x4nclm) HiToLo() Float32x4nclm
 
 func (x Float32x4) IfElse(mask Mask32x4, y Float32x4) Float32x4
 
@@ -1226,6 +1270,10 @@ func (x Float32x4) ReduceSum() float32
 
 func (x Float32x4nclm) ReduceSum() float32
 
+func (x Float32x4) Round() Float32x4
+
+func (x Float32x4nclm) Round() Float32x4nclm
+
 func (x Float32x4) Sqrt() Float32x4
 
 func (x Float32x4nclm) Sqrt() Float32x4nclm
@@ -1250,6 +1298,10 @@ func (x Float32x4) ToBits() Uint32x4
 
 func (x Float32x4nclm) ToBits() Uint32x4nclm
 
+func (x Float32x4) Trunc() Float32x4
+
+func (x Float32x4nclm) Trunc() Float32x4nclm
+
 func (x Float64x2) Abs() Float64x2
 
 func (x Float64x2nclm) Abs() Float64x2nclm
@@ -1257,6 +1309,10 @@ func (x Float64x2nclm) Abs() Float64x2nclm
 func (x Float64x2) Add(y Float64x2) Float64x2
 
 func (x Float64x2nclm) Add(y Float64x2nclm) Float64x2nclm
+
+func (x Float64x2) Ceil() Float64x2
+
+func (x Float64x2nclm) Ceil() Float64x2nclm
 
 func (x Float64x2) Div(y Float64x2) Float64x2
 
@@ -1266,6 +1322,10 @@ func (x Float64x2) Equal(y Float64x2) Mask64x2
 
 func (x Float64x2nclm) Equal(y Float64x2nclm) Mask64x2nclm
 
+func (x Float64x2) Floor() Float64x2
+
+func (x Float64x2nclm) Floor() Float64x2nclm
+
 func (x Float64x2) Greater(y Float64x2) Mask64x2
 
 func (x Float64x2nclm) Greater(y Float64x2nclm) Mask64x2nclm
@@ -1273,6 +1333,10 @@ func (x Float64x2nclm) Greater(y Float64x2nclm) Mask64x2nclm
 func (x Float64x2) GreaterEqual(y Float64x2) Mask64x2
 
 func (x Float64x2nclm) GreaterEqual(y Float64x2nclm) Mask64x2nclm
+
+func (x Float64x2) HiToLo() Float64x2
+
+func (x Float64x2nclm) HiToLo() Float64x2nclm
 
 func (x Float64x2) IfElse(mask Mask64x2, y Float64x2) Float64x2
 
@@ -1322,6 +1386,10 @@ func (x Float64x2) ReduceSum() float64
 
 func (x Float64x2nclm) ReduceSum() float64
 
+func (x Float64x2) Round() Float64x2
+
+func (x Float64x2nclm) Round() Float64x2nclm
+
 func (x Float64x2) Sqrt() Float64x2
 
 func (x Float64x2nclm) Sqrt() Float64x2nclm
@@ -1345,6 +1413,10 @@ func (x Float64x2nclm) Sub(y Float64x2nclm) Float64x2nclm
 func (x Float64x2) ToBits() Uint64x2
 
 func (x Float64x2nclm) ToBits() Uint64x2nclm
+
+func (x Float64x2) Trunc() Float64x2
+
+func (x Float64x2nclm) Trunc() Float64x2nclm
 
 func (x Mask8x16) All() bool
 

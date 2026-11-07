@@ -74,45 +74,65 @@ func (x Float32x4) String() string
 // String returns x in the form "{x[0],x[1],...}".
 func (x Float64x2) String() string
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Int8x16) HiToLo() Int8x16
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = 16
+func (x Int8x16) HiToLo() (z Int8x16)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Int16x8) HiToLo() Int16x8
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = 8
+func (x Int16x8) HiToLo() (z Int16x8)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Int32x4) HiToLo() Int32x4
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[2], x[3], 0, 0}
+func (x Int32x4) HiToLo() (z Int32x4)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Int64x2) HiToLo() Int64x2
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[1], 0}
+func (x Int64x2) HiToLo() (z Int64x2)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Uint8x16) HiToLo() Uint8x16
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = 16
+func (x Uint8x16) HiToLo() (z Uint8x16)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Uint16x8) HiToLo() Uint16x8
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = 8
+func (x Uint16x8) HiToLo() (z Uint16x8)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Uint32x4) HiToLo() Uint32x4
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[2], x[3], 0, 0}
+func (x Uint32x4) HiToLo() (z Uint32x4)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Uint64x2) HiToLo() Uint64x2
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[1], 0}
+func (x Uint64x2) HiToLo() (z Uint64x2)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Float32x4) HiToLo() Float32x4
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[2], x[3], 0, 0}
+func (x Float32x4) HiToLo() (z Float32x4)
 
-// HiToLo returns a vector with the upper 64 bits zeroed and the lower
-// 64 bits replaced with the upper 64 bits of x.
-func (x Float64x2) HiToLo() Float64x2
+// HiToLo returns a vector whose low half is the high half of x and whose high
+// half is zero.
+//
+//	z = {x[1], 0}
+func (x Float64x2) HiToLo() (z Float64x2)
 
 // ToMask returns a mask indicating which elements of x are non-zero.
 //
@@ -239,10 +259,12 @@ func (x Uint32x4) ReduceSum() (z uint32)
 // Emulated
 func (x Int8x16) ReduceMax() (z int8)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Int8x16) ReduceMin() int8
+func (x Int8x16) ReduceMin() (z int8)
 
 // ReduceMax returns the largest element of x.
 //
@@ -251,10 +273,12 @@ func (x Int8x16) ReduceMin() int8
 // Emulated
 func (x Int16x8) ReduceMax() (z int16)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Int16x8) ReduceMin() int16
+func (x Int16x8) ReduceMin() (z int16)
 
 // ReduceMax returns the largest element of x.
 //
@@ -263,10 +287,12 @@ func (x Int16x8) ReduceMin() int16
 // Emulated
 func (x Int32x4) ReduceMax() (z int32)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Int32x4) ReduceMin() int32
+func (x Int32x4) ReduceMin() (z int32)
 
 // ReduceMax returns the largest element of x.
 //
@@ -275,10 +301,12 @@ func (x Int32x4) ReduceMin() int32
 // Emulated
 func (x Uint8x16) ReduceMax() (z uint8)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Uint8x16) ReduceMin() uint8
+func (x Uint8x16) ReduceMin() (z uint8)
 
 // ReduceMax returns the largest element of x.
 //
@@ -287,10 +315,12 @@ func (x Uint8x16) ReduceMin() uint8
 // Emulated
 func (x Uint16x8) ReduceMax() (z uint16)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Uint16x8) ReduceMin() uint16
+func (x Uint16x8) ReduceMin() (z uint16)
 
 // ReduceMax returns the largest element of x.
 //
@@ -299,10 +329,12 @@ func (x Uint16x8) ReduceMin() uint16
 // Emulated
 func (x Uint32x4) ReduceMax() (z uint32)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Uint32x4) ReduceMin() uint32
+func (x Uint32x4) ReduceMin() (z uint32)
 
 // ReduceMax returns the largest element of x.
 //
@@ -311,10 +343,12 @@ func (x Uint32x4) ReduceMin() uint32
 // Emulated
 func (x Float32x4) ReduceMax() (z float32)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Float32x4) ReduceMin() float32
+func (x Float32x4) ReduceMin() (z float32)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
@@ -344,7 +378,9 @@ func (x Float64x2) ReduceSum() (z float64)
 // Emulated
 func (x Float64x2) ReduceMax() (z float64)
 
-// ReduceMin reduces x by taking the minimum of all elements.
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
 //
 // Emulated
-func (x Float64x2) ReduceMin() float64
+func (x Float64x2) ReduceMin() (z float64)
