@@ -5894,6 +5894,10 @@ const (
 	OpMIPS64LoweredMove
 	OpMIPS64LoweredAtomicAnd32
 	OpMIPS64LoweredAtomicOr32
+	OpMIPS64LoweredAtomicAnd32value
+	OpMIPS64LoweredAtomicAnd64value
+	OpMIPS64LoweredAtomicOr32value
+	OpMIPS64LoweredAtomicOr64value
 	OpMIPS64LoweredAtomicLoad8
 	OpMIPS64LoweredAtomicLoad32
 	OpMIPS64LoweredAtomicLoad64
@@ -6260,6 +6264,10 @@ const (
 	OpRISCV64MAXU
 	OpRISCV64BEXT
 	OpRISCV64BEXTI
+	OpRISCV64BINV
+	OpRISCV64BINVI
+	OpRISCV64BSET
+	OpRISCV64BSETI
 	OpRISCV64SEQZ
 	OpRISCV64SNEZ
 	OpRISCV64SLT
@@ -99024,6 +99032,78 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:            "LoweredAtomicAnd32value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		unsafePoint:     true,
+		asm:             mips.AAND,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 234881022, V2: 0}},
+				{0, RegMask{V1: 1152921504875282430, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 167772158, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicAnd64value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		unsafePoint:     true,
+		asm:             mips.AAND,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 234881022, V2: 0}},
+				{0, RegMask{V1: 1152921504875282430, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 167772158, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicOr32value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		unsafePoint:     true,
+		asm:             mips.AOR,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 234881022, V2: 0}},
+				{0, RegMask{V1: 1152921504875282430, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 167772158, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicOr64value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		unsafePoint:     true,
+		asm:             mips.AOR,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 234881022, V2: 0}},
+				{0, RegMask{V1: 1152921504875282430, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 167772158, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:           "LoweredAtomicLoad8",
 		ArgLen:         2,
 		FaultOnNilArg0: true,
@@ -104212,6 +104292,66 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:  1,
 		EarlyOk: true,
 		asm:     riscv.ABEXTI,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BINV",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     riscv.ABINV,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+				{1, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BINVI",
+		AuxType: AuxTypeInt64,
+		ArgLen:  1,
+		EarlyOk: true,
+		asm:     riscv.ABINVI,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BSET",
+		ArgLen:  2,
+		EarlyOk: true,
+		asm:     riscv.ABSET,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+				{1, RegMask{V1: 1006632944, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "BSETI",
+		AuxType: AuxTypeInt64,
+		ArgLen:  1,
+		EarlyOk: true,
+		asm:     riscv.ABSETI,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1006632944, V2: 0}},
