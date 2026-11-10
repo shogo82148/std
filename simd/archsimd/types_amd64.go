@@ -28,7 +28,7 @@ func (x Float32x4) StoreArray(y *[4]float32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Float32x4) StoreArrayMasked(y *[4]float32, mask Mask32x4)
@@ -57,7 +57,7 @@ func (x Float64x2) StoreArray(y *[2]float64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Float64x2) StoreArrayMasked(y *[2]float64, mask Mask64x2)
@@ -128,7 +128,7 @@ func (x Int32x4) StoreArray(y *[4]int32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Int32x4) StoreArrayMasked(y *[4]int32, mask Mask32x4)
@@ -157,7 +157,7 @@ func (x Int64x2) StoreArray(y *[2]int64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Int64x2) StoreArrayMasked(y *[2]int64, mask Mask64x2)
@@ -228,7 +228,7 @@ func (x Uint32x4) StoreArray(y *[4]uint32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Uint32x4) StoreArrayMasked(y *[4]uint32, mask Mask32x4)
@@ -257,7 +257,7 @@ func (x Uint64x2) StoreArray(y *[2]uint64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Uint64x2) StoreArrayMasked(y *[2]uint64, mask Mask64x2)
@@ -366,7 +366,7 @@ func (x Float32x8) StoreArray(y *[8]float32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Float32x8) StoreArrayMasked(y *[8]float32, mask Mask32x8)
@@ -395,7 +395,7 @@ func (x Float64x4) StoreArray(y *[4]float64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Float64x4) StoreArrayMasked(y *[4]float64, mask Mask64x4)
@@ -466,7 +466,7 @@ func (x Int32x8) StoreArray(y *[8]int32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Int32x8) StoreArrayMasked(y *[8]int32, mask Mask32x8)
@@ -495,7 +495,7 @@ func (x Int64x4) StoreArray(y *[4]int64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Int64x4) StoreArrayMasked(y *[4]int64, mask Mask64x4)
@@ -566,7 +566,7 @@ func (x Uint32x8) StoreArray(y *[8]uint32)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVD, CPU Feature: AVX2
+// Asm: VMASKMOVPS, CPU Feature: AVX
 //
 //go:noescape
 func (x Uint32x8) StoreArrayMasked(y *[8]uint32, mask Mask32x8)
@@ -595,7 +595,7 @@ func (x Uint64x4) StoreArray(y *[4]uint64)
 // StoreArrayMasked stores the masked elements of x to an array. It does not
 // modify elements of y that are false in the mask.
 //
-// Asm: VMASKMOVQ, CPU Feature: AVX2
+// Asm: VMASKMOVPD, CPU Feature: AVX
 //
 //go:noescape
 func (x Uint64x4) StoreArrayMasked(y *[4]uint64, mask Mask64x4)

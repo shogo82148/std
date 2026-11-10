@@ -54,8 +54,7 @@ type ClientConn struct {
 	cond             *sync.Cond
 	flow             connOutflow
 	inflow           inflow
-	doNotReuse       bool
-	closing          bool
+	draining         bool
 	closed           bool
 	closedOnIdle     bool
 	seenSettings     bool
@@ -156,42 +155,6 @@ func (cc *ClientConn) CanTakeNewRequest() bool
 // concurrent stream in cc. The reservation is decremented on the
 // next call to RoundTrip.
 func (cc *ClientConn) ReserveNewRequest() bool
-
-// ClientConnState describes the state of a ClientConn.
-type ClientConnState struct {
-	// Closed is whether the connection is closed.
-	Closed bool
-
-	// Closing is whether the connection is in the process of
-	// closing. It may be closing due to shutdown, being a
-	// single-use connection, being marked as DoNotReuse, or
-	// having received a GOAWAY frame.
-	Closing bool
-
-	// StreamsActive is how many streams are active.
-	StreamsActive int
-
-	// StreamsReserved is how many streams have been reserved via
-	// ClientConn.ReserveNewRequest.
-	StreamsReserved int
-
-	// StreamsPending is how many requests have been sent in excess
-	// of the peer's advertised MaxConcurrentStreams setting and
-	// are waiting for other streams to complete.
-	StreamsPending int
-
-	// MaxConcurrentStreams is how many concurrent streams the
-	// peer advertised as acceptable. Zero means no SETTINGS
-	// frame has been received yet.
-	MaxConcurrentStreams uint32
-
-	// LastIdle, if non-zero, is when the connection last
-	// transitioned to idle state.
-	LastIdle time.Time
-}
-
-// State returns a snapshot of cc's state.
-func (cc *ClientConn) State() ClientConnState
 
 // Shutdown gracefully closes the client connection, waiting for running streams to complete.
 func (cc *ClientConn) Shutdown(ctx context.Context) error

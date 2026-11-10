@@ -46,6 +46,8 @@ const (
 	ALocalTee
 	AGlobalGet
 	AGlobalSet
+	ATableGet
+	ATableSet
 
 	AI32Load
 	AI64Load

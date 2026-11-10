@@ -232,14 +232,14 @@ func (x Int64x4) NotEqual(y Int64x4) (z Mask64x4)
 //
 //	z[i] = x[i] > y[i]
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func (x Uint8x16) Greater(y Uint8x16) (z Mask8x16)
 
 // Less returns a mask indicating which elements of x are less than y.
 //
 //	z[i] = x[i] < y[i]
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func (x Uint8x16) Less(y Uint8x16) (z Mask8x16)
 
 // GreaterEqual returns a mask indicating which elements of x are greater than
@@ -247,7 +247,7 @@ func (x Uint8x16) Less(y Uint8x16) (z Mask8x16)
 //
 //	z[i] = x[i] >= y[i]
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func (x Uint8x16) GreaterEqual(y Uint8x16) (z Mask8x16)
 
 // LessEqual returns a mask indicating which elements of x are less than or
@@ -255,7 +255,7 @@ func (x Uint8x16) GreaterEqual(y Uint8x16) (z Mask8x16)
 //
 //	z[i] = x[i] <= y[i]
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func (x Uint8x16) LessEqual(y Uint8x16) (z Mask8x16)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.

@@ -90,6 +90,15 @@ func (x Int8s) NotEqual(y Int8s) (z Mask8s)
 // Len returns the number of elements in x.
 func (x Int8s) Len() int
 
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < x.Len() {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+func (x Int8s) LookupOrZero(indices Uint8s) (z Int8s)
+
 // Masked returns a vector with elements from x where mask is true, and zero
 // elsewhere.
 //
@@ -503,6 +512,9 @@ func LoadInt64s(s []int64) (z Int64s)
 // remaining vector elements will be zero.
 func LoadInt64sPart(s []int64) (z Int64s, n int)
 
+// Abs returns the elementwise absolute value of x.
+func (x Int64s) Abs() (z Uint64s)
+
 // Add adds x and y elementwise.
 //
 //	z[i] = x[i] + y[i]
@@ -588,6 +600,12 @@ func (x Int64s) Or(y Int64s) (z Int64s)
 //	z[i] = x[i] << shift
 func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
 
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// If shift is greater than the element width, the result is 0 or -1.
+//
+//	z[i] = x[i] >> shift
+func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
+
 // Store stores the elements of x into a slice. If len(s) < x.Len(), it panics.
 func (x Int64s) Store(s []int64)
 
@@ -656,11 +674,33 @@ func (x Uint8s) Average(y Uint8s) (z Uint8s)
 // Equal returns a mask indicating which elements of x and y are equal.
 func (x Uint8s) Equal(y Uint8s) (z Mask8s)
 
+// Greater returns a mask indicating which elements of x are greater than y.
+//
+//	z[i] = x[i] > y[i]
+func (x Uint8s) Greater(y Uint8s) (z Mask8s)
+
+// GreaterEqual returns a mask indicating which elements of x are greater than
+// or equal to y.
+//
+//	z[i] = x[i] >= y[i]
+func (x Uint8s) GreaterEqual(y Uint8s) (z Mask8s)
+
 // HiToLo returns a vector whose low half is the high half of x and whose high
 // half is zero.
 //
 //	z = {x[n/2], x[n/2+1], ..., x[n-1], 0, ..., 0}, where n = x.Len()
 func (x Uint8s) HiToLo() (z Uint8s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+func (x Uint8s) Less(y Uint8s) (z Mask8s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+func (x Uint8s) LessEqual(y Uint8s) (z Mask8s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 func (x Uint8s) NotEqual(y Uint8s) (z Mask8s)
@@ -1921,6 +1961,17 @@ func (x Mask64s) ToInt64s() (z Int64s)
 //	= (x^6 + x^5 + x^1)
 func (x Uint64s) CarrylessMultiplyEven(y Uint64s) (z Uint64s)
 
+// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
+// even-indexed elements of x and odd-indexed elements of y. The result of each
+// carryless multiply is twice the width of the input elements. The high bits
+// are stored in elements z[2*i+1] and the low bits are stored in elements
+// z[2*i].
+//
+//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
+//
+// See [CarrylessMultiplyEven] for details about carryless multiply.
+func (x Uint64s) CarrylessMultiplyEvenOdd(y Uint64s) (z Uint64s)
+
 // CarrylessMultiplyOdd computes the elementwise carryless multiplication of
 // odd-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
@@ -1930,6 +1981,17 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) (z Uint64s)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) (z Uint64s)
+
+// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
+// odd-indexed elements of x and even-indexed elements of y. The result of each
+// carryless multiply is twice the width of the input elements. The high bits
+// are stored in elements z[2*i+1] and the low bits are stored in elements
+// z[2*i].
+//
+//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
+//
+// See [CarrylessMultiplyEven] for details about carryless multiply.
+func (x Uint64s) CarrylessMultiplyOddEven(y Uint64s) (z Uint64s)
 
 // OnesCount counts the number of one bits ("population count") in
 // each element.

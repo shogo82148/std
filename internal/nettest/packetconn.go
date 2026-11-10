@@ -13,16 +13,21 @@ import (
 
 // A PacketNet is a group of communicating [PacketConn]s.
 type PacketNet struct {
-	mu    sync.Mutex
-	conns map[netAddr]*PacketConn
+	mu     sync.Mutex
+	conns  map[netAddr]*PacketConn
+	closed bool
 }
 
 // NewPacketNet returns a new PacketNet.
 func NewPacketNet() *PacketNet
 
 // NewConn returns a new [PacketConn] listening on the given address.
-// It returns an error if there is an existing listener on this address.
+// It returns an error if there is an existing listener on this address
+// or if the PacketNet is closed.
 func (n *PacketNet) NewConn(a net.Addr) (*PacketConn, error)
+
+// Close closes every [PacketConn] in the PacketNet.
+func (n *PacketNet) Close()
 
 type PacketConn struct {
 	gate         gate.Gate
