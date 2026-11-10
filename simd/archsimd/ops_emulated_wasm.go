@@ -198,6 +198,32 @@ func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
 // Emulated
 func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 
+// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
+// even-indexed elements of x and odd-indexed elements of y. The result of each
+// carryless multiply is twice the width of the input elements. The high bits
+// are stored in elements z[2*i+1] and the low bits are stored in elements
+// z[2*i].
+//
+//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
+//
+// See [CarrylessMultiplyEven] for details about carryless multiply.
+//
+// Emulated
+func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
+
+// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
+// odd-indexed elements of x and even-indexed elements of y. The result of each
+// carryless multiply is twice the width of the input elements. The high bits
+// are stored in elements z[2*i+1] and the low bits are stored in elements
+// z[2*i].
+//
+//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
+//
+// See [CarrylessMultiplyEven] for details about carryless multiply.
+//
+// Emulated
+func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
+
 // ReduceSum returns the scalar sum of the elements of x.
 //
 // This uses repeated pairwise summation, which may affect the final precision

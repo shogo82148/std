@@ -7,61 +7,61 @@ package archsimd
 // BroadcastInt8x16 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastInt8x16(x int8) (z Int8x16)
 
 // BroadcastInt16x8 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastInt16x8(x int16) (z Int16x8)
 
 // BroadcastInt32x4 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastInt32x4(x int32) (z Int32x4)
 
 // BroadcastInt64x2 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastInt64x2(x int64) (z Int64x2)
 
 // BroadcastUint8x16 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastUint8x16(x uint8) (z Uint8x16)
 
 // BroadcastUint16x8 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastUint16x8(x uint16) (z Uint16x8)
 
 // BroadcastUint32x4 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastUint32x4(x uint32) (z Uint32x4)
 
 // BroadcastUint64x2 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastUint64x2(x uint64) (z Uint64x2)
 
 // BroadcastFloat32x4 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastFloat32x4(x float32) (z Float32x4)
 
 // BroadcastFloat64x2 returns a vector with the input x assigned to all elements of the
 // result.
 //
-// Emulated, CPU Feature: AVX2
+// Emulated, CPU Feature: AVX
 func BroadcastFloat64x2(x float64) (z Float64x2)
 
 // BroadcastInt8x32 returns a vector with the input x assigned to all elements of the

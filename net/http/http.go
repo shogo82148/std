@@ -138,6 +138,15 @@ type HTTP2Config struct {
 	// 禁止されている暗号スイートの使用を許可します。
 	PermitProhibitedCipherSuites bool
 
+	// EnableConnectProtocolがtrueの場合、RFC 8441で定義されている
+	// Extended CONNECTプロトコルのサポートを有効にします。
+	// 有効にすると、HTTP/2サーバーはExtended CONNECTのサポートを通知します。
+	// Extended CONNECTリクエストには、リクエストヘッダーに
+	// ":protocol"擬似ヘッダーが含まれます。
+	//
+	// このパラメーターはサーバーにのみ適用されます。
+	EnableConnectProtocol bool
+
 	// CountErrorがnilでない場合、HTTP/2エラー時に呼び出されます。
 	// これは監視用のメトリクスをインクリメントすることを目的としています。
 	// errTypeには小文字、数字、アンダースコア（a-z、0-9、_）のみが含まれます。

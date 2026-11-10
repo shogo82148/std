@@ -49,6 +49,10 @@ func (t Top) WhyNotExact() string
 // listed have [Value] [Top].
 type Def struct {
 	fields map[string]*Value
+
+	// keys is the keys of fields, sorted. It is often shared between Defs,
+	// so it must not be modified.
+	keys []string
 }
 
 // A DefBuilder builds a [Def] one field at a time. The zero value is an empty
@@ -68,6 +72,7 @@ func (d Def) Exact() bool
 // WhyNotExact returns why the value is not exact
 func (d Def) WhyNotExact() string
 
+// All yields the fields of d in key order.
 func (d Def) All() iter.Seq2[string, *Value]
 
 // A Tuple is a sequence of Values in one of two forms: 1. a fixed-length tuple,
