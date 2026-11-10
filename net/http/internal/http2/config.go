@@ -21,5 +21,6 @@ type Config struct {
 	PingTimeout                   time.Duration
 	WriteByteTimeout              time.Duration
 	PermitProhibitedCipherSuites  bool
+	EnableConnectProtocol         bool
 	CountError                    func(errType string)
 }

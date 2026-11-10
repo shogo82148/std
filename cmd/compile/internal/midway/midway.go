@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package midway
+
+const SimdPkg = "simd"
+const SimdBridgePkg = "simd/internal/bridge"

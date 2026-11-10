@@ -342,6 +342,12 @@ func (x Int8x32) LessEqual(y Int8x32) Mask8x32
 
 func (x Int8x64) LessEqual(y Int8x64) Mask8x64
 
+func (x Int8x16) LookupOrZero(indices Uint8x16) Int8x16
+
+func (x Int8x32) LookupOrZero(indices Uint8x32) Int8x32
+
+func (x Int8x64) LookupOrZero(indices Uint8x64) Int8x64
+
 func (x Int8x16) Masked(mask Mask8x16) Int8x16
 
 func (x Int8x32) Masked(mask Mask8x32) Int8x32
@@ -840,6 +846,12 @@ func (x Int32x8) Xor(y Int32x8) Int32x8
 
 func (x Int32x16) Xor(y Int32x16) Int32x16
 
+func (x Int64x2) Abs() Uint64x2
+
+func (x Int64x4) Abs() Uint64x4
+
+func (x Int64x8) Abs() Uint64x8
+
 func (x Int64x2) Add(y Int64x2) Int64x2
 
 func (x Int64x4) Add(y Int64x4) Int64x4
@@ -948,6 +960,12 @@ func (x Int64x4) ShiftAllLeft(shift uint64) Int64x4
 
 func (x Int64x8) ShiftAllLeft(shift uint64) Int64x8
 
+func (x Int64x2) ShiftAllRight(shift uint64) Int64x2
+
+func (x Int64x4) ShiftAllRight(shift uint64) Int64x4
+
+func (x Int64x8) ShiftAllRight(shift uint64) Int64x8
+
 func (x Int64x2) Store(s []int64)
 
 func (x Int64x4) Store(s []int64)
@@ -1038,6 +1056,18 @@ func (x Uint8x32) Equal(y Uint8x32) Mask8x32
 
 func (x Uint8x64) Equal(y Uint8x64) Mask8x64
 
+func (x Uint8x16) Greater(y Uint8x16) Mask8x16
+
+func (x Uint8x32) Greater(y Uint8x32) Mask8x32
+
+func (x Uint8x64) Greater(y Uint8x64) Mask8x64
+
+func (x Uint8x16) GreaterEqual(y Uint8x16) Mask8x16
+
+func (x Uint8x32) GreaterEqual(y Uint8x32) Mask8x32
+
+func (x Uint8x64) GreaterEqual(y Uint8x64) Mask8x64
+
 func (x Uint8x16) HiToLo() Uint8x16
 
 func (x Uint8x32) HiToLo() Uint8x32
@@ -1055,6 +1085,18 @@ func (x Uint8x16) Len() int
 func (x Uint8x32) Len() int
 
 func (x Uint8x64) Len() int
+
+func (x Uint8x16) Less(y Uint8x16) Mask8x16
+
+func (x Uint8x32) Less(y Uint8x32) Mask8x32
+
+func (x Uint8x64) Less(y Uint8x64) Mask8x64
+
+func (x Uint8x16) LessEqual(y Uint8x16) Mask8x16
+
+func (x Uint8x32) LessEqual(y Uint8x32) Mask8x32
+
+func (x Uint8x64) LessEqual(y Uint8x64) Mask8x64
 
 func (x Uint8x16) Masked(mask Mask8x16) Uint8x16
 
@@ -1620,11 +1662,23 @@ func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) Uint64x4
 
 func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) Uint64x8
 
+func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) Uint64x2
+
+func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) Uint64x4
+
+func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) Uint64x8
+
 func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
 
 func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) Uint64x4
 
 func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) Uint64x8
+
+func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
+
+func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) Uint64x4
+
+func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) Uint64x8
 
 func (x Uint64x2) ConvertToInt64() Int64x2
 
