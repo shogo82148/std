@@ -15,6 +15,13 @@ func IsInterface(t Type) bool
 // Comparable reports whether values of type T are comparable.
 func Comparable(T Type) bool
 
+// StrictlyComparable reports whether values of type T are strictly comparable.
+//
+// A type is strictly comparable if it is comparable and contains no interface type,
+// looking recursively through struct fields and array elements. See
+// https://go.dev/ref/spec#Comparison_operators for the precise definition.
+func StrictlyComparable(T Type) bool
+
 // Default returns the default "typed" type for an "untyped" type;
 // it returns the incoming type for all other types. The default type
 // for untyped nil is untyped nil.
