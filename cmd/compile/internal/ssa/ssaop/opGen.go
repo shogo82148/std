@@ -8634,14 +8634,6 @@ const (
 	OpOrInt8x16
 	OpOrInt8x32
 	OpOrInt8x64
-	OpOrNotInt16x8
-	OpOrNotInt32x4
-	OpOrNotInt64x2
-	OpOrNotInt8x16
-	OpOrNotUint16x8
-	OpOrNotUint32x4
-	OpOrNotUint64x2
-	OpOrNotUint8x16
 	OpOrUint16s
 	OpOrUint16x16
 	OpOrUint16x32
@@ -8760,6 +8752,10 @@ const (
 	OpScaleFloat64x2
 	OpScaleFloat64x4
 	OpScaleFloat64x8
+	OpScaleInt16x8
+	OpScaleInt32x4
+	OpScaleInt64x2
+	OpScaleInt8x16
 	OpScaleSaturatedInt16x8
 	OpScaleSaturatedInt32x4
 	OpScaleSaturatedInt64x2
@@ -8768,6 +8764,10 @@ const (
 	OpScaleSaturatedUint32x4
 	OpScaleSaturatedUint64x2
 	OpScaleSaturatedUint8x16
+	OpScaleUint16x8
+	OpScaleUint32x4
+	OpScaleUint64x2
+	OpScaleUint8x16
 	OpSetElemFloat32x4
 	OpSetElemFloat64x2
 	OpSetElemInt16x8
@@ -8901,10 +8901,6 @@ const (
 	OpShiftAllRightUint64x4
 	OpShiftAllRightUint64x8
 	OpShiftAllRightUint8x16
-	OpShiftInt16x8
-	OpShiftInt32x4
-	OpShiftInt64x2
-	OpShiftInt8x16
 	OpShiftLeftConcatMod16Int16x16
 	OpShiftLeftConcatMod16Int16x32
 	OpShiftLeftConcatMod16Int16x8
@@ -8977,10 +8973,6 @@ const (
 	OpShiftRightUint64x2
 	OpShiftRightUint64x4
 	OpShiftRightUint64x8
-	OpShiftUint16x8
-	OpShiftUint32x4
-	OpShiftUint64x2
-	OpShiftUint8x16
 	OpSqrtFloat32s
 	OpSqrtFloat32x16
 	OpSqrtFloat32x4
@@ -9234,6 +9226,7 @@ const (
 	OponesCountUint8x16
 	OponesCountUint8x32
 	OponesCountUint8x64
+	OporNotUint8x16
 	OppermuteScalarsGroupedInt32x16
 	OppermuteScalarsGroupedInt32x8
 	OppermuteScalarsGroupedUint32x16
@@ -123565,46 +123558,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
-		Name:    "OrNotInt16x8",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotInt32x4",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotInt64x2",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotInt8x16",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotUint16x8",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotUint32x4",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotUint64x2",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "OrNotUint8x16",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:        "OrUint16s",
 		ArgLen:      2,
 		Commutative: true,
@@ -124224,6 +124177,26 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "ScaleInt16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleInt32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleInt64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleInt8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "ScaleSaturatedInt16x8",
 		ArgLen:  2,
 		Generic: true,
@@ -124260,6 +124233,26 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ScaleSaturatedUint8x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleUint16x8",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleUint32x4",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleUint64x2",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "ScaleUint8x16",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -124975,26 +124968,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftInt16x8",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftInt32x4",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftInt64x2",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftInt8x16",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftLeftConcatMod16Int16x16",
 		ArgLen:  3,
 		Generic: true,
@@ -125351,26 +125324,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ShiftRightUint64x8",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftUint16x8",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftUint32x4",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftUint64x2",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftUint8x16",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -126703,6 +126656,11 @@ var OpcodeTable = [...]OpInfo{
 	{
 		Name:    "onesCountUint8x64",
 		ArgLen:  1,
+		Generic: true,
+	},
+	{
+		Name:    "orNotUint8x16",
+		ArgLen:  2,
 		Generic: true,
 	},
 	{

@@ -6,6 +6,8 @@ package byteorder
 
 func LEUint16(b []byte) uint16
 
+func LEUint32(b []byte) uint32
+
 func BEUint32(b []byte) uint32
 
 func BEUint64(b []byte) uint64

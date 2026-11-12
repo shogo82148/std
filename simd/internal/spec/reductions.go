@@ -42,9 +42,17 @@ func ReduceSumFloats[E Floats, W Width](x Vec[E, W]) (z E)
 // ReduceMax returns the largest element of x.
 //
 //	z = max(x[0], x[1], ...)
+//
+// {{if eq .xB "float"}}
+// The handling of NaN and signed zeroes is platform-dependent. See [Max].
+// {{end}}
 func ReduceMax[E Elt, W Width](x Vec[E, W]) (z E)
 
 // ReduceMin returns the smallest element of x.
 //
 //	z = min(x[0], x[1], ...)
+//
+// {{if eq .xB "float"}}
+// The handling of NaN and signed zeroes is platform-dependent. See [Min].
+// {{end}}
 func ReduceMin[E Elt, W Width](x Vec[E, W]) (z E)

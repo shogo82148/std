@@ -1203,53 +1203,61 @@ func (x Uint32x4) GreaterEqual(y Uint32x4) (z Mask32x4)
 // Asm: VCMHS
 func (x Uint64x2) GreaterEqual(y Uint64x2) (z Mask64x2)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2], ..., x[n-2], y[n-2]}, where n = 16
 //
 // Asm: VTRN1
-func (x Int8x16) InterleaveEven(y Int8x16) Int8x16
+func (x Int8x16) InterleaveEven(y Int8x16) (z Int8x16)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2], ..., x[n-2], y[n-2]}, where n = 8
 //
 // Asm: VTRN1
-func (x Int16x8) InterleaveEven(y Int16x8) Int16x8
+func (x Int16x8) InterleaveEven(y Int16x8) (z Int16x8)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2]}
 //
 // Asm: VTRN1
-func (x Int32x4) InterleaveEven(y Int32x4) Int32x4
+func (x Int32x4) InterleaveEven(y Int32x4) (z Int32x4)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0]}
 //
 // Asm: VTRN1
-func (x Int64x2) InterleaveEven(y Int64x2) Int64x2
+func (x Int64x2) InterleaveEven(y Int64x2) (z Int64x2)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2], ..., x[n-2], y[n-2]}, where n = 16
 //
 // Asm: VTRN1
-func (x Uint8x16) InterleaveEven(y Uint8x16) Uint8x16
+func (x Uint8x16) InterleaveEven(y Uint8x16) (z Uint8x16)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2], ..., x[n-2], y[n-2]}, where n = 8
 //
 // Asm: VTRN1
-func (x Uint16x8) InterleaveEven(y Uint16x8) Uint16x8
+func (x Uint16x8) InterleaveEven(y Uint16x8) (z Uint16x8)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0], x[2], y[2]}
 //
 // Asm: VTRN1
-func (x Uint32x4) InterleaveEven(y Uint32x4) Uint32x4
+func (x Uint32x4) InterleaveEven(y Uint32x4) (z Uint32x4)
 
-// InterleaveEven interleaves even elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+// InterleaveEven interleaves the even-indexed elements of x and y.
+//
+//	z = {x[0], y[0]}
 //
 // Asm: VTRN1
-func (x Uint64x2) InterleaveEven(y Uint64x2) Uint64x2
+func (x Uint64x2) InterleaveEven(y Uint64x2) (z Uint64x2)
 
 // InterleaveHi interleaves the elements of the high halves of x and y.
 //
@@ -1363,53 +1371,61 @@ func (x Uint32x4) InterleaveLo(y Uint32x4) (z Uint32x4)
 // Asm: VZIP1
 func (x Uint64x2) InterleaveLo(y Uint64x2) (z Uint64x2)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3], ..., x[n-1], y[n-1]}, where n = 16
 //
 // Asm: VTRN2
-func (x Int8x16) InterleaveOdd(y Int8x16) Int8x16
+func (x Int8x16) InterleaveOdd(y Int8x16) (z Int8x16)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3], ..., x[n-1], y[n-1]}, where n = 8
 //
 // Asm: VTRN2
-func (x Int16x8) InterleaveOdd(y Int16x8) Int16x8
+func (x Int16x8) InterleaveOdd(y Int16x8) (z Int16x8)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3]}
 //
 // Asm: VTRN2
-func (x Int32x4) InterleaveOdd(y Int32x4) Int32x4
+func (x Int32x4) InterleaveOdd(y Int32x4) (z Int32x4)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1]}
 //
 // Asm: VTRN2
-func (x Int64x2) InterleaveOdd(y Int64x2) Int64x2
+func (x Int64x2) InterleaveOdd(y Int64x2) (z Int64x2)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3], ..., x[n-1], y[n-1]}, where n = 16
 //
 // Asm: VTRN2
-func (x Uint8x16) InterleaveOdd(y Uint8x16) Uint8x16
+func (x Uint8x16) InterleaveOdd(y Uint8x16) (z Uint8x16)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3], ..., x[n-1], y[n-1]}, where n = 8
 //
 // Asm: VTRN2
-func (x Uint16x8) InterleaveOdd(y Uint16x8) Uint16x8
+func (x Uint16x8) InterleaveOdd(y Uint16x8) (z Uint16x8)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1], x[3], y[3]}
 //
 // Asm: VTRN2
-func (x Uint32x4) InterleaveOdd(y Uint32x4) Uint32x4
+func (x Uint32x4) InterleaveOdd(y Uint32x4) (z Uint32x4)
 
-// InterleaveOdd interleaves odd elements from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+// InterleaveOdd interleaves the odd-indexed elements of x and y.
+//
+//	z = {x[1], y[1]}
 //
 // Asm: VTRN2
-func (x Uint64x2) InterleaveOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) InterleaveOdd(y Uint64x2) (z Uint64x2)
 
 // LeadingSignBits counts the leading sign bits of each element in x.
 //
@@ -2055,62 +2071,6 @@ func (x Uint32x4) Or(y Uint32x4) (z Uint32x4)
 // Asm: VORR
 func (x Uint64x2) Or(y Uint64x2) (z Uint64x2)
 
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Int8x16) OrNot(y Int8x16) (z Int8x16)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Int16x8) OrNot(y Int16x8) (z Int16x8)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Int32x4) OrNot(y Int32x4) (z Int32x4)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Int64x2) OrNot(y Int64x2) (z Int64x2)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Uint8x16) OrNot(y Uint8x16) (z Uint8x16)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Uint16x8) OrNot(y Uint16x8) (z Uint16x8)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Uint32x4) OrNot(y Uint32x4) (z Uint32x4)
-
-// OrNot returns the bitwise OR NOT of x and y.
-//
-//	z[i] = x[i] | ^y[i]
-//
-// Asm: VORN
-func (x Uint64x2) OrNot(y Uint64x2) (z Uint64x2)
-
 // Round returns the nearest integer value to each element of x, rounding ties
 // to even.
 //
@@ -2233,6 +2193,54 @@ func (x Int64x2) SaturateToUint32() (z Uint32x4)
 //
 // Asm: VUQXTN
 func (x Uint64x2) SaturateToUint32() (z Uint32x4)
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VSSHL
+func (x Int8x16) Scale(y Int8x16) Int8x16
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VSSHL
+func (x Int16x8) Scale(y Int16x8) Int16x8
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VSSHL
+func (x Int32x4) Scale(y Int32x4) Int32x4
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VSSHL
+func (x Int64x2) Scale(y Int64x2) Int64x2
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VUSHL
+func (x Uint8x16) Scale(y Int8x16) Uint8x16
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VUSHL
+func (x Uint16x8) Scale(y Int16x8) Uint16x8
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VUSHL
+func (x Uint32x4) Scale(y Int32x4) Uint32x4
+
+// Scale shifts each element in x by the signed value of the least significant byte
+// of y's corresponding element: positive values shift left, negative values shift right.
+//
+// Asm: VUSHL
+func (x Uint64x2) Scale(y Int64x2) Uint64x2
 
 // ScaleSaturated multiplies each element of x by a power of two given by scale,
 // with saturation.
@@ -2439,54 +2447,6 @@ func (x Float32x4) SetElem(i uint8, y float32) (z Float32x4)
 //
 // Asm: VMOV
 func (x Float64x2) SetElem(i uint8, y float64) (z Float64x2)
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VSSHL
-func (x Int8x16) Shift(shift Int8x16) Int8x16
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VSSHL
-func (x Int16x8) Shift(shift Int16x8) Int16x8
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VSSHL
-func (x Int32x4) Shift(shift Int32x4) Int32x4
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VSSHL
-func (x Int64x2) Shift(shift Int64x2) Int64x2
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VUSHL
-func (x Uint8x16) Shift(shift Int8x16) Uint8x16
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VUSHL
-func (x Uint16x8) Shift(shift Int16x8) Uint16x8
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VUSHL
-func (x Uint32x4) Shift(shift Int32x4) Uint32x4
-
-// Shift shifts each element in x by the signed value of the least significant byte
-// of shift's corresponding element: positive values shift left, negative values shift right.
-//
-// Asm: VUSHL
-func (x Uint64x2) Shift(shift Int64x2) Uint64x2
 
 // ShiftAllLeft shifts each element of x left by shift bits.
 // If shift is greater than the element width, the result is 0.

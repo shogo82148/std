@@ -24,6 +24,8 @@ package spec
 //	z[i] = sat(x[i] * 2^scale[i*k])
 //
 // {{end}}
+//
+//specgen:experiment
 func ScaleSaturated[E Ints | Uints, W Width](x Vec[E, W], scale Vec[int8, W]) (z Vec[E, W])
 
 // {{if eq .xB "int" -}}
