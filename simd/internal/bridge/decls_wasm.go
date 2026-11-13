@@ -786,8 +786,6 @@ func (x Mask8x16) AndNot(y Mask8x16) Mask8x16
 
 func (x Mask8x16) Any() bool
 
-func (x Mask8x16) Equal(y Mask8x16) Mask8x16
-
 func (x Mask8x16) None() bool
 
 func (x Mask8x16) Not() Mask8x16
@@ -809,8 +807,6 @@ func (x Mask16x8) And(y Mask16x8) Mask16x8
 func (x Mask16x8) AndNot(y Mask16x8) Mask16x8
 
 func (x Mask16x8) Any() bool
-
-func (x Mask16x8) Equal(y Mask16x8) Mask16x8
 
 func (x Mask16x8) None() bool
 
@@ -834,8 +830,6 @@ func (x Mask32x4) AndNot(y Mask32x4) Mask32x4
 
 func (x Mask32x4) Any() bool
 
-func (x Mask32x4) Equal(y Mask32x4) Mask32x4
-
 func (x Mask32x4) None() bool
 
 func (x Mask32x4) Not() Mask32x4
@@ -857,8 +851,6 @@ func (x Mask64x2) And(y Mask64x2) Mask64x2
 func (x Mask64x2) AndNot(y Mask64x2) Mask64x2
 
 func (x Mask64x2) Any() bool
-
-func (x Mask64x2) Equal(y Mask64x2) Mask64x2
 
 func (x Mask64x2) None() bool
 

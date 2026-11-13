@@ -1018,185 +1018,425 @@ func (x Float64x4) CeilScaledResidue(prec uint8) Float64x4
 // Asm: VREDUCEPD, CPU Feature: AVX512
 func (x Float64x8) CeilScaledResidue(prec uint8) Float64x8
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPS, CPU Feature: AVX512
-func (x Float32x4) Compress(mask Mask32x4) Float32x4
+func (x Float32x4) Compress(mask Mask32x4) (z Float32x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPS, CPU Feature: AVX512
-func (x Float32x8) Compress(mask Mask32x8) Float32x8
+func (x Float32x8) Compress(mask Mask32x8) (z Float32x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPS, CPU Feature: AVX512
-func (x Float32x16) Compress(mask Mask32x16) Float32x16
+func (x Float32x16) Compress(mask Mask32x16) (z Float32x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPD, CPU Feature: AVX512
-func (x Float64x2) Compress(mask Mask64x2) Float64x2
+func (x Float64x2) Compress(mask Mask64x2) (z Float64x2)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPD, CPU Feature: AVX512
-func (x Float64x4) Compress(mask Mask64x4) Float64x4
+func (x Float64x4) Compress(mask Mask64x4) (z Float64x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VCOMPRESSPD, CPU Feature: AVX512
-func (x Float64x8) Compress(mask Mask64x8) Float64x8
+func (x Float64x8) Compress(mask Mask64x8) (z Float64x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Int8x16) Compress(mask Mask8x16) Int8x16
+func (x Int8x16) Compress(mask Mask8x16) (z Int8x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Int8x32) Compress(mask Mask8x32) Int8x32
+func (x Int8x32) Compress(mask Mask8x32) (z Int8x32)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Int8x64) Compress(mask Mask8x64) Int8x64
+func (x Int8x64) Compress(mask Mask8x64) (z Int8x64)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Int16x8) Compress(mask Mask16x8) Int16x8
+func (x Int16x8) Compress(mask Mask16x8) (z Int16x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Int16x16) Compress(mask Mask16x16) Int16x16
+func (x Int16x16) Compress(mask Mask16x16) (z Int16x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Int16x32) Compress(mask Mask16x32) Int16x32
+func (x Int16x32) Compress(mask Mask16x32) (z Int16x32)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Int32x4) Compress(mask Mask32x4) Int32x4
+func (x Int32x4) Compress(mask Mask32x4) (z Int32x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Int32x8) Compress(mask Mask32x8) Int32x8
+func (x Int32x8) Compress(mask Mask32x8) (z Int32x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Int32x16) Compress(mask Mask32x16) Int32x16
+func (x Int32x16) Compress(mask Mask32x16) (z Int32x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Int64x2) Compress(mask Mask64x2) Int64x2
+func (x Int64x2) Compress(mask Mask64x2) (z Int64x2)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Int64x4) Compress(mask Mask64x4) Int64x4
+func (x Int64x4) Compress(mask Mask64x4) (z Int64x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Int64x8) Compress(mask Mask64x8) Int64x8
+func (x Int64x8) Compress(mask Mask64x8) (z Int64x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Uint8x16) Compress(mask Mask8x16) Uint8x16
+func (x Uint8x16) Compress(mask Mask8x16) (z Uint8x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Uint8x32) Compress(mask Mask8x32) Uint8x32
+func (x Uint8x32) Compress(mask Mask8x32) (z Uint8x32)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSB, CPU Feature: AVX512VBMI2
-func (x Uint8x64) Compress(mask Mask8x64) Uint8x64
+func (x Uint8x64) Compress(mask Mask8x64) (z Uint8x64)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) Compress(mask Mask16x8) Uint16x8
+func (x Uint16x8) Compress(mask Mask16x8) (z Uint16x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) Compress(mask Mask16x16) Uint16x16
+func (x Uint16x16) Compress(mask Mask16x16) (z Uint16x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) Compress(mask Mask16x32) Uint16x32
+func (x Uint16x32) Compress(mask Mask16x32) (z Uint16x32)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Uint32x4) Compress(mask Mask32x4) Uint32x4
+func (x Uint32x4) Compress(mask Mask32x4) (z Uint32x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Uint32x8) Compress(mask Mask32x8) Uint32x8
+func (x Uint32x8) Compress(mask Mask32x8) (z Uint32x8)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSD, CPU Feature: AVX512
-func (x Uint32x16) Compress(mask Mask32x16) Uint32x16
+func (x Uint32x16) Compress(mask Mask32x16) (z Uint32x16)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Uint64x2) Compress(mask Mask64x2) Uint64x2
+func (x Uint64x2) Compress(mask Mask64x2) (z Uint64x2)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Uint64x4) Compress(mask Mask64x4) Uint64x4
+func (x Uint64x4) Compress(mask Mask64x4) (z Uint64x4)
 
-// Compress packs the masked elements of x into the lower indexed elements of z,
-// zeroing any remaining elements.
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPCOMPRESSQ, CPU Feature: AVX512
-func (x Uint64x8) Compress(mask Mask64x8) Uint64x8
+func (x Uint64x8) Compress(mask Mask64x8) (z Uint64x8)
 
 // ConcatAddPairs horizontally adds adjacent pairs of elements in x and y and
 // returns the concatenated result.
@@ -1730,51 +1970,47 @@ func (x Uint32x8) ConcatPermute128Scalars(lo, hi uint8, y Uint32x8) Uint32x8
 // Asm: VPERM2I128, CPU Feature: AVX2
 func (x Uint64x4) ConcatPermute128Scalars(lo, hi uint8, y Uint64x4) Uint64x4
 
-// ConcatSaturateToInt16 converts element values to int16 with signed saturation.
-// The converted elements from x will be packed to the lower part of the result vector,
-// the converted elements from y will be packed to the upper part of the result vector.
+// ConcatSaturateToInt16 converts each element of x and y to int16, saturating
+// values that are outside the range of int16, and returns the concatenated
+// result.
+//
+//	z = concat(sat(x[...]), sat(y[...]))
 //
 // Asm: VPACKSSDW, CPU Feature: AVX
-func (x Int32x4) ConcatSaturateToInt16(y Int32x4) Int16x8
+func (x Int32x4) ConcatSaturateToInt16(y Int32x4) (z Int16x8)
 
-// ConcatSaturateToInt16Grouped converts element values to int16 with signed saturation.
-// With each 128-bit as a group:
-// The converted elements from x will be packed to the lower part of the group in the result vector,
-// the converted elements from y will be packed to the upper part of the group in the result vector.
+// ConcatSaturateToInt16Grouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSaturateToInt16] on each group.
 //
 // Asm: VPACKSSDW, CPU Feature: AVX2
-func (x Int32x8) ConcatSaturateToInt16Grouped(y Int32x8) Int16x16
+func (x Int32x8) ConcatSaturateToInt16Grouped(y Int32x8) (z Int16x16)
 
-// ConcatSaturateToInt16Grouped converts element values to int16 with signed saturation.
-// With each 128-bit as a group:
-// The converted elements from x will be packed to the lower part of the group in the result vector,
-// the converted elements from y will be packed to the upper part of the group in the result vector.
+// ConcatSaturateToInt16Grouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSaturateToInt16] on each group.
 //
 // Asm: VPACKSSDW, CPU Feature: AVX512
-func (x Int32x16) ConcatSaturateToInt16Grouped(y Int32x16) Int16x32
+func (x Int32x16) ConcatSaturateToInt16Grouped(y Int32x16) (z Int16x32)
 
-// ConcatSaturateToUint16 converts element values to uint16 with unsigned saturation.
-// The converted elements from x will be packed to the lower part of the result vector,
-// the converted elements from y will be packed to the upper part of the result vector.
+// ConcatSaturateToUint16 converts each element of x and y to uint16,
+// saturating values that are outside the range of uint16, and returns the
+// concatenated result. Negative values become 0.
+//
+//	z = concat(sat(x[...]), sat(y[...]))
 //
 // Asm: VPACKUSDW, CPU Feature: AVX
-func (x Int32x4) ConcatSaturateToUint16(y Int32x4) Uint16x8
+func (x Int32x4) ConcatSaturateToUint16(y Int32x4) (z Uint16x8)
 
-// ConcatSaturateToUint16Grouped converts element values to uint16 with unsigned saturation.
-// With each 128-bit as a group:
-// The converted elements from x will be packed to the lower part of the group in the result vector,
-// the converted elements from y will be packed to the upper part of the group in the result vector.
+// ConcatSaturateToUint16Grouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSaturateToUint16] on each group.
 //
 // Asm: VPACKUSDW, CPU Feature: AVX2
-func (x Int32x8) ConcatSaturateToUint16Grouped(y Int32x8) Uint16x16
+func (x Int32x8) ConcatSaturateToUint16Grouped(y Int32x8) (z Uint16x16)
 
-// ConcatSaturateToUint16Grouped converts element values to uint16 with unsigned saturation.
-// With each 128-bit as a group:
-// The converted elements from x will be packed to the lower part of the group in the result vector,
-// the converted elements from y will be packed to the upper part of the group in the result vector.
+// ConcatSaturateToUint16Grouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSaturateToUint16] on each group.
 //
 // Asm: VPACKUSDW, CPU Feature: AVX512
-func (x Int32x16) ConcatSaturateToUint16Grouped(y Int32x16) Uint16x32
+func (x Int32x16) ConcatSaturateToUint16Grouped(y Int32x16) (z Uint16x32)
 
 // ConcatShiftBytesRight concatenates x and y and shifts it right by shift bytes.
 // The result vector will be the lower half of the concatenated vector.
@@ -2761,159 +2997,431 @@ func (x Float64x4) Equal(y Float64x4) (z Mask64x4)
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) Equal(y Float64x8) (z Mask64x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPS, CPU Feature: AVX512
-func (x Float32x4) Expand(mask Mask32x4) Float32x4
+func (x Float32x4) Expand(mask Mask32x4) (z Float32x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPS, CPU Feature: AVX512
-func (x Float32x8) Expand(mask Mask32x8) Float32x8
+func (x Float32x8) Expand(mask Mask32x8) (z Float32x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPS, CPU Feature: AVX512
-func (x Float32x16) Expand(mask Mask32x16) Float32x16
+func (x Float32x16) Expand(mask Mask32x16) (z Float32x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPD, CPU Feature: AVX512
-func (x Float64x2) Expand(mask Mask64x2) Float64x2
+func (x Float64x2) Expand(mask Mask64x2) (z Float64x2)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPD, CPU Feature: AVX512
-func (x Float64x4) Expand(mask Mask64x4) Float64x4
+func (x Float64x4) Expand(mask Mask64x4) (z Float64x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VEXPANDPD, CPU Feature: AVX512
-func (x Float64x8) Expand(mask Mask64x8) Float64x8
+func (x Float64x8) Expand(mask Mask64x8) (z Float64x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Int8x16) Expand(mask Mask8x16) Int8x16
+func (x Int8x16) Expand(mask Mask8x16) (z Int8x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Int8x32) Expand(mask Mask8x32) Int8x32
+func (x Int8x32) Expand(mask Mask8x32) (z Int8x32)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Int8x64) Expand(mask Mask8x64) Int8x64
+func (x Int8x64) Expand(mask Mask8x64) (z Int8x64)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Int16x8) Expand(mask Mask16x8) Int16x8
+func (x Int16x8) Expand(mask Mask16x8) (z Int16x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Int16x16) Expand(mask Mask16x16) Int16x16
+func (x Int16x16) Expand(mask Mask16x16) (z Int16x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Int16x32) Expand(mask Mask16x32) Int16x32
+func (x Int16x32) Expand(mask Mask16x32) (z Int16x32)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Int32x4) Expand(mask Mask32x4) Int32x4
+func (x Int32x4) Expand(mask Mask32x4) (z Int32x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Int32x8) Expand(mask Mask32x8) Int32x8
+func (x Int32x8) Expand(mask Mask32x8) (z Int32x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Int32x16) Expand(mask Mask32x16) Int32x16
+func (x Int32x16) Expand(mask Mask32x16) (z Int32x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Int64x2) Expand(mask Mask64x2) Int64x2
+func (x Int64x2) Expand(mask Mask64x2) (z Int64x2)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Int64x4) Expand(mask Mask64x4) Int64x4
+func (x Int64x4) Expand(mask Mask64x4) (z Int64x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Int64x8) Expand(mask Mask64x8) Int64x8
+func (x Int64x8) Expand(mask Mask64x8) (z Int64x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Uint8x16) Expand(mask Mask8x16) Uint8x16
+func (x Uint8x16) Expand(mask Mask8x16) (z Uint8x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Uint8x32) Expand(mask Mask8x32) Uint8x32
+func (x Uint8x32) Expand(mask Mask8x32) (z Uint8x32)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDB, CPU Feature: AVX512VBMI2
-func (x Uint8x64) Expand(mask Mask8x64) Uint8x64
+func (x Uint8x64) Expand(mask Mask8x64) (z Uint8x64)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) Expand(mask Mask16x8) Uint16x8
+func (x Uint16x8) Expand(mask Mask16x8) (z Uint16x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) Expand(mask Mask16x16) Uint16x16
+func (x Uint16x16) Expand(mask Mask16x16) (z Uint16x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) Expand(mask Mask16x32) Uint16x32
+func (x Uint16x32) Expand(mask Mask16x32) (z Uint16x32)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Uint32x4) Expand(mask Mask32x4) Uint32x4
+func (x Uint32x4) Expand(mask Mask32x4) (z Uint32x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Uint32x8) Expand(mask Mask32x8) Uint32x8
+func (x Uint32x8) Expand(mask Mask32x8) (z Uint32x8)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDD, CPU Feature: AVX512
-func (x Uint32x16) Expand(mask Mask32x16) Uint32x16
+func (x Uint32x16) Expand(mask Mask32x16) (z Uint32x16)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Uint64x2) Expand(mask Mask64x2) Uint64x2
+func (x Uint64x2) Expand(mask Mask64x2) (z Uint64x2)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Uint64x4) Expand(mask Mask64x4) Uint64x4
+func (x Uint64x4) Expand(mask Mask64x4) (z Uint64x4)
 
-// Expand expands the lower elements of x into the masked elements of z.
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
 //
 // Asm: VPEXPANDQ, CPU Feature: AVX512
-func (x Uint64x8) Expand(mask Mask64x8) Uint64x8
+func (x Uint64x8) Expand(mask Mask64x8) (z Uint64x8)
 
 // ExtendLo4ToInt64 sign-extends the low 4 elements of x to int64.
 //
 //	z[i] = int64(x[i])
+//
+// Deprecated: use Int8x32{}.SetLo(x).ExtendToInt64() instead.
 //
 // Asm: VPMOVSXBQ, CPU Feature: AVX2
 func (x Int8x16) ExtendLo4ToInt64() (z Int64x4)
@@ -2922,12 +3430,16 @@ func (x Int8x16) ExtendLo4ToInt64() (z Int64x4)
 //
 //	z[i] = int64(x[i])
 //
+// Deprecated: use Int16x16{}.SetLo(x).ExtendToInt64() instead.
+//
 // Asm: VPMOVSXWQ, CPU Feature: AVX2
 func (x Int16x8) ExtendLo4ToInt64() (z Int64x4)
 
 // ExtendLo4ToUint64 zero-extends the low 4 elements of x to uint64.
 //
 //	z[i] = uint64(x[i])
+//
+// Deprecated: use Uint8x32{}.SetLo(x).ExtendToUint64() instead.
 //
 // Asm: VPMOVZXBQ, CPU Feature: AVX2
 func (x Uint8x16) ExtendLo4ToUint64() (z Uint64x4)
@@ -2936,12 +3448,16 @@ func (x Uint8x16) ExtendLo4ToUint64() (z Uint64x4)
 //
 //	z[i] = uint64(x[i])
 //
+// Deprecated: use Uint16x16{}.SetLo(x).ExtendToUint64() instead.
+//
 // Asm: VPMOVZXWQ, CPU Feature: AVX2
 func (x Uint16x8) ExtendLo4ToUint64() (z Uint64x4)
 
 // ExtendLo8ToInt32 sign-extends the low 8 elements of x to int32.
 //
 //	z[i] = int32(x[i])
+//
+// Deprecated: use Int8x32{}.SetLo(x).ExtendToInt32() instead.
 //
 // Asm: VPMOVSXBD, CPU Feature: AVX2
 func (x Int8x16) ExtendLo8ToInt32() (z Int32x8)
@@ -2950,6 +3466,8 @@ func (x Int8x16) ExtendLo8ToInt32() (z Int32x8)
 //
 //	z[i] = int64(x[i])
 //
+// Deprecated: use Int8x64{}.SetLo(Int8x32{}.SetLo(x)).ExtendToInt64() instead.
+//
 // Asm: VPMOVSXBQ, CPU Feature: AVX512
 func (x Int8x16) ExtendLo8ToInt64() (z Int64x8)
 
@@ -2957,12 +3475,16 @@ func (x Int8x16) ExtendLo8ToInt64() (z Int64x8)
 //
 //	z[i] = uint32(x[i])
 //
+// Deprecated: use Uint8x32{}.SetLo(x).ExtendToUint32() instead.
+//
 // Asm: VPMOVZXBD, CPU Feature: AVX2
 func (x Uint8x16) ExtendLo8ToUint32() (z Uint32x8)
 
 // ExtendLo8ToUint64 zero-extends the low 8 elements of x to uint64.
 //
 //	z[i] = uint64(x[i])
+//
+// Deprecated: use Uint8x64{}.SetLo(Uint8x32{}.SetLo(x)).ExtendToUint64() instead.
 //
 // Asm: VPMOVZXBQ, CPU Feature: AVX512
 func (x Uint8x16) ExtendLo8ToUint64() (z Uint64x8)
@@ -12216,11 +12738,6 @@ func (x Mask8x16) And(y Mask8x16) (z Mask8x16)
 // CPU Feature: AVX
 func (x Mask8x16) AndNot(y Mask8x16) (z Mask8x16)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX
-func (x Mask8x16) Equal(y Mask8x16) (z Mask8x16)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12252,11 +12769,6 @@ func (x Mask8x32) And(y Mask8x32) (z Mask8x32)
 //
 // CPU Feature: AVX2
 func (x Mask8x32) AndNot(y Mask8x32) (z Mask8x32)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX2
-func (x Mask8x32) Equal(y Mask8x32) (z Mask8x32)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -12290,11 +12802,6 @@ func (x Mask8x64) And(y Mask8x64) (z Mask8x64)
 // CPU Feature: AVX512
 func (x Mask8x64) AndNot(y Mask8x64) (z Mask8x64)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX512
-func (x Mask8x64) Equal(y Mask8x64) (z Mask8x64)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12326,11 +12833,6 @@ func (x Mask16x8) And(y Mask16x8) (z Mask16x8)
 //
 // CPU Feature: AVX
 func (x Mask16x8) AndNot(y Mask16x8) (z Mask16x8)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX
-func (x Mask16x8) Equal(y Mask16x8) (z Mask16x8)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -12364,11 +12866,6 @@ func (x Mask16x16) And(y Mask16x16) (z Mask16x16)
 // CPU Feature: AVX2
 func (x Mask16x16) AndNot(y Mask16x16) (z Mask16x16)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX2
-func (x Mask16x16) Equal(y Mask16x16) (z Mask16x16)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12400,11 +12897,6 @@ func (x Mask16x32) And(y Mask16x32) (z Mask16x32)
 //
 // CPU Feature: AVX512
 func (x Mask16x32) AndNot(y Mask16x32) (z Mask16x32)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX512
-func (x Mask16x32) Equal(y Mask16x32) (z Mask16x32)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -12438,11 +12930,6 @@ func (x Mask32x4) And(y Mask32x4) (z Mask32x4)
 // CPU Feature: AVX
 func (x Mask32x4) AndNot(y Mask32x4) (z Mask32x4)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX
-func (x Mask32x4) Equal(y Mask32x4) (z Mask32x4)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12474,11 +12961,6 @@ func (x Mask32x8) And(y Mask32x8) (z Mask32x8)
 //
 // CPU Feature: AVX2
 func (x Mask32x8) AndNot(y Mask32x8) (z Mask32x8)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX2
-func (x Mask32x8) Equal(y Mask32x8) (z Mask32x8)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -12512,11 +12994,6 @@ func (x Mask32x16) And(y Mask32x16) (z Mask32x16)
 // CPU Feature: AVX512
 func (x Mask32x16) AndNot(y Mask32x16) (z Mask32x16)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX512
-func (x Mask32x16) Equal(y Mask32x16) (z Mask32x16)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12548,11 +13025,6 @@ func (x Mask64x2) And(y Mask64x2) (z Mask64x2)
 //
 // CPU Feature: AVX
 func (x Mask64x2) AndNot(y Mask64x2) (z Mask64x2)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX
-func (x Mask64x2) Equal(y Mask64x2) (z Mask64x2)
 
 // Or returns the bitwise OR of x and y.
 //
@@ -12586,11 +13058,6 @@ func (x Mask64x4) And(y Mask64x4) (z Mask64x4)
 // CPU Feature: AVX2
 func (x Mask64x4) AndNot(y Mask64x4) (z Mask64x4)
 
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX2
-func (x Mask64x4) Equal(y Mask64x4) (z Mask64x4)
-
 // Or returns the bitwise OR of x and y.
 //
 //	z[i] = x[i] | y[i]
@@ -12622,11 +13089,6 @@ func (x Mask64x8) And(y Mask64x8) (z Mask64x8)
 //
 // CPU Feature: AVX512
 func (x Mask64x8) AndNot(y Mask64x8) (z Mask64x8)
-
-// Equal returns a mask indicating which elements of x and y are equal.
-//
-// CPU Feature: AVX512
-func (x Mask64x8) Equal(y Mask64x8) (z Mask64x8)
 
 // Or returns the bitwise OR of x and y.
 //

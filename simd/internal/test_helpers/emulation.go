@@ -37,8 +37,6 @@ func Xor[S integer](x, y S) S
 
 func AndNot[S integer](x, y S) S
 
-func Xnor[S integer](x, y S) S
-
 func Not[S integer](x S) S
 
 func Max[S number](x, y S) S

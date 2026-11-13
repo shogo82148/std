@@ -59,6 +59,34 @@ func LookupModOrZero[E Elt, W Width, E2 Ints](x Vec[E, W], indices Vec[E2, W]) (
 //specgen:require indices=Int{xN}x{xL}
 func LookupModOrZeroGrouped[E Elt, W Width, E2 Ints](x Vec[E, W], indices Vec[E2, W]) (z Vec[E, W])
 
+// Compress packs the elements of x where mask is true into the low elements of
+// z, preserving their order. The remaining elements of z are zero.
+//
+//	j := 0
+//	for i := range x {
+//	    if mask[i] {
+//	        z[j] = x[i]
+//	        j++
+//	    }
+//	}
+//
+//specgen:require maskN=xN
+func Compress[E Elt, W Width, mE MaskElt](x Vec[E, W], mask Vec[mE, W]) (z Vec[E, W])
+
+// Expand places the low elements of x, in order, into the elements of z where
+// mask is true. The elements of z where mask is false are zero.
+//
+//	j := 0
+//	for i := range z {
+//	    if mask[i] {
+//	        z[i] = x[j]
+//	        j++
+//	    }
+//	}
+//
+//specgen:require maskN=xN
+func Expand[E Elt, W Width, mE MaskElt](x Vec[E, W], mask Vec[mE, W]) (z Vec[E, W])
+
 // LookupOrZero permutes x, returning 0 for out-of-range indices.
 //
 //	if indices[i] < {{lanes .x "x"}} {

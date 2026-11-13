@@ -116,6 +116,40 @@ func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec
 //specgen:require zN<xN
 func SaturateIntToUint[xE Ints, W Width, zE Uints](x Vec[xE, W]) (z Vec[zE, W])
 
+// ConcatSaturateToZ converts each element of x and y to {{.zE}}, saturating
+// values that are outside the range of {{.zE}}, and returns the concatenated
+// result.
+//
+//	z = concat(sat(x[...]), sat(y[...]))
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}
+//specgen:require zB=xB zN=xN/2
+func ConcatSaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+
+// ConcatSaturateIntToUint converts each element of x and y to {{.zE}},
+// saturating values that are outside the range of {{.zE}}, and returns the
+// concatenated result. Negative values become 0.
+//
+//	z = concat(sat(x[...]), sat(y[...]))
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}
+//specgen:require zN=xN/2
+func ConcatSaturateIntToUint[xE Ints, W Width, zE Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+
+// ConcatSaturateToZGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSaturateTo{{.zE | title}}] on each group.
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}Grouped
+//specgen:require zB=xB zN=xN/2
+func ConcatSaturateToZGrouped[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+
+// ConcatSaturateIntToUintGrouped divides x, y, and z into groups of 128 bits
+// and performs [ConcatSaturateTo{{.zE | title}}] on each group.
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}Grouped
+//specgen:require zN=xN/2
+func ConcatSaturateIntToUintGrouped[xE Ints, W Width, zE Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+
 // ExtendLoLToZ {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends the low {{.zL}} elements of x to {{.zE}}.
 //
 //	z[i] = {{.zE}}(x[i])
@@ -131,6 +165,7 @@ func ExtendLoLToZ[E Ints | Uints, zE Ints | Uints](x Vec[E, Width128]) (z Vec[zE
 //
 //specgen:name ExtendLo{{.zL}}To{{.zE | title}}
 //specgen:require zB=xB zL<xL zW>xW
+//specgen:experiment
 func ExtendLoLToZWiden[E Ints | Uints, zE Ints | Uints, zW FixedWidth](x Vec[E, Width128]) (z Vec[zE, zW])
 
 // ConvertLoLToZ converts the low-indexed {{.zL}} elements of x to {{.zE}}.
