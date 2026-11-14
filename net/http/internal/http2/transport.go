@@ -13,7 +13,6 @@ import (
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
-	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 
 	"golang.org/x/net/http2/hpack"
@@ -24,31 +23,23 @@ import (
 // A Transport internally caches connections to servers. It is safe
 // for concurrent use by multiple goroutines.
 type Transport struct {
-	t1       TransportConfig
-	connPool *clientConnPool
+	t1 TransportConfig
 	*transportTestHooks
 }
 
 func NewTransport(t1 TransportConfig) *Transport
 
-func (t *Transport) AddConn(scheme, authority string, c net.Conn) error
-
 // ClientConn is the state of a single HTTP/2 client connection to an
 // HTTP/2 server.
 type ClientConn struct {
-	t             *Transport
-	tconn         net.Conn
-	tlsState      *tls.ConnectionState
-	reused        atomic.Bool
-	singleUse     bool
-	getConnCalled bool
+	t         *Transport
+	tconn     net.Conn
+	tlsState  *tls.ConnectionState
+	closeOnce sync.Once
 
 	// readLoop goroutine fields:
 	readerDone chan struct{}
 	readerErr  error
-
-	idleTimeout time.Duration
-	idleTimer   *time.Timer
 
 	mu               sync.Mutex
 	cond             *sync.Cond
@@ -56,7 +47,6 @@ type ClientConn struct {
 	inflow           inflow
 	draining         bool
 	closed           bool
-	closedOnIdle     bool
 	seenSettings     bool
 	seenSettingsChan chan struct{}
 	wantSettingsAck  bool
@@ -68,8 +58,6 @@ type ClientConn struct {
 	pendingRequests  int
 	pings            map[[8]byte]chan struct{}
 	br               *bufio.Reader
-	lastActive       time.Time
-	lastIdle         time.Time
 	// Settings from peer: (also guarded by wmu)
 	maxFrameSize                uint32
 	maxConcurrentStreams        uint32
@@ -115,7 +103,7 @@ type ClientConn struct {
 	// Note that this is different from the user state hook registered by
 	// net/http.ClientConn.SetStateHook: The internal hook calls ClientConn,
 	// which calls the user hook.
-	internalStateHook func()
+	internalStateHook func() error
 
 	// wmu is held while writing.
 	// Acquire BEFORE mu when holding both, to avoid blocking mu on network writes.
@@ -130,19 +118,7 @@ type ClientConn struct {
 
 var ErrNoCachedConn error = noCachedConnError{}
 
-func (t *Transport) RoundTrip(req *ClientRequest) (*ClientResponse, error)
-
-func (t *Transport) IdleConnStrsForTesting() []string
-
-// CloseIdleConnections closes any connections which were previously
-// connected from previous requests but are now sitting idle.
-// It does not interrupt any connections currently in use.
-func (t *Transport) CloseIdleConnections()
-
-func (t *Transport) NewClientConn(c net.Conn, internalStateHook func()) (NetHTTPClientConn, error)
-
-// SetDoNotReuse marks cc as not reusable for future HTTP requests.
-func (cc *ClientConn) SetDoNotReuse()
+func (t *Transport) NewClientConn(c net.Conn, isClientConn bool, internalStateHook func() error) (NetHTTPClientConn, error)
 
 // CanTakeNewRequest reports whether the connection can take a new request,
 // meaning it has not been closed or received or sent a GOAWAY.
@@ -185,9 +161,15 @@ type NetHTTPClientConn struct {
 	cc *ClientConn
 }
 
+func (cc NetHTTPClientConn) NetConn() net.Conn
+
+func (cc NetHTTPClientConn) Proto() int
+
 func (cc NetHTTPClientConn) RoundTrip(req *ClientRequest) (*ClientResponse, error)
 
 func (cc NetHTTPClientConn) Close() error
+
+func (cc NetHTTPClientConn) CloseWithError(err error)
 
 func (cc NetHTTPClientConn) Err() error
 
@@ -200,3 +182,5 @@ func (cc NetHTTPClientConn) Available() int
 func (cc NetHTTPClientConn) InFlight() int
 
 func (cc NetHTTPClientConn) Ping(ctx context.Context) error
+
+func (cc NetHTTPClientConn) State() any

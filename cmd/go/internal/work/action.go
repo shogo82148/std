@@ -47,6 +47,9 @@ type Builder struct {
 	toolIDCache    par.Cache[string, string]
 	gccToolIDCache map[string]string
 	buildIDCache   map[string]string
+
+	// Analysis in go test (see analysis.go).
+	analysis analysisState
 }
 
 // An Actor runs an action.
@@ -94,6 +97,8 @@ type Action struct {
 	vetCfg     *vetConfig
 	FixArchive string
 	output     []byte
+
+	analysis *analysisAction
 
 	sh *Shell
 

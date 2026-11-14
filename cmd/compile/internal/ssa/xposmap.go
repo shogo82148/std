@@ -18,6 +18,8 @@ type XPosMap struct {
 	// The next two fields provide a single-item cache for common case of repeated lines from same file.
 	lastIndex int32
 	lastMap   *BiasedSparseMap
+	// Maps written by Set since the last Clear, possibly repeated.
+	dirty []*BiasedSparseMap
 }
 
 // NewXPosMap constructs an xposmap valid for inputs which have a file index in the keys of x,

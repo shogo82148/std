@@ -76,6 +76,13 @@ type SplittableWidth interface {
 	bits() int
 }
 
+// DoublableWidth is a constraint for the fixed vector widths whose doubles are
+// also vector widths.
+type DoublableWidth interface {
+	Width128 | Width256
+	bits() int
+}
+
 type Width128 struct{}
 
 type Width256 struct{}

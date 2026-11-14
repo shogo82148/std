@@ -32,6 +32,8 @@ func SetElem[E Elt, W Width](x Vec[E, W], i uint8, y E) (z Vec[E, W])
 //
 // {{end}}
 //
+// See also [Enlarge].
+//
 //specgen:require z={xB}{xN}x{xL/2}
 func GetLo[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 
@@ -62,6 +64,8 @@ func GetHi[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 //
 // {{end}}
 //
+// See also [Enlarge].
+//
 //specgen:require y={xB}{xN}x{xL/2}
 func SetLo[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec[E, W])
 
@@ -79,6 +83,22 @@ func SetLo[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec
 //
 //specgen:require y={xB}{xN}x{xL/2}
 func SetHi[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec[E, W])
+
+// Enlarge returns x with twice as many elements, with the upper half zeroed.
+// [GetLo] reverses this: x.Enlarge().GetLo() returns x.
+//
+// {{if eq .xL 2}}
+//
+//	z = concat(x, {0, 0})
+//
+// {{else}}
+//
+//	z = concat(x, {0, ..., 0})
+//
+// {{end}}
+//
+//specgen:require z={xB}{xN}x{xL*2}
+func Enlarge[E Elt, W DoublableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 
 // String returns x in the form "{x[0],x[1],...}".
 func String[E Nums, W Width](x Vec[E, W]) string

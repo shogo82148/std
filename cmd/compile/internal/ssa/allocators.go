@@ -22,6 +22,10 @@ func (c *Cache) AllocSparseMapPos(n int) *SparseMapPos
 
 func (c *Cache) FreeSparseMapPos(s *SparseMapPos)
 
+func (c *Cache) AllocSparseMapValue(n int) *SparseMapValue
+
+func (c *Cache) FreeSparseMapValue(s *SparseMapValue)
+
 func (c *Cache) AllocBlockSlice(n int) []*Block
 
 func (c *Cache) FreeBlockSlice(s []*Block)

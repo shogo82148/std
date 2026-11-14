@@ -94,18 +94,7 @@ func TruncToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE
 
 // SaturateToZ converts each element of x to {{.zE}}, saturating values
 // that are outside the range of {{.zE}}.
-//
-//	z[i] = sat(x[i])
-//
-// The results are stored in the low {{lanes .x "x"}} elements of z.
-// The remaining elements of z are zero.
-//
-//specgen:name SaturateTo{{.zE | title}}
-//specgen:require zB=xB zN<xN
-func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
-
-// SaturateIntToUint converts each element of x to {{.zE}}, saturating values
-// that are outside the range of {{.zE}}. Negative values become 0.
+// {{- if and (eq .xB "int") (eq .zB "uint")}} Negative values become 0.{{end}}
 //
 //	z[i] = sat(x[i])
 //
@@ -114,41 +103,25 @@ func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec
 //
 //specgen:name SaturateTo{{.zE | title}}
 //specgen:require zN<xN
-func SaturateIntToUint[xE Ints, W Width, zE Uints](x Vec[xE, W]) (z Vec[zE, W])
+func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
 
 // ConcatSaturateToZ converts each element of x and y to {{.zE}}, saturating
 // values that are outside the range of {{.zE}}, and returns the concatenated
 // result.
-//
-//	z = concat(sat(x[...]), sat(y[...]))
-//
-//specgen:name ConcatSaturateTo{{.zE | title}}
-//specgen:require zB=xB zN=xN/2
-func ConcatSaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
-
-// ConcatSaturateIntToUint converts each element of x and y to {{.zE}},
-// saturating values that are outside the range of {{.zE}}, and returns the
-// concatenated result. Negative values become 0.
+// {{- if and (eq .xB "int") (eq .zB "uint")}} Negative values become 0.{{end}}
 //
 //	z = concat(sat(x[...]), sat(y[...]))
 //
 //specgen:name ConcatSaturateTo{{.zE | title}}
 //specgen:require zN=xN/2
-func ConcatSaturateIntToUint[xE Ints, W Width, zE Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+func ConcatSaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
 
 // ConcatSaturateToZGrouped divides x, y, and z into groups of 128 bits and
 // performs [ConcatSaturateTo{{.zE | title}}] on each group.
 //
 //specgen:name ConcatSaturateTo{{.zE | title}}Grouped
-//specgen:require zB=xB zN=xN/2
-func ConcatSaturateToZGrouped[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
-
-// ConcatSaturateIntToUintGrouped divides x, y, and z into groups of 128 bits
-// and performs [ConcatSaturateTo{{.zE | title}}] on each group.
-//
-//specgen:name ConcatSaturateTo{{.zE | title}}Grouped
 //specgen:require zN=xN/2
-func ConcatSaturateIntToUintGrouped[xE Ints, W Width, zE Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+func ConcatSaturateToZGrouped[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
 
 // ExtendLoLToZ {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends the low {{.zL}} elements of x to {{.zE}}.
 //

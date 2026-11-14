@@ -179,6 +179,20 @@ func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //specgen:require z={xB}{xN*2}x{xL/2}
 func MulWidenLo[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
 
+// MulWidenEven multiplies corresponding even-indexed elements of x and y,
+// returning a vector of half as many elements, each with twice the input
+// element size.
+//
+//	z[i] = {{.zE}}(x[2*i]) * {{.zE}}(y[2*i])
+//
+// The doubled element width is sufficient to hold every product without
+// overflow.
+//
+//specgen:commutative
+//specgen:require z={xB}{xN*2}x{xL/2}
+//specgen:experiment
+func MulWidenEven[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+
 // MulWidenHi multiplies corresponding elements in the upper half of x and y,
 // returning a vector of half as many elements, each with twice the input
 // element size.
@@ -192,6 +206,17 @@ func MulWidenLo[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec
 //specgen:commutative
 //specgen:require z={xB}{xN*2}x{xL/2}
 func MulWidenHi[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> {{.xN}}
+//
+// The product is computed exactly, so no bits are lost before the shift.
+//
+//specgen:commutative
+//specgen:experiment
+func MulHigh[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
 // MulAddInts returns x * y + z elementwise.
 //
@@ -210,6 +235,30 @@ func MulAddInts[E Ints | Uints, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
 //
 //specgen:name MulAdd
 func MulAddFloats[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[Variation[E], W])
+
+// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
+// x * y - z for the odd-indexed elements.
+//
+//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
+//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
+//
+// This performs a fused multiply-add, computing each result with a single
+// rounding rather than two and no intermediate overflow.
+//
+//specgen:experiment
+func MulAddEvenSubOdd[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+
+// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
+// x * y - z for the even-indexed elements.
+//
+//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
+//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
+//
+// This performs a fused multiply-add, computing each result with a single
+// rounding rather than two and no intermediate overflow.
+//
+//specgen:experiment
+func MulAddOddSubEven[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
 
 // Neg returns the elementwise negation of x.
 //
