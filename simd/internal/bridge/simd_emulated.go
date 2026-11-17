@@ -8,20 +8,6 @@
 
 package bridge
 
-// VectorBitSize returns the bit length of the emulated vector (fixed to 128).
-func VectorBitSize() int
-
-// Emulated returns whether simd is emulated.
-func Emulated() bool
-
-// HasHardwareCarrylessMultiply returns whether this platform
-// has a hardware-implemented version of carryless multiply.
-// With default GODEBUG=simd settings, if this is false,
-// it is emulated and merely slow, but with non-default settings
-// this can indicate the possibility of a missing instruction
-// that will fail ("SIGILL") if it is executed.
-func HasHardwareCarrylessMultiply() bool
-
 // LoadInt8s loads a slice into a vector. If len(s) < z.Len(), it panics.
 func LoadInt8s(s []int8) (z Int8s)
 

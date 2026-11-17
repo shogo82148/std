@@ -4,58 +4,216 @@
 
 package simd
 
+import (
+	"github.com/shogo82148/std/simd/archsimd"
+)
+
+// ToArch returns x as the [simd/archsimd] type backing Int8s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Int8s) ToArch() any
 
-func Int8sFromArch[T archSimdInt8s](x T) Int8s
+// Int8sFromArch converts x to Int8s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Int8s{}).Len()).
+func Int8sFromArch[A archsimd.Int8x16](x A) Int8s
 
+// ToArch returns x as the [simd/archsimd] type backing Int16s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Int16s) ToArch() any
 
-func Int16sFromArch[T archSimdInt16s](x T) Int16s
+// Int16sFromArch converts x to Int16s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Int16s{}).Len()).
+func Int16sFromArch[A archsimd.Int16x8](x A) Int16s
 
+// ToArch returns x as the [simd/archsimd] type backing Int32s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Int32s) ToArch() any
 
-func Int32sFromArch[T archSimdInt32s](x T) Int32s
+// Int32sFromArch converts x to Int32s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Int32s{}).Len()).
+func Int32sFromArch[A archsimd.Int32x4](x A) Int32s
 
+// ToArch returns x as the [simd/archsimd] type backing Int64s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Int64s) ToArch() any
 
-func Int64sFromArch[T archSimdInt64s](x T) Int64s
+// Int64sFromArch converts x to Int64s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Int64s{}).Len()).
+func Int64sFromArch[A archsimd.Int64x2](x A) Int64s
 
+// ToArch returns x as the [simd/archsimd] type backing Uint8s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Uint8s) ToArch() any
 
-func Uint8sFromArch[T archSimdUint8s](x T) Uint8s
+// Uint8sFromArch converts x to Uint8s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Uint8s{}).Len()).
+func Uint8sFromArch[A archsimd.Uint8x16](x A) Uint8s
 
+// ToArch returns x as the [simd/archsimd] type backing Uint16s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Uint16s) ToArch() any
 
-func Uint16sFromArch[T archSimdUint16s](x T) Uint16s
+// Uint16sFromArch converts x to Uint16s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Uint16s{}).Len()).
+func Uint16sFromArch[A archsimd.Uint16x8](x A) Uint16s
 
+// ToArch returns x as the [simd/archsimd] type backing Uint32s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Uint32s) ToArch() any
 
-func Uint32sFromArch[T archSimdUint32s](x T) Uint32s
+// Uint32sFromArch converts x to Uint32s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Uint32s{}).Len()).
+func Uint32sFromArch[A archsimd.Uint32x4](x A) Uint32s
 
+// ToArch returns x as the [simd/archsimd] type backing Uint64s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Uint64s) ToArch() any
 
-func Uint64sFromArch[T archSimdUint64s](x T) Uint64s
+// Uint64sFromArch converts x to Uint64s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Uint64s{}).Len()).
+func Uint64sFromArch[A archsimd.Uint64x2](x A) Uint64s
 
+// ToArch returns x as the [simd/archsimd] type backing Float32s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Float32s) ToArch() any
 
-func Float32sFromArch[T archSimdFloat32s](x T) Float32s
+// Float32sFromArch converts x to Float32s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Float32s{}).Len()).
+func Float32sFromArch[A archsimd.Float32x4](x A) Float32s
 
+// ToArch returns x as the [simd/archsimd] type backing Float64s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Float64s) ToArch() any
 
-func Float64sFromArch[T archSimdFloat64s](x T) Float64s
+// Float64sFromArch converts x to Float64s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Float64s{}).Len()).
+func Float64sFromArch[A archsimd.Float64x2](x A) Float64s
 
+// ToArch returns x as the [simd/archsimd] type backing Mask8s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Mask8s) ToArch() any
 
-func Mask8sFromArch[T archSimdMask8s](x T) Mask8s
+// Mask8sFromArch converts x to Mask8s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Mask8s{}).Len()).
+func Mask8sFromArch[A archsimd.Mask8x16](x A) Mask8s
 
+// ToArch returns x as the [simd/archsimd] type backing Mask16s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Mask16s) ToArch() any
 
-func Mask16sFromArch[T archSimdMask16s](x T) Mask16s
+// Mask16sFromArch converts x to Mask16s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Mask16s{}).Len()).
+func Mask16sFromArch[A archsimd.Mask16x8](x A) Mask16s
 
+// ToArch returns x as the [simd/archsimd] type backing Mask32s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Mask32s) ToArch() any
 
-func Mask32sFromArch[T archSimdMask32s](x T) Mask32s
+// Mask32sFromArch converts x to Mask32s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Mask32s{}).Len()).
+func Mask32sFromArch[A archsimd.Mask32x4](x A) Mask32s
 
+// ToArch returns x as the [simd/archsimd] type backing Mask64s in this process
+// (for vector width [VectorBits]), or nil if [Emulated] is true.
+//
+// Because the dynamic type of the result depends on CPU features and
+// GODEBUG=simd, and future Go releases may return other [simd/archsimd] types
+// (such as scalable types on arm64), callers should use a type switch with a
+// default case.
 func (x Mask64s) ToArch() any
 
-func Mask64sFromArch[T archSimdMask64s](x T) Mask64s
+// Mask64sFromArch converts x to Mask64s.
+//
+// It panics if [Emulated] is true or if x is not for vector width
+// [VectorBits] (that is, x.Len() != (Mask64s{}).Len()).
+func Mask64sFromArch[A archsimd.Mask64x2](x A) Mask64s

@@ -294,4 +294,5 @@ var Archs = [...]*Arch{
 	ArchRISCV64,
 	ArchS390X,
 	ArchWasm,
+	ArchWasm32,
 }

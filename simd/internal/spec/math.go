@@ -273,3 +273,17 @@ func Neg[E Ints | Floats, W Width](x Vec[E, W]) (z Vec[E, W])
 // Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
 // are unspecified.
 func Sqrt[E Floats, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// SumOf8AbsDiff computes the absolute difference of corresponding elements of
+// x and y, and sums each group of 8 adjacent differences, returning a vector
+// of one eighth as many elements, each with eight times the input element
+// size.
+//
+//	w[i] = abs(x[i] - y[i])
+//	z[j] = w[8*j] + w[8*j+1] + ... + w[8*j+7]
+//
+// Neither the differences nor the sums can overflow.
+//
+//specgen:commutative
+//specgen:require z=Uint64x{xL/8}
+func SumOf8AbsDiff[E int8 | uint8, W Width, zE Uints](x, y Vec[E, W]) (z Vec[zE, W])

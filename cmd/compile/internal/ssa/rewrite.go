@@ -77,6 +77,16 @@ func DivisionNeedsFixUp(v *Value) bool
 // because it catches same amount of cases as 4.
 func ZeroUpper32Bits(x *Value) bool
 
+// ZeroUpperVec reports whether the vector register holding x provably has
+// all of its bits above x's width zero, so viewing it at a wider width
+// zero-extends x.
+//
+// Which ops guarantee this is declared per op in the _gen op definitions (the
+// zeroUpperVec attribute). This holds through spills, restores, and register
+// moves only because those use VEX encodings for SIMD values (see
+// amd64.avxMove).
+func ZeroUpperVec(x *Value) bool
+
 // ZeroUpper48Bits is similar to ZeroUpper32Bits, but for upper 48 bits.
 func ZeroUpper48Bits(x *Value) bool
 
