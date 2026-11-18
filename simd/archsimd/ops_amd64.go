@@ -17,7 +17,7 @@ func (x Uint8x16) AESDecryptLastRound(y Uint32x4) Uint8x16
 // y is the chunk of dw array in use.
 // result = AddRoundKey(InvShiftRows(InvSubBytes(x)), y)
 //
-// Asm: VAESDECLAST, CPU Feature: VAES
+// Asm: VAESDECLAST, CPU Feature: AVX2AES
 func (x Uint8x32) AESDecryptLastRound(y Uint32x8) Uint8x32
 
 // AESDecryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -25,7 +25,7 @@ func (x Uint8x32) AESDecryptLastRound(y Uint32x8) Uint8x32
 // y is the chunk of dw array in use.
 // result = AddRoundKey(InvShiftRows(InvSubBytes(x)), y)
 //
-// Asm: VAESDECLAST, CPU Feature: AVX512VAES
+// Asm: VAESDECLAST, CPU Feature: AVX512AES
 func (x Uint8x64) AESDecryptLastRound(y Uint32x16) Uint8x64
 
 // AESDecryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -41,7 +41,7 @@ func (x Uint8x16) AESDecryptOneRound(y Uint32x4) Uint8x16
 // y is the chunk of dw array in use.
 // result = AddRoundKey(InvMixColumns(InvShiftRows(InvSubBytes(x))), y)
 //
-// Asm: VAESDEC, CPU Feature: VAES
+// Asm: VAESDEC, CPU Feature: AVX2AES
 func (x Uint8x32) AESDecryptOneRound(y Uint32x8) Uint8x32
 
 // AESDecryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -49,7 +49,7 @@ func (x Uint8x32) AESDecryptOneRound(y Uint32x8) Uint8x32
 // y is the chunk of dw array in use.
 // result = AddRoundKey(InvMixColumns(InvShiftRows(InvSubBytes(x))), y)
 //
-// Asm: VAESDEC, CPU Feature: AVX512VAES
+// Asm: VAESDEC, CPU Feature: AVX512AES
 func (x Uint8x64) AESDecryptOneRound(y Uint32x16) Uint8x64
 
 // AESEncryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -65,7 +65,7 @@ func (x Uint8x16) AESEncryptLastRound(y Uint32x4) Uint8x16
 // y is the chunk of w array in use.
 // result = AddRoundKey((ShiftRows(SubBytes(x))), y)
 //
-// Asm: VAESENCLAST, CPU Feature: VAES
+// Asm: VAESENCLAST, CPU Feature: AVX2AES
 func (x Uint8x32) AESEncryptLastRound(y Uint32x8) Uint8x32
 
 // AESEncryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -73,7 +73,7 @@ func (x Uint8x32) AESEncryptLastRound(y Uint32x8) Uint8x32
 // y is the chunk of w array in use.
 // result = AddRoundKey((ShiftRows(SubBytes(x))), y)
 //
-// Asm: VAESENCLAST, CPU Feature: AVX512VAES
+// Asm: VAESENCLAST, CPU Feature: AVX512AES
 func (x Uint8x64) AESEncryptLastRound(y Uint32x16) Uint8x64
 
 // AESEncryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -89,7 +89,7 @@ func (x Uint8x16) AESEncryptOneRound(y Uint32x4) Uint8x16
 // y is the chunk of w array in use.
 // result = AddRoundKey(MixColumns(ShiftRows(SubBytes(x))), y)
 //
-// Asm: VAESENC, CPU Feature: VAES
+// Asm: VAESENC, CPU Feature: AVX2AES
 func (x Uint8x32) AESEncryptOneRound(y Uint32x8) Uint8x32
 
 // AESEncryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
@@ -97,7 +97,7 @@ func (x Uint8x32) AESEncryptOneRound(y Uint32x8) Uint8x32
 // y is the chunk of w array in use.
 // result = AddRoundKey(MixColumns(ShiftRows(SubBytes(x))), y)
 //
-// Asm: VAESENC, CPU Feature: AVX512VAES
+// Asm: VAESENC, CPU Feature: AVX512AES
 func (x Uint8x64) AESEncryptOneRound(y Uint32x16) Uint8x64
 
 // AESInvMixColumns performs the InvMixColumns operation in AES cipher algorithm defined in FIPS 197.
@@ -2012,32 +2012,6 @@ func (x Int32x8) ConcatSaturateToUint16Grouped(y Int32x8) (z Uint16x16)
 // Asm: VPACKUSDW, CPU Feature: AVX512
 func (x Int32x16) ConcatSaturateToUint16Grouped(y Int32x16) (z Uint16x32)
 
-// ConcatShiftBytesRight concatenates x and y and shifts it right by shift bytes.
-// The result vector will be the lower half of the concatenated vector.
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPALIGNR, CPU Feature: AVX
-func (x Uint8x16) ConcatShiftBytesRight(y Uint8x16, shift uint64) Uint8x16
-
-// ConcatShiftBytesRightGrouped concatenates x and y and shifts it right by shift bytes.
-// The result vector will be the lower half of the concatenated vector.
-// This operation is performed grouped by each 16 byte.
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPALIGNR, CPU Feature: AVX2
-func (x Uint8x32) ConcatShiftBytesRightGrouped(y Uint8x32, shift uint64) Uint8x32
-
-// ConcatShiftBytesRightGrouped concatenates x and y and shifts it right by shift bytes.
-// The result vector will be the lower half of the concatenated vector.
-// This operation is performed grouped by each 16 byte.
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPALIGNR, CPU Feature: AVX512
-func (x Uint8x64) ConcatShiftBytesRightGrouped(y Uint8x64, shift uint64) Uint8x64
-
 // ConcatSubPairs horizontally subtracts adjacent pairs of elements in x and y
 // and returns the concatenated result.
 //
@@ -2135,6 +2109,38 @@ func (x Int16x8) ConcatSubPairsSaturated(y Int16x8) (z Int16x8)
 //
 // Asm: VPHSUBSW, CPU Feature: AVX2
 func (x Int16x16) ConcatSubPairsSaturatedGrouped(y Int16x16) (z Int16x16)
+
+// ConcatWindow returns a window of the concatenation of x (low indices) and y
+// (high indices) that starts at element start and is the length of x.
+//
+//	xy = concat(x, y)
+//	z[i] = xy[start+i]
+//
+// start must be less than 16. Otherwise, the result is
+// unspecified (and ConcatWindow may panic).
+//
+// Performance: A non-constant value of start may result in significantly worse performance for this operation.
+//
+// Asm: VPALIGNR, CPU Feature: AVX
+func (x Uint8x16) ConcatWindow(y Uint8x16, start uint8) (z Uint8x16)
+
+// ConcatWindowGrouped divides x, y, and z into groups of 128 bits and performs
+// [ConcatWindow] on each group. start must be less than the number of elements
+// in a group.
+//
+// Performance: A non-constant value of start may result in significantly worse performance for this operation.
+//
+// Asm: VPALIGNR, CPU Feature: AVX2
+func (x Uint8x32) ConcatWindowGrouped(y Uint8x32, start uint8) (z Uint8x32)
+
+// ConcatWindowGrouped divides x, y, and z into groups of 128 bits and performs
+// [ConcatWindow] on each group. start must be less than the number of elements
+// in a group.
+//
+// Performance: A non-constant value of start may result in significantly worse performance for this operation.
+//
+// Asm: VPALIGNR, CPU Feature: AVX512
+func (x Uint8x64) ConcatWindowGrouped(y Uint8x64, start uint8) (z Uint8x64)
 
 // ConvertToFloat32 converts each element of x to float32.
 //

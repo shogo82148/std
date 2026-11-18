@@ -25,6 +25,11 @@ type Func struct {
 	// documentation).
 	Category string
 
+	// Experiment indicates that this operation is experimental and should
+	// remain behind a GOEXPERIMENT (from the `//specgen:experiment`
+	// directive).
+	Experiment bool
+
 	// Recv, if non-zero, is the shape of the receiver. The name of the receiver
 	// is always "x".
 	Recv Arg
@@ -45,6 +50,32 @@ type Func struct {
 type Arg struct {
 	Name string
 	Type specexpr.Type
+}
+
+// TypeDecl represents a vector or mask type in the SIMD API.
+//
+// TypeDecls come from exported generic type declarations in spec whose
+// underlying type is a Vec, such as
+//
+//	// Vector is a ...
+//	//
+//	//specgen:name {{.T}}
+//	type Vector[E Elt, W Width] Vec[E, W]
+//
+// Each instantiation of the type parameters produces one TypeDecl.
+type TypeDecl struct {
+	// Name is the API type name, such as "Int32x4" or "Mask8s". It always
+	// equals Shape.String().
+	Name string
+
+	// Shape is the vector shape of this type.
+	Shape specexpr.Vector
+
+	// Doc is the type documentation, split into classified paragraphs.
+	Doc []Paragraph
+
+	// Pos is the source position of the spec type declaration.
+	Pos token.Position
 }
 
 func (f *Func) Signature() string

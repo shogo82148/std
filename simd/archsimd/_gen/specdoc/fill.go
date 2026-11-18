@@ -12,6 +12,10 @@
 // parameter names, and allows shared documentation to be maintained in a single
 // place.
 //
+// Fill handles exported functions, methods, and vector and mask type
+// declarations. Type declarations have no signature to check; Fill only fills
+// their doc comments, following the same conventions as functions.
+//
 // # Doc-Ownership Convention
 //
 // Doc comments follow a three-part structural convention:

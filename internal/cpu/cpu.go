@@ -56,6 +56,7 @@ var X86 struct {
 	HasSSE42            bool
 	HasVAES             bool
 	HasVPCLMULQDQ       bool
+	HasXGETBV1          bool
 	_                   CacheLinePad
 }
 

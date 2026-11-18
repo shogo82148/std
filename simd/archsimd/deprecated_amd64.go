@@ -645,3 +645,38 @@ func (x Uint8x32) PermuteOrZeroGrouped(indices Int8x32) Uint8x32
 //
 //go:fix inline
 func (x Uint8x64) PermuteOrZeroGrouped(indices Int8x64) Uint8x64
+
+// ConcatShiftBytesRight concatenates x and y and shifts it right by shift bytes.
+// The result vector will be the lower half of the concatenated vector.
+//
+// Asm: VPALIGNR, CPU Feature: AVX
+//
+// Deprecated: use y.ConcatWindow(x, uint8(shift)) instead. ConcatWindow takes
+// x and y in the opposite order.
+//
+//go:fix inline
+func (x Uint8x16) ConcatShiftBytesRight(y Uint8x16, shift uint64) Uint8x16
+
+// ConcatShiftBytesRightGrouped concatenates x and y and shifts it right by shift bytes.
+// The result vector will be the lower half of the concatenated vector.
+// This operation is performed grouped by each 16 byte.
+//
+// Asm: VPALIGNR, CPU Feature: AVX2
+//
+// Deprecated: use y.ConcatWindowGrouped(x, uint8(shift)) instead.
+// ConcatWindowGrouped takes x and y in the opposite order.
+//
+//go:fix inline
+func (x Uint8x32) ConcatShiftBytesRightGrouped(y Uint8x32, shift uint64) Uint8x32
+
+// ConcatShiftBytesRightGrouped concatenates x and y and shifts it right by shift bytes.
+// The result vector will be the lower half of the concatenated vector.
+// This operation is performed grouped by each 16 byte.
+//
+// Asm: VPALIGNR, CPU Feature: AVX512
+//
+// Deprecated: use y.ConcatWindowGrouped(x, uint8(shift)) instead.
+// ConcatWindowGrouped takes x and y in the opposite order.
+//
+//go:fix inline
+func (x Uint8x64) ConcatShiftBytesRightGrouped(y Uint8x64, shift uint64) Uint8x64

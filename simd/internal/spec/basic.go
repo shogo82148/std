@@ -6,6 +6,21 @@
 
 package spec
 
+// Vector is a {{if scalable .T}}scalable SIMD vector of {{.TE}}s{{else}}{{.TW}}-bit SIMD vector of {{.TL}} {{.TE}}s{{end}}.
+//
+// Values of type {{.T}} are comparable. a == b if a[i] == b[i] for all elements.
+// {{if eq .TB "float"}}Like {{.TE}} scalars, NaN != NaN, and +0 == -0.{{end}}
+//
+//specgen:name {{.T}}
+type Vector[E Elt, W Width] Vec[E, W]
+
+// Mask is a mask for a {{if scalable .T}}scalable SIMD vector of {{.TN}}-bit elements{{else}}SIMD vector of {{.TL}} {{.TN}}-bit elements{{end}}.
+//
+// Values of type {{.T}} are comparable.
+//
+//specgen:name {{.T}}
+type Mask[E MaskElt, W Width] Vec[E, W]
+
 // Len returns the number of elements in x.
 func Len[E EltOrMask, W Width](x Vec[E, W]) int
 

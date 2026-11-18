@@ -541,7 +541,7 @@ func (x Uint16x32) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x32
 //	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
 //	= (x^6 + x^5 + x^1)
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVXCLMUL
 func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyOdd computes the elementwise carryless multiplication of
@@ -553,7 +553,7 @@ func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVXCLMUL
 func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
@@ -566,7 +566,7 @@ func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVXCLMUL
 func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
@@ -579,7 +579,7 @@ func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVXCLMUL
 func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
 
 // CarrylessMultiplyEven computes the elementwise carryless multiplication of
@@ -609,7 +609,7 @@ func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
 //	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
 //	= (x^6 + x^5 + x^1)
 //
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX2CLMUL
 func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) (z Uint64x4)
 
 // CarrylessMultiplyOdd computes the elementwise carryless multiplication of
@@ -621,7 +621,7 @@ func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) (z Uint64x4)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX2CLMUL
 func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) (z Uint64x4)
 
 // CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
@@ -634,7 +634,7 @@ func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) (z Uint64x4)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX2CLMUL
 func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) (z Uint64x4)
 
 // CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
@@ -647,7 +647,7 @@ func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) (z Uint64x4)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX2CLMUL
 func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) (z Uint64x4)
 
 // CarrylessMultiplyEven computes the elementwise carryless multiplication of
@@ -677,7 +677,7 @@ func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) (z Uint64x4)
 //	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
 //	= (x^6 + x^5 + x^1)
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX512CLMUL
 func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) (z Uint64x8)
 
 // CarrylessMultiplyOdd computes the elementwise carryless multiplication of
@@ -689,7 +689,7 @@ func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) (z Uint64x8)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX512CLMUL
 func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) (z Uint64x8)
 
 // CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
@@ -702,7 +702,7 @@ func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) (z Uint64x8)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX512CLMUL
 func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) (z Uint64x8)
 
 // CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
@@ -715,5 +715,5 @@ func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) (z Uint64x8)
 //
 // See [CarrylessMultiplyEven] for details about carryless multiply.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+// Asm: VPCLMULQDQ, CPU Feature: AVX512CLMUL
 func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) (z Uint64x8)
