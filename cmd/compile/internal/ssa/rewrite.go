@@ -325,6 +325,9 @@ func Int8ToAuxInt(i int8) int64
 // Is12Bit reports whether n can be represented as a signed 12 bit integer.
 func Is12Bit(n int64) bool
 
+// IsU12Bit reports whether n can be represented as an unsigned 12 bit integer.
+func IsU12Bit(n int64) bool
+
 // Is16Bit reports whether n can be represented as a signed 16 bit integer.
 func Is16Bit(n int64) bool
 
@@ -530,3 +533,34 @@ func ValAndOffToAuxInt(v ValAndOff) int64
 func (fcs FlagConstantBuilder) Encode() FlagConstant
 
 func IsConstZero(v *Value) bool
+
+// IsContiguousZeros reports whether all zero bits in n form a single
+// contiguous block within its bit width:
+//
+//	  valid: 00..11, 11..00, or 11..00..11
+//	rejects: 00..11..00 or multiple 0-blocks
+func IsContiguousZeros[T uint16 | uint32 | uint64](n T) bool
+
+// IsContiguousOnes reports whether all one bits in n form a single
+// contiguous block within its bit width:
+//
+//	  valid: 11..00, 00..11, or 00..11..00
+//	rejects: 11..00..11 or multiple 1-blocks
+func IsContiguousOnes[T uint16 | uint32 | uint64](n T) bool
+
+// GetContiguousOnesLSB returns the least significant bit position of the
+// single contiguous one region in n. It panics if n does not contain a
+// unique contiguous one region.
+func GetContiguousOnesLSB[T uint16 | uint32 | uint64](n T) int64
+
+// GetLoong64BSTRINSVAuxInt encodes the bit-field boundaries (msbd, lsbd) of the
+// contiguous zero region in a 64-bit mask n into the auxInt format required by
+// the LoongArch64 BSTRINSV instruction (msbd = auxInt>>6, lsbd = auxInt&0x3f).
+// It panics if n does not contain a unique contiguous zero region.
+func GetLoong64BSTRINSVAuxInt(n uint64) int64
+
+// GetLoong64BSTRPICKVAuxInt encodes the bit-field boundaries (msbd, lsbd) of the
+// contiguous one region in a 64-bit mask n into the auxInt format required by
+// the LoongArch64 BSTRPICKV operation (msbd = auxInt>>6, lsbd = auxInt&0x3f).
+// It panics if n does not contain a unique contiguous one region.
+func GetLoong64BSTRPICKVAuxInt(n uint64) int64

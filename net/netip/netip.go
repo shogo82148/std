@@ -431,11 +431,15 @@ func (p *Prefix) UnmarshalText(text []byte) error
 // AppendBinary implements the [encoding.BinaryAppender] interface.
 // It returns [Addr.AppendBinary] with an additional byte appended
 // containing the prefix bits.
+//
+// The invalid bits value is encoded as 0xff.
 func (p Prefix) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinary implements the [encoding.BinaryMarshaler] interface.
 // It returns [Addr.MarshalBinary] with an additional byte appended
 // containing the prefix bits.
+//
+// The invalid bits value is encoded as 0xff.
 func (p Prefix) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.

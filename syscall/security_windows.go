@@ -149,6 +149,8 @@ const (
 	MaxTokenInfoClass
 )
 
+// A SIDAndAttributes is a SID and attribute bits.
+// See https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-token_groups.
 type SIDAndAttributes struct {
 	Sid        *SID
 	Attributes uint32

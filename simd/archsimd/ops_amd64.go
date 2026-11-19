@@ -380,25 +380,41 @@ func (x Uint64x4) Add(y Uint64x4) (z Uint64x4)
 // Asm: VPADDQ, CPU Feature: AVX512
 func (x Uint64x8) Add(y Uint64x8) (z Uint64x8)
 
-// AddOddSubEven subtracts even elements and adds odd elements of two vectors.
+// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
+// even-indexed elements of y from those of x.
+//
+//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
+//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
 //
 // Asm: VADDSUBPS, CPU Feature: AVX
-func (x Float32x4) AddOddSubEven(y Float32x4) Float32x4
+func (x Float32x4) AddOddSubEven(y Float32x4) (z Float32x4)
 
-// AddOddSubEven subtracts even elements and adds odd elements of two vectors.
+// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
+// even-indexed elements of y from those of x.
+//
+//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
+//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
 //
 // Asm: VADDSUBPS, CPU Feature: AVX
-func (x Float32x8) AddOddSubEven(y Float32x8) Float32x8
+func (x Float32x8) AddOddSubEven(y Float32x8) (z Float32x8)
 
-// AddOddSubEven subtracts even elements and adds odd elements of two vectors.
+// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
+// even-indexed elements of y from those of x.
+//
+//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
+//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
 //
 // Asm: VADDSUBPD, CPU Feature: AVX
-func (x Float64x2) AddOddSubEven(y Float64x2) Float64x2
+func (x Float64x2) AddOddSubEven(y Float64x2) (z Float64x2)
 
-// AddOddSubEven subtracts even elements and adds odd elements of two vectors.
+// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
+// even-indexed elements of y from those of x.
+//
+//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
+//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
 //
 // Asm: VADDSUBPD, CPU Feature: AVX
-func (x Float64x4) AddOddSubEven(y Float64x4) Float64x4
+func (x Float64x4) AddOddSubEven(y Float64x4) (z Float64x4)
 
 // AddSaturated adds x and y elementwise with saturation.
 //
@@ -2111,13 +2127,16 @@ func (x Int16x8) ConcatSubPairsSaturated(y Int16x8) (z Int16x8)
 func (x Int16x16) ConcatSubPairsSaturatedGrouped(y Int16x16) (z Int16x16)
 
 // ConcatWindow returns a window of the concatenation of x (low indices) and y
-// (high indices) that starts at element start and is the length of x.
+// (high indices) that starts at element start and is the length of x, padded
+// with zeros if the window extends past the end of the concatenation.
 //
 //	xy = concat(x, y)
-//	z[i] = xy[start+i]
+//	z[i] = xy[start+i]  // start+i < 2*n
+//	z[i] = 0            // otherwise
 //
-// start must be less than 16. Otherwise, the result is
-// unspecified (and ConcatWindow may panic).
+// where n = 16.
+//
+// start must be at most 2*n. Otherwise, ConcatWindow panics.
 //
 // Performance: A non-constant value of start may result in significantly worse performance for this operation.
 //
@@ -2125,8 +2144,8 @@ func (x Int16x16) ConcatSubPairsSaturatedGrouped(y Int16x16) (z Int16x16)
 func (x Uint8x16) ConcatWindow(y Uint8x16, start uint8) (z Uint8x16)
 
 // ConcatWindowGrouped divides x, y, and z into groups of 128 bits and performs
-// [ConcatWindow] on each group. start must be less than the number of elements
-// in a group.
+// [ConcatWindow] on each group. start must be at most twice the number of
+// elements in a 128-bit group; otherwise, ConcatWindowGrouped panics.
 //
 // Performance: A non-constant value of start may result in significantly worse performance for this operation.
 //
@@ -2134,8 +2153,8 @@ func (x Uint8x16) ConcatWindow(y Uint8x16, start uint8) (z Uint8x16)
 func (x Uint8x32) ConcatWindowGrouped(y Uint8x32, start uint8) (z Uint8x32)
 
 // ConcatWindowGrouped divides x, y, and z into groups of 128 bits and performs
-// [ConcatWindow] on each group. start must be less than the number of elements
-// in a group.
+// [ConcatWindow] on each group. start must be at most twice the number of
+// elements in a 128-bit group; otherwise, ConcatWindowGrouped panics.
 //
 // Performance: A non-constant value of start may result in significantly worse performance for this operation.
 //
@@ -6754,35 +6773,71 @@ func (x Uint16x16) MulHigh(y Uint16x16) (z Uint16x16)
 // Asm: VPMULHUW, CPU Feature: AVX512
 func (x Uint16x32) MulHigh(y Uint16x32) (z Uint16x32)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGNB, CPU Feature: AVX
-func (x Int8x16) MulSign(y Int8x16) Int8x16
+func (x Int8x16) MulSign(y Int8x16) (z Int8x16)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGNB, CPU Feature: AVX2
-func (x Int8x32) MulSign(y Int8x32) Int8x32
+func (x Int8x32) MulSign(y Int8x32) (z Int8x32)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGNW, CPU Feature: AVX
-func (x Int16x8) MulSign(y Int16x8) Int16x8
+func (x Int16x8) MulSign(y Int16x8) (z Int16x8)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGNW, CPU Feature: AVX2
-func (x Int16x16) MulSign(y Int16x16) Int16x16
+func (x Int16x16) MulSign(y Int16x16) (z Int16x16)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGND, CPU Feature: AVX
-func (x Int32x4) MulSign(y Int32x4) Int32x4
+func (x Int32x4) MulSign(y Int32x4) (z Int32x4)
 
-// MulSign returns the product of x with the sign of y (-1, 0, or 1).
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
 //
 // Asm: VPSIGND, CPU Feature: AVX2
-func (x Int32x8) MulSign(y Int32x8) Int32x8
+func (x Int32x8) MulSign(y Int32x8) (z Int32x8)
 
 // MulWidenEven multiplies corresponding even-indexed elements of x and y,
 // returning a vector of half as many elements, each with twice the input

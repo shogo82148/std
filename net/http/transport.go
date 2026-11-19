@@ -308,8 +308,8 @@ func (t *Transport) Clone() *Transport
 // environment, or a proxy should not be used for the given request,
 // as defined by NO_PROXY.
 //
-// As a special case, if req.URL.Host is "localhost" (with or without
-// a port number), then a nil URL and nil error will be returned.
+// As a special case, if req.URL.Host is "localhost" or a loopback address
+// (with or without a port number), then a nil URL and nil error will be returned.
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
 // ProxyURL returns a proxy function (for use in a [Transport])

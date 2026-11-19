@@ -74,7 +74,7 @@ func (s *SHA3) AppendBinary(p []byte) ([]byte, error)
 func (s *SHA3) UnmarshalBinary(data []byte) error
 
 // Clone implements [hash.Cloner].
-func (d *SHA3) Clone() (hash.Cloner, error)
+func (s *SHA3) Clone() (hash.Cloner, error)
 
 // SHAKE is an instance of a SHAKE extendable output function.
 // The zero value is a usable SHAKE256 hash.

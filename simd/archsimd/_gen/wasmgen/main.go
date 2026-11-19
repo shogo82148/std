@@ -23,6 +23,7 @@ const (
 	NameHasFormat
 	NonSigned
 	EmulatedRule
+	IsSynthShuffle
 )
 
 func (o OpFlags) OneString() string

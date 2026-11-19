@@ -107,6 +107,12 @@ func (u *Uint8) Load() uint8
 //go:nosplit
 func (u *Uint8) Store(value uint8)
 
+// Swap replaces u's value with new, returning
+// u's value before the replacement.
+//
+//go:nosplit
+func (u *Uint8) Swap(value uint8) uint8
+
 // And takes value and performs a bit-wise
 // "and" operation with the value of u, storing
 // the result into u.
