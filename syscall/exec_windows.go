@@ -48,18 +48,6 @@ type SysProcAttr struct {
 	NoInheritHandles           bool
 	AdditionalInheritedHandles []Handle
 	ParentProcess              Handle
-	Jobs                       []Handle
-	Console                    Handle
-	Desktop                    string
-	AppContainer               *AppContainer
-}
-
-// An AppContainer defines parameters for creating a process in an AppContainer.
-// It is a safe Go version of the Windows SECURITY_CAPABILITIES structure.
-// See https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-security_capabilities.
-type AppContainer struct {
-	SID          *SID
-	Capabilities []SIDAndAttributes
 }
 
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)

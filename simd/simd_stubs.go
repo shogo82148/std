@@ -49,6 +49,8 @@ func (x Int8s) AndNot(y Int8s) (z Int8s)
 func (x Int8s) ConvertToUint8() (z Uint8s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Int8s) Equal(y Int8s) (z Mask8s)
 
 // ExtendToInt16 sign-extends each element of x to int16.
@@ -137,6 +139,8 @@ func (x Int8s) Neg() (z Int8s)
 func (x Int8s) Not() (z Int8s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Int8s) NotEqual(y Int8s) (z Mask8s)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -161,7 +165,8 @@ func (x Int8s) Store(s []int8)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Int8s) StorePart(s []int8) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -230,6 +235,8 @@ func (x Int16s) AndNot(y Int16s) (z Int16s)
 func (x Int16s) ConvertToUint16() (z Uint16s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Int16s) Equal(y Int16s) (z Mask16s)
 
 // ExtendToInt32 sign-extends each element of x to int32.
@@ -309,6 +316,8 @@ func (x Int16s) Neg() (z Int16s)
 func (x Int16s) Not() (z Int16s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Int16s) NotEqual(y Int16s) (z Mask16s)
 
 // Or returns the bitwise OR of x and y.
@@ -340,13 +349,15 @@ func (x Int16s) SaturateToInt8() (z Int8s)
 func (x Int16s) SaturateToUint8() (z Uint8s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int16s) ShiftAllLeft(shift uint64) (z Int16s)
 
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0 or -1.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
 //
 //	z[i] = x[i] >> shift
 func (x Int16s) ShiftAllRight(shift uint64) (z Int16s)
@@ -357,7 +368,8 @@ func (x Int16s) Store(s []int16)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Int16s) StorePart(s []int16) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -435,6 +447,8 @@ func (x Int32s) ConvertToFloat32() (z Float32s)
 func (x Int32s) ConvertToUint32() (z Uint32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Int32s) Equal(y Int32s) (z Mask32s)
 
 // ExtendToInt64 sign-extends each element of x to int64.
@@ -514,6 +528,8 @@ func (x Int32s) Neg() (z Int32s)
 func (x Int32s) Not() (z Int32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Int32s) NotEqual(y Int32s) (z Mask32s)
 
 // Or returns the bitwise OR of x and y.
@@ -545,13 +561,15 @@ func (x Int32s) SaturateToInt16() (z Int16s)
 func (x Int32s) SaturateToUint16() (z Uint16s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int32s) ShiftAllLeft(shift uint64) (z Int32s)
 
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0 or -1.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
 //
 //	z[i] = x[i] >> shift
 func (x Int32s) ShiftAllRight(shift uint64) (z Int32s)
@@ -562,7 +580,8 @@ func (x Int32s) Store(s []int32)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Int32s) StorePart(s []int32) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -630,6 +649,8 @@ func (x Int64s) AndNot(y Int64s) (z Int64s)
 func (x Int64s) ConvertToUint64() (z Uint64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Int64s) Equal(y Int64s) (z Mask64s)
 
 // Greater returns a mask indicating which elements of x are greater than y.
@@ -686,6 +707,8 @@ func (x Int64s) Neg() (z Int64s)
 func (x Int64s) Not() (z Int64s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Int64s) NotEqual(y Int64s) (z Mask64s)
 
 // Or returns the bitwise OR of x and y.
@@ -712,13 +735,15 @@ func (x Int64s) SaturateToInt32() (z Int32s)
 func (x Int64s) SaturateToUint32() (z Uint32s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
 
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0 or -1.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
 //
 //	z[i] = x[i] >> shift
 func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
@@ -729,7 +754,8 @@ func (x Int64s) Store(s []int64)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Int64s) StorePart(s []int64) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -807,6 +833,8 @@ func (x Uint8s) BitsToInt8() (z Int8s)
 func (x Uint8s) ConvertToInt8() (z Int8s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Uint8s) Equal(y Uint8s) (z Mask8s)
 
 // ExtendToUint16 zero-extends each element of x to uint16.
@@ -881,6 +909,8 @@ func (x Uint8s) Mul(y Uint8s) (z Uint8s)
 func (x Uint8s) Not() (z Uint8s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Uint8s) NotEqual(y Uint8s) (z Mask8s)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -938,7 +968,8 @@ func (x Uint8s) Store(s []uint8)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Uint8s) StorePart(s []uint8) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -1004,6 +1035,8 @@ func (x Uint16s) BitsToInt16() (z Int16s)
 func (x Uint16s) ConvertToInt16() (z Int16s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Uint16s) Equal(y Uint16s) (z Mask16s)
 
 // ExtendToUint32 zero-extends each element of x to uint32.
@@ -1078,6 +1111,8 @@ func (x Uint16s) Mul(y Uint16s) (z Uint16s)
 func (x Uint16s) Not() (z Uint16s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Uint16s) NotEqual(y Uint16s) (z Mask16s)
 
 // Or returns the bitwise OR of x and y.
@@ -1143,13 +1178,15 @@ func (x Uint16s) RotateAllRight(shift uint64) (z Uint16s)
 func (x Uint16s) SaturateToUint8() (z Uint8s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint16s) ShiftAllLeft(shift uint64) (z Uint16s)
 
 // ShiftAllRight logically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint16s) ShiftAllRight(shift uint64) (z Uint16s)
@@ -1160,7 +1197,8 @@ func (x Uint16s) Store(s []uint16)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Uint16s) StorePart(s []uint16) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -1228,6 +1266,8 @@ func (x Uint32s) BitsToInt32() (z Int32s)
 func (x Uint32s) ConvertToInt32() (z Int32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Uint32s) Equal(y Uint32s) (z Mask32s)
 
 // ExtendToUint64 zero-extends each element of x to uint64.
@@ -1302,6 +1342,8 @@ func (x Uint32s) Mul(y Uint32s) (z Uint32s)
 func (x Uint32s) Not() (z Uint32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Uint32s) NotEqual(y Uint32s) (z Mask32s)
 
 // Or returns the bitwise OR of x and y.
@@ -1367,13 +1409,15 @@ func (x Uint32s) RotateAllRight(shift uint64) (z Uint32s)
 func (x Uint32s) SaturateToUint16() (z Uint16s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint32s) ShiftAllLeft(shift uint64) (z Uint32s)
 
 // ShiftAllRight logically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint32s) ShiftAllRight(shift uint64) (z Uint32s)
@@ -1384,7 +1428,8 @@ func (x Uint32s) Store(s []uint32)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Uint32s) StorePart(s []uint32) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -1439,7 +1484,7 @@ func (x Uint64s) BitsToFloat64() (z Float64s)
 // BitsToInt64 reinterprets the bits of each element of x as type int64.
 func (x Uint64s) BitsToInt64() (z Int64s)
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
+// CarrylessMulEven computes the elementwise carryless multiplication of
 // even-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
@@ -1465,9 +1510,14 @@ func (x Uint64s) BitsToInt64() (z Int64s)
 //	  (x^3 + x^2 + x^1) * (x^3 + x^1 + x^0)
 //	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
 //	= (x^6 + x^5 + x^1)
-func (x Uint64s) CarrylessMultiplyEven(y Uint64s) (z Uint64s)
+//
+// Performance: If the CPU has no carryless multiply instruction at the vector
+// size in use, this is implemented with narrower instructions, or with
+// software if it has none at all. That is slower than the instruction, and
+// can be the case even when [Emulated] returns false.
+func (x Uint64s) CarrylessMulEven(y Uint64s) (z Uint64s)
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
+// CarrylessMulEvenOdd computes the elementwise carryless multiplication of
 // even-indexed elements of x and odd-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -1475,20 +1525,30 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) (z Uint64s)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-func (x Uint64s) CarrylessMultiplyEvenOdd(y Uint64s) (z Uint64s)
+// See [CarrylessMulEven] for details about carryless multiply.
+//
+// Performance: If the CPU has no carryless multiply instruction at the vector
+// size in use, this is implemented with narrower instructions, or with
+// software if it has none at all. That is slower than the instruction, and
+// can be the case even when [Emulated] returns false.
+func (x Uint64s) CarrylessMulEvenOdd(y Uint64s) (z Uint64s)
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
+// CarrylessMulOdd computes the elementwise carryless multiplication of
 // odd-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) (z Uint64s)
+// See [CarrylessMulEven] for details about carryless multiply.
+//
+// Performance: If the CPU has no carryless multiply instruction at the vector
+// size in use, this is implemented with narrower instructions, or with
+// software if it has none at all. That is slower than the instruction, and
+// can be the case even when [Emulated] returns false.
+func (x Uint64s) CarrylessMulOdd(y Uint64s) (z Uint64s)
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
+// CarrylessMulOddEven computes the elementwise carryless multiplication of
 // odd-indexed elements of x and even-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -1496,8 +1556,13 @@ func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) (z Uint64s)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-func (x Uint64s) CarrylessMultiplyOddEven(y Uint64s) (z Uint64s)
+// See [CarrylessMulEven] for details about carryless multiply.
+//
+// Performance: If the CPU has no carryless multiply instruction at the vector
+// size in use, this is implemented with narrower instructions, or with
+// software if it has none at all. That is slower than the instruction, and
+// can be the case even when [Emulated] returns false.
+func (x Uint64s) CarrylessMulOddEven(y Uint64s) (z Uint64s)
 
 // ConvertToInt64 converts each element of x to int64.
 //
@@ -1507,6 +1572,8 @@ func (x Uint64s) CarrylessMultiplyOddEven(y Uint64s) (z Uint64s)
 func (x Uint64s) ConvertToInt64() (z Int64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 func (x Uint64s) Equal(y Uint64s) (z Mask64s)
 
 // Greater returns a mask indicating which elements of x are greater than y.
@@ -1558,6 +1625,8 @@ func (x Uint64s) Masked(mask Mask64s) (z Uint64s)
 func (x Uint64s) Not() (z Uint64s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 func (x Uint64s) NotEqual(y Uint64s) (z Mask64s)
 
 // Or returns the bitwise OR of x and y.
@@ -1618,13 +1687,15 @@ func (x Uint64s) RotateAllRight(shift uint64) (z Uint64s)
 func (x Uint64s) SaturateToUint32() (z Uint32s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 func (x Uint64s) ShiftAllLeft(shift uint64) (z Uint64s)
 
 // ShiftAllRight logically shifts each element of x right by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] >> shift
 func (x Uint64s) ShiftAllRight(shift uint64) (z Uint64s)
@@ -1635,7 +1706,8 @@ func (x Uint64s) Store(s []uint64)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Uint64s) StorePart(s []uint64) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -1714,6 +1786,11 @@ func (x Float32s) ConvertToInt32() (z Int32s)
 func (x Float32s) Div(y Float32s) (z Float32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
+//
+// Like Go's == operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float32s) Equal(y Float32s) (z Mask32s)
 
 // Floor returns the greatest integer value less than or equal to each element
@@ -1728,12 +1805,18 @@ func (x Float32s) Floor() (z Float32s)
 // Greater returns a mask indicating which elements of x are greater than y.
 //
 //	z[i] = x[i] > y[i]
+//
+// Like Go's > operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float32s) Greater(y Float32s) (z Mask32s)
 
 // GreaterEqual returns a mask indicating which elements of x are greater than
 // or equal to y.
 //
 //	z[i] = x[i] >= y[i]
+//
+// Like Go's >= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float32s) GreaterEqual(y Float32s) (z Mask32s)
 
 // HiToLo returns a vector whose low half is the high half of x and whose high
@@ -1754,12 +1837,18 @@ func (x Float32s) Len() int
 // Less returns a mask indicating which elements of x are less than y.
 //
 //	z[i] = x[i] < y[i]
+//
+// Like Go's < operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float32s) Less(y Float32s) (z Mask32s)
 
 // LessEqual returns a mask indicating which elements of x are less than or
 // equal to y.
 //
 //	z[i] = x[i] <= y[i]
+//
+// Like Go's <= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float32s) LessEqual(y Float32s) (z Mask32s)
 
 // Masked returns a vector with elements from x where mask is true, and zero
@@ -1830,6 +1919,11 @@ func (x Float32s) MulAdd(y Float32s, z Float32s) (w Float32s)
 func (x Float32s) Neg() (z Float32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
+//
+// Like Go's != operator on floating-point values, this follows IEEE 754: the
+// result is true if either element is NaN, and +0 equals -0.
 func (x Float32s) NotEqual(y Float32s) (z Mask32s)
 
 // ReduceSum returns the scalar sum of the elements of x.
@@ -1865,7 +1959,8 @@ func (x Float32s) Store(s []float32)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Float32s) StorePart(s []float32) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32s) String() string
 
 // Sub subtracts y from x elementwise.
@@ -1936,6 +2031,11 @@ func (x Float64s) ConvertToFloat32() (z Float32s)
 func (x Float64s) Div(y Float64s) (z Float64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
+//
+// Like Go's == operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float64s) Equal(y Float64s) (z Mask64s)
 
 // Floor returns the greatest integer value less than or equal to each element
@@ -1950,12 +2050,18 @@ func (x Float64s) Floor() (z Float64s)
 // Greater returns a mask indicating which elements of x are greater than y.
 //
 //	z[i] = x[i] > y[i]
+//
+// Like Go's > operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float64s) Greater(y Float64s) (z Mask64s)
 
 // GreaterEqual returns a mask indicating which elements of x are greater than
 // or equal to y.
 //
 //	z[i] = x[i] >= y[i]
+//
+// Like Go's >= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float64s) GreaterEqual(y Float64s) (z Mask64s)
 
 // HiToLo returns a vector whose low half is the high half of x and whose high
@@ -1976,12 +2082,18 @@ func (x Float64s) Len() int
 // Less returns a mask indicating which elements of x are less than y.
 //
 //	z[i] = x[i] < y[i]
+//
+// Like Go's < operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float64s) Less(y Float64s) (z Mask64s)
 
 // LessEqual returns a mask indicating which elements of x are less than or
 // equal to y.
 //
 //	z[i] = x[i] <= y[i]
+//
+// Like Go's <= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 func (x Float64s) LessEqual(y Float64s) (z Mask64s)
 
 // Masked returns a vector with elements from x where mask is true, and zero
@@ -2052,6 +2164,11 @@ func (x Float64s) MulAdd(y Float64s, z Float64s) (w Float64s)
 func (x Float64s) Neg() (z Float64s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
+//
+// Like Go's != operator on floating-point values, this follows IEEE 754: the
+// result is true if either element is NaN, and +0 equals -0.
 func (x Float64s) NotEqual(y Float64s) (z Mask64s)
 
 // ReduceSum returns the scalar sum of the elements of x.
@@ -2087,7 +2204,8 @@ func (x Float64s) Store(s []float64)
 // StorePart stores n=min(len(s), x.Len()) elements of x into s and returns n.
 func (x Float64s) StorePart(s []float64) (n int)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64s) String() string
 
 // Sub subtracts y from x elementwise.

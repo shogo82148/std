@@ -16,12 +16,11 @@ type DeepCopier struct {
 	pkg             *types2.Package
 	analyzer        *Analyzer
 	dependentSuffix string
-	variantSuffix   string
 
 	vars map[*types2.Var]*types2.Var
 }
 
-func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, depSuffix, varSuffix string) *DeepCopier
+func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, depSuffix string) *DeepCopier
 
 // OnName rewrites "dependent" and SIMD names to their architecture-specific version.
 func (c *DeepCopier) OnName(id *syntax.Name) *syntax.Name

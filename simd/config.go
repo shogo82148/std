@@ -17,11 +17,3 @@ func VectorBits() int
 // Emulated reports whether this package's operations are emulated in software
 // rather than executed on vector hardware.
 func Emulated() bool
-
-// HasHardwareCarrylessMultiply returns whether this platform
-// has a hardware-implemented version of carryless multiply.
-// With default GODEBUG=simd settings, if this is false,
-// it is emulated and merely slow, but with non-default settings
-// this can indicate the possibility of a missing instruction
-// that will fail ("SIGILL") if it is executed.
-func HasHardwareCarrylessMultiply() bool

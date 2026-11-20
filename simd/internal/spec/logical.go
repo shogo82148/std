@@ -44,4 +44,5 @@ func Not[E Ints | Uints | MaskElt, W Width](x Vec[E, W]) (z Vec[E, W])
 //	z[i] = (x[i] & cond[i]) | (y[i] &^ cond[i])
 //
 //specgen:require cond=Uint{xN}x{xL}
+//specgen:experiment
 func BitSelect[E Ints | Uints, W Width, CondE Uints](x, y Vec[E, W], cond Vec[CondE, W]) (z Vec[E, W])

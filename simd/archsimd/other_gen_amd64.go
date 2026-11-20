@@ -580,94 +580,124 @@ func (x Uint32x16) Not() (z Uint32x16)
 // Emulated, CPU Feature: AVX512
 func (x Uint64x8) Not() (z Uint64x8)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64x2) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64x2) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64x2) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8x32) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8x32) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8x64) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16x32) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8x64) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16x32) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64x8) String() string
 
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1

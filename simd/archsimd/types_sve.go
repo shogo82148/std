@@ -62,7 +62,8 @@ func (x Float32s) Masked(mask Mask32s) (z Float32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat32s(x float32) (z Float32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32s) String() string
 
 // Float64s is a scalable SIMD vector of float64s.
@@ -123,7 +124,8 @@ func (x Float64s) Masked(mask Mask64s) (z Float64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat64s(x float64) (z Float64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64s) String() string
 
 // Int8s is a scalable SIMD vector of int8s.
@@ -190,7 +192,8 @@ func BroadcastInt8s(x int8) (z Int8s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int8s) ToMask() (z Mask8s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8s) String() string
 
 // Int16s is a scalable SIMD vector of int16s.
@@ -257,7 +260,8 @@ func BroadcastInt16s(x int16) (z Int16s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int16s) ToMask() (z Mask16s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16s) String() string
 
 // Int32s is a scalable SIMD vector of int32s.
@@ -324,7 +328,8 @@ func BroadcastInt32s(x int32) (z Int32s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int32s) ToMask() (z Mask32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32s) String() string
 
 // Int64s is a scalable SIMD vector of int64s.
@@ -391,7 +396,8 @@ func BroadcastInt64s(x int64) (z Int64s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int64s) ToMask() (z Mask64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64s) String() string
 
 // Uint8s is a scalable SIMD vector of uint8s.
@@ -451,7 +457,8 @@ func (x Uint8s) Masked(mask Mask8s) (z Uint8s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint8s(x uint8) (z Uint8s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8s) String() string
 
 // Uint16s is a scalable SIMD vector of uint16s.
@@ -511,7 +518,8 @@ func (x Uint16s) Masked(mask Mask16s) (z Uint16s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint16s(x uint16) (z Uint16s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16s) String() string
 
 // Uint32s is a scalable SIMD vector of uint32s.
@@ -571,7 +579,8 @@ func (x Uint32s) Masked(mask Mask32s) (z Uint32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint32s(x uint32) (z Uint32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32s) String() string
 
 // Uint64s is a scalable SIMD vector of uint64s.
@@ -631,7 +640,8 @@ func (x Uint64s) Masked(mask Mask64s) (z Uint64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint64s(x uint64) (z Uint64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64s) String() string
 
 // Mask8s is a mask for a scalable SIMD vector of 8-bit elements.

@@ -550,21 +550,26 @@ func (db *DB) Conn(ctx context.Context) (*Conn, error)
 type Conn struct {
 	db *DB
 
-	// closemu prevents the connection from closing while there
-	// is an active query. It is held for read during queries
-	// and exclusively during close.
-	closemu closingMutex
-
 	// dc is owned until close, at which point
 	// it's returned to the connection pool.
 	dc *driverConn
 
-	// done transitions from false to true exactly once, on close.
-	// Once done, all operations fail with ErrConnDone.
-	done atomic.Bool
+	// mu coordinates operations with Close and guards the fields below.
+	//
+	// grabConn checks closed and counts the operation in numRefs while
+	// holding mu, so dc remains valid until that operation is released.
+	// Once closed is set no new operation can start, and whoever leaves
+	// the Conn closed with no running operations returns dc to the pool.
+	mu      sync.Mutex
+	numRefs int
+	closed  bool
+	bad     bool
 
-	releaseConnOnce sync.Once
-	// releaseConnCache is a cache of c.closemuRUnlockCondReleaseConn
+	// released is closed once dc is returned to the pool.
+	// It is allocated only if Close has to wait.
+	released chan struct{}
+
+	// releaseConnCache is a cache of c.releaseOp
 	// to save allocations in a call to grabConn.
 	releaseConnCache releaseConn
 }

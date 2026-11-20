@@ -47,8 +47,6 @@ func CreateEvent(eventAttrs *SecurityAttributes, manualReset uint32, initialStat
 
 func CreateIoCompletionPort(filehandle syscall.Handle, cphandle syscall.Handle, key uintptr, threadcnt uint32) (handle syscall.Handle, err error)
 
-func CreateJobObject(jobAttrs *syscall.SecurityAttributes, name *uint16) (handle syscall.Handle, err error)
-
 func CreateNamedPipe(name *uint16, flags uint32, pipeMode uint32, maxInstances uint32, outSize uint32, inSize uint32, defaultTimeout uint32, sa *syscall.SecurityAttributes) (handle syscall.Handle, err error)
 
 func GetACP() (acp uint32)
@@ -97,8 +95,6 @@ func RtlVirtualUnwind(handlerType uint32, baseAddress uintptr, pc uintptr, entry
 
 func SetFileInformationByHandle(handle syscall.Handle, fileInformationClass uint32, buf unsafe.Pointer, bufsize uint32) (err error)
 
-func SetInformationJobObject(job syscall.Handle, infoclass uint32, info uintptr, infolien uint32) (err error)
-
 func UnlockFileEx(file syscall.Handle, reserved uint32, bytesLow uint32, bytesHigh uint32, overlapped *syscall.Overlapped) (err error)
 
 func VirtualQuery(address uintptr, buffer *MemoryBasicInformation, length uintptr) (err error)
@@ -126,8 +122,6 @@ func RtlIsDosDeviceName_U(name *uint16) (ret uint32)
 func GetProcessMemoryInfo(handle syscall.Handle, memCounters *PROCESS_MEMORY_COUNTERS, cb uint32) (err error)
 
 func CreateEnvironmentBlock(block **uint16, token syscall.Token, inheritExisting bool) (err error)
-
-func DeleteAppContainerProfile(appContainerName *uint16) (ret error)
 
 func DestroyEnvironmentBlock(block *uint16) (err error)
 

@@ -1770,29 +1770,29 @@ func (x Uint64x4) BitsToInt64() Int64x4
 
 func (x Uint64x8) BitsToInt64() Int64x8
 
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulEven(y Uint64x2) Uint64x2
 
-func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) Uint64x4
+func (x Uint64x4) CarrylessMulEven(y Uint64x4) Uint64x4
 
-func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) Uint64x8
+func (x Uint64x8) CarrylessMulEven(y Uint64x8) Uint64x8
 
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulEvenOdd(y Uint64x2) Uint64x2
 
-func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) Uint64x4
+func (x Uint64x4) CarrylessMulEvenOdd(y Uint64x4) Uint64x4
 
-func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) Uint64x8
+func (x Uint64x8) CarrylessMulEvenOdd(y Uint64x8) Uint64x8
 
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulOdd(y Uint64x2) Uint64x2
 
-func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) Uint64x4
+func (x Uint64x4) CarrylessMulOdd(y Uint64x4) Uint64x4
 
-func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) Uint64x8
+func (x Uint64x8) CarrylessMulOdd(y Uint64x8) Uint64x8
 
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulOddEven(y Uint64x2) Uint64x2
 
-func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) Uint64x4
+func (x Uint64x4) CarrylessMulOddEven(y Uint64x4) Uint64x4
 
-func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) Uint64x8
+func (x Uint64x8) CarrylessMulOddEven(y Uint64x8) Uint64x8
 
 func (x Uint64x2) ConvertToInt64() Int64x2
 

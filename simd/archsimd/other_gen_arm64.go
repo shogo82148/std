@@ -44,34 +44,44 @@ func BroadcastFloat32x4(x float32) (z Float32x4)
 // result.
 func BroadcastFloat64x2(x float64) (z Float64x2)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64x2) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8x16) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16x8) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64x2) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32x4) String() string
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64x2) String() string
 
 // HiToLo returns a vector whose low half is the high half of x and whose high

@@ -594,13 +594,13 @@ func (x Uint64x2) BitsToFloat64() Float64x2
 
 func (x Uint64x2) BitsToInt64() Int64x2
 
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulEven(y Uint64x2) Uint64x2
 
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulEvenOdd(y Uint64x2) Uint64x2
 
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulOdd(y Uint64x2) Uint64x2
 
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMulOddEven(y Uint64x2) Uint64x2
 
 func (x Uint64x2) ConvertToInt64() Int64x2
 

@@ -24,10 +24,10 @@ type Mask[E MaskElt, W Width] Vec[E, W]
 // Len returns the number of elements in x.
 func Len[E EltOrMask, W Width](x Vec[E, W]) int
 
-// GetElem returns the i'th element x. If i >= {{lanes .x "x"}}, it panics.
+// Elem returns the i'th element x. If i >= {{lanes .x "x"}}, it panics.
 //
 //	z = x[i]
-func GetElem[E Elt, W Width](x Vec[E, W], i uint8) (z E)
+func Elem[E Elt, W Width](x Vec[E, W], i uint8) (z E)
 
 // SetElem returns x with its i'th element set to y. If i >= {{lanes .x "x"}}, it panics.
 //
@@ -35,7 +35,7 @@ func GetElem[E Elt, W Width](x Vec[E, W], i uint8) (z E)
 //	z[i] = y
 func SetElem[E Elt, W Width](x Vec[E, W], i uint8, y E) (z Vec[E, W])
 
-// GetLo returns the lower half of x.
+// Lo returns the lower half of x.
 //
 // {{if eq .xL 4}}
 //
@@ -50,9 +50,9 @@ func SetElem[E Elt, W Width](x Vec[E, W], i uint8, y E) (z Vec[E, W])
 // See also [Enlarge].
 //
 //specgen:require z={xB}{xN}x{xL/2}
-func GetLo[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
+func Lo[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 
-// GetHi returns the upper half of x.
+// Hi returns the upper half of x.
 //
 // {{if eq .xL 4}}
 //
@@ -65,7 +65,7 @@ func GetLo[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 // {{end}}
 //
 //specgen:require z={xB}{xN}x{xL/2}
-func GetHi[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
+func Hi[E Elt, W SplittableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 
 // SetLo returns x with its lower half set to y.
 //
@@ -100,7 +100,7 @@ func SetLo[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec
 func SetHi[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec[E, W])
 
 // Enlarge returns x with twice as many elements, with the upper half zeroed.
-// [GetLo] reverses this: x.Enlarge().GetLo() returns x.
+// [Lo] reverses this: x.Enlarge().Lo() returns x.
 //
 // {{if eq .xL 2}}
 //
@@ -115,7 +115,8 @@ func SetHi[E Elt, W SplittableWidth, yW Width](x Vec[E, W], y Vec[E, yW]) (z Vec
 //specgen:require z={xB}{xN}x{xL*2}
 func Enlarge[E Elt, W DoublableWidth, zW Width](x Vec[E, W]) (z Vec[E, zW])
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func String[E Nums, W Width](x Vec[E, W]) string
 
 // StringMask returns x in the form "{x[0],x[1],...}", where 0 means false and 1

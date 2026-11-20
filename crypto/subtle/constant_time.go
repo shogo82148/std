@@ -4,6 +4,10 @@
 
 // Package subtle implements functions that are often useful in cryptographic
 // code but require careful thought to use correctly.
+//
+// Callers combining the scalar primitives (ConstantTimeSelect,
+// ConstantTimeByteEq, ConstantTimeEq, ConstantTimeLessOrEq) into constant-time
+// algorithms should wrap the enclosing operation in [WithDataIndependentTiming].
 package subtle
 
 // ConstantTimeCompare returns 1 if the two slices, x and y, have equal contents

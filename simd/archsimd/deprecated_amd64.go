@@ -680,3 +680,473 @@ func (x Uint8x32) ConcatShiftBytesRightGrouped(y Uint8x32, shift uint64) Uint8x3
 //
 //go:fix inline
 func (x Uint8x64) ConcatShiftBytesRightGrouped(y Uint8x64, shift uint64) Uint8x64
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Float32x4) GetElem(i uint8) (z float32)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Float64x2) GetElem(i uint8) (z float64)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Int8x16) GetElem(i uint8) (z int8)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Int16x8) GetElem(i uint8) (z int16)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Int32x4) GetElem(i uint8) (z int32)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Int64x2) GetElem(i uint8) (z int64)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Uint8x16) GetElem(i uint8) (z uint8)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Uint16x8) GetElem(i uint8) (z uint16)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Uint32x4) GetElem(i uint8) (z uint32)
+
+// GetElem returns the i'th element of x.
+//
+// Deprecated: use x.Elem(i) instead.
+//
+//go:fix inline
+func (x Uint64x2) GetElem(i uint8) (z uint64)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Float32x8) GetHi() (z Float32x4)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Float32x16) GetHi() (z Float32x8)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Float64x4) GetHi() (z Float64x2)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Float64x8) GetHi() (z Float64x4)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int8x32) GetHi() (z Int8x16)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int8x64) GetHi() (z Int8x32)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int16x16) GetHi() (z Int16x8)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int16x32) GetHi() (z Int16x16)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int32x8) GetHi() (z Int32x4)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int32x16) GetHi() (z Int32x8)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int64x4) GetHi() (z Int64x2)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Int64x8) GetHi() (z Int64x4)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint8x32) GetHi() (z Uint8x16)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint8x64) GetHi() (z Uint8x32)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint16x16) GetHi() (z Uint16x8)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint16x32) GetHi() (z Uint16x16)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint32x8) GetHi() (z Uint32x4)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint32x16) GetHi() (z Uint32x8)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint64x4) GetHi() (z Uint64x2)
+
+// GetHi returns the upper half of x.
+//
+// Deprecated: use x.Hi() instead.
+//
+//go:fix inline
+func (x Uint64x8) GetHi() (z Uint64x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Float32x8) GetLo() (z Float32x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Float32x16) GetLo() (z Float32x8)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Float64x4) GetLo() (z Float64x2)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Float64x8) GetLo() (z Float64x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int8x32) GetLo() (z Int8x16)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int8x64) GetLo() (z Int8x32)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int16x16) GetLo() (z Int16x8)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int16x32) GetLo() (z Int16x16)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int32x8) GetLo() (z Int32x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int32x16) GetLo() (z Int32x8)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int64x4) GetLo() (z Int64x2)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Int64x8) GetLo() (z Int64x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint8x32) GetLo() (z Uint8x16)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint8x64) GetLo() (z Uint8x32)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint16x16) GetLo() (z Uint16x8)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint16x32) GetLo() (z Uint16x16)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint32x8) GetLo() (z Uint32x4)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint32x16) GetLo() (z Uint32x8)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint64x4) GetLo() (z Uint64x2)
+
+// GetLo returns the lower half of x.
+//
+// Deprecated: use x.Lo() instead.
+//
+//go:fix inline
+func (x Uint64x8) GetLo() (z Uint64x4)
+
+// CarrylessMultiplyEven computes the carryless multiplication of
+// the even-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVXCLMUL, Emulated otherwise, CPU Feature: AVX
+//
+// Deprecated: use x.CarrylessMulEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
+
+// CarrylessMultiplyOdd computes the carryless multiplication of
+// the odd-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVXCLMUL, Emulated otherwise, CPU Feature: AVX
+//
+// Deprecated: use x.CarrylessMulOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
+
+// CarrylessMultiplyOddEven computes the carryless multiplication of
+// the odd-indexed elements of x and the even-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVXCLMUL, Emulated otherwise, CPU Feature: AVX
+//
+// Deprecated: use x.CarrylessMulOddEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
+
+// CarrylessMultiplyEvenOdd computes the carryless multiplication of
+// the even-indexed elements of x and the odd-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVXCLMUL, Emulated otherwise, CPU Feature: AVX
+//
+// Deprecated: use x.CarrylessMulEvenOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
+
+// CarrylessMultiplyEven computes the carryless multiplication of
+// the even-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX2CLMUL, Emulated otherwise, CPU Feature: AVX2
+//
+// Deprecated: use x.CarrylessMulEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) (z Uint64x4)
+
+// CarrylessMultiplyOdd computes the carryless multiplication of
+// the odd-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX2CLMUL, Emulated otherwise, CPU Feature: AVX2
+//
+// Deprecated: use x.CarrylessMulOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) (z Uint64x4)
+
+// CarrylessMultiplyOddEven computes the carryless multiplication of
+// the odd-indexed elements of x and the even-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX2CLMUL, Emulated otherwise, CPU Feature: AVX2
+//
+// Deprecated: use x.CarrylessMulOddEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) (z Uint64x4)
+
+// CarrylessMultiplyEvenOdd computes the carryless multiplication of
+// the even-indexed elements of x and the odd-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX2CLMUL, Emulated otherwise, CPU Feature: AVX2
+//
+// Deprecated: use x.CarrylessMulEvenOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) (z Uint64x4)
+
+// CarrylessMultiplyEven computes the carryless multiplication of
+// the even-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX512CLMUL, Emulated otherwise, CPU Feature: AVX512
+//
+// Deprecated: use x.CarrylessMulEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) (z Uint64x8)
+
+// CarrylessMultiplyOdd computes the carryless multiplication of
+// the odd-indexed elements of x and y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX512CLMUL, Emulated otherwise, CPU Feature: AVX512
+//
+// Deprecated: use x.CarrylessMulOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) (z Uint64x8)
+
+// CarrylessMultiplyOddEven computes the carryless multiplication of
+// the odd-indexed elements of x and the even-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX512CLMUL, Emulated otherwise, CPU Feature: AVX512
+//
+// Deprecated: use x.CarrylessMulOddEven(y) instead.
+//
+//go:fix inline
+func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) (z Uint64x8)
+
+// CarrylessMultiplyEvenOdd computes the carryless multiplication of
+// the even-indexed elements of x and the odd-indexed elements of y.
+//
+// Asm: VPCLMULQDQ if CPU feature AVX512CLMUL, Emulated otherwise, CPU Feature: AVX512
+//
+// Deprecated: use x.CarrylessMulEvenOdd(y) instead.
+//
+//go:fix inline
+func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) (z Uint64x8)
