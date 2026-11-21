@@ -6773,15 +6773,21 @@ const (
 	OpWasmI8x16AllTrue
 	OpWasmV128AnyTrue
 	OpWasmI16x8ExtendHighI8x16S
+	OpWasmI16x8ExtmulHighI8x16S
 	OpWasmI16x8ExtendHighI8x16U
+	OpWasmI16x8ExtmulHighI8x16U
 	OpWasmI16x8AllTrue
 	OpWasmI32x4ExtendHighI16x8S
+	OpWasmI32x4ExtmulHighI16x8S
 	OpWasmI16x8Q15MulrSatS
 	OpWasmI16x8RelaxedQ15MulrS
 	OpWasmI32x4ExtendHighI16x8U
+	OpWasmI32x4ExtmulHighI16x8U
 	OpWasmI32x4AllTrue
 	OpWasmI64x2ExtendHighI32x4S
+	OpWasmI64x2ExtmulHighI32x4S
 	OpWasmI64x2ExtendHighI32x4U
+	OpWasmI64x2ExtmulHighI32x4U
 	OpWasmF32x4Pmax
 	OpWasmF32x4Pmin
 	OpWasmF32x4RelaxedMax
@@ -6929,12 +6935,6 @@ const (
 	OpWasmF32x4Mul
 	OpWasmI64x2Mul
 	OpWasmF64x2Mul
-	OpWasmI16x8ExtmulHighI8x16S
-	OpWasmI16x8ExtmulHighI8x16U
-	OpWasmI32x4ExtmulHighI16x8S
-	OpWasmI32x4ExtmulHighI16x8U
-	OpWasmI64x2ExtmulHighI32x4S
-	OpWasmI64x2ExtmulHighI32x4U
 	OpWasmI16x8ExtmulLowI8x16S
 	OpWasmI16x8ExtmulLowI8x16U
 	OpWasmI32x4ExtmulLowI16x8S
@@ -8587,18 +8587,12 @@ const (
 	OpMulWidenEvenInt32x8
 	OpMulWidenEvenUint32x4
 	OpMulWidenEvenUint32x8
-	OpMulWidenHiInt16x8
-	OpMulWidenHiInt32x4
-	OpMulWidenHiInt8x16
-	OpMulWidenHiUint16x8
-	OpMulWidenHiUint32x4
-	OpMulWidenHiUint8x16
-	OpMulWidenLoInt16x8
-	OpMulWidenLoInt32x4
-	OpMulWidenLoInt8x16
-	OpMulWidenLoUint16x8
-	OpMulWidenLoUint32x4
-	OpMulWidenLoUint8x16
+	OpMulWidenInt16x8
+	OpMulWidenInt32x4
+	OpMulWidenInt8x16
+	OpMulWidenUint16x8
+	OpMulWidenUint32x4
+	OpMulWidenUint8x16
 	OpNegFloat32s
 	OpNegFloat32x4
 	OpNegFloat64s
@@ -8887,21 +8881,12 @@ const (
 	OpSetLoUint64x8
 	OpSetLoUint8x32
 	OpSetLoUint8x64
-	OpShiftAllLeftConcatMod16Int16x16
-	OpShiftAllLeftConcatMod16Int16x32
-	OpShiftAllLeftConcatMod16Int16x8
 	OpShiftAllLeftConcatMod16Uint16x16
 	OpShiftAllLeftConcatMod16Uint16x32
 	OpShiftAllLeftConcatMod16Uint16x8
-	OpShiftAllLeftConcatMod32Int32x16
-	OpShiftAllLeftConcatMod32Int32x4
-	OpShiftAllLeftConcatMod32Int32x8
 	OpShiftAllLeftConcatMod32Uint32x16
 	OpShiftAllLeftConcatMod32Uint32x4
 	OpShiftAllLeftConcatMod32Uint32x8
-	OpShiftAllLeftConcatMod64Int64x2
-	OpShiftAllLeftConcatMod64Int64x4
-	OpShiftAllLeftConcatMod64Int64x8
 	OpShiftAllLeftConcatMod64Uint64x2
 	OpShiftAllLeftConcatMod64Uint64x4
 	OpShiftAllLeftConcatMod64Uint64x8
@@ -8933,21 +8918,12 @@ const (
 	OpShiftAllLeftUint64x8
 	OpShiftAllLeftUint8s
 	OpShiftAllLeftUint8x16
-	OpShiftAllRightConcatMod16Int16x16
-	OpShiftAllRightConcatMod16Int16x32
-	OpShiftAllRightConcatMod16Int16x8
 	OpShiftAllRightConcatMod16Uint16x16
 	OpShiftAllRightConcatMod16Uint16x32
 	OpShiftAllRightConcatMod16Uint16x8
-	OpShiftAllRightConcatMod32Int32x16
-	OpShiftAllRightConcatMod32Int32x4
-	OpShiftAllRightConcatMod32Int32x8
 	OpShiftAllRightConcatMod32Uint32x16
 	OpShiftAllRightConcatMod32Uint32x4
 	OpShiftAllRightConcatMod32Uint32x8
-	OpShiftAllRightConcatMod64Int64x2
-	OpShiftAllRightConcatMod64Int64x4
-	OpShiftAllRightConcatMod64Int64x8
 	OpShiftAllRightConcatMod64Uint64x2
 	OpShiftAllRightConcatMod64Uint64x4
 	OpShiftAllRightConcatMod64Uint64x8
@@ -8970,21 +8946,12 @@ const (
 	OpShiftAllRightUint64x4
 	OpShiftAllRightUint64x8
 	OpShiftAllRightUint8x16
-	OpShiftLeftConcatMod16Int16x16
-	OpShiftLeftConcatMod16Int16x32
-	OpShiftLeftConcatMod16Int16x8
 	OpShiftLeftConcatMod16Uint16x16
 	OpShiftLeftConcatMod16Uint16x32
 	OpShiftLeftConcatMod16Uint16x8
-	OpShiftLeftConcatMod32Int32x16
-	OpShiftLeftConcatMod32Int32x4
-	OpShiftLeftConcatMod32Int32x8
 	OpShiftLeftConcatMod32Uint32x16
 	OpShiftLeftConcatMod32Uint32x4
 	OpShiftLeftConcatMod32Uint32x8
-	OpShiftLeftConcatMod64Int64x2
-	OpShiftLeftConcatMod64Int64x4
-	OpShiftLeftConcatMod64Int64x8
 	OpShiftLeftConcatMod64Uint64x2
 	OpShiftLeftConcatMod64Uint64x4
 	OpShiftLeftConcatMod64Uint64x8
@@ -9006,21 +8973,12 @@ const (
 	OpShiftLeftUint64x2
 	OpShiftLeftUint64x4
 	OpShiftLeftUint64x8
-	OpShiftRightConcatMod16Int16x16
-	OpShiftRightConcatMod16Int16x32
-	OpShiftRightConcatMod16Int16x8
 	OpShiftRightConcatMod16Uint16x16
 	OpShiftRightConcatMod16Uint16x32
 	OpShiftRightConcatMod16Uint16x8
-	OpShiftRightConcatMod32Int32x16
-	OpShiftRightConcatMod32Int32x4
-	OpShiftRightConcatMod32Int32x8
 	OpShiftRightConcatMod32Uint32x16
 	OpShiftRightConcatMod32Uint32x4
 	OpShiftRightConcatMod32Uint32x8
-	OpShiftRightConcatMod64Int64x2
-	OpShiftRightConcatMod64Int64x4
-	OpShiftRightConcatMod64Int64x8
 	OpShiftRightConcatMod64Uint64x2
 	OpShiftRightConcatMod64Uint64x4
 	OpShiftRightConcatMod64Uint64x8
@@ -114913,12 +114871,42 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:        "I16x8ExtmulHighI8x16S",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI16x8ExtmulHighI8x16S,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "I16x8ExtendHighI8x16U",
 		ArgLen: 1,
 		asm:    wasm.AI16x8ExtendHighI8x16U,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "I16x8ExtmulHighI8x16U",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI16x8ExtmulHighI8x16U,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -114945,6 +114933,21 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "I32x4ExtmulHighI16x8S",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI32x4ExtmulHighI16x8S,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -114993,6 +114996,21 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:        "I32x4ExtmulHighI16x8U",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI32x4ExtmulHighI16x8U,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "I32x4AllTrue",
 		ArgLen: 1,
 		asm:    wasm.AI32x4AllTrue,
@@ -115019,12 +115037,42 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
+		Name:        "I64x2ExtmulHighI32x4S",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI64x2ExtmulHighI32x4S,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
 		Name:   "I64x2ExtendHighI32x4U",
 		ArgLen: 1,
 		asm:    wasm.AI64x2ExtendHighI32x4U,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "I64x2ExtmulHighI32x4U",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         wasm.AI64x2ExtmulHighI32x4U,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 18446462598732840960, V2: 0}},
+				{1, RegMask{V1: 18446462598732840960, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -117092,96 +117140,6 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:      2,
 		Commutative: true,
 		asm:         wasm.AF64x2Mul,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I16x8ExtmulHighI8x16S",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI16x8ExtmulHighI8x16S,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I16x8ExtmulHighI8x16U",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI16x8ExtmulHighI8x16U,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I32x4ExtmulHighI16x8S",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI32x4ExtmulHighI16x8S,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I32x4ExtmulHighI16x8U",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI32x4ExtmulHighI16x8U,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I64x2ExtmulHighI32x4S",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI64x2ExtmulHighI32x4S,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-				{1, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 18446462598732840960, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:        "I64x2ExtmulHighI32x4U",
-		ArgLen:      2,
-		Commutative: true,
-		asm:         wasm.AI64x2ExtmulHighI32x4U,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 18446462598732840960, V2: 0}},
@@ -126752,73 +126710,37 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiInt16x8",
+		Name:        "MulWidenInt16x8",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiInt32x4",
+		Name:        "MulWidenInt32x4",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiInt8x16",
+		Name:        "MulWidenInt8x16",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiUint16x8",
+		Name:        "MulWidenUint16x8",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiUint32x4",
+		Name:        "MulWidenUint32x4",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
-		Name:        "MulWidenHiUint8x16",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoInt16x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoInt32x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoInt8x16",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoUint16x8",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoUint32x4",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:        "MulWidenLoUint8x16",
+		Name:        "MulWidenUint8x16",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -128351,24 +128273,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftAllLeftConcatMod16Int16x16",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod16Int16x32",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod16Int16x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftAllLeftConcatMod16Uint16x16",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -128387,24 +128291,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftAllLeftConcatMod32Int32x16",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod32Int32x4",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod32Int32x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftAllLeftConcatMod32Uint32x16",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -128418,24 +128304,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ShiftAllLeftConcatMod32Uint32x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod64Int64x2",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod64Int64x4",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllLeftConcatMod64Int64x8",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
 		Generic: true,
@@ -128599,24 +128467,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftAllRightConcatMod16Int16x16",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod16Int16x32",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod16Int16x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftAllRightConcatMod16Uint16x16",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -128635,24 +128485,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftAllRightConcatMod32Int32x16",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod32Int32x4",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod32Int32x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftAllRightConcatMod32Uint32x16",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
@@ -128666,24 +128498,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ShiftAllRightConcatMod32Uint32x8",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod64Int64x2",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod64Int64x4",
-		AuxType: AuxTypeUInt8,
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftAllRightConcatMod64Int64x8",
 		AuxType: AuxTypeUInt8,
 		ArgLen:  2,
 		Generic: true,
@@ -128802,21 +128616,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftLeftConcatMod16Int16x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod16Int16x32",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod16Int16x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftLeftConcatMod16Uint16x16",
 		ArgLen:  3,
 		Generic: true,
@@ -128832,21 +128631,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftLeftConcatMod32Int32x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod32Int32x4",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod32Int32x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftLeftConcatMod32Uint32x16",
 		ArgLen:  3,
 		Generic: true,
@@ -128858,21 +128642,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ShiftLeftConcatMod32Uint32x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod64Int64x2",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod64Int64x4",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftLeftConcatMod64Int64x8",
 		ArgLen:  3,
 		Generic: true,
 	},
@@ -128982,21 +128751,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftRightConcatMod16Int16x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod16Int16x32",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod16Int16x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftRightConcatMod16Uint16x16",
 		ArgLen:  3,
 		Generic: true,
@@ -129012,21 +128766,6 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "ShiftRightConcatMod32Int32x16",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod32Int32x4",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod32Int32x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
 		Name:    "ShiftRightConcatMod32Uint32x16",
 		ArgLen:  3,
 		Generic: true,
@@ -129038,21 +128777,6 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "ShiftRightConcatMod32Uint32x8",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod64Int64x2",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod64Int64x4",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "ShiftRightConcatMod64Int64x8",
 		ArgLen:  3,
 		Generic: true,
 	},

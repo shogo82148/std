@@ -667,27 +667,54 @@ type Mask8s struct {
 func Mask8sAllTrue() (z Mask8s)
 
 // Mask8sFromCount returns a mask whose first count elements are true and the rest
-// false. A count of 0 or less gives no true elements, and a count of at least
-// the number of elements gives all true elements.
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
 //
 //	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
 func Mask8sFromCount(count int) (z Mask8s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask8s) First() Mask8s
+func (x Mask8s) First() (z Mask8s)
 
-// Next returns a mask with only the first active lane of x that follows
-// the last active lane of cursor active, or no lanes active if x has no
-// such lane. If cursor has no active lanes, it returns the first active
-// lane of x.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask8s) Next(cursor Mask8s) Mask8s
+func (x Mask8s) Next(cursor Mask8s) (z Mask8s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -737,27 +764,54 @@ type Mask16s struct {
 func Mask16sAllTrue() (z Mask16s)
 
 // Mask16sFromCount returns a mask whose first count elements are true and the rest
-// false. A count of 0 or less gives no true elements, and a count of at least
-// the number of elements gives all true elements.
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
 //
 //	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
 func Mask16sFromCount(count int) (z Mask16s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask16s) First() Mask16s
+func (x Mask16s) First() (z Mask16s)
 
-// Next returns a mask with only the first active lane of x that follows
-// the last active lane of cursor active, or no lanes active if x has no
-// such lane. If cursor has no active lanes, it returns the first active
-// lane of x.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask16s) Next(cursor Mask16s) Mask16s
+func (x Mask16s) Next(cursor Mask16s) (z Mask16s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -807,27 +861,54 @@ type Mask32s struct {
 func Mask32sAllTrue() (z Mask32s)
 
 // Mask32sFromCount returns a mask whose first count elements are true and the rest
-// false. A count of 0 or less gives no true elements, and a count of at least
-// the number of elements gives all true elements.
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
 //
 //	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
 func Mask32sFromCount(count int) (z Mask32s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask32s) First() Mask32s
+func (x Mask32s) First() (z Mask32s)
 
-// Next returns a mask with only the first active lane of x that follows
-// the last active lane of cursor active, or no lanes active if x has no
-// such lane. If cursor has no active lanes, it returns the first active
-// lane of x.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask32s) Next(cursor Mask32s) Mask32s
+func (x Mask32s) Next(cursor Mask32s) (z Mask32s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -877,27 +958,54 @@ type Mask64s struct {
 func Mask64sAllTrue() (z Mask64s)
 
 // Mask64sFromCount returns a mask whose first count elements are true and the rest
-// false. A count of 0 or less gives no true elements, and a count of at least
-// the number of elements gives all true elements.
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
 //
 //	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
 func Mask64sFromCount(count int) (z Mask64s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask64s) First() Mask64s
+func (x Mask64s) First() (z Mask64s)
 
-// Next returns a mask with only the first active lane of x that follows
-// the last active lane of cursor active, or no lanes active if x has no
-// such lane. If cursor has no active lanes, it returns the first active
-// lane of x.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask64s) Next(cursor Mask64s) Mask64s
+func (x Mask64s) Next(cursor Mask64s) (z Mask64s)
 
 // All returns true when all positions in mask x are true.
 //

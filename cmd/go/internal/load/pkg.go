@@ -7,11 +7,11 @@ package load
 
 import (
 	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/go/build"
 	"github.com/shogo82148/std/go/token"
 
 	"github.com/shogo82148/std/runtime/debug"
 
+	"github.com/shogo82148/std/cmd/go/internal/build"
 	"github.com/shogo82148/std/cmd/go/internal/modinfo"
 	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
@@ -354,6 +354,10 @@ func (p *Package) UsesSwig() bool
 
 // UsesCgo reports whether the package needs to run cgo
 func (p *Package) UsesCgo() bool
+
+// UsesCgoBinding reports whether the package's cgo files are processed
+// with cmd/cgo -binding, without a C compiler.
+func (p *Package) UsesCgoBinding() bool
 
 // PackageList returns the list of packages in the dag rooted at roots
 // as visited in a depth-first post-order traversal.

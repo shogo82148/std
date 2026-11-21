@@ -175,7 +175,7 @@ func MinFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[Variation[E], W])
 //specgen:commutative
 func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
-// MulWidenLo multiplies corresponding elements in the lower half of x and y,
+// MulWiden multiplies corresponding elements in the lower half of x and y,
 // returning a vector of half as many elements, each with twice the input
 // element size.
 //
@@ -186,7 +186,7 @@ func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //
 //specgen:commutative
 //specgen:require z={xB}{xN*2}x{xL/2}
-func MulWidenLo[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+func MulWiden[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
 
 // MulWidenEven multiplies corresponding even-indexed elements of x and y,
 // returning a vector of half as many elements, each with twice the input
@@ -201,20 +201,6 @@ func MulWidenLo[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec
 //specgen:require z={xB}{xN*2}x{xL/2}
 //specgen:experiment
 func MulWidenEven[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
-
-// MulWidenHi multiplies corresponding elements in the upper half of x and y,
-// returning a vector of half as many elements, each with twice the input
-// element size.
-//
-//	z[i] = {{.zE}}(x[{{lanes .z "z"}}+i]) * {{.zE}}(y[{{lanes .z "z"}}+i])
-//
-// The doubled element width is sufficient to hold every product without
-// overflow.
-//
-//specgen:experiment
-//specgen:commutative
-//specgen:require z={xB}{xN*2}x{xL/2}
-func MulWidenHi[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
 
 // MulHigh multiplies corresponding elements of x and y and returns the high
 // half of each double-width product.

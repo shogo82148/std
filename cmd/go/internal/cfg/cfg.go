@@ -9,10 +9,11 @@ package cfg
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/build"
 	"github.com/shogo82148/std/internal/buildcfg"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/runtime"
+
+	"github.com/shogo82148/std/cmd/go/internal/build"
 )
 
 // Global build parameters (used during package load)

@@ -5,7 +5,7 @@
 package imports
 
 // Tags returns a set of build tags that are true for the target platform.
-// It includes GOOS, GOARCH, the compiler, possibly "cgo",
+// It includes GOOS, GOARCH, the compiler, possibly "cgo" or "cgobindings",
 // release tags like "go1.13", and user-specified build tags.
 func Tags() map[string]bool
 

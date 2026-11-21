@@ -411,3 +411,36 @@ func (x Int8x32) LookupOrZero(indices Uint8x32) (z Int8x32)
 //
 // Emulated, CPU Feature: AVX512
 func (x Int8x64) LookupOrZero(indices Uint8x64) (z Int8x64)
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < 16 {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+//
+// Emulated
+func (x Uint8x16) LookupOrZero(indices Uint8x16) (z Uint8x16)
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < 32 {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+//
+// Emulated
+func (x Uint8x32) LookupOrZero(indices Uint8x32) (z Uint8x32)
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < 64 {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+//
+// Emulated
+func (x Uint8x64) LookupOrZero(indices Uint8x64) (z Uint8x64)

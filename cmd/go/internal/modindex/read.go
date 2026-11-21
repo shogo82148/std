@@ -6,7 +6,8 @@ package modindex
 
 import (
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/go/build"
+
+	"github.com/shogo82148/std/cmd/go/internal/build"
 )
 
 // Module represents and encoded module index file. It is used to

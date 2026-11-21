@@ -91,3 +91,53 @@ func RotateAllRight[E Uints, W Width](x Vec[E, W], shift uint64) (z Vec[E, W])
 //
 //	z[i] = rotateRight(x[i], shift[i])
 func RotateRight[E Uints, W Width](x, shift Vec[E, W]) (z Vec[E, W])
+
+// ShiftAllLeftConcatModN shifts x[i] left by shift%{{.xN}}, filling the emptied
+// low bits with the high bits of y[i]. That is, it shifts the double-width
+// concatenation of x[i] (high) and y[i] (low) left and keeps the high {{.xN}}
+// bits.
+//
+//	s = shift % {{.xN}}
+//	z[i] = x[i]<<s | y[i]>>({{.xN}}-s)
+//
+//specgen:name ShiftAllLeftConcatMod{{.xN}}
+//specgen:experiment
+func ShiftAllLeftConcatModN[E Uints, W Width](x, y Vec[E, W], shift uint64) (z Vec[E, W])
+
+// ShiftAllRightConcatModN shifts x[i] right by shift%{{.xN}}, filling the
+// emptied high bits with the low bits of y[i]. That is, it shifts the
+// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
+// low {{.xN}} bits.
+//
+//	s = shift % {{.xN}}
+//	z[i] = x[i]>>s | y[i]<<({{.xN}}-s)
+//
+//specgen:name ShiftAllRightConcatMod{{.xN}}
+//specgen:experiment
+func ShiftAllRightConcatModN[E Uints, W Width](x, y Vec[E, W], shift uint64) (z Vec[E, W])
+
+// ShiftLeftConcatModN shifts x[i] left by shift[i]%{{.xN}}, filling the
+// emptied low bits with the high bits of y[i]. That is, it shifts the
+// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
+// high {{.xN}} bits.
+//
+//	s[i] = shift[i] % {{.xN}}
+//	z[i] = x[i]<<s[i] | y[i]>>({{.xN}}-s[i])
+//
+//specgen:name ShiftLeftConcatMod{{.xN}}
+//specgen:require shift=Uint{xN}x{xL}
+//specgen:experiment
+func ShiftLeftConcatModN[E Uints, W Width, sE Uints](x, y Vec[E, W], shift Vec[sE, W]) (z Vec[E, W])
+
+// ShiftRightConcatModN shifts x[i] right by shift[i]%{{.xN}}, filling the
+// emptied high bits with the low bits of y[i]. That is, it shifts the
+// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
+// low {{.xN}} bits.
+//
+//	s[i] = shift[i] % {{.xN}}
+//	z[i] = x[i]>>s[i] | y[i]<<({{.xN}}-s[i])
+//
+//specgen:name ShiftRightConcatMod{{.xN}}
+//specgen:require shift=Uint{xN}x{xL}
+//specgen:experiment
+func ShiftRightConcatModN[E Uints, W Width, sE Uints](x, y Vec[E, W], shift Vec[sE, W]) (z Vec[E, W])

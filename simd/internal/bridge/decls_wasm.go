@@ -396,6 +396,8 @@ func (x Uint8x16) Less(y Uint8x16) Mask8x16
 
 func (x Uint8x16) LessEqual(y Uint8x16) Mask8x16
 
+func (x Uint8x16) LookupOrZero(indices Uint8x16) Uint8x16
+
 func (x Uint8x16) Masked(mask Mask8x16) Uint8x16
 
 func (x Uint8x16) Max(y Uint8x16) Uint8x16

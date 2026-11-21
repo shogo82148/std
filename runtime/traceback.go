@@ -170,6 +170,6 @@ import (
 //
 // SetCgoTraceback should be called only once, ideally from an init function.
 //
-// SetCgoTraceback does not have any effect when the cgobindings
+// SetCgoTraceback does not have any effect when the runtimecgopurego
 // GOEXPERIMENT is enabled.
 func SetCgoTraceback(version int, traceback, context, symbolizer unsafe.Pointer)
