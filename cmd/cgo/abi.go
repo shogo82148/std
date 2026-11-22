@@ -11,13 +11,17 @@ import (
 // BindingType describes a C or Go type used by cgo binding declarations
 // for C ABI classification and Go wrapper generation.
 type BindingType struct {
-	Name  string
-	Def   string
-	Size  int64
-	Align int64
+	Name        string
+	Def         string
+	Size        int64
+	Align       int64
+	HasPointers bool
 }
 
-// BindingFunc describes a bound C function declared with //cgo:func.
+// BindingFunc describes a C function bound with //cgo:func, either a
+// function linked with the program or a method of a //cgo:dynload type that
+// calls a function in a library loaded at run time, or an exported Go
+// callback (//export).
 type BindingFunc struct {
 	// Identifier and symbol names:
 	Name   string
@@ -29,10 +33,18 @@ type BindingFunc struct {
 	Params []string
 	Ret    string
 
+	// Calling convention modifiers (used by ABI layout and trampoline generation):
+	Indirect    bool
+	MayCallback bool
+
 	// Go wrapper and import metadata (used by binding.go):
 	Library string
 	LibC    bool
 	Static  bool
+
+	// Methods of //cgo:dynload types (used by binding.go):
+	RecvType string
+	SymIndex int
 }
 
 // ParamLoc describes where a function parameter is passed in the C ABI.
@@ -43,6 +55,7 @@ type ParamLoc struct {
 	Regs      []string
 	StackOff  int64
 	PassByPtr bool
+	G0Off     int64
 }
 
 // RetLoc describes how a function return value is returned in the C ABI.
@@ -52,6 +65,7 @@ type RetLoc struct {
 	IsFloat  bool
 	Indirect bool
 	Regs     []string
+	G0Off    int64
 }
 
 // FuncLayout describes the complete Go argument struct and C ABI layout for a call.
@@ -60,6 +74,7 @@ type FuncLayout struct {
 	Ret           RetLoc
 	StackSize     int64
 	FloatRegCount int
+	StkTopOff     int64
 }
 
 // ABIConfig defines the C calling convention rules and assembly primitives
@@ -93,15 +108,21 @@ type ABIConfig struct {
 	// to default GPR chunking.
 	CompositeRegSlots func(cfg *ABIConfig, info typeInfo, isFloat bool, regs []string) ([]regSlot, bool)
 
-	// Trampoline assembly generation parameters:
-	SPReg          string
-	CalleeSavedReg string
-	TmpReg         string
-	TmpReg2        string
-	LRReserve      int64
+	// Trampoline and callback assembly generation parameters:
+	SPReg           string
+	CalleeSavedReg  string
+	TmpReg          string
+	TmpReg2         string
+	LRReserve       int64
+	ZeroVal         string
+	LocalFrameOff   int64
+	IndirectSymCall bool
 
 	asm                asmOps
 	TrampolinePrologue func(w io.Writer, lay FuncLayout) (epilogue func(w io.Writer))
 	PreCall            func(cfg *ABIConfig, w io.Writer, fn BindingFunc, lay FuncLayout)
-	CallSymbol         func(w io.Writer, sym string)
+	CallSymbol         func(w io.Writer, sym string, static bool)
+	StackArgAddr       func(stackOff, callerSPOff int64) (base string, off int64)
+	CallbackPrologue   func(w io.Writer, frameSize int64) (callerSPOff int64)
+	CallbackEpilogue   func(w io.Writer, frameSize int64)
 }

@@ -36,6 +36,7 @@ type Package struct {
 	Preamble    string
 	noCallbacks map[string]bool
 	noEscapes   map[string]bool
+	genFiles    []*File
 }
 
 // A File collects information about a single Go input file.
@@ -56,6 +57,8 @@ type File struct {
 	Edit        *edit.Buffer
 
 	debugs []*debug
+
+	gen *genBindingFile
 }
 
 // A Call refers to a call of a C.xxx function in the AST.

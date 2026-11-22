@@ -4,122 +4,6 @@
 
 package archsimd
 
-// AESDecryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvShiftRows(InvSubBytes(x)), y)
-//
-// Asm: VAESDECLAST, CPU Feature: AVXAES
-func (x Uint8x16) AESDecryptLastRound(y Uint32x4) Uint8x16
-
-// AESDecryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvShiftRows(InvSubBytes(x)), y)
-//
-// Asm: VAESDECLAST, CPU Feature: AVX2AES
-func (x Uint8x32) AESDecryptLastRound(y Uint32x8) Uint8x32
-
-// AESDecryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvShiftRows(InvSubBytes(x)), y)
-//
-// Asm: VAESDECLAST, CPU Feature: AVX512AES
-func (x Uint8x64) AESDecryptLastRound(y Uint32x16) Uint8x64
-
-// AESDecryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvMixColumns(InvShiftRows(InvSubBytes(x))), y)
-//
-// Asm: VAESDEC, CPU Feature: AVXAES
-func (x Uint8x16) AESDecryptOneRound(y Uint32x4) Uint8x16
-
-// AESDecryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvMixColumns(InvShiftRows(InvSubBytes(x))), y)
-//
-// Asm: VAESDEC, CPU Feature: AVX2AES
-func (x Uint8x32) AESDecryptOneRound(y Uint32x8) Uint8x32
-
-// AESDecryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of dw array in use.
-// result = AddRoundKey(InvMixColumns(InvShiftRows(InvSubBytes(x))), y)
-//
-// Asm: VAESDEC, CPU Feature: AVX512AES
-func (x Uint8x64) AESDecryptOneRound(y Uint32x16) Uint8x64
-
-// AESEncryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey((ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENCLAST, CPU Feature: AVXAES
-func (x Uint8x16) AESEncryptLastRound(y Uint32x4) Uint8x16
-
-// AESEncryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey((ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENCLAST, CPU Feature: AVX2AES
-func (x Uint8x32) AESEncryptLastRound(y Uint32x8) Uint8x32
-
-// AESEncryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey((ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENCLAST, CPU Feature: AVX512AES
-func (x Uint8x64) AESEncryptLastRound(y Uint32x16) Uint8x64
-
-// AESEncryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey(MixColumns(ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENC, CPU Feature: AVXAES
-func (x Uint8x16) AESEncryptOneRound(y Uint32x4) Uint8x16
-
-// AESEncryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey(MixColumns(ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENC, CPU Feature: AVX2AES
-func (x Uint8x32) AESEncryptOneRound(y Uint32x8) Uint8x32
-
-// AESEncryptOneRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
-// x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.
-// y is the chunk of w array in use.
-// result = AddRoundKey(MixColumns(ShiftRows(SubBytes(x))), y)
-//
-// Asm: VAESENC, CPU Feature: AVX512AES
-func (x Uint8x64) AESEncryptOneRound(y Uint32x16) Uint8x64
-
-// AESInvMixColumns performs the InvMixColumns operation in AES cipher algorithm defined in FIPS 197.
-// x is the chunk of w array in use.
-// result = InvMixColumns(x)
-//
-// Asm: VAESIMC, CPU Feature: AVXAES
-func (x Uint32x4) AESInvMixColumns() Uint32x4
-
-// AESRoundKeyGenAssist performs some components of KeyExpansion in AES cipher algorithm defined in FIPS 197.
-// x is an array of AES words, but only x[0] and x[2] are used.
-// r is a value from the Rcon constant array.
-// result[0] = XOR(SubWord(RotWord(x[0])), r)
-// result[1] = SubWord(x[1])
-// result[2] = XOR(SubWord(RotWord(x[2])), r)
-// result[3] = SubWord(x[3])
-//
-// Performance: A non-constant value of rconVal may result in significantly worse performance for this operation.
-//
-// Asm: VAESKEYGENASSIST, CPU Feature: AVXAES
-func (x Uint32x4) AESRoundKeyGenAssist(rconVal uint8) Uint32x4
-
 // Abs returns the elementwise absolute value of x.
 //
 // Asm: VPABSB, CPU Feature: AVX
@@ -379,42 +263,6 @@ func (x Uint64x4) Add(y Uint64x4) (z Uint64x4)
 //
 // Asm: VPADDQ, CPU Feature: AVX512
 func (x Uint64x8) Add(y Uint64x8) (z Uint64x8)
-
-// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
-// even-indexed elements of y from those of x.
-//
-//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
-//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
-//
-// Asm: VADDSUBPS, CPU Feature: AVX
-func (x Float32x4) AddOddSubEven(y Float32x4) (z Float32x4)
-
-// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
-// even-indexed elements of y from those of x.
-//
-//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
-//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
-//
-// Asm: VADDSUBPS, CPU Feature: AVX
-func (x Float32x8) AddOddSubEven(y Float32x8) (z Float32x8)
-
-// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
-// even-indexed elements of y from those of x.
-//
-//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
-//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
-//
-// Asm: VADDSUBPD, CPU Feature: AVX
-func (x Float64x2) AddOddSubEven(y Float64x2) (z Float64x2)
-
-// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
-// even-indexed elements of y from those of x.
-//
-//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
-//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
-//
-// Asm: VADDSUBPD, CPU Feature: AVX
-func (x Float64x4) AddOddSubEven(y Float64x4) (z Float64x4)
 
 // AddSaturated adds x and y elementwise with saturation.
 //
@@ -949,90 +797,6 @@ func (x Float64x4) Ceil() (z Float64x4)
 //
 // Asm: VRNDSCALEPD, CPU Feature: AVX512
 func (x Float64x8) Ceil() (z Float64x8)
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x4) CeilScaled(prec uint8) Float32x4
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x8) CeilScaled(prec uint8) Float32x8
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x16) CeilScaled(prec uint8) Float32x16
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x2) CeilScaled(prec uint8) Float64x2
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x4) CeilScaled(prec uint8) Float64x4
-
-// CeilScaled rounds elements up with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x8) CeilScaled(prec uint8) Float64x8
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x4) CeilScaledResidue(prec uint8) Float32x4
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x8) CeilScaledResidue(prec uint8) Float32x8
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x16) CeilScaledResidue(prec uint8) Float32x16
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x2) CeilScaledResidue(prec uint8) Float64x2
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x4) CeilScaledResidue(prec uint8) Float64x4
-
-// CeilScaledResidue computes the difference after ceiling with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x8) CeilScaledResidue(prec uint8) Float64x8
 
 // Compress packs the elements of x where mask is true into the low elements of
 // z, preserving their order. The remaining elements of z are zero.
@@ -1821,170 +1585,6 @@ func (x Int64x8) ConcatLookupMod(y Int64x8, indices Uint64x8) (z Int64x8)
 //
 // Asm: VPERMI2Q, CPU Feature: AVX512
 func (x Uint64x8) ConcatLookupMod(y Uint64x8, indices Uint64x8) (z Uint64x8)
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 42, 43, 50, 51, 52, 53}.ConcatPermute128Scalars(3, 0, {60, 61, 62, 63, 70, 71, 72, 73})
-//
-// returns {70, 71, 72, 73, 40, 41, 42, 43}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2F128, CPU Feature: AVX
-func (x Float32x8) ConcatPermute128Scalars(lo, hi uint8, y Float32x8) Float32x8
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 50, 51}.ConcatPermute128Scalars(3, 0, {60, 61, 70, 71})
-//
-// returns {70, 71, 40, 41}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2F128, CPU Feature: AVX
-func (x Float64x4) ConcatPermute128Scalars(lo, hi uint8, y Float64x4) Float64x4
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{0x40, 0x41, ..., 0x4f, 0x50, 0x51, ..., 0x5f}.ConcatPermute128Scalars(3, 0,
-//	     {0x60, 0x61, ..., 0x6f, 0x70, 0x71, ..., 0x7f})
-//
-// returns {0x70, 0x71, ..., 0x7f, 0x40, 0x41, ..., 0x4f}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Int8x32) ConcatPermute128Scalars(lo, hi uint8, y Int8x32) Int8x32
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 42, 43, 44, 45, 46, 47, 50, 51, 52, 53, 54, 55, 56, 57}.ConcatPermute128Scalars(3, 0,
-//	 {60, 61, 62, 63, 64, 65, 66, 67, 70, 71, 72, 73, 74, 75, 76, 77})
-//
-// returns {70, 71, 72, 73, 74, 75, 76, 77, 40, 41, 42, 43, 44, 45, 46, 47}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Int16x16) ConcatPermute128Scalars(lo, hi uint8, y Int16x16) Int16x16
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 42, 43, 50, 51, 52, 53}.ConcatPermute128Scalars(3, 0, {60, 61, 62, 63, 70, 71, 72, 73})
-//
-// returns {70, 71, 72, 73, 40, 41, 42, 43}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Int32x8) ConcatPermute128Scalars(lo, hi uint8, y Int32x8) Int32x8
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 50, 51}.ConcatPermute128Scalars(3, 0, {60, 61, 70, 71})
-//
-// returns {70, 71, 40, 41}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Int64x4) ConcatPermute128Scalars(lo, hi uint8, y Int64x4) Int64x4
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{0x40, 0x41, ..., 0x4f, 0x50, 0x51, ..., 0x5f}.ConcatPermute128Scalars(3, 0,
-//	     {0x60, 0x61, ..., 0x6f, 0x70, 0x71, ..., 0x7f})
-//
-// returns {0x70, 0x71, ..., 0x7f, 0x40, 0x41, ..., 0x4f}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Uint8x32) ConcatPermute128Scalars(lo, hi uint8, y Uint8x32) Uint8x32
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 42, 43, 44, 45, 46, 47, 50, 51, 52, 53, 54, 55, 56, 57}.ConcatPermute128Scalars(3, 0,
-//	 {60, 61, 62, 63, 64, 65, 66, 67, 70, 71, 72, 73, 74, 75, 76, 77})
-//
-// returns {70, 71, 72, 73, 74, 75, 76, 77, 40, 41, 42, 43, 44, 45, 46, 47}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Uint16x16) ConcatPermute128Scalars(lo, hi uint8, y Uint16x16) Uint16x16
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 42, 43, 50, 51, 52, 53}.ConcatPermute128Scalars(3, 0, {60, 61, 62, 63, 70, 71, 72, 73})
-//
-// returns {70, 71, 72, 73, 40, 41, 42, 43}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Uint32x8) ConcatPermute128Scalars(lo, hi uint8, y Uint32x8) Uint32x8
-
-// ConcatPermute128Scalars treats the 256-bit vectors x and y as a single vector of four
-// 128-bit elements, and returns a 256-bit result formed by
-// concatenating the two elements specified by lo and hi.
-// For example,
-//
-//	{40, 41, 50, 51}.ConcatPermute128Scalars(3, 0, {60, 61, 70, 71})
-//
-// returns {70, 71, 40, 41}.
-//
-// lo, hi should be between 0 and 3, inclusive; other values may result in a runtime panic.
-//
-// Performance: A non-constant value of lo, hi may result in significantly worse performance for this operation.
-//
-// Asm: VPERM2I128, CPU Feature: AVX2
-func (x Uint64x4) ConcatPermute128Scalars(lo, hi uint8, y Uint64x4) Uint64x4
 
 // ConcatSaturateToInt16 converts each element of x and y to int16, saturating
 // values that are outside the range of int16, and returns the concatenated
@@ -4196,195 +3796,6 @@ func (x Float64x4) Floor() (z Float64x4)
 // Asm: VRNDSCALEPD, CPU Feature: AVX512
 func (x Float64x8) Floor() (z Float64x8)
 
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x4) FloorScaled(prec uint8) Float32x4
-
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x8) FloorScaled(prec uint8) Float32x8
-
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x16) FloorScaled(prec uint8) Float32x16
-
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x2) FloorScaled(prec uint8) Float64x2
-
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x4) FloorScaled(prec uint8) Float64x4
-
-// FloorScaled rounds elements down with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x8) FloorScaled(prec uint8) Float64x8
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x4) FloorScaledResidue(prec uint8) Float32x4
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x8) FloorScaledResidue(prec uint8) Float32x8
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x16) FloorScaledResidue(prec uint8) Float32x16
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x2) FloorScaledResidue(prec uint8) Float64x2
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x4) FloorScaledResidue(prec uint8) Float64x4
-
-// FloorScaledResidue computes the difference after flooring with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x8) FloorScaledResidue(prec uint8) Float64x8
-
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of x is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
-func (x Uint8x16) GaloisFieldAffineTransform(A Uint64x2, b uint8) Uint8x16
-
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of x is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
-func (x Uint8x32) GaloisFieldAffineTransform(A Uint64x4, b uint8) Uint8x32
-
-// GaloisFieldAffineTransform returns the affine transformation A * x + b in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of x is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * x[i] + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEQB, CPU Feature: AVX512GFNI
-func (x Uint8x64) GaloisFieldAffineTransform(A Uint64x8, b uint8) Uint8x64
-
-// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
-// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
-// P = x^8 + x^4 + x^3 + x + 1, and the affine
-// transformation is performed in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of inv(x) is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEINVQB, CPU Feature: AVX512GFNI
-func (x Uint8x16) GaloisFieldAffineTransformInverse(A Uint64x2, b uint8) Uint8x16
-
-// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
-// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
-// P = x^8 + x^4 + x^3 + x + 1, and the affine
-// transformation is performed in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of inv(x) is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEINVQB, CPU Feature: AVX512GFNI
-func (x Uint8x32) GaloisFieldAffineTransformInverse(A Uint64x4, b uint8) Uint8x32
-
-// GaloisFieldAffineTransformInverse returns the affine transformation A * inv(x) + b,
-// where inv(x) is the multiplicative inverse of x in GF(2^8) modulo
-// P = x^8 + x^4 + x^3 + x + 1, and the affine
-// transformation is performed in GF(2)^8.
-// Each element of A is interpreted as a matrix of 8 rows of vectors of 8 bits.
-// Each element of inv(x) is interpreted as a vector of 8 bits.
-// The b argument is likewise a vector of 8 bits.
-// Each 8-bit vector here can be seen as 8 GF(2) elements packed together.
-// The * and + operators in GF(2) are defined as AND and XOR.
-// The result is z[i] = A[i/8] * inv(x[i]) + b, where * and + are performed in GF(2).
-//
-// Performance: A non-constant value of b may result in significantly worse performance for this operation.
-//
-// Asm: VGF2P8AFFINEINVQB, CPU Feature: AVX512GFNI
-func (x Uint8x64) GaloisFieldAffineTransformInverse(A Uint64x8, b uint8) Uint8x64
-
-// GaloisFieldMul returns (x * y) mod P, performed in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-//
-// Asm: VGF2P8MULB, CPU Feature: AVX512GFNI
-func (x Uint8x16) GaloisFieldMul(y Uint8x16) Uint8x16
-
-// GaloisFieldMul returns (x * y) mod P, performed in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-//
-// Asm: VGF2P8MULB, CPU Feature: AVX512GFNI
-func (x Uint8x32) GaloisFieldMul(y Uint8x32) Uint8x32
-
-// GaloisFieldMul returns (x * y) mod P, performed in GF(2^8),
-// where the characteristic polynomial P is x^8 + x^4 + x^3 + x + 1.
-//
-// Asm: VGF2P8MULB, CPU Feature: AVX512GFNI
-func (x Uint8x64) GaloisFieldMul(y Uint8x64) Uint8x64
-
 // Greater returns a mask indicating which elements of x are greater than y.
 //
 //	z[i] = x[i] > y[i]
@@ -4883,86 +4294,6 @@ func (x Uint32x4) InterleaveHi(y Uint32x4) (z Uint32x4)
 // Asm: VPUNPCKHQDQ, CPU Feature: AVX
 func (x Uint64x2) InterleaveHi(y Uint64x2) (z Uint64x2)
 
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHBW, CPU Feature: AVX2
-func (x Int8x32) InterleaveHiGrouped(y Int8x32) Int8x32
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHBW, CPU Feature: AVX512
-func (x Int8x64) InterleaveHiGrouped(y Int8x64) Int8x64
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHWD, CPU Feature: AVX2
-func (x Int16x16) InterleaveHiGrouped(y Int16x16) Int16x16
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHWD, CPU Feature: AVX512
-func (x Int16x32) InterleaveHiGrouped(y Int16x32) Int16x32
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHDQ, CPU Feature: AVX2
-func (x Int32x8) InterleaveHiGrouped(y Int32x8) Int32x8
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHDQ, CPU Feature: AVX512
-func (x Int32x16) InterleaveHiGrouped(y Int32x16) Int32x16
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHQDQ, CPU Feature: AVX2
-func (x Int64x4) InterleaveHiGrouped(y Int64x4) Int64x4
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHQDQ, CPU Feature: AVX512
-func (x Int64x8) InterleaveHiGrouped(y Int64x8) Int64x8
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHBW, CPU Feature: AVX2
-func (x Uint8x32) InterleaveHiGrouped(y Uint8x32) Uint8x32
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHBW, CPU Feature: AVX512
-func (x Uint8x64) InterleaveHiGrouped(y Uint8x64) Uint8x64
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHWD, CPU Feature: AVX2
-func (x Uint16x16) InterleaveHiGrouped(y Uint16x16) Uint16x16
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHWD, CPU Feature: AVX512
-func (x Uint16x32) InterleaveHiGrouped(y Uint16x32) Uint16x32
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHDQ, CPU Feature: AVX2
-func (x Uint32x8) InterleaveHiGrouped(y Uint32x8) Uint32x8
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHDQ, CPU Feature: AVX512
-func (x Uint32x16) InterleaveHiGrouped(y Uint32x16) Uint32x16
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHQDQ, CPU Feature: AVX2
-func (x Uint64x4) InterleaveHiGrouped(y Uint64x4) Uint64x4
-
-// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKHQDQ, CPU Feature: AVX512
-func (x Uint64x8) InterleaveHiGrouped(y Uint64x8) Uint64x8
-
 // InterleaveLo interleaves the elements of the low halves of x and y.
 //
 //	z = {x[0], y[0], x[1], y[1], ..., x[n/2-1], y[n/2-1]}, where n = 16
@@ -5018,86 +4349,6 @@ func (x Uint32x4) InterleaveLo(y Uint32x4) (z Uint32x4)
 //
 // Asm: VPUNPCKLQDQ, CPU Feature: AVX
 func (x Uint64x2) InterleaveLo(y Uint64x2) (z Uint64x2)
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLBW, CPU Feature: AVX2
-func (x Int8x32) InterleaveLoGrouped(y Int8x32) Int8x32
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLBW, CPU Feature: AVX512
-func (x Int8x64) InterleaveLoGrouped(y Int8x64) Int8x64
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLWD, CPU Feature: AVX2
-func (x Int16x16) InterleaveLoGrouped(y Int16x16) Int16x16
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLWD, CPU Feature: AVX512
-func (x Int16x32) InterleaveLoGrouped(y Int16x32) Int16x32
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLDQ, CPU Feature: AVX2
-func (x Int32x8) InterleaveLoGrouped(y Int32x8) Int32x8
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLDQ, CPU Feature: AVX512
-func (x Int32x16) InterleaveLoGrouped(y Int32x16) Int32x16
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLQDQ, CPU Feature: AVX2
-func (x Int64x4) InterleaveLoGrouped(y Int64x4) Int64x4
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLQDQ, CPU Feature: AVX512
-func (x Int64x8) InterleaveLoGrouped(y Int64x8) Int64x8
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLBW, CPU Feature: AVX2
-func (x Uint8x32) InterleaveLoGrouped(y Uint8x32) Uint8x32
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLBW, CPU Feature: AVX512
-func (x Uint8x64) InterleaveLoGrouped(y Uint8x64) Uint8x64
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLWD, CPU Feature: AVX2
-func (x Uint16x16) InterleaveLoGrouped(y Uint16x16) Uint16x16
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLWD, CPU Feature: AVX512
-func (x Uint16x32) InterleaveLoGrouped(y Uint16x32) Uint16x32
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLDQ, CPU Feature: AVX2
-func (x Uint32x8) InterleaveLoGrouped(y Uint32x8) Uint32x8
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLDQ, CPU Feature: AVX512
-func (x Uint32x16) InterleaveLoGrouped(y Uint32x16) Uint32x16
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLQDQ, CPU Feature: AVX2
-func (x Uint64x4) InterleaveLoGrouped(y Uint64x4) Uint64x4
-
-// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
-//
-// Asm: VPUNPCKLQDQ, CPU Feature: AVX512
-func (x Uint64x8) InterleaveLoGrouped(y Uint64x8) Uint64x8
 
 // LeadingZeros counts the leading zero bits of each element in x,
 // starting from the most significant bit.
@@ -6719,324 +5970,6 @@ func (x Float64x4) MulAdd(y Float64x4, z Float64x4) (w Float64x4)
 // Asm: VFMADD213PD, CPU Feature: AVX512
 func (x Float64x8) MulAdd(y Float64x8, z Float64x8) (w Float64x8)
 
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PS, CPU Feature: FMA
-func (x Float32x4) MulAddEvenSubOdd(y Float32x4, z Float32x4) (w Float32x4)
-
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PS, CPU Feature: FMA
-func (x Float32x8) MulAddEvenSubOdd(y Float32x8, z Float32x8) (w Float32x8)
-
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PS, CPU Feature: AVX512
-func (x Float32x16) MulAddEvenSubOdd(y Float32x16, z Float32x16) (w Float32x16)
-
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PD, CPU Feature: FMA
-func (x Float64x2) MulAddEvenSubOdd(y Float64x2, z Float64x2) (w Float64x2)
-
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PD, CPU Feature: FMA
-func (x Float64x4) MulAddEvenSubOdd(y Float64x4, z Float64x4) (w Float64x4)
-
-// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
-// x * y - z for the odd-indexed elements.
-//
-//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMSUBADD213PD, CPU Feature: AVX512
-func (x Float64x8) MulAddEvenSubOdd(y Float64x8, z Float64x8) (w Float64x8)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PS, CPU Feature: FMA
-func (x Float32x4) MulAddOddSubEven(y Float32x4, z Float32x4) (w Float32x4)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PS, CPU Feature: FMA
-func (x Float32x8) MulAddOddSubEven(y Float32x8, z Float32x8) (w Float32x8)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PS, CPU Feature: AVX512
-func (x Float32x16) MulAddOddSubEven(y Float32x16, z Float32x16) (w Float32x16)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PD, CPU Feature: FMA
-func (x Float64x2) MulAddOddSubEven(y Float64x2, z Float64x2) (w Float64x2)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PD, CPU Feature: FMA
-func (x Float64x4) MulAddOddSubEven(y Float64x4, z Float64x4) (w Float64x4)
-
-// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
-// x * y - z for the even-indexed elements.
-//
-//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
-//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
-//
-// This performs a fused multiply-add, computing each result with a single
-// rounding rather than two and no intermediate overflow.
-//
-// Asm: VFMADDSUB213PD, CPU Feature: AVX512
-func (x Float64x8) MulAddOddSubEven(y Float64x8, z Float64x8) (w Float64x8)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHW, CPU Feature: AVX
-func (x Int16x8) MulHigh(y Int16x8) (z Int16x8)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHW, CPU Feature: AVX2
-func (x Int16x16) MulHigh(y Int16x16) (z Int16x16)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHW, CPU Feature: AVX512
-func (x Int16x32) MulHigh(y Int16x32) (z Int16x32)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHUW, CPU Feature: AVX
-func (x Uint16x8) MulHigh(y Uint16x8) (z Uint16x8)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHUW, CPU Feature: AVX2
-func (x Uint16x16) MulHigh(y Uint16x16) (z Uint16x16)
-
-// MulHigh multiplies corresponding elements of x and y and returns the high
-// half of each double-width product.
-//
-//	z[i] = (x[i] * y[i]) >> 16
-//
-// The product is computed exactly, so no bits are lost before the shift.
-//
-// Asm: VPMULHUW, CPU Feature: AVX512
-func (x Uint16x32) MulHigh(y Uint16x32) (z Uint16x32)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGNB, CPU Feature: AVX
-func (x Int8x16) MulSign(y Int8x16) (z Int8x16)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGNB, CPU Feature: AVX2
-func (x Int8x32) MulSign(y Int8x32) (z Int8x32)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGNW, CPU Feature: AVX
-func (x Int16x8) MulSign(y Int16x8) (z Int16x8)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGNW, CPU Feature: AVX2
-func (x Int16x16) MulSign(y Int16x16) (z Int16x16)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGND, CPU Feature: AVX
-func (x Int32x4) MulSign(y Int32x4) (z Int32x4)
-
-// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
-//
-//	z[i] = x[i] * sign(y[i])
-//
-// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
-// where y[i] is positive. The negation wraps, so the most negative value stays
-// as it is.
-//
-// Asm: VPSIGND, CPU Feature: AVX2
-func (x Int32x8) MulSign(y Int32x8) (z Int32x8)
-
-// MulWidenEven multiplies corresponding even-indexed elements of x and y,
-// returning a vector of half as many elements, each with twice the input
-// element size.
-//
-//	z[i] = int64(x[2*i]) * int64(y[2*i])
-//
-// The doubled element width is sufficient to hold every product without
-// overflow.
-//
-// Asm: VPMULDQ, CPU Feature: AVX
-func (x Int32x4) MulWidenEven(y Int32x4) (z Int64x2)
-
-// MulWidenEven multiplies corresponding even-indexed elements of x and y,
-// returning a vector of half as many elements, each with twice the input
-// element size.
-//
-//	z[i] = int64(x[2*i]) * int64(y[2*i])
-//
-// The doubled element width is sufficient to hold every product without
-// overflow.
-//
-// Asm: VPMULDQ, CPU Feature: AVX2
-func (x Int32x8) MulWidenEven(y Int32x8) (z Int64x4)
-
-// MulWidenEven multiplies corresponding even-indexed elements of x and y,
-// returning a vector of half as many elements, each with twice the input
-// element size.
-//
-//	z[i] = uint64(x[2*i]) * uint64(y[2*i])
-//
-// The doubled element width is sufficient to hold every product without
-// overflow.
-//
-// Asm: VPMULUDQ, CPU Feature: AVX
-func (x Uint32x4) MulWidenEven(y Uint32x4) (z Uint64x2)
-
-// MulWidenEven multiplies corresponding even-indexed elements of x and y,
-// returning a vector of half as many elements, each with twice the input
-// element size.
-//
-//	z[i] = uint64(x[2*i]) * uint64(y[2*i])
-//
-// The doubled element width is sufficient to hold every product without
-// overflow.
-//
-// Asm: VPMULUDQ, CPU Feature: AVX2
-func (x Uint32x8) MulWidenEven(y Uint32x8) (z Uint64x4)
-
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
 //	z[i] = x[i] != y[i]
@@ -7465,66 +6398,6 @@ func (x Uint64x8) Or(y Uint64x8) (z Uint64x8)
 // Asm: VPOR, CPU Feature: AVX
 func (x Uint64x2) Or(y Uint64x2) (z Uint64x2)
 
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCPPS, CPU Feature: AVX
-func (x Float32x4) Reciprocal() Float32x4
-
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCPPS, CPU Feature: AVX
-func (x Float32x8) Reciprocal() Float32x8
-
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCP14PS, CPU Feature: AVX512
-func (x Float32x16) Reciprocal() Float32x16
-
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCP14PD, CPU Feature: AVX512
-func (x Float64x2) Reciprocal() Float64x2
-
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCP14PD, CPU Feature: AVX512
-func (x Float64x4) Reciprocal() Float64x4
-
-// Reciprocal computes an approximate reciprocal of each element.
-//
-// Asm: VRCP14PD, CPU Feature: AVX512
-func (x Float64x8) Reciprocal() Float64x8
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRTPS, CPU Feature: AVX
-func (x Float32x4) ReciprocalSqrt() Float32x4
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRTPS, CPU Feature: AVX
-func (x Float32x8) ReciprocalSqrt() Float32x8
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRT14PS, CPU Feature: AVX512
-func (x Float32x16) ReciprocalSqrt() Float32x16
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRT14PD, CPU Feature: AVX512
-func (x Float64x2) ReciprocalSqrt() Float64x2
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRT14PD, CPU Feature: AVX512
-func (x Float64x4) ReciprocalSqrt() Float64x4
-
-// ReciprocalSqrt computes an approximate reciprocal of the square root of each element.
-//
-// Asm: VRSQRT14PD, CPU Feature: AVX512
-func (x Float64x8) ReciprocalSqrt() Float64x8
-
 // RotateLeft rotates x left by shift bits, elementwise.
 //
 //	z[i] = rotateLeft(x[i], shift[i])
@@ -7680,158 +6553,6 @@ func (x Float64x4) Round() (z Float64x4)
 //
 // Asm: VRNDSCALEPD, CPU Feature: AVX512
 func (x Float64x8) Round() (z Float64x8)
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x4) RoundScaled(prec uint8) Float32x4
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x8) RoundScaled(prec uint8) Float32x8
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x16) RoundScaled(prec uint8) Float32x16
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x2) RoundScaled(prec uint8) Float64x2
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x4) RoundScaled(prec uint8) Float64x4
-
-// RoundScaled rounds elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x8) RoundScaled(prec uint8) Float64x8
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x4) RoundScaledResidue(prec uint8) Float32x4
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x8) RoundScaledResidue(prec uint8) Float32x8
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x16) RoundScaledResidue(prec uint8) Float32x16
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x2) RoundScaledResidue(prec uint8) Float64x2
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x4) RoundScaledResidue(prec uint8) Float64x4
-
-// RoundScaledResidue computes the difference after rounding with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x8) RoundScaledResidue(prec uint8) Float64x8
-
-// SHA1FourRounds performs 4 rounds of B loop in SHA1 algorithm defined in FIPS 180-4.
-// x contains the state variables a, b, c and d from upper to lower order.
-// y contains the W array elements (with the state variable e added to the upper element) from upper to lower order.
-// result = the state variables a', b', c', d' updated after 4 rounds.
-// constant = 0 for the first 20 rounds of the loop, 1 for the next 20 rounds of the loop..., 3 for the last 20 rounds of the loop.
-//
-// Performance: A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: SHA1RNDS4, CPU Feature: SHA
-func (x Uint32x4) SHA1FourRounds(constant uint8, y Uint32x4) Uint32x4
-
-// SHA1Message1 does the XORing of 1 in SHA1 algorithm defined in FIPS 180-4.
-// x = {W3, W2, W1, W0}
-// y = {0, 0, W5, W4}
-// result = {W3^W5, W2^W4, W1^W3, W0^W2}.
-//
-// Asm: SHA1MSG1, CPU Feature: SHA
-func (x Uint32x4) SHA1Message1(y Uint32x4) Uint32x4
-
-// SHA1Message2 does the calculation of 3 and 4 in SHA1 algorithm defined in FIPS 180-4.
-// x = result of 2.
-// y = {W15, W14, W13}
-// result = {W19, W18, W17, W16}
-//
-// Asm: SHA1MSG2, CPU Feature: SHA
-func (x Uint32x4) SHA1Message2(y Uint32x4) Uint32x4
-
-// SHA1NextE calculates the state variable e' updated after 4 rounds in SHA1 algorithm defined in FIPS 180-4.
-// x contains the state variable a (before the 4 rounds), placed in the upper element.
-// y is the elements of W array for next 4 rounds from upper to lower order.
-// result = the elements of the W array for the next 4 rounds, with the updated state variable e' added to the upper element,
-// from upper to lower order.
-// For the last round of the loop, you can specify zero for y to obtain the e' value itself, or better off specifying H4:0:0:0
-// for y to get e' added to H4. (Note that the value of e' is computed only from x, and values of y don't affect the
-// computation of the value of e'.)
-//
-// Asm: SHA1NEXTE, CPU Feature: SHA
-func (x Uint32x4) SHA1NextE(y Uint32x4) Uint32x4
-
-// SHA256Message1 does the sigma and addition of 1 in SHA256 algorithm defined in FIPS 180-4.
-// x = {W0, W1, W2, W3}
-// y = {W4, 0, 0, 0}
-// result = {W0+σ(W1), W1+σ(W2), W2+σ(W3), W3+σ(W4)}
-//
-// Asm: SHA256MSG1, CPU Feature: SHA
-func (x Uint32x4) SHA256Message1(y Uint32x4) Uint32x4
-
-// SHA256Message2 does the sigma and addition of 3 in SHA256 algorithm defined in FIPS 180-4.
-// x = result of 2
-// y = {0, 0, W14, W15}
-// result = {W16, W17, W18, W19}
-//
-// Asm: SHA256MSG2, CPU Feature: SHA
-func (x Uint32x4) SHA256Message2(y Uint32x4) Uint32x4
-
-// SHA256TwoRounds does 2 rounds of B loop to calculate updated state variables in SHA256 algorithm defined in FIPS 180-4.
-// x = {h, g, d, c}
-// y = {f, e, b, a}
-// z = {W0+K0, W1+K1}
-// result = {f', e', b', a'}
-// The K array is a 64-DWORD constant array defined in page 11 of FIPS 180-4. Each element of the K array is to be added to
-// the corresponding element of the W array to make the input data z.
-// The updated state variables c', d', g', h' are not returned by this instruction, because they are equal to the input data
-// y (the state variables a, b, e, f before the 2 rounds).
-//
-// Asm: SHA256RNDS2, CPU Feature: SHA
-func (x Uint32x4) SHA256TwoRounds(y Uint32x4, z Uint32x4) Uint32x4
 
 // SaturateToInt8 converts each element of x to int8, saturating values
 // that are outside the range of int8.
@@ -8096,42 +6817,6 @@ func (x Uint64x8) SaturateToUint16() (z Uint16x32)
 //
 // Asm: VPMOVUSQD, CPU Feature: AVX512
 func (x Uint64x8) SaturateToUint32() (z Uint32x16)
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPS, CPU Feature: AVX512
-func (x Float32x4) Scale(y Float32x4) Float32x4
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPS, CPU Feature: AVX512
-func (x Float32x8) Scale(y Float32x8) Float32x8
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPS, CPU Feature: AVX512
-func (x Float32x16) Scale(y Float32x16) Float32x16
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPD, CPU Feature: AVX512
-func (x Float64x2) Scale(y Float64x2) Float64x2
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPD, CPU Feature: AVX512
-func (x Float64x4) Scale(y Float64x4) Float64x4
-
-// Scale multiplies each element of x by 2 raised to the power of the
-// floor of the corresponding element in y.
-//
-// Asm: VSCALEFPD, CPU Feature: AVX512
-func (x Float64x8) Scale(y Float64x8) Float64x8
 
 // SetElem returns x with its i'th element set to y. If i >= 4, it panics.
 //
@@ -8715,123 +7400,6 @@ func (x Uint64x4) ShiftAllLeft(shift uint64) (z Uint64x4)
 // Asm: VPSLLQ, CPU Feature: AVX512
 func (x Uint64x8) ShiftAllLeft(shift uint64) (z Uint64x8)
 
-// ShiftAllLeftConcatMod16 shifts x[i] left by shift%16, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 16
-// bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]<<s | y[i]>>(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) ShiftAllLeftConcatMod16(y Uint16x8, shift uint64) (z Uint16x8)
-
-// ShiftAllLeftConcatMod16 shifts x[i] left by shift%16, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 16
-// bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]<<s | y[i]>>(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) ShiftAllLeftConcatMod16(y Uint16x16, shift uint64) (z Uint16x16)
-
-// ShiftAllLeftConcatMod16 shifts x[i] left by shift%16, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 16
-// bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]<<s | y[i]>>(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) ShiftAllLeftConcatMod16(y Uint16x32, shift uint64) (z Uint16x32)
-
-// ShiftAllLeftConcatMod32 shifts x[i] left by shift%32, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 32
-// bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]<<s | y[i]>>(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDD, CPU Feature: AVX512VBMI2
-func (x Uint32x4) ShiftAllLeftConcatMod32(y Uint32x4, shift uint64) (z Uint32x4)
-
-// ShiftAllLeftConcatMod32 shifts x[i] left by shift%32, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 32
-// bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]<<s | y[i]>>(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDD, CPU Feature: AVX512VBMI2
-func (x Uint32x8) ShiftAllLeftConcatMod32(y Uint32x8, shift uint64) (z Uint32x8)
-
-// ShiftAllLeftConcatMod32 shifts x[i] left by shift%32, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 32
-// bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]<<s | y[i]>>(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDD, CPU Feature: AVX512VBMI2
-func (x Uint32x16) ShiftAllLeftConcatMod32(y Uint32x16, shift uint64) (z Uint32x16)
-
-// ShiftAllLeftConcatMod64 shifts x[i] left by shift%64, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 64
-// bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]<<s | y[i]>>(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x2) ShiftAllLeftConcatMod64(y Uint64x2, shift uint64) (z Uint64x2)
-
-// ShiftAllLeftConcatMod64 shifts x[i] left by shift%64, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 64
-// bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]<<s | y[i]>>(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x4) ShiftAllLeftConcatMod64(y Uint64x4, shift uint64) (z Uint64x4)
-
-// ShiftAllLeftConcatMod64 shifts x[i] left by shift%64, filling the emptied
-// low bits with the high bits of y[i]. That is, it shifts the double-width
-// concatenation of x[i] (high) and y[i] (low) left and keeps the high 64
-// bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]<<s | y[i]>>(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHLDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x8) ShiftAllLeftConcatMod64(y Uint64x8, shift uint64) (z Uint64x8)
-
 // ShiftAllRight arithmetically shifts each element of x right by shift bits.
 // As in Go, if shift is greater than or equal to the element width, the
 // result is 0 or -1, depending on the sign of the element.
@@ -8975,123 +7543,6 @@ func (x Uint64x4) ShiftAllRight(shift uint64) (z Uint64x4)
 //
 // Asm: VPSRLQ, CPU Feature: AVX512
 func (x Uint64x8) ShiftAllRight(shift uint64) (z Uint64x8)
-
-// ShiftAllRightConcatMod16 shifts x[i] right by shift%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]>>s | y[i]<<(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) ShiftAllRightConcatMod16(y Uint16x8, shift uint64) (z Uint16x8)
-
-// ShiftAllRightConcatMod16 shifts x[i] right by shift%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]>>s | y[i]<<(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) ShiftAllRightConcatMod16(y Uint16x16, shift uint64) (z Uint16x16)
-
-// ShiftAllRightConcatMod16 shifts x[i] right by shift%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s = shift % 16
-//	z[i] = x[i]>>s | y[i]<<(16-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) ShiftAllRightConcatMod16(y Uint16x32, shift uint64) (z Uint16x32)
-
-// ShiftAllRightConcatMod32 shifts x[i] right by shift%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]>>s | y[i]<<(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDD, CPU Feature: AVX512VBMI2
-func (x Uint32x4) ShiftAllRightConcatMod32(y Uint32x4, shift uint64) (z Uint32x4)
-
-// ShiftAllRightConcatMod32 shifts x[i] right by shift%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]>>s | y[i]<<(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDD, CPU Feature: AVX512VBMI2
-func (x Uint32x8) ShiftAllRightConcatMod32(y Uint32x8, shift uint64) (z Uint32x8)
-
-// ShiftAllRightConcatMod32 shifts x[i] right by shift%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s = shift % 32
-//	z[i] = x[i]>>s | y[i]<<(32-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDD, CPU Feature: AVX512VBMI2
-func (x Uint32x16) ShiftAllRightConcatMod32(y Uint32x16, shift uint64) (z Uint32x16)
-
-// ShiftAllRightConcatMod64 shifts x[i] right by shift%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]>>s | y[i]<<(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x2) ShiftAllRightConcatMod64(y Uint64x2, shift uint64) (z Uint64x2)
-
-// ShiftAllRightConcatMod64 shifts x[i] right by shift%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]>>s | y[i]<<(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x4) ShiftAllRightConcatMod64(y Uint64x4, shift uint64) (z Uint64x4)
-
-// ShiftAllRightConcatMod64 shifts x[i] right by shift%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s = shift % 64
-//	z[i] = x[i]>>s | y[i]<<(64-s)
-//
-// Performance: A non-constant value of shift may result in significantly worse performance for this operation.
-//
-// Asm: VPSHRDQ, CPU Feature: AVX512VBMI2
-func (x Uint64x8) ShiftAllRightConcatMod64(y Uint64x8, shift uint64) (z Uint64x8)
 
 // ShiftLeft shifts x[i] left by shift[i] bits.
 // As in Go, if shift[i] is greater than or equal to the element width, the
@@ -9255,105 +7706,6 @@ func (x Uint64x4) ShiftLeft(shift Uint64x4) (z Uint64x4)
 // Asm: VPSLLVQ, CPU Feature: AVX512
 func (x Uint64x8) ShiftLeft(shift Uint64x8) (z Uint64x8)
 
-// ShiftLeftConcatMod16 shifts x[i] left by shift[i]%16, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]<<s[i] | y[i]>>(16-s[i])
-//
-// Asm: VPSHLDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) ShiftLeftConcatMod16(y Uint16x8, shift Uint16x8) (z Uint16x8)
-
-// ShiftLeftConcatMod16 shifts x[i] left by shift[i]%16, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]<<s[i] | y[i]>>(16-s[i])
-//
-// Asm: VPSHLDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) ShiftLeftConcatMod16(y Uint16x16, shift Uint16x16) (z Uint16x16)
-
-// ShiftLeftConcatMod16 shifts x[i] left by shift[i]%16, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]<<s[i] | y[i]>>(16-s[i])
-//
-// Asm: VPSHLDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) ShiftLeftConcatMod16(y Uint16x32, shift Uint16x32) (z Uint16x32)
-
-// ShiftLeftConcatMod32 shifts x[i] left by shift[i]%32, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]<<s[i] | y[i]>>(32-s[i])
-//
-// Asm: VPSHLDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x4) ShiftLeftConcatMod32(y Uint32x4, shift Uint32x4) (z Uint32x4)
-
-// ShiftLeftConcatMod32 shifts x[i] left by shift[i]%32, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]<<s[i] | y[i]>>(32-s[i])
-//
-// Asm: VPSHLDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x8) ShiftLeftConcatMod32(y Uint32x8, shift Uint32x8) (z Uint32x8)
-
-// ShiftLeftConcatMod32 shifts x[i] left by shift[i]%32, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]<<s[i] | y[i]>>(32-s[i])
-//
-// Asm: VPSHLDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x16) ShiftLeftConcatMod32(y Uint32x16, shift Uint32x16) (z Uint32x16)
-
-// ShiftLeftConcatMod64 shifts x[i] left by shift[i]%64, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]<<s[i] | y[i]>>(64-s[i])
-//
-// Asm: VPSHLDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x2) ShiftLeftConcatMod64(y Uint64x2, shift Uint64x2) (z Uint64x2)
-
-// ShiftLeftConcatMod64 shifts x[i] left by shift[i]%64, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]<<s[i] | y[i]>>(64-s[i])
-//
-// Asm: VPSHLDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x4) ShiftLeftConcatMod64(y Uint64x4, shift Uint64x4) (z Uint64x4)
-
-// ShiftLeftConcatMod64 shifts x[i] left by shift[i]%64, filling the
-// emptied low bits with the high bits of y[i]. That is, it shifts the
-// double-width concatenation of x[i] (high) and y[i] (low) left and keeps the
-// high 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]<<s[i] | y[i]>>(64-s[i])
-//
-// Asm: VPSHLDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x8) ShiftLeftConcatMod64(y Uint64x8, shift Uint64x8) (z Uint64x8)
-
 // ShiftRight arithmetically shifts x[i] right by shift[i] bits.
 // As in Go, if shift[i] is greater than or equal to the element width, the
 // result is 0 or -1, depending on the sign of the element.
@@ -9515,105 +7867,6 @@ func (x Uint64x4) ShiftRight(shift Uint64x4) (z Uint64x4)
 //
 // Asm: VPSRLVQ, CPU Feature: AVX512
 func (x Uint64x8) ShiftRight(shift Uint64x8) (z Uint64x8)
-
-// ShiftRightConcatMod16 shifts x[i] right by shift[i]%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]>>s[i] | y[i]<<(16-s[i])
-//
-// Asm: VPSHRDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x8) ShiftRightConcatMod16(y Uint16x8, shift Uint16x8) (z Uint16x8)
-
-// ShiftRightConcatMod16 shifts x[i] right by shift[i]%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]>>s[i] | y[i]<<(16-s[i])
-//
-// Asm: VPSHRDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x16) ShiftRightConcatMod16(y Uint16x16, shift Uint16x16) (z Uint16x16)
-
-// ShiftRightConcatMod16 shifts x[i] right by shift[i]%16, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 16 bits.
-//
-//	s[i] = shift[i] % 16
-//	z[i] = x[i]>>s[i] | y[i]<<(16-s[i])
-//
-// Asm: VPSHRDVW, CPU Feature: AVX512VBMI2
-func (x Uint16x32) ShiftRightConcatMod16(y Uint16x32, shift Uint16x32) (z Uint16x32)
-
-// ShiftRightConcatMod32 shifts x[i] right by shift[i]%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]>>s[i] | y[i]<<(32-s[i])
-//
-// Asm: VPSHRDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x4) ShiftRightConcatMod32(y Uint32x4, shift Uint32x4) (z Uint32x4)
-
-// ShiftRightConcatMod32 shifts x[i] right by shift[i]%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]>>s[i] | y[i]<<(32-s[i])
-//
-// Asm: VPSHRDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x8) ShiftRightConcatMod32(y Uint32x8, shift Uint32x8) (z Uint32x8)
-
-// ShiftRightConcatMod32 shifts x[i] right by shift[i]%32, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 32 bits.
-//
-//	s[i] = shift[i] % 32
-//	z[i] = x[i]>>s[i] | y[i]<<(32-s[i])
-//
-// Asm: VPSHRDVD, CPU Feature: AVX512VBMI2
-func (x Uint32x16) ShiftRightConcatMod32(y Uint32x16, shift Uint32x16) (z Uint32x16)
-
-// ShiftRightConcatMod64 shifts x[i] right by shift[i]%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]>>s[i] | y[i]<<(64-s[i])
-//
-// Asm: VPSHRDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x2) ShiftRightConcatMod64(y Uint64x2, shift Uint64x2) (z Uint64x2)
-
-// ShiftRightConcatMod64 shifts x[i] right by shift[i]%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]>>s[i] | y[i]<<(64-s[i])
-//
-// Asm: VPSHRDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x4) ShiftRightConcatMod64(y Uint64x4, shift Uint64x4) (z Uint64x4)
-
-// ShiftRightConcatMod64 shifts x[i] right by shift[i]%64, filling the
-// emptied high bits with the low bits of y[i]. That is, it shifts the
-// double-width concatenation of y[i] (high) and x[i] (low) right and keeps the
-// low 64 bits.
-//
-//	s[i] = shift[i] % 64
-//	z[i] = x[i]>>s[i] | y[i]<<(64-s[i])
-//
-// Asm: VPSHRDVQ, CPU Feature: AVX512VBMI2
-func (x Uint64x8) ShiftRightConcatMod64(y Uint64x8, shift Uint64x8) (z Uint64x8)
 
 // Sqrt returns the elementwise square root of x.
 //
@@ -10080,90 +8333,6 @@ func (x Float64x4) Trunc() (z Float64x4)
 // Asm: VRNDSCALEPD, CPU Feature: AVX512
 func (x Float64x8) Trunc() (z Float64x8)
 
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x4) TruncScaled(prec uint8) Float32x4
-
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x8) TruncScaled(prec uint8) Float32x8
-
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPS, CPU Feature: AVX512
-func (x Float32x16) TruncScaled(prec uint8) Float32x16
-
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x2) TruncScaled(prec uint8) Float64x2
-
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x4) TruncScaled(prec uint8) Float64x4
-
-// TruncScaled truncates elements with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VRNDSCALEPD, CPU Feature: AVX512
-func (x Float64x8) TruncScaled(prec uint8) Float64x8
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x4) TruncScaledResidue(prec uint8) Float32x4
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x8) TruncScaledResidue(prec uint8) Float32x8
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPS, CPU Feature: AVX512
-func (x Float32x16) TruncScaledResidue(prec uint8) Float32x16
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x2) TruncScaledResidue(prec uint8) Float64x2
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x4) TruncScaledResidue(prec uint8) Float64x4
-
-// TruncScaledResidue computes the difference after truncating with specified precision.
-//
-// Performance: A non-constant value of prec may result in significantly worse performance for this operation.
-//
-// Asm: VREDUCEPD, CPU Feature: AVX512
-func (x Float64x8) TruncScaledResidue(prec uint8) Float64x8
-
 // TruncToInt8 converts each element of x to int8 by discarding its high
 // bits.
 //
@@ -10596,1161 +8765,6 @@ func (x Uint64x8) Xor(y Uint64x8) (z Uint64x8)
 // Asm: VPXOR, CPU Feature: AVX
 func (x Uint64x2) Xor(y Uint64x2) (z Uint64x2)
 
-// AsFloat64x2 reinterprets the bits of a Float32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Float32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Float32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Float32x4 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Float32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Float32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Float32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Float32x4 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Float32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint64x2() Uint64x2
-
-// AsFloat64x4 reinterprets the bits of a Float32x8 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Float32x8 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Float32x8 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Float32x8 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Float32x8 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Float32x8 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Float32x8 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Float32x8 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Float32x8 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x8) AsUint64x4() Uint64x4
-
-// AsFloat64x8 reinterprets the bits of a Float32x16 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Float32x16 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Float32x16 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Float32x16 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Float32x16 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Float32x16 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Float32x16 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Float32x16 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Float32x16 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x16) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Float64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsFloat32x4() Float32x4
-
-// AsInt8x16 reinterprets the bits of a Float64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Float64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Float64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Float64x2 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Float64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Float64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Float64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Float64x2 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint64x2() Uint64x2
-
-// AsFloat32x8 reinterprets the bits of a Float64x4 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsFloat32x8() Float32x8
-
-// AsInt8x32 reinterprets the bits of a Float64x4 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Float64x4 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Float64x4 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Float64x4 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Float64x4 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Float64x4 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Float64x4 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Float64x4 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x4) AsUint64x4() Uint64x4
-
-// AsFloat32x16 reinterprets the bits of a Float64x8 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsFloat32x16() Float32x16
-
-// AsInt8x64 reinterprets the bits of a Float64x8 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Float64x8 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Float64x8 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Float64x8 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Float64x8 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Float64x8 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Float64x8 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Float64x8 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x8) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Int8x16 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int8x16 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsFloat64x2() Float64x2
-
-// AsInt16x8 reinterprets the bits of a Int8x16 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Int8x16 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Int8x16 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int8x16 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int8x16 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int8x16 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int8x16 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint64x2() Uint64x2
-
-// AsFloat32x8 reinterprets the bits of a Int8x32 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Int8x32 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsFloat64x4() Float64x4
-
-// AsInt16x16 reinterprets the bits of a Int8x32 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Int8x32 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Int8x32 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Int8x32 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Int8x32 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Int8x32 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Int8x32 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x32) AsUint64x4() Uint64x4
-
-// AsFloat32x16 reinterprets the bits of a Int8x64 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Int8x64 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsFloat64x8() Float64x8
-
-// AsInt16x32 reinterprets the bits of a Int8x64 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Int8x64 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Int8x64 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Int8x64 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Int8x64 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Int8x64 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Int8x64 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x64) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Int16x8 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int16x8 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int16x8 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt8x16() Int8x16
-
-// AsInt32x4 reinterprets the bits of a Int16x8 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Int16x8 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int16x8 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int16x8 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int16x8 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int16x8 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint64x2() Uint64x2
-
-// AsFloat32x8 reinterprets the bits of a Int16x16 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Int16x16 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Int16x16 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsInt8x32() Int8x32
-
-// AsInt32x8 reinterprets the bits of a Int16x16 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Int16x16 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Int16x16 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Int16x16 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Int16x16 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Int16x16 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x16) AsUint64x4() Uint64x4
-
-// AsFloat32x16 reinterprets the bits of a Int16x32 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Int16x32 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Int16x32 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsInt8x64() Int8x64
-
-// AsInt32x16 reinterprets the bits of a Int16x32 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Int16x32 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Int16x32 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Int16x32 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Int16x32 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Int16x32 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x32) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Int32x4 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Int32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt16x8() Int16x8
-
-// AsInt64x2 reinterprets the bits of a Int32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int32x4 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint64x2() Uint64x2
-
-// AsFloat32x8 reinterprets the bits of a Int32x8 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Int32x8 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Int32x8 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Int32x8 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsInt16x16() Int16x16
-
-// AsInt64x4 reinterprets the bits of a Int32x8 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Int32x8 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Int32x8 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Int32x8 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Int32x8 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x8) AsUint64x4() Uint64x4
-
-// AsFloat32x16 reinterprets the bits of a Int32x16 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Int32x16 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Int32x16 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Int32x16 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsInt16x32() Int16x32
-
-// AsInt64x8 reinterprets the bits of a Int32x16 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Int32x16 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Int32x16 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Int32x16 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Int32x16 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x16) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Int64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int64x2 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Int64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Int64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt32x4() Int32x4
-
-// AsUint8x16 reinterprets the bits of a Int64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int64x2 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint64x2() Uint64x2
-
-// AsFloat32x8 reinterprets the bits of a Int64x4 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Int64x4 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Int64x4 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Int64x4 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Int64x4 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsInt32x8() Int32x8
-
-// AsUint8x32 reinterprets the bits of a Int64x4 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsUint8x32() Uint8x32
-
-// AsUint16x16 reinterprets the bits of a Int64x4 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsUint16x16() Uint16x16
-
-// AsUint32x8 reinterprets the bits of a Int64x4 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsUint32x8() Uint32x8
-
-// AsUint64x4 reinterprets the bits of a Int64x4 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x4) AsUint64x4() Uint64x4
-
-// AsFloat32x16 reinterprets the bits of a Int64x8 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Int64x8 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Int64x8 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Int64x8 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Int64x8 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsInt32x16() Int32x16
-
-// AsUint8x64 reinterprets the bits of a Int64x8 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsUint8x64() Uint8x64
-
-// AsUint16x32 reinterprets the bits of a Int64x8 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsUint16x32() Uint16x32
-
-// AsUint32x16 reinterprets the bits of a Int64x8 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsUint32x16() Uint32x16
-
-// AsUint64x8 reinterprets the bits of a Int64x8 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x8) AsUint64x8() Uint64x8
-
-// AsFloat32x4 reinterprets the bits of a Uint8x16 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint8x16 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint8x16 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt8x16() Int8x16
-
 // BitsToInt8 reinterprets the bits of each element of x as type int8.
 func (x Uint8x16) BitsToInt8() (z Int8x16)
 
@@ -11771,34 +8785,6 @@ func (x Int8x16) ConvertToUint8() (z Uint8x16)
 // ToBits reinterprets the bits of each element of x as type uint8.
 func (x Int8x16) ToBits() (z Uint8x16)
 
-// AsInt16x8 reinterprets the bits of a Uint8x16 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint8x16 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint8x16 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt64x2() Int64x2
-
-// AsUint16x8 reinterprets the bits of a Uint8x16 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint16x8() Uint16x8
-
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -11809,13 +8795,6 @@ func (x Uint8x16) AsUint16x8() Uint16x8
 //	| 15     ....     0 | ⋯ | 15     ....     0 |
 //	         z[7]         ⋯          z[0]
 func (x Uint8x16) ReshapeToUint16s() (z Uint16x8)
-
-// AsUint32x4 reinterprets the bits of a Uint8x16 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint32x4() Uint32x4
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
 //
@@ -11828,13 +8807,6 @@ func (x Uint8x16) AsUint32x4() Uint32x4
 //	                   z[3]                   ⋯                    z[0]
 func (x Uint8x16) ReshapeToUint32s() (z Uint32x4)
 
-// AsUint64x2 reinterprets the bits of a Uint8x16 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -11845,27 +8817,6 @@ func (x Uint8x16) AsUint64x2() Uint64x2
 //	| 63                 ....                 0 | 63                 ....                 0 |
 //	                     z[1]                                        z[0]
 func (x Uint8x16) ReshapeToUint64s() (z Uint64x2)
-
-// AsFloat32x8 reinterprets the bits of a Uint8x32 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Uint8x32 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Uint8x32 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsInt8x32() Int8x32
 
 // BitsToInt8 reinterprets the bits of each element of x as type int8.
 func (x Uint8x32) BitsToInt8() (z Int8x32)
@@ -11887,34 +8838,6 @@ func (x Int8x32) ConvertToUint8() (z Uint8x32)
 // ToBits reinterprets the bits of each element of x as type uint8.
 func (x Int8x32) ToBits() (z Uint8x32)
 
-// AsInt16x16 reinterprets the bits of a Uint8x32 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Uint8x32 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Uint8x32 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsInt64x4() Int64x4
-
-// AsUint16x16 reinterprets the bits of a Uint8x32 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsUint16x16() Uint16x16
-
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -11925,13 +8848,6 @@ func (x Uint8x32) AsUint16x16() Uint16x16
 //	| 15     ....     0 | ⋯ | 15     ....     0 |
 //	        z[15]         ⋯          z[0]
 func (x Uint8x32) ReshapeToUint16s() (z Uint16x16)
-
-// AsUint32x8 reinterprets the bits of a Uint8x32 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsUint32x8() Uint32x8
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
 //
@@ -11944,13 +8860,6 @@ func (x Uint8x32) AsUint32x8() Uint32x8
 //	                   z[7]                   ⋯                    z[0]
 func (x Uint8x32) ReshapeToUint32s() (z Uint32x8)
 
-// AsUint64x4 reinterprets the bits of a Uint8x32 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x32) AsUint64x4() Uint64x4
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -11961,27 +8870,6 @@ func (x Uint8x32) AsUint64x4() Uint64x4
 //	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
 //	                     z[3]                     ⋯                      z[0]
 func (x Uint8x32) ReshapeToUint64s() (z Uint64x4)
-
-// AsFloat32x16 reinterprets the bits of a Uint8x64 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Uint8x64 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Uint8x64 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsInt8x64() Int8x64
 
 // BitsToInt8 reinterprets the bits of each element of x as type int8.
 func (x Uint8x64) BitsToInt8() (z Int8x64)
@@ -12003,34 +8891,6 @@ func (x Int8x64) ConvertToUint8() (z Uint8x64)
 // ToBits reinterprets the bits of each element of x as type uint8.
 func (x Int8x64) ToBits() (z Uint8x64)
 
-// AsInt16x32 reinterprets the bits of a Uint8x64 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Uint8x64 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Uint8x64 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsInt64x8() Int64x8
-
-// AsUint16x32 reinterprets the bits of a Uint8x64 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsUint16x32() Uint16x32
-
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12041,13 +8901,6 @@ func (x Uint8x64) AsUint16x32() Uint16x32
 //	| 15     ....     0 | ⋯ | 15     ....     0 |
 //	        z[31]         ⋯          z[0]
 func (x Uint8x64) ReshapeToUint16s() (z Uint16x32)
-
-// AsUint32x16 reinterprets the bits of a Uint8x64 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsUint32x16() Uint32x16
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
 //
@@ -12060,13 +8913,6 @@ func (x Uint8x64) AsUint32x16() Uint32x16
 //	                  z[15]                   ⋯                    z[0]
 func (x Uint8x64) ReshapeToUint32s() (z Uint32x16)
 
-// AsUint64x8 reinterprets the bits of a Uint8x64 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x64) AsUint64x8() Uint64x8
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12077,34 +8923,6 @@ func (x Uint8x64) AsUint64x8() Uint64x8
 //	| 63                 ....                 0 | ⋯ | 63                 ....                 0 |
 //	                     z[7]                     ⋯                      z[0]
 func (x Uint8x64) ReshapeToUint64s() (z Uint64x8)
-
-// AsFloat32x4 reinterprets the bits of a Uint16x8 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint16x8 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint16x8 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint16x8 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt16x8() Int16x8
 
 // BitsToInt16 reinterprets the bits of each element of x as type int16.
 func (x Uint16x8) BitsToInt16() (z Int16x8)
@@ -12126,27 +8944,6 @@ func (x Int16x8) ConvertToUint16() (z Uint16x8)
 // ToBits reinterprets the bits of each element of x as type uint16.
 func (x Int16x8) ToBits() (z Uint16x8)
 
-// AsInt32x4 reinterprets the bits of a Uint16x8 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint16x8 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Uint16x8 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12157,13 +8954,6 @@ func (x Uint16x8) AsUint8x16() Uint8x16
 //	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
 //	   z[15]     z[14]    ⋯     z[1]      z[0]
 func (x Uint16x8) ReshapeToUint8s() (z Uint8x16)
-
-// AsUint32x4 reinterprets the bits of a Uint16x8 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint32x4() Uint32x4
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
 //
@@ -12176,13 +8966,6 @@ func (x Uint16x8) AsUint32x4() Uint32x4
 //	         z[3]         ⋯          z[0]
 func (x Uint16x8) ReshapeToUint32s() (z Uint32x4)
 
-// AsUint64x2 reinterprets the bits of a Uint16x8 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12193,34 +8976,6 @@ func (x Uint16x8) AsUint64x2() Uint64x2
 //	| 63               ....               0 | 63               ....               0 |
 //	                   z[1]                                    z[0]
 func (x Uint16x8) ReshapeToUint64s() (z Uint64x2)
-
-// AsFloat32x8 reinterprets the bits of a Uint16x16 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Uint16x16 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Uint16x16 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Uint16x16 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsInt16x16() Int16x16
 
 // BitsToInt16 reinterprets the bits of each element of x as type int16.
 func (x Uint16x16) BitsToInt16() (z Int16x16)
@@ -12242,27 +8997,6 @@ func (x Int16x16) ConvertToUint16() (z Uint16x16)
 // ToBits reinterprets the bits of each element of x as type uint16.
 func (x Int16x16) ToBits() (z Uint16x16)
 
-// AsInt32x8 reinterprets the bits of a Uint16x16 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Uint16x16 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Uint16x16 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsUint8x32() Uint8x32
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12273,13 +9007,6 @@ func (x Uint16x16) AsUint8x32() Uint8x32
 //	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
 //	   z[31]     z[30]    ⋯     z[1]      z[0]
 func (x Uint16x16) ReshapeToUint8s() (z Uint8x32)
-
-// AsUint32x8 reinterprets the bits of a Uint16x16 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsUint32x8() Uint32x8
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
 //
@@ -12292,13 +9019,6 @@ func (x Uint16x16) AsUint32x8() Uint32x8
 //	         z[7]         ⋯          z[0]
 func (x Uint16x16) ReshapeToUint32s() (z Uint32x8)
 
-// AsUint64x4 reinterprets the bits of a Uint16x16 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x16) AsUint64x4() Uint64x4
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12309,34 +9029,6 @@ func (x Uint16x16) AsUint64x4() Uint64x4
 //	| 63               ....               0 | ⋯ | 63               ....               0 |
 //	                   z[3]                   ⋯                    z[0]
 func (x Uint16x16) ReshapeToUint64s() (z Uint64x4)
-
-// AsFloat32x16 reinterprets the bits of a Uint16x32 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Uint16x32 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Uint16x32 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Uint16x32 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsInt16x32() Int16x32
 
 // BitsToInt16 reinterprets the bits of each element of x as type int16.
 func (x Uint16x32) BitsToInt16() (z Int16x32)
@@ -12358,27 +9050,6 @@ func (x Int16x32) ConvertToUint16() (z Uint16x32)
 // ToBits reinterprets the bits of each element of x as type uint16.
 func (x Int16x32) ToBits() (z Uint16x32)
 
-// AsInt32x16 reinterprets the bits of a Uint16x32 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Uint16x32 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Uint16x32 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsUint8x64() Uint8x64
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12389,13 +9060,6 @@ func (x Uint16x32) AsUint8x64() Uint8x64
 //	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
 //	   z[63]     z[62]    ⋯     z[1]      z[0]
 func (x Uint16x32) ReshapeToUint8s() (z Uint8x64)
-
-// AsUint32x16 reinterprets the bits of a Uint16x32 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsUint32x16() Uint32x16
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
 //
@@ -12408,13 +9072,6 @@ func (x Uint16x32) AsUint32x16() Uint32x16
 //	        z[15]         ⋯          z[0]
 func (x Uint16x32) ReshapeToUint32s() (z Uint32x16)
 
-// AsUint64x8 reinterprets the bits of a Uint16x32 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x32) AsUint64x8() Uint64x8
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12426,46 +9083,11 @@ func (x Uint16x32) AsUint64x8() Uint64x8
 //	                   z[7]                   ⋯                    z[0]
 func (x Uint16x32) ReshapeToUint64s() (z Uint64x8)
 
-// AsFloat32x4 reinterprets the bits of a Uint32x4 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsFloat32x4() Float32x4
-
 // BitsToFloat32 reinterprets the bits of each element of x as type float32.
 func (x Uint32x4) BitsToFloat32() (z Float32x4)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float32x4) ToBits() (z Uint32x4)
-
-// AsFloat64x2 reinterprets the bits of a Uint32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint32x4 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt32x4() Int32x4
 
 // BitsToInt32 reinterprets the bits of each element of x as type int32.
 func (x Uint32x4) BitsToInt32() (z Int32x4)
@@ -12487,20 +9109,6 @@ func (x Int32x4) ConvertToUint32() (z Uint32x4)
 // ToBits reinterprets the bits of each element of x as type uint32.
 func (x Int32x4) ToBits() (z Uint32x4)
 
-// AsInt64x2 reinterprets the bits of a Uint32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Uint32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12511,13 +9119,6 @@ func (x Uint32x4) AsUint8x16() Uint8x16
 //	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
 //	   z[15]     z[14]     z[13]     z[12]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x4) ReshapeToUint8s() (z Uint8x16)
-
-// AsUint16x8 reinterprets the bits of a Uint32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint16x8() Uint16x8
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
 //
@@ -12530,13 +9131,6 @@ func (x Uint32x4) AsUint16x8() Uint16x8
 //	    z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint32x4) ReshapeToUint16s() (z Uint16x8)
 
-// AsUint64x2 reinterprets the bits of a Uint32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x2 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12548,46 +9142,11 @@ func (x Uint32x4) AsUint64x2() Uint64x2
 //	         z[1]                z[0]
 func (x Uint32x4) ReshapeToUint64s() (z Uint64x2)
 
-// AsFloat32x8 reinterprets the bits of a Uint32x8 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsFloat32x8() Float32x8
-
 // BitsToFloat32 reinterprets the bits of each element of x as type float32.
 func (x Uint32x8) BitsToFloat32() (z Float32x8)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float32x8) ToBits() (z Uint32x8)
-
-// AsFloat64x4 reinterprets the bits of a Uint32x8 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsFloat64x4() Float64x4
-
-// AsInt8x32 reinterprets the bits of a Uint32x8 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Uint32x8 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Uint32x8 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsInt32x8() Int32x8
 
 // BitsToInt32 reinterprets the bits of each element of x as type int32.
 func (x Uint32x8) BitsToInt32() (z Int32x8)
@@ -12609,20 +9168,6 @@ func (x Int32x8) ConvertToUint32() (z Uint32x8)
 // ToBits reinterprets the bits of each element of x as type uint32.
 func (x Int32x8) ToBits() (z Uint32x8)
 
-// AsInt64x4 reinterprets the bits of a Uint32x8 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsInt64x4() Int64x4
-
-// AsUint8x32 reinterprets the bits of a Uint32x8 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsUint8x32() Uint8x32
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12633,13 +9178,6 @@ func (x Uint32x8) AsUint8x32() Uint8x32
 //	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
 //	   z[31]     z[30]     z[29]     z[28]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x8) ReshapeToUint8s() (z Uint8x32)
-
-// AsUint16x16 reinterprets the bits of a Uint32x8 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsUint16x16() Uint16x16
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
 //
@@ -12652,13 +9190,6 @@ func (x Uint32x8) AsUint16x16() Uint16x16
 //	   z[15]     z[14]    ⋯     z[1]      z[0]
 func (x Uint32x8) ReshapeToUint16s() (z Uint16x16)
 
-// AsUint64x4 reinterprets the bits of a Uint32x8 vector as a Uint64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x8) AsUint64x4() Uint64x4
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x4 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12670,46 +9201,11 @@ func (x Uint32x8) AsUint64x4() Uint64x4
 //	         z[3]         ⋯          z[0]
 func (x Uint32x8) ReshapeToUint64s() (z Uint64x4)
 
-// AsFloat32x16 reinterprets the bits of a Uint32x16 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsFloat32x16() Float32x16
-
 // BitsToFloat32 reinterprets the bits of each element of x as type float32.
 func (x Uint32x16) BitsToFloat32() (z Float32x16)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float32x16) ToBits() (z Uint32x16)
-
-// AsFloat64x8 reinterprets the bits of a Uint32x16 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsFloat64x8() Float64x8
-
-// AsInt8x64 reinterprets the bits of a Uint32x16 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Uint32x16 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Uint32x16 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsInt32x16() Int32x16
 
 // BitsToInt32 reinterprets the bits of each element of x as type int32.
 func (x Uint32x16) BitsToInt32() (z Int32x16)
@@ -12731,20 +9227,6 @@ func (x Int32x16) ConvertToUint32() (z Uint32x16)
 // ToBits reinterprets the bits of each element of x as type uint32.
 func (x Int32x16) ToBits() (z Uint32x16)
 
-// AsInt64x8 reinterprets the bits of a Uint32x16 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsInt64x8() Int64x8
-
-// AsUint8x64 reinterprets the bits of a Uint32x16 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsUint8x64() Uint8x64
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12755,13 +9237,6 @@ func (x Uint32x16) AsUint8x64() Uint8x64
 //	| 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 |
 //	   z[63]     z[62]     z[61]     z[60]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint32x16) ReshapeToUint8s() (z Uint8x64)
-
-// AsUint16x32 reinterprets the bits of a Uint32x16 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsUint16x32() Uint16x32
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
 //
@@ -12774,13 +9249,6 @@ func (x Uint32x16) AsUint16x32() Uint16x32
 //	   z[31]     z[30]    ⋯     z[1]      z[0]
 func (x Uint32x16) ReshapeToUint16s() (z Uint16x32)
 
-// AsUint64x8 reinterprets the bits of a Uint32x16 vector as a Uint64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x16) AsUint64x8() Uint64x8
-
 // ReshapeToUint64s reinterprets the bits of x as a Uint64x8 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12792,53 +9260,11 @@ func (x Uint32x16) AsUint64x8() Uint64x8
 //	         z[7]         ⋯          z[0]
 func (x Uint32x16) ReshapeToUint64s() (z Uint64x8)
 
-// AsFloat32x4 reinterprets the bits of a Uint64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint64x2 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsFloat64x2() Float64x2
-
 // BitsToFloat64 reinterprets the bits of each element of x as type float64.
 func (x Uint64x2) BitsToFloat64() (z Float64x2)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float64x2) ToBits() (z Uint64x2)
-
-// AsInt8x16 reinterprets the bits of a Uint64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint64x2 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt64x2() Int64x2
 
 // BitsToInt64 reinterprets the bits of each element of x as type int64.
 func (x Uint64x2) BitsToInt64() (z Int64x2)
@@ -12860,13 +9286,6 @@ func (x Int64x2) ConvertToUint64() (z Uint64x2)
 // ToBits reinterprets the bits of each element of x as type uint64.
 func (x Int64x2) ToBits() (z Uint64x2)
 
-// AsUint8x16 reinterprets the bits of a Uint64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x16 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12877,13 +9296,6 @@ func (x Uint64x2) AsUint8x16() Uint8x16
 //	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
 //	   z[15]     z[14]    ⋯     z[9]      z[8]      z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x2) ReshapeToUint8s() (z Uint8x16)
-
-// AsUint16x8 reinterprets the bits of a Uint64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint16x8() Uint16x8
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x8 vector.
 //
@@ -12896,13 +9308,6 @@ func (x Uint64x2) AsUint16x8() Uint16x8
 //	    z[7]      z[6]      z[5]      z[4]      z[3]      z[2]      z[1]      z[0]
 func (x Uint64x2) ReshapeToUint16s() (z Uint16x8)
 
-// AsUint32x4 reinterprets the bits of a Uint64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint32x4() Uint32x4
-
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x4 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12914,53 +9319,11 @@ func (x Uint64x2) AsUint32x4() Uint32x4
 //	    z[3]      z[2]      z[1]      z[0]
 func (x Uint64x2) ReshapeToUint32s() (z Uint32x4)
 
-// AsFloat32x8 reinterprets the bits of a Uint64x4 vector as a Float32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsFloat32x8() Float32x8
-
-// AsFloat64x4 reinterprets the bits of a Uint64x4 vector as a Float64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsFloat64x4() Float64x4
-
 // BitsToFloat64 reinterprets the bits of each element of x as type float64.
 func (x Uint64x4) BitsToFloat64() (z Float64x4)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float64x4) ToBits() (z Uint64x4)
-
-// AsInt8x32 reinterprets the bits of a Uint64x4 vector as a Int8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsInt8x32() Int8x32
-
-// AsInt16x16 reinterprets the bits of a Uint64x4 vector as a Int16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsInt16x16() Int16x16
-
-// AsInt32x8 reinterprets the bits of a Uint64x4 vector as a Int32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsInt32x8() Int32x8
-
-// AsInt64x4 reinterprets the bits of a Uint64x4 vector as a Int64x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsInt64x4() Int64x4
 
 // BitsToInt64 reinterprets the bits of each element of x as type int64.
 func (x Uint64x4) BitsToInt64() (z Int64x4)
@@ -12982,13 +9345,6 @@ func (x Int64x4) ConvertToUint64() (z Uint64x4)
 // ToBits reinterprets the bits of each element of x as type uint64.
 func (x Int64x4) ToBits() (z Uint64x4)
 
-// AsUint8x32 reinterprets the bits of a Uint64x4 vector as a Uint8x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsUint8x32() Uint8x32
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x32 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -12999,13 +9355,6 @@ func (x Uint64x4) AsUint8x32() Uint8x32
 //	| 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 | ⋯ | 7  .. 0 | 7  .. 0 |
 //	   z[31]     z[30]    ⋯    z[25]     z[24]    ⋯     z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x4) ReshapeToUint8s() (z Uint8x32)
-
-// AsUint16x16 reinterprets the bits of a Uint64x4 vector as a Uint16x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsUint16x16() Uint16x16
 
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x16 vector.
 //
@@ -13018,13 +9367,6 @@ func (x Uint64x4) AsUint16x16() Uint16x16
 //	   z[15]     z[14]     z[13]     z[12]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64x4) ReshapeToUint16s() (z Uint16x16)
 
-// AsUint32x8 reinterprets the bits of a Uint64x4 vector as a Uint32x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x4) AsUint32x8() Uint32x8
-
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x8 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -13036,53 +9378,11 @@ func (x Uint64x4) AsUint32x8() Uint32x8
 //	    z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x4) ReshapeToUint32s() (z Uint32x8)
 
-// AsFloat32x16 reinterprets the bits of a Uint64x8 vector as a Float32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsFloat32x16() Float32x16
-
-// AsFloat64x8 reinterprets the bits of a Uint64x8 vector as a Float64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsFloat64x8() Float64x8
-
 // BitsToFloat64 reinterprets the bits of each element of x as type float64.
 func (x Uint64x8) BitsToFloat64() (z Float64x8)
 
 // ToBits returns the IEEE 754 binary representation of each element of x.
 func (x Float64x8) ToBits() (z Uint64x8)
-
-// AsInt8x64 reinterprets the bits of a Uint64x8 vector as a Int8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsInt8x64() Int8x64
-
-// AsInt16x32 reinterprets the bits of a Uint64x8 vector as a Int16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsInt16x32() Int16x32
-
-// AsInt32x16 reinterprets the bits of a Uint64x8 vector as a Int32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsInt32x16() Int32x16
-
-// AsInt64x8 reinterprets the bits of a Uint64x8 vector as a Int64x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsInt64x8() Int64x8
 
 // BitsToInt64 reinterprets the bits of each element of x as type int64.
 func (x Uint64x8) BitsToInt64() (z Int64x8)
@@ -13104,13 +9404,6 @@ func (x Int64x8) ConvertToUint64() (z Uint64x8)
 // ToBits reinterprets the bits of each element of x as type uint64.
 func (x Int64x8) ToBits() (z Uint64x8)
 
-// AsUint8x64 reinterprets the bits of a Uint64x8 vector as a Uint8x64 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsUint8x64() Uint8x64
-
 // ReshapeToUint8s reinterprets the bits of x as a Uint8x64 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -13122,13 +9415,6 @@ func (x Uint64x8) AsUint8x64() Uint8x64
 //	   z[63]     z[62]    ⋯    z[57]     z[56]    ⋯     z[7]      z[6]    ⋯     z[1]      z[0]
 func (x Uint64x8) ReshapeToUint8s() (z Uint8x64)
 
-// AsUint16x32 reinterprets the bits of a Uint64x8 vector as a Uint16x32 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsUint16x32() Uint16x32
-
 // ReshapeToUint16s reinterprets the bits of x as a Uint16x32 vector.
 //
 // Both the vector elements and the bits of each element are interpreted in
@@ -13139,13 +9425,6 @@ func (x Uint64x8) AsUint16x32() Uint16x32
 //	| 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 | ⋯ | 15 .. 0 | 15 .. 0 | 15 .. 0 | 15 .. 0 |
 //	   z[31]     z[30]     z[29]     z[28]    ⋯     z[3]      z[2]      z[1]      z[0]
 func (x Uint64x8) ReshapeToUint16s() (z Uint16x32)
-
-// AsUint32x16 reinterprets the bits of a Uint64x8 vector as a Uint32x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x8) AsUint32x16() Uint32x16
 
 // ReshapeToUint32s reinterprets the bits of x as a Uint32x16 vector.
 //

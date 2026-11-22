@@ -9157,8 +9157,15 @@ const (
 	OpXorUint8x16
 	OpXorUint8x32
 	OpXorUint8x64
+	OpbitSelectInt16x8
+	OpbitSelectInt32x4
+	OpbitSelectInt64x2
 	OpbitSelectInt8x16
 	OpbitSelectNotInt8x16
+	OpbitSelectUint16x8
+	OpbitSelectUint32x4
+	OpbitSelectUint64x2
+	OpbitSelectUint8x16
 	Opbroadcast1To16Float32x4
 	Opbroadcast1To16Int16x8
 	Opbroadcast1To16Int32x4
@@ -9224,6 +9231,16 @@ const (
 	OpcarrylessMultiplyUint64x8
 	OpcarrylessMultiplyWidenLoUint64x2
 	OpcarrylessMultiplyWidenLoUint8x16
+	OpconcatPermute128ScalarsFloat32x8
+	OpconcatPermute128ScalarsFloat64x4
+	OpconcatPermute128ScalarsInt16x16
+	OpconcatPermute128ScalarsInt32x8
+	OpconcatPermute128ScalarsInt64x4
+	OpconcatPermute128ScalarsInt8x32
+	OpconcatPermute128ScalarsUint16x16
+	OpconcatPermute128ScalarsUint32x8
+	OpconcatPermute128ScalarsUint64x4
+	OpconcatPermute128ScalarsUint8x32
 	OpconcatSaturateToInt16Int32x4
 	OpconcatSaturateToInt8GroupedInt16x16
 	OpconcatSaturateToInt8Int16x8
@@ -85946,7 +85963,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{1, RegMask{V1: 335544319, V2: 0}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -85962,7 +85979,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{1, RegMask{V1: 335544319, V2: 0}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -85978,7 +85995,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYW,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{1, RegMask{V1: 335544319, V2: 0}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -85994,7 +86011,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPY,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{1, RegMask{V1: 335544319, V2: 0}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -86010,7 +86027,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -86026,7 +86043,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -86042,7 +86059,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -86058,7 +86075,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCPYD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -86143,7 +86160,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:            arm64.AZLD1B,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 1476395007, V2: 32768}},
 			},
 			Outputs: []OutputInfo{
@@ -86160,7 +86177,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:            arm64.AZST1B,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 1476395007, V2: 32768}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -90852,7 +90869,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -90866,7 +90883,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -90880,7 +90897,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -90895,7 +90912,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -90911,7 +90928,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -90927,7 +90944,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -90943,7 +90960,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -90958,7 +90975,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -91018,7 +91035,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91034,7 +91051,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91050,7 +91067,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91066,7 +91083,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91083,7 +91100,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91100,7 +91117,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91117,7 +91134,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91134,7 +91151,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91180,7 +91197,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91196,7 +91213,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91212,7 +91229,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91228,7 +91245,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91245,7 +91262,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91262,7 +91279,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91279,7 +91296,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91296,7 +91313,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZAND,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91326,7 +91343,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZBIC,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91342,7 +91359,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZBIC,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91358,7 +91375,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZBIC,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91374,7 +91391,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZBIC,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91390,7 +91407,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91406,7 +91423,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91422,7 +91439,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91438,7 +91455,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91453,7 +91470,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91468,7 +91485,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91483,7 +91500,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91498,7 +91515,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91513,7 +91530,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91528,7 +91545,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91543,7 +91560,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91558,7 +91575,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91573,7 +91590,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHI,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91588,7 +91605,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHI,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91603,7 +91620,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHI,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91618,7 +91635,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHI,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91633,7 +91650,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91648,7 +91665,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91663,7 +91680,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91678,7 +91695,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCMPHS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91694,7 +91711,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91710,7 +91727,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91726,7 +91743,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91742,7 +91759,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZCMPNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91757,7 +91774,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -91771,7 +91788,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -91785,7 +91802,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -91800,7 +91817,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91816,7 +91833,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91832,7 +91849,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91848,7 +91865,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91863,7 +91880,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZCNT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -91893,7 +91910,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91909,7 +91926,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91925,7 +91942,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -91941,7 +91958,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91958,7 +91975,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91975,7 +91992,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -91992,7 +92009,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92009,7 +92026,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZEOR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92024,7 +92041,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92039,7 +92056,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92055,7 +92072,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92070,7 +92087,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFABS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92100,7 +92117,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92116,7 +92133,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92133,7 +92150,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92150,7 +92167,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92180,7 +92197,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFADDVD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92194,7 +92211,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFADDVS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92209,7 +92226,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZFCMEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92225,7 +92242,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZFCMEQ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92240,7 +92257,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFCMGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92255,7 +92272,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFCMGE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92270,7 +92287,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFCMGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92285,7 +92302,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFCMGT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92301,7 +92318,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZFCMNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92317,7 +92334,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZFCMNE,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92333,7 +92350,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFCVTZS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92348,7 +92365,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFCVTZS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92363,7 +92380,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92379,7 +92396,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92395,7 +92412,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92411,7 +92428,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92427,7 +92444,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92443,7 +92460,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92459,7 +92476,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92475,7 +92492,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92490,7 +92507,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFMAXVD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92504,7 +92521,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFMAXVS,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92519,7 +92536,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92535,7 +92552,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92551,7 +92568,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92567,7 +92584,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92583,7 +92600,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92600,7 +92617,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92617,7 +92634,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92634,7 +92651,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92666,7 +92683,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92682,7 +92699,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92699,7 +92716,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -92716,7 +92733,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92746,7 +92763,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92761,7 +92778,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92777,7 +92794,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92792,7 +92809,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92806,7 +92823,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTM,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92821,7 +92838,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTM,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92837,7 +92854,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTM,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92852,7 +92869,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTM,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92866,7 +92883,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92881,7 +92898,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92897,7 +92914,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92912,7 +92929,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92926,7 +92943,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92941,7 +92958,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92957,7 +92974,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -92972,7 +92989,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTP,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -92986,7 +93003,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTZ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93001,7 +93018,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTZ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93017,7 +93034,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFRINTZ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93032,7 +93049,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFRINTZ,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93046,7 +93063,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFSQRT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93061,7 +93078,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFSQRT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93077,7 +93094,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFSQRT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93092,7 +93109,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZFSQRT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93121,7 +93138,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93137,7 +93154,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZFSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93181,7 +93198,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93211,7 +93228,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93227,7 +93244,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93243,7 +93260,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93259,7 +93276,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93289,7 +93306,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93306,7 +93323,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93323,7 +93340,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93340,7 +93357,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93357,7 +93374,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93374,7 +93391,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93391,7 +93408,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93408,7 +93425,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMLA,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93470,7 +93487,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93486,7 +93503,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93502,7 +93519,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93518,7 +93535,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93535,7 +93552,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93552,7 +93569,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93569,7 +93586,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93586,7 +93603,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZMUL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93616,7 +93633,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93630,7 +93647,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93644,7 +93661,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93659,7 +93676,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93675,7 +93692,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93691,7 +93708,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93707,7 +93724,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93722,7 +93739,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNEG,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93736,7 +93753,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93750,7 +93767,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93764,7 +93781,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93779,7 +93796,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93795,7 +93812,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93811,7 +93828,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93827,7 +93844,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93842,7 +93859,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:    arm64.AZNOT,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -93872,7 +93889,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93888,7 +93905,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93904,7 +93921,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -93920,7 +93937,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93937,7 +93954,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93954,7 +93971,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93971,7 +93988,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -93988,7 +94005,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZORR,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94004,7 +94021,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94020,7 +94037,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94036,7 +94053,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94052,7 +94069,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94068,7 +94085,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94084,7 +94101,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94100,7 +94117,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94116,7 +94133,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94132,7 +94149,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94148,7 +94165,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94164,7 +94181,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94181,7 +94198,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94198,7 +94215,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94215,7 +94232,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94232,7 +94249,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94248,7 +94265,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94264,7 +94281,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94280,7 +94297,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94296,7 +94313,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94312,7 +94329,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94328,7 +94345,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94344,7 +94361,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94360,7 +94377,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94377,7 +94394,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94394,7 +94411,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94411,7 +94428,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94428,7 +94445,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94444,7 +94461,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZSMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94505,7 +94522,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94521,7 +94538,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94537,7 +94554,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94553,7 +94570,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94570,7 +94587,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94587,7 +94604,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94604,7 +94621,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94621,7 +94638,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94697,7 +94714,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94713,7 +94730,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94729,7 +94746,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94745,7 +94762,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94762,7 +94779,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94779,7 +94796,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94796,7 +94813,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -94813,7 +94830,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94886,7 +94903,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94902,7 +94919,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94918,7 +94935,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -94934,7 +94951,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95006,7 +95023,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95022,7 +95039,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95038,7 +95055,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95054,7 +95071,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95098,7 +95115,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95114,7 +95131,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95130,7 +95147,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95146,7 +95163,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUDIV,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95162,7 +95179,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95178,7 +95195,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95194,7 +95211,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95210,7 +95227,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95226,7 +95243,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95242,7 +95259,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95258,7 +95275,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95275,7 +95292,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95292,7 +95309,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95309,7 +95326,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95326,7 +95343,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95342,7 +95359,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMAX,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95358,7 +95375,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95374,7 +95391,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95390,7 +95407,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95406,7 +95423,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95422,7 +95439,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95438,7 +95455,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95454,7 +95471,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95471,7 +95488,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95488,7 +95505,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95505,7 +95522,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95522,7 +95539,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95538,7 +95555,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:         arm64.AZUMIN,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95599,7 +95616,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95615,7 +95632,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95631,7 +95648,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95647,7 +95664,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95664,7 +95681,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95681,7 +95698,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95698,7 +95715,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95715,7 +95732,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUMULH,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95791,7 +95808,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95807,7 +95824,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95823,7 +95840,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95839,7 +95856,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95856,7 +95873,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95873,7 +95890,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95890,7 +95907,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{3, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{3, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 				{2, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -95907,7 +95924,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQADD,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95980,7 +95997,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -95996,7 +96013,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -96012,7 +96029,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -96028,7 +96045,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZUQSUB,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{2, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
@@ -96325,7 +96342,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -96341,7 +96358,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -96357,7 +96374,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -96373,7 +96390,7 @@ var OpcodeTable = [...]OpInfo{
 		asm:          arm64.AZLSL,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{1, RegMask{V1: 9223372036854775808, V2: 127}},
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
@@ -108081,6 +108098,7 @@ var OpcodeTable = [...]OpInfo{
 		FaultOnNilArg1: true,
 		AddrSinkArg0:   true,
 		AddrSinkArg1:   true,
+		unsafePoint:    true,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 1006632896, V2: 0}},
@@ -129715,12 +129733,47 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:    "bitSelectInt16x8",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectInt32x4",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectInt64x2",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
 		Name:    "bitSelectInt8x16",
 		ArgLen:  3,
 		Generic: true,
 	},
 	{
 		Name:    "bitSelectNotInt8x16",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectUint16x8",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectUint32x4",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectUint64x2",
+		ArgLen:  3,
+		Generic: true,
+	},
+	{
+		Name:    "bitSelectUint8x16",
 		ArgLen:  3,
 		Generic: true,
 	},
@@ -130053,6 +130106,66 @@ var OpcodeTable = [...]OpInfo{
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
+	},
+	{
+		Name:    "concatPermute128ScalarsFloat32x8",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsFloat64x4",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsInt16x16",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsInt32x8",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsInt64x4",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsInt8x32",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsUint16x16",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsUint32x8",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsUint64x4",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "concatPermute128ScalarsUint8x32",
+		AuxType: AuxTypeUInt8,
+		ArgLen:  2,
+		Generic: true,
 	},
 	{
 		Name:    "concatSaturateToInt16Int32x4",

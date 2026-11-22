@@ -123,6 +123,7 @@ type Operand struct {
 	Base       *string
 	EncodeBase *regexp.Regexp
 	ElemBits   *int
+	RegBits    *int
 	Bits       VectorSize
 	EncodeBits *VectorSize
 
