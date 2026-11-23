@@ -83,7 +83,7 @@ jobs:
           git diff --name-only "$merge_base" "origin/upstream/$BASE" > "$RUNNER_TEMP/changed.txt"
           echo "conflicts: $(wc -l < "$RUNNER_TEMP/conflicts.txt"), changed: $(wc -l < "$RUNNER_TEMP/changed.txt")"
 
-      - uses: actions/setup-go@v7.0.0
+      - uses: actions/setup-go@v7.1.0
         if: steps.check.outputs.skip == 'false'
         with:
           go-version: stable
