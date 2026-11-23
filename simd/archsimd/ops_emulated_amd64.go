@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd && amd64
+//go:build goexperiment.simdstable && amd64
 
 package archsimd
 
@@ -153,7 +153,7 @@ func (x Uint8x64) Mul(y Uint8x64) (z Uint8x64)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Emulated, CPU Feature: AVX
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX
 func (x Int8x16) OnesCount() (z Int8x16)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -161,7 +161,7 @@ func (x Int8x16) OnesCount() (z Int8x16)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Emulated, CPU Feature: AVX
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX
 func (x Uint8x16) OnesCount() (z Uint8x16)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -169,7 +169,7 @@ func (x Uint8x16) OnesCount() (z Uint8x16)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Emulated, CPU Feature: AVX2
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX2
 func (x Int8x32) OnesCount() (z Int8x32)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -177,7 +177,7 @@ func (x Int8x32) OnesCount() (z Int8x32)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Emulated, CPU Feature: AVX2
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX2
 func (x Uint8x32) OnesCount() (z Uint8x32)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -185,7 +185,7 @@ func (x Uint8x32) OnesCount() (z Uint8x32)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Asm: VPOPCNTB, CPU Feature: AVX512BITALG
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX512
 func (x Int8x64) OnesCount() (z Int8x64)
 
 // OnesCount counts the number of one bits ("population count") in
@@ -193,7 +193,7 @@ func (x Int8x64) OnesCount() (z Int8x64)
 //
 //	z[i] = bits.OnesCount(x[i])
 //
-// Asm: VPOPCNTB, CPU Feature: AVX512BITALG
+// Asm: VPOPCNTB if CPU feature AVX512BITALG, Emulated otherwise, CPU Feature: AVX512
 func (x Uint8x64) OnesCount() (z Uint8x64)
 
 // ReduceSum returns the scalar sum of the elements of x.
