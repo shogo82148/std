@@ -180,7 +180,6 @@ func (pb *PB) Next() bool
 // 複数のゴルーチンを作成し、b.Nの反復をそれらの間で分散します。
 // ゴルーチンの数はデフォルトでGOMAXPROCSです。CPUに依存しないベンチマークの並列性を
 // 増加させるためには、RunParallelの前に[B.SetParallelism]を呼び出します。
-// RunParallelは通常、go test -cpuフラグと一緒に使用されます。
 //
 // body関数は各ゴルーチンで実行されます。それは任意の
 // ゴルーチンローカルの状態を設定し、その後pb.Nextがfalseを返すまで反復します。

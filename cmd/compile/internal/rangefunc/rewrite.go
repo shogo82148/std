@@ -551,10 +551,12 @@ recover:
 		runtime.gorecoverat(#recover)
 	})
 
-The token is the panic itself, or nil if a recover in the body would not
-take effect. Unlike the frame it stands for, it does not move when the
-stack grows, so the body can hold onto it. gorecoverat recovers that panic
-if it is still the one being processed.
+トークンは、そのパニックのためにヒープに割り当てられた識別子です。
+ボディー内の recover が効果を持たない場合は nil になります。
+トークンが表すフレームや、スタックに割り当てられたパニック自体とは異なり、
+スタックがコピーされても移動しないため、ヒープにエスケープしても
+ボディーがそれを保持し続けることができます。gorecoverat は、
+そのパニックがまだ処理中であれば、それを recover します。
 */
 package rangefunc
 

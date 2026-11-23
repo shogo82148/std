@@ -4,9 +4,9 @@
 
 package bytealg
 
-// Empirical data shows that using Index can get better
-// performance when len(s) <= 16.
-const MaxBruteForce = 16
+// bytes.Index と strings.Index は、この長さ以下の haystack を、
+// 先に IndexByte で先読みせずに、そのまま Index に渡します。
+const MaxBruteForce = 64
 
 // Cutover reports the number of failures of IndexByte we should tolerate
 // before switching over to Index.

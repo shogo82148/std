@@ -104,6 +104,8 @@ func (x Int8x16) ConvertToUint8() Uint8x16
 
 func (x Int8x16) Equal(y Int8x16) Mask8x16
 
+func (x Int8x16) ExtendToInt16() Int16x8
+
 func (x Int8x16) Greater(y Int8x16) Mask8x16
 
 func (x Int8x16) GreaterEqual(y Int8x16) Mask8x16
@@ -170,6 +172,8 @@ func (x Int16x8) ConvertToUint16() Uint16x8
 
 func (x Int16x8) Equal(y Int16x8) Mask16x8
 
+func (x Int16x8) ExtendToInt32() Int32x4
+
 func (x Int16x8) Greater(y Int16x8) Mask16x8
 
 func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
@@ -202,6 +206,10 @@ func (x Int16x8) Or(y Int16x8) Int16x8
 
 func (x Int16x8) ReduceSum() int16
 
+func (x Int16x8) SaturateToInt8() Int8x16
+
+func (x Int16x8) SaturateToUint8() Uint8x16
+
 func (x Int16x8) ShiftAllLeft(shift uint64) Int16x8
 
 func (x Int16x8) ShiftAllRight(shift uint64) Int16x8
@@ -220,6 +228,8 @@ func (x Int16x8) ToBits() Uint16x8
 
 func (x Int16x8) ToMask() Mask16x8
 
+func (x Int16x8) TruncToInt8() Int8x16
+
 func (x Int16x8) Xor(y Int16x8) Int16x8
 
 func (x Int32x4) Abs() Uint32x4
@@ -235,6 +245,8 @@ func (x Int32x4) ConvertToFloat32() Float32x4
 func (x Int32x4) ConvertToUint32() Uint32x4
 
 func (x Int32x4) Equal(y Int32x4) Mask32x4
+
+func (x Int32x4) ExtendToInt64() Int64x2
 
 func (x Int32x4) Greater(y Int32x4) Mask32x4
 
@@ -268,6 +280,10 @@ func (x Int32x4) Or(y Int32x4) Int32x4
 
 func (x Int32x4) ReduceSum() int32
 
+func (x Int32x4) SaturateToInt16() Int16x8
+
+func (x Int32x4) SaturateToUint16() Uint16x8
+
 func (x Int32x4) ShiftAllLeft(shift uint64) Int32x4
 
 func (x Int32x4) ShiftAllRight(shift uint64) Int32x4
@@ -283,6 +299,8 @@ func (x Int32x4) Sub(y Int32x4) Int32x4
 func (x Int32x4) ToBits() Uint32x4
 
 func (x Int32x4) ToMask() Mask32x4
+
+func (x Int32x4) TruncToInt16() Int16x8
 
 func (x Int32x4) Xor(y Int32x4) Int32x4
 
@@ -322,6 +340,10 @@ func (x Int64x2) NotEqual(y Int64x2) Mask64x2
 
 func (x Int64x2) Or(y Int64x2) Int64x2
 
+func (x Int64x2) SaturateToInt32() Int32x4
+
+func (x Int64x2) SaturateToUint32() Uint32x4
+
 func (x Int64x2) ShiftAllLeft(shift uint64) Int64x2
 
 func (x Int64x2) ShiftAllRight(shift uint64) Int64x2
@@ -337,6 +359,8 @@ func (x Int64x2) Sub(y Int64x2) Int64x2
 func (x Int64x2) ToBits() Uint64x2
 
 func (x Int64x2) ToMask() Mask64x2
+
+func (x Int64x2) TruncToInt32() Int32x4
 
 func (x Int64x2) Xor(y Int64x2) Int64x2
 
@@ -355,6 +379,8 @@ func (x Uint8x16) BitsToInt8() Int8x16
 func (x Uint8x16) ConvertToInt8() Int8x16
 
 func (x Uint8x16) Equal(y Uint8x16) Mask8x16
+
+func (x Uint8x16) ExtendToUint16() Uint16x8
 
 func (x Uint8x16) Greater(y Uint8x16) Mask8x16
 
@@ -422,6 +448,8 @@ func (x Uint16x8) ConvertToInt16() Int16x8
 
 func (x Uint16x8) Equal(y Uint16x8) Mask16x8
 
+func (x Uint16x8) ExtendToUint32() Uint32x4
+
 func (x Uint16x8) Greater(y Uint16x8) Mask16x8
 
 func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
@@ -462,6 +490,8 @@ func (x Uint16x8) RotateAllLeft(shift uint64) Uint16x8
 
 func (x Uint16x8) RotateAllRight(shift uint64) Uint16x8
 
+func (x Uint16x8) SaturateToUint8() Uint8x16
+
 func (x Uint16x8) ShiftAllLeft(shift uint64) Uint16x8
 
 func (x Uint16x8) ShiftAllRight(shift uint64) Uint16x8
@@ -475,6 +505,8 @@ func (x Uint16x8) String() string
 func (x Uint16x8) Sub(y Uint16x8) Uint16x8
 
 func (x Uint16x8) SubSaturated(y Uint16x8) Uint16x8
+
+func (x Uint16x8) TruncToUint8() Uint8x16
 
 func (x Uint16x8) Xor(y Uint16x8) Uint16x8
 
@@ -491,6 +523,8 @@ func (x Uint32x4) BitsToInt32() Int32x4
 func (x Uint32x4) ConvertToInt32() Int32x4
 
 func (x Uint32x4) Equal(y Uint32x4) Mask32x4
+
+func (x Uint32x4) ExtendToUint64() Uint64x2
 
 func (x Uint32x4) Greater(y Uint32x4) Mask32x4
 
@@ -532,6 +566,8 @@ func (x Uint32x4) RotateAllLeft(shift uint64) Uint32x4
 
 func (x Uint32x4) RotateAllRight(shift uint64) Uint32x4
 
+func (x Uint32x4) SaturateToUint16() Uint16x8
+
 func (x Uint32x4) ShiftAllLeft(shift uint64) Uint32x4
 
 func (x Uint32x4) ShiftAllRight(shift uint64) Uint32x4
@@ -543,6 +579,8 @@ func (x Uint32x4) StorePart(s []uint32) int
 func (x Uint32x4) String() string
 
 func (x Uint32x4) Sub(y Uint32x4) Uint32x4
+
+func (x Uint32x4) TruncToUint16() Uint16x8
 
 func (x Uint32x4) Xor(y Uint32x4) Uint32x4
 
@@ -600,6 +638,8 @@ func (x Uint64x2) RotateAllLeft(shift uint64) Uint64x2
 
 func (x Uint64x2) RotateAllRight(shift uint64) Uint64x2
 
+func (x Uint64x2) SaturateToUint32() Uint32x4
+
 func (x Uint64x2) ShiftAllLeft(shift uint64) Uint64x2
 
 func (x Uint64x2) ShiftAllRight(shift uint64) Uint64x2
@@ -612,6 +652,8 @@ func (x Uint64x2) String() string
 
 func (x Uint64x2) Sub(y Uint64x2) Uint64x2
 
+func (x Uint64x2) TruncToUint32() Uint32x4
+
 func (x Uint64x2) Xor(y Uint64x2) Uint64x2
 
 func (x Float32x4) Abs() Float32x4
@@ -619,6 +661,8 @@ func (x Float32x4) Abs() Float32x4
 func (x Float32x4) Add(y Float32x4) Float32x4
 
 func (x Float32x4) Ceil() Float32x4
+
+func (x Float32x4) ConvertToFloat64() Float64x2
 
 func (x Float32x4) ConvertToInt32() Int32x4
 
@@ -679,6 +723,8 @@ func (x Float64x2) Abs() Float64x2
 func (x Float64x2) Add(y Float64x2) Float64x2
 
 func (x Float64x2) Ceil() Float64x2
+
+func (x Float64x2) ConvertToFloat32() Float32x4
 
 func (x Float64x2) Div(y Float64x2) Float64x2
 

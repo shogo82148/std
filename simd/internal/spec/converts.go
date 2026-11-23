@@ -8,74 +8,136 @@ package spec
 
 // ConvertFloatToFloat converts each element of x to {{.zE}}.
 //
-// {{ if lt .zN .xN }}
+//	z[i] = {{.zE}}(x[i])
+//
+// {{if lt .zN .xN}}
 // The results are rounded to the nearest representable value, or ±inf if they
 // cannot be represented.
-// {{ end }}
 //
-// {{if lt .xL .zL}}
-// The low {{.xL}} elements of the result are set. The rest are zero.
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+// {{else}}
+// Only the low {{lanes .z "z"}} elements of x are converted.
+// The remaining elements of x are ignored.
 // {{end}}
 //
 //specgen:name ConvertTo{{.zE | title}}
-//specgen:require z={zB}{zN}x{xL} zE!=xE
-func ConvertFloatToFloat[xE Floats, xW Width, zE Floats, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+//specgen:require zE!=xE
+func ConvertFloatToFloat[xE Floats, W Width, zE Floats](x Vec[xE, W]) (z Vec[zE, W])
 
 // ConvertFloatToInt converts each element of x to {{.zE}}.
+//
+//	z[i] = {{.zE}}(x[i])
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
 // If the converted result would be outside the representable range, the result
 // is architecture-dependent.
 //
-// {{if lt .xL .zL}}
-// The low {{.xL}} elements of the result are set. The rest are zero.
+// {{if lt .zN .xN}}
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+// {{else if gt .zN .xN}}
+// Only the low {{lanes .z "z"}} elements of x are converted.
+// The remaining elements of x are ignored.
 // {{end}}
 //
 //specgen:name ConvertTo{{.zE | title}}
-//specgen:require z={zB}{zN}x{xL}
-func ConvertFloatToInt[xE Floats, xW Width, zE Ints | Uints, zW Width](x Vec[xE, xW]) (z Vec[Variation[zE], zW])
+func ConvertFloatToInt[xE Floats, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[Variation[zE], W])
 
 // ConvertIntToFloat converts each element of x to {{.zE}}.
 //
-// {{if lt .xL .zL}}
-// The low {{.xL}} elements of the result are set. The rest are zero.
+//	z[i] = {{.zE}}(x[i])
+//
+// {{if lt .zN .xN}}
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+// {{else if gt .zN .xN}}
+// Only the low {{lanes .z "z"}} elements of x are converted.
+// The remaining elements of x are ignored.
 // {{end}}
 //
 //specgen:name ConvertTo{{.zE | title}}
-//specgen:require z={zB}{zN}x{xL}
-func ConvertIntToFloat[xE Ints | Uints, xW Width, zE Floats, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+func ConvertIntToFloat[xE Ints | Uints, W Width, zE Floats](x Vec[xE, W]) (z Vec[zE, W])
 
 // ConvertIntToUint converts each element of x to {{.zE}}.
 //
+//	z[i] = {{.zE}}(x[i])
+//
 // This wraps unrepresentable values.
 //
-// {{if lt .xL .zL}}
-// The low {{.xL}} elements of the result are set. The rest are zero.
-// {{end}}
-//
 //specgen:name ConvertTo{{.zE | title}}
-//specgen:require z={zB}{zN}x{xL} zB!=xB zN=xN
-func ConvertIntToUint[xE Ints | Uints, xW Width, zE Ints | Uints, zW Width](x Vec[xE, xW]) (z Vec[zE, zW])
+//specgen:require zB!=xB zN=xN
+func ConvertIntToUint[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
 
-// ExtendLoLToZ {{if eq .xB "int"}}sign-{{else}}zero-{{end}}extends
-// the lowest {{.zL}} vector elements to {{.zE}}.
+// ExtendToZ {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends each element of x to {{.zE}}.
+//
+//	z[i] = {{.zE}}(x[i])
+//
+// Only the low {{lanes .z "z"}} elements of x are converted.
+// The remaining elements of x are ignored.
+//
+//specgen:name ExtendTo{{.zE | title}}
+//specgen:require zB=xB zN>xN
+func ExtendToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
+
+// TruncToZ converts each element of x to {{.zE}} by discarding its high
+// bits.
+//
+//	z[i] = {{.zE}}(x[i])
+//
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+//
+//specgen:name TruncTo{{.zE | title}}
+//specgen:require zB=xB zN<xN
+func TruncToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
+
+// SaturateToZ converts each element of x to {{.zE}}, saturating values
+// that are outside the range of {{.zE}}.
+//
+//	z[i] = sat(x[i])
+//
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+//
+//specgen:name SaturateTo{{.zE | title}}
+//specgen:require zB=xB zN<xN
+func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
+
+// SaturateIntToUint converts each element of x to {{.zE}}, saturating values
+// that are outside the range of {{.zE}}. Negative values become 0.
+//
+//	z[i] = sat(x[i])
+//
+// The results are stored in the low {{lanes .x "x"}} elements of z.
+// The remaining elements of z are zero.
+//
+//specgen:name SaturateTo{{.zE | title}}
+//specgen:require zN<xN
+func SaturateIntToUint[xE Ints, W Width, zE Uints](x Vec[xE, W]) (z Vec[zE, W])
+
+// ExtendLoLToZ {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends the low {{.zL}} elements of x to {{.zE}}.
+//
+//	z[i] = {{.zE}}(x[i])
 //
 //specgen:name ExtendLo{{.zL}}To{{.zE | title}}
 //specgen:require zB=xB zN>xN
-func ExtendLoLToZ[E Ints | Uints, W FixedWidth, zE Ints | Uints](x Vec[E, W]) (z Vec[zE, W])
+//specgen:experiment
+func ExtendLoLToZ[E Ints | Uints, zE Ints | Uints](x Vec[E, Width128]) (z Vec[zE, Width128])
 
-// ExtendHiLToZ {{if eq .xB "int"}}sign-{{else}}zero-{{end}}extends the high-indexed {{.zL}} elements of x to {{.zE}}.
+// ExtendLoLToZWiden {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends the low {{.zL}} elements of x to {{.zE}}.
 //
-//	z[i] = {{.zE}}(x[{{.zL}}+i])
+//	z[i] = {{.zE}}(x[i])
 //
-//specgen:name ExtendHi{{.zL}}To{{.zE | title}}
-//specgen:require zB=xB zN=xN*2
-func ExtendHiLToZ[E Ints | Uints, zE Ints | Uints](x Vec[E, Width128]) (z Vec[zE, Width128])
+//specgen:name ExtendLo{{.zL}}To{{.zE | title}}
+//specgen:require zB=xB zL<xL zW>xW
+func ExtendLoLToZWiden[E Ints | Uints, zE Ints | Uints, zW FixedWidth](x Vec[E, Width128]) (z Vec[zE, zW])
 
 // ConvertLoLToZ converts the low-indexed {{.zL}} elements of x to {{.zE}}.
 //
 //	z[i] = {{.zE}}(x[i])
 //
 //specgen:name ConvertLo{{.zL}}To{{.zE | title}}
-//specgen:require zL<xL
-func ConvertLoLToZ[E Nums, W FixedWidth, zE Floats](x Vec[E, W]) (z Vec[zE, W])
+//specgen:require zN=xN*2
+//specgen:experiment
+func ConvertLoLToZ[E Floats, zE Floats](x Vec[E, Width128]) (z Vec[zE, Width128])
