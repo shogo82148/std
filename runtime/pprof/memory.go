@@ -2,12 +2,4 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !(fips140v1.0 || fips140v1.26)
-
-package fips140only
-
-import (
-	"github.com/shogo82148/std/io"
-)
-
-func ApprovedRandomReader(r io.Reader) bool
+package pprof

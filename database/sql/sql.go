@@ -475,6 +475,7 @@ func (db *DB) Exec(query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Query executes a query that returns rows, typically a SELECT.
@@ -482,6 +483,7 @@ func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Row
 //
 // Query uses [context.Background] internally; to specify the context, use
 // [DB.QueryContext].
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (db *DB) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
@@ -583,6 +585,7 @@ func (c *Conn) ExecContext(ctx context.Context, query string, args ...any) (Resu
 
 // QueryContext executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
@@ -761,12 +764,14 @@ func (tx *Tx) ExecContext(ctx context.Context, query string, args ...any) (Resul
 func (tx *Tx) Exec(query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Query executes a query that returns rows, typically a SELECT.
 //
 // Query uses [context.Background] internally; to specify the context, use
 // [Tx.QueryContext].
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
@@ -853,6 +858,7 @@ func (s *Stmt) Exec(args ...any) (Result, error)
 
 // QueryContext executes a prepared query statement with the given arguments
 // and returns the query results as a [*Rows].
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Query executes a prepared query statement with the given arguments
@@ -860,6 +866,7 @@ func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 //
 // Query uses [context.Background] internally; to specify the context, use
 // [Stmt.QueryContext].
+// The caller must call [Rows.Close] when finished with the returned rows.
 func (s *Stmt) Query(args ...any) (*Rows, error)
 
 // QueryRowContext executes a prepared query statement with the given arguments.
@@ -891,6 +898,11 @@ func (s *Stmt) Close() error
 
 // Rows is the result of a query. Its cursor starts before the first row
 // of the result set. Use [Rows.Next] to advance from row to row.
+//
+// A Rows holds resources, such as a database connection, until it is
+// closed. Callers must call [Rows.Close] when finished, typically using
+// defer. Close is idempotent and safe to call even after [Rows.Next] has
+// returned false.
 type Rows struct {
 	dc          *driverConn
 	releaseConn func(error)

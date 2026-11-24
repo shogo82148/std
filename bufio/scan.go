@@ -114,6 +114,7 @@ var ErrFinalToken = errors.New("final token")
 // After Scan returns false, the [Scanner.Err] method will return any error that
 // occurred during scanning, except that if it was [io.EOF], [Scanner.Err]
 // will return nil.
+// Once Scan returns false, subsequent calls return false.
 // Scan panics if the split function returns too many empty
 // tokens without advancing the input. This is a common error mode for
 // scanners.

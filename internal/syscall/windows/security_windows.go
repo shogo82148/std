@@ -164,3 +164,9 @@ func GetSidSubAuthority(sid *syscall.SID, subAuthorityIdx uint32) uint32
 
 //go:nocheckptr
 func GetSidSubAuthorityCount(sid *syscall.SID) uint8
+
+//go:nocheckptr
+func FreeSid(sid *syscall.SID) *syscall.SID
+
+//go:nocheckptr
+func CreateAppContainerProfile(appContainerName *uint16, displayName *uint16, description *uint16, capabilities *syscall.SIDAndAttributes, capabilityCount uint32, appContainerSid **syscall.SID) (ret error)

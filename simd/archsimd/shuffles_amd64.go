@@ -438,7 +438,7 @@ func (x Uint16x32) PermuteScalarsHiGrouped(a, b, c, d uint8) Uint16x32
 // Performance: If a through d are constants, then an instruction will be
 // inlined, otherwise a jump table is generated.
 //
-// Asm: VPSHUFLW, CPU Feature: AVX512
+// Asm: VPSHUFLW, CPU Feature: AVX
 func (x Int16x8) PermuteScalarsLo(a, b, c, d uint8) Int16x8
 
 // PermuteScalarsLo performs a permutation of vector x using the supplied indices:
@@ -450,7 +450,7 @@ func (x Int16x8) PermuteScalarsLo(a, b, c, d uint8) Int16x8
 // Performance: If a through d are constants, then an instruction will be
 // inlined, otherwise a jump table is generated.
 //
-// Asm: VPSHUFLW, CPU Feature: AVX512
+// Asm: VPSHUFLW, CPU Feature: AVX
 func (x Uint16x8) PermuteScalarsLo(a, b, c, d uint8) Uint16x8
 
 // PermuteScalarsLoGrouped performs a grouped permutation of vector x using the supplied indices:

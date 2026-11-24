@@ -25,6 +25,8 @@ type Checker struct {
 	objMap  map[Object]*declInfo
 	objList []Object
 	impMap  map[importKey]*Package
+	// TODO(gri) should this be extended to also track known invalid types?
+	valids instanceLookup
 
 	// pkgPathMap maps package names to the set of distinct import paths we've
 	// seen for that name, anywhere in the import graph. It is used for

@@ -213,6 +213,11 @@ func (e *ParseError) Error() string
 // same layout losslessly, but the exact instant used in the representation will
 // differ by the actual zone offset. To avoid such problems, prefer time layouts
 // that use a numeric zone offset, or use [ParseInLocation].
+//
+// A zone abbreviation may also be numeric, such as "+03" or "-0930", as used
+// in the IANA Time Zone database for zones without a common abbreviation.
+// If such an abbreviation is unknown, Parse uses the offset it denotes
+// rather than a zero offset.
 func Parse(layout, value string) (Time, error)
 
 // ParseInLocation is like Parse but differs in two important ways.

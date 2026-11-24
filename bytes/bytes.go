@@ -73,6 +73,8 @@ func LastIndexAny(s []byte, chars string) int
 //   - n == 0: the result is nil (zero subslices);
 //   - n < 0: all subslices.
 //
+// Every subslice except the last has capacity equal to its length.
+//
 // To split around the first instance of a separator, see [Cut].
 func SplitN(s, sep []byte, n int) [][]byte
 
@@ -83,6 +85,8 @@ func SplitN(s, sep []byte, n int) [][]byte
 //   - n > 0: at most n subslices; the last subslice will be the unsplit remainder;
 //   - n == 0: the result is nil (zero subslices);
 //   - n < 0: all subslices.
+//
+// Every subslice except the last has capacity equal to its length.
 func SplitAfterN(s, sep []byte, n int) [][]byte
 
 // Split slices s into all subslices separated by sep and returns a slice of
@@ -104,7 +108,7 @@ func SplitAfter(s, sep []byte) [][]byte
 // characters, as defined by [unicode.IsSpace], returning a slice of subslices of s or an
 // empty slice if s contains only white space. Every element of the returned slice is
 // non-empty. Unlike [Split], leading and trailing runs of white space characters
-// are discarded.
+// are discarded. Each subslice has capacity equal to its length.
 func Fields(s []byte) [][]byte
 
 // FieldsFunc interprets s as a sequence of UTF-8-encoded code points.
@@ -112,7 +116,7 @@ func Fields(s []byte) [][]byte
 // returns a slice of subslices of s. If all code points in s satisfy f(c), or
 // len(s) == 0, an empty slice is returned. Every element of the returned slice is
 // non-empty. Unlike [Split], leading and trailing runs of code points
-// satisfying f(c) are discarded.
+// satisfying f(c) are discarded. Each subslice has capacity equal to its length.
 //
 // FieldsFunc makes no guarantees about the order in which it calls f(c)
 // and assumes that f always returns the same value for a given c.
