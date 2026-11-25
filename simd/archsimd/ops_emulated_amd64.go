@@ -379,6 +379,474 @@ func (x Int8x64) ReduceSum() (z int8)
 // Emulated, CPU Feature: AVX512
 func (x Uint8x64) ReduceSum() (z uint8)
 
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint16x8) ReduceMin() (z uint16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint16x8) ReduceMax() (z uint16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int16x8) ReduceMin() (z int16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int16x8) ReduceMax() (z int16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint16x16) ReduceMin() (z uint16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint16x16) ReduceMax() (z uint16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int16x16) ReduceMin() (z int16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int16x16) ReduceMax() (z int16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint16x32) ReduceMin() (z uint16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint16x32) ReduceMax() (z uint16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int16x32) ReduceMin() (z int16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int16x32) ReduceMax() (z int16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint8x16) ReduceMin() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint8x16) ReduceMax() (z uint8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int8x16) ReduceMin() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int8x16) ReduceMax() (z int8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint8x32) ReduceMin() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint8x32) ReduceMax() (z uint8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int8x32) ReduceMin() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int8x32) ReduceMax() (z int8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint8x64) ReduceMin() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint8x64) ReduceMax() (z uint8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int8x64) ReduceMin() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int8x64) ReduceMax() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int32x4) ReduceMax() (z int32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int32x4) ReduceMin() (z int32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint32x4) ReduceMax() (z uint32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint32x4) ReduceMin() (z uint32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int32x8) ReduceMax() (z int32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int32x8) ReduceMin() (z int32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint32x8) ReduceMax() (z uint32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint32x8) ReduceMin() (z uint32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int32x16) ReduceMax() (z int32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int32x16) ReduceMin() (z int32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint32x16) ReduceMax() (z uint32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint32x16) ReduceMin() (z uint32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int64x2) ReduceMax() (z int64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Int64x2) ReduceMin() (z int64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint64x2) ReduceMax() (z uint64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX
+func (x Uint64x2) ReduceMin() (z uint64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int64x4) ReduceMax() (z int64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Int64x4) ReduceMin() (z int64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint64x4) ReduceMax() (z uint64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX2
+func (x Uint64x4) ReduceMin() (z uint64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int64x8) ReduceMax() (z int64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Int64x8) ReduceMin() (z int64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint64x8) ReduceMax() (z uint64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated, CPU Feature: AVX512
+func (x Uint64x8) ReduceMin() (z uint64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x4) ReduceMax() (z float32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x4) ReduceMin() (z float32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x8) ReduceMax() (z float32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x8) ReduceMin() (z float32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX512
+func (x Float32x16) ReduceMax() (z float32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX512
+func (x Float32x16) ReduceMin() (z float32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x2) ReduceMax() (z float64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x2) ReduceMin() (z float64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x4) ReduceMax() (z float64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x4) ReduceMin() (z float64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated, CPU Feature: AVX512
+func (x Float64x8) ReduceMax() (z float64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated, CPU Feature: AVX512
+func (x Float64x8) ReduceMin() (z float64)
+
 // LookupOrZero permutes x, returning 0 for out-of-range indices.
 //
 //	if indices[i] < 16 {
@@ -431,7 +899,7 @@ func (x Uint8x16) LookupOrZero(indices Uint8x16) (z Uint8x16)
 //	    z[i] = 0
 //	}
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint8x32) LookupOrZero(indices Uint8x32) (z Uint8x32)
 
 // LookupOrZero permutes x, returning 0 for out-of-range indices.

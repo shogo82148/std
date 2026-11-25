@@ -207,21 +207,29 @@ func (x Int64x2) ToMask() (z Mask64x2)
 // ToMask returns a mask indicating which elements of x are non-zero.
 //
 //	z[i] = x[i] != 0
+//
+// Emulated, CPU Feature: AVX2
 func (x Int8x32) ToMask() (z Mask8x32)
 
 // ToMask returns a mask indicating which elements of x are non-zero.
 //
 //	z[i] = x[i] != 0
+//
+// Emulated, CPU Feature: AVX2
 func (x Int16x16) ToMask() (z Mask16x16)
 
 // ToMask returns a mask indicating which elements of x are non-zero.
 //
 //	z[i] = x[i] != 0
+//
+// Emulated, CPU Feature: AVX2
 func (x Int32x8) ToMask() (z Mask32x8)
 
 // ToMask returns a mask indicating which elements of x are non-zero.
 //
 //	z[i] = x[i] != 0
+//
+// Emulated, CPU Feature: AVX2
 func (x Int64x4) ToMask() (z Mask64x4)
 
 // ToMask returns a mask indicating which elements of x are non-zero.
@@ -794,42 +802,42 @@ func (x Uint64x2) RotateAllRight(shift uint64) (z Uint64x2)
 //
 //	z[i] = rotateLeft(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint16x16) RotateAllLeft(shift uint64) (z Uint16x16)
 
 // RotateAllRight rotates each element of x right by shift bits.
 //
 //	z[i] = rotateRight(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint16x16) RotateAllRight(shift uint64) (z Uint16x16)
 
 // RotateAllLeft rotates each element of x left by shift bits.
 //
 //	z[i] = rotateLeft(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint32x8) RotateAllLeft(shift uint64) (z Uint32x8)
 
 // RotateAllRight rotates each element of x right by shift bits.
 //
 //	z[i] = rotateRight(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint32x8) RotateAllRight(shift uint64) (z Uint32x8)
 
 // RotateAllLeft rotates each element of x left by shift bits.
 //
 //	z[i] = rotateLeft(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint64x4) RotateAllLeft(shift uint64) (z Uint64x4)
 
 // RotateAllRight rotates each element of x right by shift bits.
 //
 //	z[i] = rotateRight(x[i], shift)
 //
-// Emulated
+// Emulated, CPU Feature: AVX2
 func (x Uint64x4) RotateAllRight(shift uint64) (z Uint64x4)
 
 // RotateAllLeft rotates each element of x left by shift bits.

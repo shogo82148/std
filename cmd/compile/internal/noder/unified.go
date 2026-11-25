@@ -28,3 +28,9 @@ func LookupFunc(fullName string) (*ir.Func, error)
 // readBodies to post-process any funcs on the "todoBodies" list
 // that were added as a result of the lookup operations.
 func PostLookupCleanup()
+
+// DropUnusedImportedInsts removes generic instantiations that an imported package already
+// compiled and that nothing in this package still references after inlining and MakeWrappers.
+// Keeping referenced instantiations ensures callers are only analyzed against bodies compiled
+// in this package. Dropped ones still resolve at link time to an imported package's copy.
+func DropUnusedImportedInsts(target *ir.Package)

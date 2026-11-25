@@ -85,7 +85,8 @@ type ConnectionState struct {
 
 	// PeerCertificates are the parsed certificates sent by the peer, in the
 	// order in which they were sent. The first element is the leaf certificate
-	// that the connection is verified against.
+	// that the connection is verified against, the rest are unverified
+	// certificates that can be used as intermediates to build a chain.
 	//
 	// On the client side, it can't be empty. On the server side, it can be
 	// empty if Config.ClientAuth is not RequireAnyClientCert or
@@ -310,6 +311,10 @@ type CertificateRequestInfo struct {
 	// Version is the TLS version that was negotiated for this connection.
 	Version uint16
 
+	// noFIPS140Restrictions mirrors Config.noFIPS140Restrictions for use with
+	// SupportsCertificate.
+	noFIPS140Restrictions bool
+
 	// ctx is the context of the handshake that is in progress.
 	ctx context.Context
 }
@@ -451,8 +456,11 @@ type Config struct {
 	// VerifyPeerCertificate, if not nil, is called after normal
 	// certificate verification by either a TLS client or server. It
 	// receives the raw ASN.1 certificates provided by the peer and also
-	// any verified chains that normal processing found. If it returns a
-	// non-nil error, the handshake is aborted and that error results.
+	// any verified chains that normal processing found. The first element of
+	// rawCerts is the leaf certificate that the connection is verified against,
+	// the rest are unverified certificates that can be used as intermediates to
+	// build a chain. If it returns a non-nil error, the handshake is aborted
+	// and that error results.
 	//
 	// If normal verification fails then the handshake will abort before
 	// considering this callback. If normal verification is disabled (on the
@@ -710,6 +718,10 @@ type Config struct {
 	// autoSessionTicketKeys is like sessionTicketKeys but is owned by the
 	// auto-rotation logic. See Config.ticketKeys.
 	autoSessionTicketKeys []ticketKey
+	// noFIPS140Restrictions disables the FIPS 140-3 TLS algorithm and certificate
+	// restrictions applied when GODEBUG=fips140=on is set. It does not override
+	// restrictions forced by importing crypto/tls/fipsonly.
+	noFIPS140Restrictions bool
 }
 
 // EncryptedClientHelloKey holds a private key that is associated

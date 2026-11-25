@@ -40,6 +40,21 @@ func LoadFloat32sPart(s []float32) (z Float32s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Float32s) StorePart(s []float32) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Float32s) Elem(i uint8) (z float32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Float32s) SetElem(i uint8, y float32) (z Float32s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -102,6 +117,21 @@ func LoadFloat64sPart(s []float64) (z Float64s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Float64s) StorePart(s []float64) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Float64s) Elem(i uint8) (z float64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Float64s) SetElem(i uint8, y float64) (z Float64s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -162,6 +192,21 @@ func LoadInt8sPart(s []int8) (z Int8s, n int)
 //
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int8s) StorePart(s []int8) (n int)
+
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int8s) Elem(i uint8) (z int8)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int8s) SetElem(i uint8, y int8) (z Int8s)
 
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
@@ -231,6 +276,21 @@ func LoadInt16sPart(s []int16) (z Int16s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int16s) StorePart(s []int16) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int16s) Elem(i uint8) (z int16)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int16s) SetElem(i uint8, y int16) (z Int16s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -298,6 +358,21 @@ func LoadInt32sPart(s []int32) (z Int32s, n int)
 //
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int32s) StorePart(s []int32) (n int)
+
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int32s) Elem(i uint8) (z int32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int32s) SetElem(i uint8, y int32) (z Int32s)
 
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
@@ -367,6 +442,21 @@ func LoadInt64sPart(s []int64) (z Int64s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int64s) StorePart(s []int64) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int64s) Elem(i uint8) (z int64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int64s) SetElem(i uint8, y int64) (z Int64s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -435,6 +525,21 @@ func LoadUint8sPart(s []uint8) (z Uint8s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint8s) StorePart(s []uint8) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint8s) Elem(i uint8) (z uint8)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint8s) SetElem(i uint8, y uint8) (z Uint8s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -495,6 +600,21 @@ func LoadUint16sPart(s []uint16) (z Uint16s, n int)
 //
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint16s) StorePart(s []uint16) (n int)
+
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint16s) Elem(i uint8) (z uint16)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint16s) SetElem(i uint8, y uint16) (z Uint16s)
 
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
@@ -557,6 +677,21 @@ func LoadUint32sPart(s []uint32) (z Uint32s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint32s) StorePart(s []uint32) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint32s) Elem(i uint8) (z uint32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint32s) SetElem(i uint8, y uint32) (z Uint32s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -617,6 +752,21 @@ func LoadUint64sPart(s []uint64) (z Uint64s, n int)
 //
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint64s) StorePart(s []uint64) (n int)
+
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint64s) Elem(i uint8) (z uint64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint64s) SetElem(i uint8, y uint64) (z Uint64s)
 
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
@@ -772,6 +922,12 @@ func (x Mask8s) Not() (z Mask8s)
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask8s) ToInt8s() (z Int8s)
 
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask8s) TrailingZeros() int
+
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
 func (x Mask8s) String() string
@@ -903,6 +1059,12 @@ func (x Mask16s) Not() (z Mask16s)
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask16s) ToInt16s() (z Int16s)
+
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask16s) TrailingZeros() int
 
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
@@ -1036,6 +1198,12 @@ func (x Mask32s) Not() (z Mask32s)
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask32s) ToInt32s() (z Int32s)
 
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask32s) TrailingZeros() int
+
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
 func (x Mask32s) String() string
@@ -1167,6 +1335,12 @@ func (x Mask64s) Not() (z Mask64s)
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask64s) ToInt64s() (z Int64s)
+
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask64s) TrailingZeros() int
 
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.

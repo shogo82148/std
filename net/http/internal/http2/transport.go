@@ -155,7 +155,7 @@ func (e GoAwayError) Error() string
 // Ping sends a PING frame to the server and waits for the ack.
 func (cc *ClientConn) Ping(ctx context.Context) error
 
-// netHTTPClientConn wraps ClientConn and implements the interface net/http expects from
+// NetHTTPClientConn wraps ClientConn and implements the interface net/http expects from
 // the RoundTripper returned by NewClientConn.
 type NetHTTPClientConn struct {
 	cc *ClientConn

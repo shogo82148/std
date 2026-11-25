@@ -22,6 +22,12 @@ func (g *GCM) NonceSize() int
 
 func (g *GCM) Overhead() int
 
+func (g *GCM) TagSize() int
+
+func (g *GCM) SealRaw(out, tag, nonce, plaintext, additionalData []byte) error
+
+func (g *GCM) OpenRaw(out, nonce, ciphertext, tag, additionalData []byte) error
+
 func (g *GCM) Seal(dst, nonce, plaintext, data []byte) []byte
 
 func (g *GCM) Open(dst, nonce, ciphertext, data []byte) ([]byte, error)

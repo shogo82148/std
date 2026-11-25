@@ -413,8 +413,18 @@ func (x Uint64s) ConcatOdd(y Uint64s) (z Uint64s)
 //	z[i] = int32(x[i])
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
-// If the converted result would be outside the representable range, the result
-// is architecture-dependent.
+//
+// The handling of NaN and values whose truncated result is outside the
+// representable range of int32 is architecture-dependent. ARM64 and WASM map
+// NaN to 0 and saturate out-of-range values (including ±Inf). AMD64 returns
+// math.MinInt32 (the integer indefinite value) for NaN and all out-of-range
+// values.
+//
+//	trunc(x)          ARM64/WASM  AMD64
+//	----------------  ----------  --------
+//	NaN               0           MinInt32
+//	< MinInt32, -Inf  MinInt32    MinInt32
+//	> MaxInt32, +Inf  MaxInt32    MinInt32
 //
 // Asm: ZFCVTZS, CPU Feature: SVE
 func (x Float32s) ConvertToInt32() (z Int32s)
@@ -1615,7 +1625,9 @@ func (x Uint64s) Or(y Uint64s) (z Uint64s)
 //
 //	z = max(x[0], x[1], ...)
 //
-// The handling of NaN and signed zeroes is platform-dependent. See [Max].
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
 //
 // Asm: ZFMAXVS, CPU Feature: SVE
 func (x Float32s) ReduceMax() (z float32)
@@ -1624,7 +1636,9 @@ func (x Float32s) ReduceMax() (z float32)
 //
 //	z = max(x[0], x[1], ...)
 //
-// The handling of NaN and signed zeroes is platform-dependent. See [Max].
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
 //
 // Asm: ZFMAXVD, CPU Feature: SVE
 func (x Float64s) ReduceMax() (z float64)
@@ -1689,7 +1703,9 @@ func (x Uint64s) ReduceMax() (z uint64)
 //
 //	z = min(x[0], x[1], ...)
 //
-// The handling of NaN and signed zeroes is platform-dependent. See [Min].
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
 //
 // Asm: ZFMINVS, CPU Feature: SVE
 func (x Float32s) ReduceMin() (z float32)
@@ -1698,7 +1714,9 @@ func (x Float32s) ReduceMin() (z float32)
 //
 //	z = min(x[0], x[1], ...)
 //
-// The handling of NaN and signed zeroes is platform-dependent. See [Min].
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
 //
 // Asm: ZFMINVD, CPU Feature: SVE
 func (x Float64s) ReduceMin() (z float64)
@@ -1930,6 +1948,78 @@ func (x Uint32s) ShiftAllLeft(shift uint64) (z Uint32s)
 //
 // Asm: ZLSL, CPU Feature: SVE
 func (x Uint64s) ShiftAllLeft(shift uint64) (z Uint64s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int8s) ShiftAllRight(shift uint64) (z Int8s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int16s) ShiftAllRight(shift uint64) (z Int16s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int32s) ShiftAllRight(shift uint64) (z Int32s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint8s) ShiftAllRight(shift uint64) (z Uint8s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint16s) ShiftAllRight(shift uint64) (z Uint16s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint32s) ShiftAllRight(shift uint64) (z Uint32s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint64s) ShiftAllRight(shift uint64) (z Uint64s)
 
 // ShiftLeft shifts x[i] left by shift[i] bits.
 // As in Go, if shift[i] is greater than or equal to the element width, the

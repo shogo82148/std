@@ -12,6 +12,10 @@ import (
 
 func ReduceSum[S number](s []S) S
 
+func ReduceMax[S number](s []S) S
+
+func ReduceMin[S number](s []S) S
+
 func Round[S float](x S) S
 func Ceil[S float](x S) S
 func Floor[S float](x S) S

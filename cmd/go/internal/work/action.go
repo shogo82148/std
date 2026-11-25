@@ -91,14 +91,9 @@ type Action struct {
 	buildID          string
 
 	VetxOnly   bool
-	needVet    bool
-	needBuild  bool
 	needFix    bool
-	vetCfg     *vetConfig
 	FixArchive string
 	output     []byte
-
-	analysis *analysisAction
 
 	sh *Shell
 
@@ -136,8 +131,6 @@ const (
 	ModeBuild BuildMode = iota
 	ModeInstall
 	ModeBuggyInstall
-
-	ModeVetOnly = 1 << 8
 )
 
 // NewBuilder returns a new Builder ready for use.
@@ -181,10 +174,9 @@ func (b *Builder) BuildExportAction(mode, depMode BuildMode, p *load.Package) *A
 func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Action
 
 // VetAction returns the action for running go vet on package p.
-// It depends on the action for compiling p.
 // If the caller may be causing p to be installed, it is up to the caller
 // to make sure that the install depends on (runs after) vet.
-func (b *Builder) VetAction(s *modload.Loader, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
+func (b *Builder) VetAction(p *load.Package, needFix bool) *Action
 
 // ExportAction returns an action to export the type information of p.
 func (b *Builder) ExportAction(p *load.Package) *Action

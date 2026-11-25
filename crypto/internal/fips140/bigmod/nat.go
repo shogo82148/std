@@ -180,6 +180,17 @@ func (x *Nat) Add(y *Nat, m *Modulus) *Nat
 //go:norace
 func (x *Nat) Mul(y *Nat, m *Modulus) *Nat
 
+// MulShort calculates x = x * y mod m.
+//
+// The length of x must be the same as the modulus, and x must already be
+// reduced modulo m.
+//
+// MulShort is much faster than [Nat.Mul] for even moduli, where Mul can't use
+// Montgomery multiplication.
+//
+//go:norace
+func (x *Nat) MulShort(y uint, m *Modulus) *Nat
+
 // Exp calculates out = x^e mod m.
 //
 // The exponent e is represented in big-endian order. The output will be resized

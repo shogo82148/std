@@ -100,6 +100,10 @@ func (x Int8x16) And(y Int8x16) Int8x16
 
 func (x Int8x16) AndNot(y Int8x16) Int8x16
 
+func (x Int8x16) ConcatEven(y Int8x16) Int8x16
+
+func (x Int8x16) ConcatOdd(y Int8x16) Int8x16
+
 func (x Int8x16) ConvertToUint8() Uint8x16
 
 func (x Int8x16) Equal(y Int8x16) Mask8x16
@@ -113,6 +117,10 @@ func (x Int8x16) GreaterEqual(y Int8x16) Mask8x16
 func (x Int8x16) HiToLo() Int8x16
 
 func (x Int8x16) IfElse(mask Mask8x16, y Int8x16) Int8x16
+
+func (x Int8x16) InterleaveHi(y Int8x16) Int8x16
+
+func (x Int8x16) InterleaveLo(y Int8x16) Int8x16
 
 func (x Int8x16) Len() int
 
@@ -139,6 +147,10 @@ func (x Int8x16) NotEqual(y Int8x16) Mask8x16
 func (x Int8x16) OnesCount() Int8x16
 
 func (x Int8x16) Or(y Int8x16) Int8x16
+
+func (x Int8x16) ReduceMax() int8
+
+func (x Int8x16) ReduceMin() int8
 
 func (x Int8x16) ReduceSum() int8
 
@@ -168,7 +180,13 @@ func (x Int16x8) And(y Int16x8) Int16x8
 
 func (x Int16x8) AndNot(y Int16x8) Int16x8
 
+func (x Int16x8) ConcatEven(y Int16x8) Int16x8
+
+func (x Int16x8) ConcatOdd(y Int16x8) Int16x8
+
 func (x Int16x8) ConvertToUint16() Uint16x8
+
+func (x Int16x8) DotProductPairs(y Int16x8) Int32x4
 
 func (x Int16x8) Equal(y Int16x8) Mask16x8
 
@@ -181,6 +199,10 @@ func (x Int16x8) GreaterEqual(y Int16x8) Mask16x8
 func (x Int16x8) HiToLo() Int16x8
 
 func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
+
+func (x Int16x8) InterleaveHi(y Int16x8) Int16x8
+
+func (x Int16x8) InterleaveLo(y Int16x8) Int16x8
 
 func (x Int16x8) Len() int
 
@@ -203,6 +225,10 @@ func (x Int16x8) Not() Int16x8
 func (x Int16x8) NotEqual(y Int16x8) Mask16x8
 
 func (x Int16x8) Or(y Int16x8) Int16x8
+
+func (x Int16x8) ReduceMax() int16
+
+func (x Int16x8) ReduceMin() int16
 
 func (x Int16x8) ReduceSum() int16
 
@@ -240,7 +266,13 @@ func (x Int32x4) And(y Int32x4) Int32x4
 
 func (x Int32x4) AndNot(y Int32x4) Int32x4
 
+func (x Int32x4) ConcatEven(y Int32x4) Int32x4
+
+func (x Int32x4) ConcatOdd(y Int32x4) Int32x4
+
 func (x Int32x4) ConvertToFloat32() Float32x4
+
+func (x Int32x4) ConvertToFloat64() Float64x2
 
 func (x Int32x4) ConvertToUint32() Uint32x4
 
@@ -255,6 +287,10 @@ func (x Int32x4) GreaterEqual(y Int32x4) Mask32x4
 func (x Int32x4) HiToLo() Int32x4
 
 func (x Int32x4) IfElse(mask Mask32x4, y Int32x4) Int32x4
+
+func (x Int32x4) InterleaveHi(y Int32x4) Int32x4
+
+func (x Int32x4) InterleaveLo(y Int32x4) Int32x4
 
 func (x Int32x4) Len() int
 
@@ -277,6 +313,10 @@ func (x Int32x4) Not() Int32x4
 func (x Int32x4) NotEqual(y Int32x4) Mask32x4
 
 func (x Int32x4) Or(y Int32x4) Int32x4
+
+func (x Int32x4) ReduceMax() int32
+
+func (x Int32x4) ReduceMin() int32
 
 func (x Int32x4) ReduceSum() int32
 
@@ -312,6 +352,10 @@ func (x Int64x2) And(y Int64x2) Int64x2
 
 func (x Int64x2) AndNot(y Int64x2) Int64x2
 
+func (x Int64x2) ConcatEven(y Int64x2) Int64x2
+
+func (x Int64x2) ConcatOdd(y Int64x2) Int64x2
+
 func (x Int64x2) ConvertToUint64() Uint64x2
 
 func (x Int64x2) Equal(y Int64x2) Mask64x2
@@ -323,6 +367,10 @@ func (x Int64x2) GreaterEqual(y Int64x2) Mask64x2
 func (x Int64x2) HiToLo() Int64x2
 
 func (x Int64x2) IfElse(mask Mask64x2, y Int64x2) Int64x2
+
+func (x Int64x2) InterleaveHi(y Int64x2) Int64x2
+
+func (x Int64x2) InterleaveLo(y Int64x2) Int64x2
 
 func (x Int64x2) Len() int
 
@@ -339,6 +387,10 @@ func (x Int64x2) Not() Int64x2
 func (x Int64x2) NotEqual(y Int64x2) Mask64x2
 
 func (x Int64x2) Or(y Int64x2) Int64x2
+
+func (x Int64x2) ReduceMax() int64
+
+func (x Int64x2) ReduceMin() int64
 
 func (x Int64x2) SaturateToInt32() Int32x4
 
@@ -376,6 +428,10 @@ func (x Uint8x16) Average(y Uint8x16) Uint8x16
 
 func (x Uint8x16) BitsToInt8() Int8x16
 
+func (x Uint8x16) ConcatEven(y Uint8x16) Uint8x16
+
+func (x Uint8x16) ConcatOdd(y Uint8x16) Uint8x16
+
 func (x Uint8x16) ConvertToInt8() Int8x16
 
 func (x Uint8x16) Equal(y Uint8x16) Mask8x16
@@ -389,6 +445,10 @@ func (x Uint8x16) GreaterEqual(y Uint8x16) Mask8x16
 func (x Uint8x16) HiToLo() Uint8x16
 
 func (x Uint8x16) IfElse(mask Mask8x16, y Uint8x16) Uint8x16
+
+func (x Uint8x16) InterleaveHi(y Uint8x16) Uint8x16
+
+func (x Uint8x16) InterleaveLo(y Uint8x16) Uint8x16
 
 func (x Uint8x16) Len() int
 
@@ -413,6 +473,10 @@ func (x Uint8x16) NotEqual(y Uint8x16) Mask8x16
 func (x Uint8x16) OnesCount() Uint8x16
 
 func (x Uint8x16) Or(y Uint8x16) Uint8x16
+
+func (x Uint8x16) ReduceMax() uint8
+
+func (x Uint8x16) ReduceMin() uint8
 
 func (x Uint8x16) ReduceSum() uint8
 
@@ -446,6 +510,10 @@ func (x Uint16x8) Average(y Uint16x8) Uint16x8
 
 func (x Uint16x8) BitsToInt16() Int16x8
 
+func (x Uint16x8) ConcatEven(y Uint16x8) Uint16x8
+
+func (x Uint16x8) ConcatOdd(y Uint16x8) Uint16x8
+
 func (x Uint16x8) ConvertToInt16() Int16x8
 
 func (x Uint16x8) Equal(y Uint16x8) Mask16x8
@@ -459,6 +527,10 @@ func (x Uint16x8) GreaterEqual(y Uint16x8) Mask16x8
 func (x Uint16x8) HiToLo() Uint16x8
 
 func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
+
+func (x Uint16x8) InterleaveHi(y Uint16x8) Uint16x8
+
+func (x Uint16x8) InterleaveLo(y Uint16x8) Uint16x8
 
 func (x Uint16x8) Len() int
 
@@ -479,6 +551,10 @@ func (x Uint16x8) Not() Uint16x8
 func (x Uint16x8) NotEqual(y Uint16x8) Mask16x8
 
 func (x Uint16x8) Or(y Uint16x8) Uint16x8
+
+func (x Uint16x8) ReduceMax() uint16
+
+func (x Uint16x8) ReduceMin() uint16
 
 func (x Uint16x8) ReduceSum() uint16
 
@@ -522,6 +598,10 @@ func (x Uint32x4) BitsToFloat32() Float32x4
 
 func (x Uint32x4) BitsToInt32() Int32x4
 
+func (x Uint32x4) ConcatEven(y Uint32x4) Uint32x4
+
+func (x Uint32x4) ConcatOdd(y Uint32x4) Uint32x4
+
 func (x Uint32x4) ConvertToInt32() Int32x4
 
 func (x Uint32x4) Equal(y Uint32x4) Mask32x4
@@ -535,6 +615,10 @@ func (x Uint32x4) GreaterEqual(y Uint32x4) Mask32x4
 func (x Uint32x4) HiToLo() Uint32x4
 
 func (x Uint32x4) IfElse(mask Mask32x4, y Uint32x4) Uint32x4
+
+func (x Uint32x4) InterleaveHi(y Uint32x4) Uint32x4
+
+func (x Uint32x4) InterleaveLo(y Uint32x4) Uint32x4
 
 func (x Uint32x4) Len() int
 
@@ -555,6 +639,10 @@ func (x Uint32x4) Not() Uint32x4
 func (x Uint32x4) NotEqual(y Uint32x4) Mask32x4
 
 func (x Uint32x4) Or(y Uint32x4) Uint32x4
+
+func (x Uint32x4) ReduceMax() uint32
+
+func (x Uint32x4) ReduceMin() uint32
 
 func (x Uint32x4) ReduceSum() uint32
 
@@ -604,6 +692,10 @@ func (x Uint64x2) CarrylessMulOdd(y Uint64x2) Uint64x2
 
 func (x Uint64x2) CarrylessMulOddEven(y Uint64x2) Uint64x2
 
+func (x Uint64x2) ConcatEven(y Uint64x2) Uint64x2
+
+func (x Uint64x2) ConcatOdd(y Uint64x2) Uint64x2
+
 func (x Uint64x2) ConvertToInt64() Int64x2
 
 func (x Uint64x2) Equal(y Uint64x2) Mask64x2
@@ -615,6 +707,10 @@ func (x Uint64x2) GreaterEqual(y Uint64x2) Mask64x2
 func (x Uint64x2) HiToLo() Uint64x2
 
 func (x Uint64x2) IfElse(mask Mask64x2, y Uint64x2) Uint64x2
+
+func (x Uint64x2) InterleaveHi(y Uint64x2) Uint64x2
+
+func (x Uint64x2) InterleaveLo(y Uint64x2) Uint64x2
 
 func (x Uint64x2) Len() int
 
@@ -629,6 +725,10 @@ func (x Uint64x2) Not() Uint64x2
 func (x Uint64x2) NotEqual(y Uint64x2) Mask64x2
 
 func (x Uint64x2) Or(y Uint64x2) Uint64x2
+
+func (x Uint64x2) ReduceMax() uint64
+
+func (x Uint64x2) ReduceMin() uint64
 
 func (x Uint64x2) ReshapeToUint16s() Uint16x8
 
@@ -702,6 +802,10 @@ func (x Float32x4) Neg() Float32x4
 
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
 
+func (x Float32x4) ReduceMax() float32
+
+func (x Float32x4) ReduceMin() float32
+
 func (x Float32x4) ReduceSum() float32
 
 func (x Float32x4) Round() Float32x4
@@ -727,6 +831,8 @@ func (x Float64x2) Add(y Float64x2) Float64x2
 func (x Float64x2) Ceil() Float64x2
 
 func (x Float64x2) ConvertToFloat32() Float32x4
+
+func (x Float64x2) ConvertToInt32() Int32x4
 
 func (x Float64x2) Div(y Float64x2) Float64x2
 
@@ -761,6 +867,10 @@ func (x Float64x2) MulAdd(y Float64x2, z Float64x2) Float64x2
 func (x Float64x2) Neg() Float64x2
 
 func (x Float64x2) NotEqual(y Float64x2) Mask64x2
+
+func (x Float64x2) ReduceMax() float64
+
+func (x Float64x2) ReduceMin() float64
 
 func (x Float64x2) ReduceSum() float64
 

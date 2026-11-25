@@ -440,7 +440,7 @@ func (x Float64x4) StoreArrayMasked(y *[4]float64, mask Mask64x4)
 //
 // Values of type Int8x32 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Int8x32 struct {
 	int8x32 v256
 	vals    [32]int8
@@ -463,7 +463,7 @@ func (x Int8x32) StoreArray(y *[32]int8)
 //
 // Values of type Int16x16 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Int16x16 struct {
 	int16x16 v256
 	vals     [16]int16
@@ -486,7 +486,7 @@ func (x Int16x16) StoreArray(y *[16]int16)
 //
 // Values of type Int32x8 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Int32x8 struct {
 	int32x8 v256
 	vals    [8]int32
@@ -517,7 +517,7 @@ func (x Int32x8) StoreArrayMasked(y *[8]int32, mask Mask32x8)
 //
 // Values of type Int64x4 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Int64x4 struct {
 	int64x4 v256
 	vals    [4]int64
@@ -548,7 +548,7 @@ func (x Int64x4) StoreArrayMasked(y *[4]int64, mask Mask64x4)
 //
 // Values of type Uint8x32 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Uint8x32 struct {
 	uint8x32 v256
 	vals     [32]uint8
@@ -571,7 +571,7 @@ func (x Uint8x32) StoreArray(y *[32]uint8)
 //
 // Values of type Uint16x16 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Uint16x16 struct {
 	uint16x16 v256
 	vals      [16]uint16
@@ -594,7 +594,7 @@ func (x Uint16x16) StoreArray(y *[16]uint16)
 //
 // Values of type Uint32x8 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Uint32x8 struct {
 	uint32x8 v256
 	vals     [8]uint32
@@ -625,7 +625,7 @@ func (x Uint32x8) StoreArrayMasked(y *[8]uint32, mask Mask32x8)
 //
 // Values of type Uint64x4 are comparable. a == b if a[i] == b[i] for all elements.
 //
-// CPU Feature: AVX2
+// CPU Feature: AVX
 type Uint64x4 struct {
 	uint64x4 v256
 	vals     [4]uint64

@@ -1649,7 +1649,7 @@
 // finds any problems, go test reports those and does not run the test
 // binary. Only a high-confidence subset of the default go vet checks are
 // used. That subset is: atomic, bools, buildtag, directive, errorsas,
-// ifaceassert, nilfunc, printf, stdversion, stringintconv, and tests.
+// ifaceassert, nilfunc, printf, slog, stdversion, stringintconv, and tests.
 // You can see the documentation for these and other vet tests via
 // "go doc cmd/vet". To disable the running of go vet, use the -vet=off flag.
 // To run all checks, use the -vet=all flag.
@@ -2492,6 +2492,12 @@
 //	GOPROXY
 //		URL of Go module proxy. See https://go.dev/ref/mod#environment-variables
 //		and https://go.dev/ref/mod#module-proxy for details.
+//	GORESTRICTEDBUILD
+//		Controls whether 'go build' runs in restricted mode, disabling direct
+//		invocation of VCS and C toolchain binaries (forcing CGO_ENABLED=0
+//		unless CGO_ENABLED=bindings is set, internal linking, no non-standard
+//		.syso files, -buildvcs=false, and no VCS module fetches). May be "0"
+//		(default) or "1".
 //	GOROOT
 //		The root of the go tree.
 //	GOSUMDB

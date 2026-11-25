@@ -158,16 +158,20 @@ var (
 	GORISCV64 = EnvOrAndChanged("GORISCV64", buildcfg.DefaultGORISCV64)
 	GOWASM    = EnvOrAndChanged("GOWASM", fmt.Sprint(buildcfg.GOWASM))
 
-	GOFIPS140, GOFIPS140Changed = EnvOrAndChanged("GOFIPS140", buildcfg.DefaultGOFIPS140)
-	GOPROXY, GOPROXYChanged     = EnvOrAndChanged("GOPROXY", "")
-	GOSUMDB, GOSUMDBChanged     = EnvOrAndChanged("GOSUMDB", "")
-	GOPRIVATE                   = Getenv("GOPRIVATE")
-	GONOPROXY, GONOPROXYChanged = EnvOrAndChanged("GONOPROXY", GOPRIVATE)
-	GONOSUMDB, GONOSUMDBChanged = EnvOrAndChanged("GONOSUMDB", GOPRIVATE)
-	GOINSECURE                  = Getenv("GOINSECURE")
-	GOVCS                       = Getenv("GOVCS")
-	GOAUTH, GOAUTHChanged       = EnvOrAndChanged("GOAUTH", "netrc")
+	GOFIPS140, GOFIPS140Changed                 = EnvOrAndChanged("GOFIPS140", buildcfg.DefaultGOFIPS140)
+	GOPROXY, GOPROXYChanged                     = EnvOrAndChanged("GOPROXY", "")
+	GOSUMDB, GOSUMDBChanged                     = EnvOrAndChanged("GOSUMDB", "")
+	GOPRIVATE                                   = Getenv("GOPRIVATE")
+	GONOPROXY, GONOPROXYChanged                 = EnvOrAndChanged("GONOPROXY", GOPRIVATE)
+	GONOSUMDB, GONOSUMDBChanged                 = EnvOrAndChanged("GONOSUMDB", GOPRIVATE)
+	GOINSECURE                                  = Getenv("GOINSECURE")
+	GORESTRICTEDBUILD, GORESTRICTEDBUILDChanged = EnvOrAndChanged("GORESTRICTEDBUILD", "0")
+	GOVCS                                       = Getenv("GOVCS")
+	GOAUTH, GOAUTHChanged                       = EnvOrAndChanged("GOAUTH", "netrc")
 )
+
+// RestrictedBuild reports whether GORESTRICTEDBUILD=1 is active for 'go build'.
+func RestrictedBuild() bool
 
 // EnvOrAndChanged returns the environment variable value
 // and reports whether it differs from the default value.
