@@ -46,6 +46,8 @@ type DiskCache struct {
 	sampleAcc      atomic.Int64
 	used           sync.Map
 	refreshOnce    sync.Once
+	lowDiskOnce    sync.Once
+	lowDisk        bool
 }
 
 // Open opens and returns the cache in the given directory.
@@ -122,6 +124,10 @@ func (c *DiskCache) PutExecutable(id ActionID, name string, file io.ReadSeeker) 
 // It is meant for data that is OK to cache but that we expect to vary slightly from run to run,
 // like test output containing times and the like.
 func PutNoVerify(c Cache, id ActionID, file io.ReadSeeker) (OutputID, int64, error)
+
+// PutOptional is like Put, but a DiskCache may skip writing the entry
+// when the disk is nearly full. Callers must not assume OutputFile exists afterward.
+func PutOptional(c Cache, id ActionID, file io.ReadSeeker) (OutputID, int64, error)
 
 // PutBytes stores the given bytes in the cache as the output for the action ID.
 func PutBytes(c Cache, id ActionID, data []byte) error
