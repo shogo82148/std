@@ -5,14 +5,21 @@
 // Package fips140tls controls whether crypto/tls requires FIPS-approved settings.
 package fips140tls
 
-// Force forces crypto/tls to restrict TLS configurations to FIPS-approved settings.
-// By design, this call is impossible to undo (except in tests).
+// Force forces crypto/tls to restrict TLS configurations to FIPS 140-approved settings.
+// By design, this call is impossible to undo (except in tests) and cannot be
+// overridden per-Config.
 func Force()
+
+// Forced reports whether FIPS 140-approved settings were forced by importing
+// crypto/tls/fipsonly and therefore cannot be overridden per-Config.
+func Forced() bool
 
 // Required reports whether FIPS-approved settings are required.
 //
 // Required is true if FIPS 140-3 mode is enabled with GODEBUG=fips140=on, or if
 // the crypto/tls/fipsonly package is imported by a Go+BoringCrypto build.
 func Required() bool
+
+func TestingOnlyRequire()
 
 func TestingOnlyAbandon()

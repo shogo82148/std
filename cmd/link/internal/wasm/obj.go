@@ -9,4 +9,5 @@ import (
 	"github.com/shogo82148/std/cmd/link/internal/ld"
 )
 
-func Init() (*sys.Arch, ld.Arch)
+// Init returns the architecture configuration for the wasm linker.
+func Init(arch *sys.Arch) (*sys.Arch, ld.Arch)

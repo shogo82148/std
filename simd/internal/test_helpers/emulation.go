@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd
+//go:build goexperiment.simdstable
 
 package test_helpers
 
@@ -11,6 +11,10 @@ import (
 )
 
 func ReduceSum[S number](s []S) S
+
+func ReduceMax[S number](s []S) S
+
+func ReduceMin[S number](s []S) S
 
 func Round[S float](x S) S
 func Ceil[S float](x S) S
@@ -36,8 +40,6 @@ func Or[S integer](x, y S) S
 func Xor[S integer](x, y S) S
 
 func AndNot[S integer](x, y S) S
-
-func Xnor[S integer](x, y S) S
 
 func Not[S integer](x S) S
 

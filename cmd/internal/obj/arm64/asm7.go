@@ -110,6 +110,8 @@ func ASIMDSAME(u, size, opcode uint32) uint32
 
 func ASIMDSHF(u, opcode uint32) uint32
 
+func ASISDPAIR(u, size, opcode uint32) uint32
+
 const (
 	// Optab.flag
 	LFROM = 1 << iota

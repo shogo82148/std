@@ -63,6 +63,9 @@ func (c Cursor) WritePtr(target *obj.LSym)
 
 func (c Cursor) WritePtrWeak(target *obj.LSym)
 
+// WriteFuncPtrWeak writes a weak function entry into an itab method slot.
+func (c Cursor) WriteFuncPtrWeak(target *obj.LSym)
+
 func (c Cursor) WriteUintptr(val uint64)
 
 func (c Cursor) WriteUint32(val uint32)

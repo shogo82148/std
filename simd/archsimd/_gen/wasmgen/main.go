@@ -23,6 +23,9 @@ const (
 	NameHasFormat
 	NonSigned
 	EmulatedRule
+	// Fixed permutation synthesized from i8x16.shuffle. Can take 1 or 2 args.
+	// If 1 arg, the arg is duplicated to both inputs.
+	IsSynthShuffle
 )
 
 func (o OpFlags) OneString() string

@@ -85,6 +85,7 @@ import (
 //	goroutineleak  - リークしたすべてのゴルーチンのスタックトレース
 //	allocs         - 過去のすべてのメモリー割り当てのサンプリング
 //	heap           - 生きているオブジェクトのメモリー割り当てのサンプリング
+//	memory         - 最後に完了した GC 時点でのプロセスのメモリー使用量の内訳
 //	threadcreate   - 新しいOSスレッドの作成に至ったスタックトレース
 //	block          - 同期プリミティブでのブロックに至ったスタックトレース
 //	mutex          - 競合したミューテックスの保持者のスタックトレース
@@ -116,6 +117,22 @@ import (
 // 割り当てプロファイルはヒーププロファイルと同じですが、デフォルトの
 // pprof表示を -alloc_space（プログラム開始以降に割り当てられた
 // バイト数の合計（ガベージコレクションされたバイトを含む））に変更します。
+//
+// # Memory profile
+//
+// The memory profile is a superset of the inuse_space heap profile. It breaks
+// down the process's resident set size (RSS) into Go and non-Go memory. Go
+// memory is further split into the heap, stacks, and runtime metadata, using
+// the runtime's memory metrics (see [runtime/metrics]). The heap includes the
+// same live object samples as the heap profile, as well as dead objects the
+// most recently completed garbage collection found unreachable. Both are
+// attributed to the allocation stacks of sampled objects, scaled to match the
+// runtime's heap metrics.
+//
+// Non-Go memory, such as memory allocated by C libraries, is estimated as RSS
+// minus Go memory and is only reported where RSS is available (currently
+// Linux and Darwin). On Linux, it is further split into file-backed and shared
+// memory, and anonymous memory. Prefer this profile to the heap profile.
 //
 // # Block profile
 //

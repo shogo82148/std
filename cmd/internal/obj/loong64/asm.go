@@ -105,3 +105,6 @@ func OpCodeIR(a obj.As) uint32
 func OpCodeIRR(a obj.As) uint32
 
 func OpCodeRRR(a obj.As) uint32
+
+// Loong64RegisterExtension constructs an Loong64 register with extension or arrangement.
+func EncodeRegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error

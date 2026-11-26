@@ -31,6 +31,12 @@ func MaskFromBits[E MaskElt, W FixedWidth](x UintN) (z Vec[E, W])
 //specgen:require z=uint{xL}
 func MaskToBits[E MaskElt, W FixedWidth](x Vec[E, W]) (z UintN)
 
+// MaskAllTrue returns a mask where every element is true.
+//
+//specgen:name {{.z}}AllTrue
+//specgen:experiment
+func MaskAllTrue[E MaskElt, W Width]() (z Vec[E, W])
+
 // MaskToZ converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true", and 0 otherwise.
 //
@@ -46,3 +52,54 @@ func Any[E MaskElt, W Width](x Vec[E, W]) bool
 
 // None returns true when no positions in mask x are set.
 func None[E MaskElt, W Width](x Vec[E, W]) bool
+
+// MaskFromCount returns a mask whose first count elements are true and the rest
+// false. A count <= 0 gives no true elements, and a count >= {{lanes .z "z"}}
+// gives all true elements.
+//
+//	z[i] = i < count
+//
+//specgen:name {{.z}}FromCount
+//specgen:experiment
+func MaskFromCount[E MaskElt, W Width](count int) (z Vec[E, W])
+
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+//specgen:experiment
+func First[E MaskElt, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
+//
+//specgen:experiment
+func Next[E MaskElt, W Width](x, cursor Vec[E, W]) (z Vec[E, W])

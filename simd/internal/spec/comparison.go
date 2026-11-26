@@ -8,17 +8,36 @@ package spec
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
+// {{if eq .xB "float"}}
+// Like Go's == operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+// {{end}}
+//
 //specgen:require zN=xN
-func Equal[E EltOrMask, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
+func Equal[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
+// {{if eq .xB "float"}}
+// Like Go's != operator on floating-point values, this follows IEEE 754: the
+// result is true if either element is NaN, and +0 equals -0.
+// {{end}}
+//
 //specgen:require zN=xN
-func NotEqual[E EltOrMask, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
+func NotEqual[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 
 // Less returns a mask indicating which elements of x are less than y.
 //
 //	z[i] = x[i] < y[i]
+//
+// {{if eq .xB "float"}}
+// Like Go's < operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+// {{end}}
 //
 //specgen:require zN=xN
 func Less[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
@@ -28,12 +47,22 @@ func Less[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 //
 //	z[i] = x[i] <= y[i]
 //
+// {{if eq .xB "float"}}
+// Like Go's <= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+// {{end}}
+//
 //specgen:require zN=xN
 func LessEqual[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 
 // Greater returns a mask indicating which elements of x are greater than y.
 //
 //	z[i] = x[i] > y[i]
+//
+// {{if eq .xB "float"}}
+// Like Go's > operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+// {{end}}
 //
 //specgen:require zN=xN
 func Greater[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
@@ -42,6 +71,11 @@ func Greater[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])
 // or equal to y.
 //
 //	z[i] = x[i] >= y[i]
+//
+// {{if eq .xB "float"}}
+// Like Go's >= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+// {{end}}
 //
 //specgen:require zN=xN
 func GreaterEqual[E Elt, W Width, zE MaskElt](x, y Vec[E, W]) (z Vec[zE, W])

@@ -9,20 +9,20 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/types2"
 )
 
-// Analyzer holds the state for SIMD dependency analysis
+// Analyzer holds the state for SIMD dependency analysis.
 type Analyzer struct {
-	pkg                *types2.Package
-	info               *types2.Info
-	isDependentObj     map[types2.Object]bool
-	isDependentMethod  map[types2.Object]bool
-	hasDependentMethod map[types2.Type]bool
-	visited            map[types2.Type]bool
-	inSimd             bool
+	pkg               *types2.Package
+	info              *types2.Info
+	isDependentObj    map[types2.Object]bool
+	isDependentMethod map[types2.Object]bool
+	visited           map[types2.Type]bool
+	inSimd            bool
 }
 
 func NewAnalyzer(pkg *types2.Package, info *types2.Info) *Analyzer
 
-// Analyze builds the set of SIMD-dependent objects
+// Analyze builds the set of SIMD-dependent objects.
 func (a *Analyzer) Analyze(files []*syntax.File) bool
 
+// HasDependentSignature reports whether sig depends on a portable SIMD type.
 func (a *Analyzer) HasDependentSignature(sig *types2.Signature) bool

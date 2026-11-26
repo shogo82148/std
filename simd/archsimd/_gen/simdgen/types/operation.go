@@ -77,6 +77,7 @@ type RawOperation struct {
 	Commutative     bool
 	CPUFeature      string
 	Zeroing         *bool
+	FalseDep        *bool
 	Documentation   *string
 	AddDoc          *string
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
@@ -123,6 +124,7 @@ type Operand struct {
 	Base       *string
 	EncodeBase *regexp.Regexp
 	ElemBits   *int
+	RegBits    *int
 	Bits       VectorSize
 	EncodeBits *VectorSize
 

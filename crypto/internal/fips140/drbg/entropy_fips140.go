@@ -2,13 +2,4 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Entropy generation in FIPS 140-3 mode uses a scratch buffer in the BSS
-// section (see below), which usually doesn't cost much, except on Wasm, due to
-// the way the linear memory works. FIPS 140-3 mode is not supported on Wasm, so
-// we just use a build tag to exclude it. (Could also exclude other platforms
-// that does not support FIPS 140-3 mode, but as the BSS variable doesn't cost
-// much, don't bother.)
-//
-//go:build !wasm
-
 package drbg

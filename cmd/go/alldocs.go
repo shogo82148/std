@@ -1495,7 +1495,7 @@
 // 何らかの問題を見つけた場合、go testはそれらを報告し、テストバイナリーを
 // 実行しません。使用されるのは、デフォルトのgo vetチェックのうち
 // 信頼度の高い一部のみです。そのサブセットは、atomic、bools、buildtag、
-// directive、errorsas、ifaceassert、nilfunc、printf、stdversion、
+// directive、errorsas、ifaceassert、nilfunc、printf、slog、stdversion、
 // stringintconv、およびtestsです。
 // これらや他のvetテストのドキュメントは、
 // "go doc cmd/vet"で確認できます。go vetの実行を無効にするには、-vet=offフラグを使用します。
@@ -2281,6 +2281,12 @@
 //	GOPROXY
 //		Go モジュールプロキシーの URL。詳細は https://go.dev/ref/mod#environment-variables
 //		および https://go.dev/ref/mod#module-proxy を参照してください。
+//	GORESTRICTEDBUILD
+//		'go build' を制限モードで実行するかどうかを制御します。制限モードでは、
+//		VCS や C ツールチェーンのバイナリーの直接の呼び出しが無効になります
+//		（CGO_ENABLED=0 の強制（CGO_ENABLED=bindings が設定されている場合を除く）、
+//		内部リンク、非標準の .syso ファイルの禁止、-buildvcs=false、
+//		VCS からのモジュール取得の禁止）。"0"（デフォルト）または "1" を指定できます。
 //	GOROOT
 //		goツリーのルート。
 //	GOSUMDB

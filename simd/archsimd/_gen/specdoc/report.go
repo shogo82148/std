@@ -7,6 +7,8 @@ package specdoc
 import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
+
+	"github.com/shogo82148/std/simd/archsimd/_gen/sgutil"
 )
 
 // Finding is an individual finding in a [Report].
@@ -23,6 +25,7 @@ type Report struct {
 	DocOrderViolations []DocOrderViolation
 	UnknownDecls       []UnknownDecl
 	UnexpectedDocs     []UnexpectedDoc
+	PhaseViolations    []PhaseViolation
 }
 
 // Error formats the report as a string, implementing the error interface.
@@ -97,6 +100,18 @@ type UnexpectedDoc struct {
 func (u UnexpectedDoc) Decl() Decl
 
 func (u UnexpectedDoc) String() string
+
+// PhaseViolation records an exported declaration that doesn't belong in a
+// file of its phase (see [Options.RejectUnknown]).
+type PhaseViolation struct {
+	D      Decl
+	Phase  sgutil.Phase
+	Reason string
+}
+
+func (v PhaseViolation) Decl() Decl
+
+func (v PhaseViolation) String() string
 
 // Merge combines other into r.
 func (r *Report) Merge(other *Report)

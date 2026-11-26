@@ -110,8 +110,15 @@ type Flags struct {
 	RuntimeFreegc bool
 
 	// SIMD enables the simd package and the compiler's handling
-	// of SIMD intrinsics.
+	// of SIMD intrinsics. This includes APIs that are not yet
+	// slated for general availability. SIMD implies SIMDStable.
 	SIMD bool
+
+	// SIMDStable enables the subset of the simd and simd/archsimd
+	// packages that is covered by the Go 1 compatibility promise,
+	// and the compiler support for it. It is enabled by default;
+	// GOEXPERIMENT=nosimdstable disables it.
+	SIMDStable bool
 
 	// RuntimeSecret enables the runtime/secret package.
 	RuntimeSecret bool
@@ -125,5 +132,18 @@ type Flags struct {
 	GoListExportNewFormat bool
 
 	// CgoBindings enables specifying cgo bindings using the go types they bind to.
+	// Requires RuntimeCgoPurego
 	CgoBindings bool
+
+	// VetFiles causes go test to execute, in addition to the
+	// usual cmd/vet suite, analyzers defined by go.vet files in
+	// the workspace; see https://go.dev/issue/82464.
+	VetFiles bool
+
+	// RuntimeCgoPurego enables the pure Go and assembly implementation of runtime/cgo.
+	RuntimeCgoPurego bool
+
+	// TrimBuildCache enables automatic sized-based trimming of the cmd/go build cache.
+	// See https://go.dev/issue/29561.
+	TrimBuildCache bool
 }

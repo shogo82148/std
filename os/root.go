@@ -81,6 +81,9 @@ func (r *Root) Create(name string) (*File, error)
 //
 // permに下位9ビット（0o777）以外のビットが含まれている場合、
 // OpenFileはエラーを返します。
+//
+// OpenFileは、O_NOFOLLOW_ANY および O_RESOLVE_BENEATH フラグをサポートしていません。
+// これらのフラグを定義しているプラットフォームでいずれかが渡された場合、エラーを返します。
 func (r *Root) OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // OpenRootは、ルート内の指定されたディレクトリーを開きます。

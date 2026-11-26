@@ -413,8 +413,18 @@ func (x Uint64s) ConcatOdd(y Uint64s) (z Uint64s)
 //	z[i] = int32(x[i])
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
-// If the converted result would be outside the representable range, the result
-// is architecture-dependent.
+//
+// The handling of NaN and values whose truncated result is outside the
+// representable range of int32 is architecture-dependent. ARM64 and WASM map
+// NaN to 0 and saturate out-of-range values (including ±Inf). AMD64 returns
+// math.MinInt32 (the integer indefinite value) for NaN and all out-of-range
+// values.
+//
+//	trunc(x)          ARM64/WASM  AMD64
+//	----------------  ----------  --------
+//	NaN               0           MinInt32
+//	< MinInt32, -Inf  MinInt32    MinInt32
+//	> MaxInt32, +Inf  MaxInt32    MinInt32
 //
 // Asm: ZFCVTZS, CPU Feature: SVE
 func (x Float32s) ConvertToInt32() (z Int32s)
@@ -493,50 +503,76 @@ func (x Uint64s) Div(y Uint64s) (z Uint64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
+// Like Go's == operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
 // Asm: ZFCMEQ, CPU Feature: SVE
 func (x Float32s) Equal(y Float32s) (z Mask32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
+//
+// Like Go's == operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 //
 // Asm: ZFCMEQ, CPU Feature: SVE
 func (x Float64s) Equal(y Float64s) (z Mask64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Int8s) Equal(y Int8s) (z Mask8s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 //
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Int16s) Equal(y Int16s) (z Mask16s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Int32s) Equal(y Int32s) (z Mask32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 //
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Int64s) Equal(y Int64s) (z Mask64s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Uint8s) Equal(y Uint8s) (z Mask8s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 //
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Uint16s) Equal(y Uint16s) (z Mask16s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
 //
+//	z[i] = x[i] == y[i]
+//
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Uint32s) Equal(y Uint32s) (z Mask32s)
 
 // Equal returns a mask indicating which elements of x and y are equal.
+//
+//	z[i] = x[i] == y[i]
 //
 // Asm: ZCMPEQ, CPU Feature: SVE
 func (x Uint64s) Equal(y Uint64s) (z Mask64s)
@@ -567,12 +603,18 @@ func (x Float64s) Floor() (z Float64s)
 //
 //	z[i] = x[i] > y[i]
 //
+// Like Go's > operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
 // Asm: ZFCMGT, CPU Feature: SVE
 func (x Float32s) Greater(y Float32s) (z Mask32s)
 
 // Greater returns a mask indicating which elements of x are greater than y.
 //
 //	z[i] = x[i] > y[i]
+//
+// Like Go's > operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 //
 // Asm: ZFCMGT, CPU Feature: SVE
 func (x Float64s) Greater(y Float64s) (z Mask64s)
@@ -638,6 +680,9 @@ func (x Uint64s) Greater(y Uint64s) (z Mask64s)
 //
 //	z[i] = x[i] >= y[i]
 //
+// Like Go's >= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
 // Asm: ZFCMGE, CPU Feature: SVE
 func (x Float32s) GreaterEqual(y Float32s) (z Mask32s)
 
@@ -645,6 +690,9 @@ func (x Float32s) GreaterEqual(y Float32s) (z Mask32s)
 // or equal to y.
 //
 //	z[i] = x[i] >= y[i]
+//
+// Like Go's >= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
 //
 // Asm: ZFCMGE, CPU Feature: SVE
 func (x Float64s) GreaterEqual(y Float64s) (z Mask64s)
@@ -824,6 +872,28 @@ func (x Uint32s) InterleaveLo(y Uint32s) (z Uint32s)
 //
 // Asm: ZZIP1, CPU Feature: SVE
 func (x Uint64s) InterleaveLo(y Uint64s) (z Uint64s)
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < x.Len() {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+//
+// Asm: ZTBL, CPU Feature: SVE
+func (x Int8s) LookupOrZero(indices Uint8s) (z Int8s)
+
+// LookupOrZero permutes x, returning 0 for out-of-range indices.
+//
+//	if indices[i] < x.Len() {
+//	    z[i] = x[indices[i]]
+//	} else {
+//	    z[i] = 0
+//	}
+//
+// Asm: ZTBL, CPU Feature: SVE
+func (x Uint8s) LookupOrZero(indices Uint8s) (z Uint8s)
 
 // Max returns the elementwise maximum of x and y.
 //
@@ -1177,45 +1247,85 @@ func (x Uint32s) MulAdd(y Uint32s, z Uint32s) (w Uint32s)
 // Asm: ZMLA, CPU Feature: SVE
 func (x Uint64s) MulAdd(y Uint64s, z Uint64s) (w Uint64s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 8
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZSMULH, CPU Feature: SVE
-func (x Int8s) MulHigh(y Int8s) Int8s
+func (x Int8s) MulHigh(y Int8s) (z Int8s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 16
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZSMULH, CPU Feature: SVE
-func (x Int16s) MulHigh(y Int16s) Int16s
+func (x Int16s) MulHigh(y Int16s) (z Int16s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 32
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZSMULH, CPU Feature: SVE
-func (x Int32s) MulHigh(y Int32s) Int32s
+func (x Int32s) MulHigh(y Int32s) (z Int32s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 64
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZSMULH, CPU Feature: SVE
-func (x Int64s) MulHigh(y Int64s) Int64s
+func (x Int64s) MulHigh(y Int64s) (z Int64s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 8
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZUMULH, CPU Feature: SVE
-func (x Uint8s) MulHigh(y Uint8s) Uint8s
+func (x Uint8s) MulHigh(y Uint8s) (z Uint8s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 16
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZUMULH, CPU Feature: SVE
-func (x Uint16s) MulHigh(y Uint16s) Uint16s
+func (x Uint16s) MulHigh(y Uint16s) (z Uint16s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 32
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZUMULH, CPU Feature: SVE
-func (x Uint32s) MulHigh(y Uint32s) Uint32s
+func (x Uint32s) MulHigh(y Uint32s) (z Uint32s)
 
-// MulHigh multiplies elements and stores the high part of the result.
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> 64
+//
+// The product is computed exactly, so no bits are lost before the shift.
 //
 // Asm: ZUMULH, CPU Feature: SVE
-func (x Uint64s) MulHigh(y Uint64s) Uint64s
+func (x Uint64s) MulHigh(y Uint64s) (z Uint64s)
 
 // Neg returns the elementwise negation of x.
 //
@@ -1259,52 +1369,134 @@ func (x Int32s) Neg() (z Int32s)
 // Asm: ZNEG, CPU Feature: SVE
 func (x Int64s) Neg() (z Int64s)
 
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Int8s) Not() (z Int8s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Int16s) Not() (z Int16s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Int32s) Not() (z Int32s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Int64s) Not() (z Int64s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Uint8s) Not() (z Uint8s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Uint16s) Not() (z Uint16s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Uint32s) Not() (z Uint32s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: ZNOT, CPU Feature: SVE
+func (x Uint64s) Not() (z Uint64s)
+
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
+//
+// Like Go's != operator on floating-point values, this follows IEEE 754: the
+// result is true if either element is NaN, and +0 equals -0.
 //
 // Asm: ZFCMNE, CPU Feature: SVE
 func (x Float32s) NotEqual(y Float32s) (z Mask32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
+// Like Go's != operator on floating-point values, this follows IEEE 754: the
+// result is true if either element is NaN, and +0 equals -0.
+//
 // Asm: ZFCMNE, CPU Feature: SVE
 func (x Float64s) NotEqual(y Float64s) (z Mask64s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 //
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int8s) NotEqual(y Int8s) (z Mask8s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int16s) NotEqual(y Int16s) (z Mask16s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 //
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int32s) NotEqual(y Int32s) (z Mask32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int64s) NotEqual(y Int64s) (z Mask64s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 //
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Uint8s) NotEqual(y Uint8s) (z Mask8s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Uint16s) NotEqual(y Uint16s) (z Mask16s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
 //
+//	z[i] = x[i] != y[i]
+//
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Uint32s) NotEqual(y Uint32s) (z Mask32s)
 
 // NotEqual returns a mask indicating which elements of x and y are not equal.
+//
+//	z[i] = x[i] != y[i]
 //
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Uint64s) NotEqual(y Uint64s) (z Mask64s)
@@ -1433,6 +1625,10 @@ func (x Uint64s) Or(y Uint64s) (z Uint64s)
 //
 //	z = max(x[0], x[1], ...)
 //
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
 // Asm: ZFMAXVS, CPU Feature: SVE
 func (x Float32s) ReduceMax() (z float32)
 
@@ -1440,8 +1636,146 @@ func (x Float32s) ReduceMax() (z float32)
 //
 //	z = max(x[0], x[1], ...)
 //
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
 // Asm: ZFMAXVD, CPU Feature: SVE
 func (x Float64s) ReduceMax() (z float64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZSMAXVB, CPU Feature: SVE
+func (x Int8s) ReduceMax() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZSMAXVH, CPU Feature: SVE
+func (x Int16s) ReduceMax() (z int16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZSMAXVS, CPU Feature: SVE
+func (x Int32s) ReduceMax() (z int32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZSMAXVD, CPU Feature: SVE
+func (x Int64s) ReduceMax() (z int64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZUMAXVB, CPU Feature: SVE
+func (x Uint8s) ReduceMax() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZUMAXVH, CPU Feature: SVE
+func (x Uint16s) ReduceMax() (z uint16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZUMAXVS, CPU Feature: SVE
+func (x Uint32s) ReduceMax() (z uint32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Asm: ZUMAXVD, CPU Feature: SVE
+func (x Uint64s) ReduceMax() (z uint64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Asm: ZFMINVS, CPU Feature: SVE
+func (x Float32s) ReduceMin() (z float32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Asm: ZFMINVD, CPU Feature: SVE
+func (x Float64s) ReduceMin() (z float64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZSMINVB, CPU Feature: SVE
+func (x Int8s) ReduceMin() (z int8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZSMINVH, CPU Feature: SVE
+func (x Int16s) ReduceMin() (z int16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZSMINVS, CPU Feature: SVE
+func (x Int32s) ReduceMin() (z int32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZSMINVD, CPU Feature: SVE
+func (x Int64s) ReduceMin() (z int64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZUMINVB, CPU Feature: SVE
+func (x Uint8s) ReduceMin() (z uint8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZUMINVH, CPU Feature: SVE
+func (x Uint16s) ReduceMin() (z uint16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZUMINVS, CPU Feature: SVE
+func (x Uint32s) ReduceMin() (z uint32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Asm: ZUMINVD, CPU Feature: SVE
+func (x Uint64s) ReduceMin() (z uint64)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
@@ -1462,6 +1796,62 @@ func (x Float32s) ReduceSum() (z float32)
 //
 // Asm: ZFADDVD, CPU Feature: SVE
 func (x Float64s) ReduceSum() (z float64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Int8s) ReduceSum() (z int8)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Int16s) ReduceSum() (z int16)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Int32s) ReduceSum() (z int32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Int64s) ReduceSum() (z int64)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Uint8s) ReduceSum() (z uint8)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Uint16s) ReduceSum() (z uint16)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Uint32s) ReduceSum() (z uint32)
+
+// ReduceSum returns the scalar sum of the elements of x.
+//
+//	z = x[0] + x[1] + ...
+//
+// Asm: ZUADDVD, CPU Feature: SVE
+func (x Uint64s) ReduceSum() (z uint64)
 
 // Round returns the nearest integer value to each element of x, rounding ties
 // to even.
@@ -1488,7 +1878,8 @@ func (x Float32s) Round() (z Float32s)
 func (x Float64s) Round() (z Float64s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1496,7 +1887,8 @@ func (x Float64s) Round() (z Float64s)
 func (x Int8s) ShiftAllLeft(shift uint64) (z Int8s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1504,7 +1896,8 @@ func (x Int8s) ShiftAllLeft(shift uint64) (z Int8s)
 func (x Int16s) ShiftAllLeft(shift uint64) (z Int16s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1512,7 +1905,8 @@ func (x Int16s) ShiftAllLeft(shift uint64) (z Int16s)
 func (x Int32s) ShiftAllLeft(shift uint64) (z Int32s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1520,7 +1914,8 @@ func (x Int32s) ShiftAllLeft(shift uint64) (z Int32s)
 func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1528,7 +1923,8 @@ func (x Int64s) ShiftAllLeft(shift uint64) (z Int64s)
 func (x Uint8s) ShiftAllLeft(shift uint64) (z Uint8s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1536,7 +1932,8 @@ func (x Uint8s) ShiftAllLeft(shift uint64) (z Uint8s)
 func (x Uint16s) ShiftAllLeft(shift uint64) (z Uint16s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
@@ -1544,12 +1941,229 @@ func (x Uint16s) ShiftAllLeft(shift uint64) (z Uint16s)
 func (x Uint32s) ShiftAllLeft(shift uint64) (z Uint32s)
 
 // ShiftAllLeft shifts each element of x left by shift bits.
-// If shift is greater than the element width, the result is 0.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
 //
 //	z[i] = x[i] << shift
 //
 // Asm: ZLSL, CPU Feature: SVE
 func (x Uint64s) ShiftAllLeft(shift uint64) (z Uint64s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int8s) ShiftAllRight(shift uint64) (z Int8s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int16s) ShiftAllRight(shift uint64) (z Int16s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int32s) ShiftAllRight(shift uint64) (z Int32s)
+
+// ShiftAllRight arithmetically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int64s) ShiftAllRight(shift uint64) (z Int64s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint8s) ShiftAllRight(shift uint64) (z Uint8s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint16s) ShiftAllRight(shift uint64) (z Uint16s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint32s) ShiftAllRight(shift uint64) (z Uint32s)
+
+// ShiftAllRight logically shifts each element of x right by shift bits.
+// As in Go, if shift is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint64s) ShiftAllRight(shift uint64) (z Uint64s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Int8s) ShiftLeft(shift Uint8s) (z Int8s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Int16s) ShiftLeft(shift Uint16s) (z Int16s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Int32s) ShiftLeft(shift Uint32s) (z Int32s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Int64s) ShiftLeft(shift Uint64s) (z Int64s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Uint8s) ShiftLeft(shift Uint8s) (z Uint8s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Uint16s) ShiftLeft(shift Uint16s) (z Uint16s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Uint32s) ShiftLeft(shift Uint32s) (z Uint32s)
+
+// ShiftLeft shifts x[i] left by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] << shift[i]
+//
+// Asm: ZLSL, CPU Feature: SVE
+func (x Uint64s) ShiftLeft(shift Uint64s) (z Uint64s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int8s) ShiftRight(shift Uint8s) (z Int8s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int16s) ShiftRight(shift Uint16s) (z Int16s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int32s) ShiftRight(shift Uint32s) (z Int32s)
+
+// ShiftRight arithmetically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0 or -1, depending on the sign of the element.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZASR, CPU Feature: SVE
+func (x Int64s) ShiftRight(shift Uint64s) (z Int64s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint8s) ShiftRight(shift Uint8s) (z Uint8s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint16s) ShiftRight(shift Uint16s) (z Uint16s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint32s) ShiftRight(shift Uint32s) (z Uint32s)
+
+// ShiftRight logically shifts x[i] right by shift[i] bits.
+// As in Go, if shift[i] is greater than or equal to the element width, the
+// result is 0.
+//
+//	z[i] = x[i] >> shift[i]
+//
+// Asm: ZLSR, CPU Feature: SVE
+func (x Uint64s) ShiftRight(shift Uint64s) (z Uint64s)
 
 // Sqrt returns the elementwise square root of x.
 //

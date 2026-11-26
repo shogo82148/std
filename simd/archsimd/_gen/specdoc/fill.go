@@ -12,6 +12,10 @@
 // parameter names, and allows shared documentation to be maintained in a single
 // place.
 //
+// Fill handles exported functions, methods, and vector and mask type
+// declarations. Type declarations have no signature to check; Fill only fills
+// their doc comments, following the same conventions as functions.
+//
 // # Doc-Ownership Convention
 //
 // Doc comments follow a three-part structural convention:
@@ -50,14 +54,40 @@ import (
 
 // Options configures the behavior of [Fill].
 type Options struct {
-	// RejectUnknown controls whether an exported declaration with no matching
-	// spec entry is reported as an error.
+	// RejectUnknown controls whether exported declarations that aren't known
+	// to belong in the file are reported as errors. It's meant for generators
+	// and tools whose output should consist of APIs covered by spec, so that
+	// new APIs can't escape spec coverage, and so that generally available
+	// and experimental APIs end up in files of the right phase.
 	//
 	// When false, un-specced declarations are tolerated and omitted from
-	// signature and doc checks, and passed through the rewrite verbatim. When
-	// true, any exported declaration lacking a spec definition causes
-	// generation to fail, preventing new API operations from escaping spec
-	// coverage.
+	// signature and doc checks, and passed through the rewrite verbatim.
+	//
+	// When true, a declaration is known if spec describes it, or if it's one
+	// of the few APIs that spec doesn't describe but that may be generally
+	// available, listed by [sgutil.NonSpecAPI]. What else is required depends
+	// on the file's phase, as given by its //go:build constraint (see
+	// [sgutil.ParseBuildConstraints]):
+	//
+	//   - A file with no phase builds regardless of GOEXPERIMENT, so it must
+	//     not export anything: in the SIMD packages, that would be API that
+	//     exists even without GOEXPERIMENT=simdstable. Unknown declarations
+	//     are recorded in [Report.UnknownDecls], and the others in
+	//     [Report.PhaseViolations].
+	//   - A generally available file (goexperiment.simdstable) must declare
+	//     only generally available APIs. Every exported declaration must be
+	//     known, and nothing from spec may be marked //specgen:experiment. In
+	//     archsimd, APIs from spec must use only fixed-width vectors, and
+	//     the file must only be for architectures whose archsimd API can be
+	//     generally available. Unknown declarations are recorded in
+	//     [Report.UnknownDecls], and the others in [Report.PhaseViolations].
+	//   - An experimental file (goexperiment.simd) must not declare any
+	//     generally available API from spec. Experimental APIs needn't be in
+	//     spec, so unknown declarations are allowed. Violations are recorded
+	//     in [Report.PhaseViolations].
+	//
+	// The APIs listed by [sgutil.NonSpecAPI] are allowed in files of either
+	// phase. Test files aren't checked.
 	RejectUnknown bool
 
 	// AllowDocRewrite controls whether an exported declaration containing

@@ -69,6 +69,20 @@ type FixedWidth interface {
 	bits() int
 }
 
+// SplittableWidth is a constraint for the fixed vector widths whose halves are
+// also vector widths.
+type SplittableWidth interface {
+	Width256 | Width512
+	bits() int
+}
+
+// DoublableWidth is a constraint for the fixed vector widths whose doubles are
+// also vector widths.
+type DoublableWidth interface {
+	Width128 | Width256
+	bits() int
+}
+
 type Width128 struct{}
 
 type Width256 struct{}

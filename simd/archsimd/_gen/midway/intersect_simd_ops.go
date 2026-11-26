@@ -11,11 +11,6 @@ import (
 type MethodSet map[string]*ast.FuncDecl
 type TypeMethods map[string]MethodSet
 
-type Comments struct {
-	Types     map[string]string `yaml:"types"`
-	Functions map[string]string `yaml:"functions"`
-}
-
 type ArchAndFiles struct {
 	arch  string
 	files []string

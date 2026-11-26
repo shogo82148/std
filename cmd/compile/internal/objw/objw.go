@@ -33,6 +33,12 @@ func SymPtr(s *obj.LSym, off int, x *obj.LSym, xoff int) int
 
 func SymPtrWeak(s *obj.LSym, off int, x *obj.LSym, xoff int) int
 
+// SymFuncPtr writes the code word stored in a function value.
+func SymFuncPtr(s *obj.LSym, off int, x *obj.LSym) int
+
+// SymFuncPtrWeak writes a weak code word stored in a function value or itab.
+func SymFuncPtrWeak(s *obj.LSym, off int, x *obj.LSym) int
+
 func SymPtrOff(s *obj.LSym, off int, x *obj.LSym) int
 
 func SymPtrWeakOff(s *obj.LSym, off int, x *obj.LSym) int

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd && wasm
+//go:build goexperiment.simdstable && wasm
 
 package archsimd
 
@@ -156,7 +156,7 @@ func (x Float32x4) MulAdd(y Float32x4, z Float32x4) (w Float32x4)
 // Emulated
 func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
+// CarrylessMulEven computes the elementwise carryless multiplication of
 // even-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
@@ -184,21 +184,21 @@ func (x Float64x2) MulAdd(y Float64x2, z Float64x2) (w Float64x2)
 //	= (x^6 + x^5 + x^1)
 //
 // Emulated
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
+func (x Uint64x2) CarrylessMulEven(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
+// CarrylessMulOdd computes the elementwise carryless multiplication of
 // odd-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
 // Emulated
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
+func (x Uint64x2) CarrylessMulOdd(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
+// CarrylessMulEvenOdd computes the elementwise carryless multiplication of
 // even-indexed elements of x and odd-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -206,12 +206,12 @@ func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
 // Emulated
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
+func (x Uint64x2) CarrylessMulEvenOdd(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
+// CarrylessMulOddEven computes the elementwise carryless multiplication of
 // odd-indexed elements of x and even-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -219,10 +219,10 @@ func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
 // Emulated
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
+func (x Uint64x2) CarrylessMulOddEven(y Uint64x2) (z Uint64x2)
 
 // ReduceSum returns the scalar sum of the elements of x.
 //
@@ -282,3 +282,159 @@ func (x Int8x16) ReduceSum() (z int8)
 //
 // Emulated
 func (x Uint8x16) ReduceSum() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Int8x16) ReduceMax() (z int8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Int8x16) ReduceMin() (z int8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint8x16) ReduceMax() (z uint8)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint8x16) ReduceMin() (z uint8)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Int16x8) ReduceMax() (z int16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Int16x8) ReduceMin() (z int16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint16x8) ReduceMax() (z uint16)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint16x8) ReduceMin() (z uint16)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Int32x4) ReduceMax() (z int32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Int32x4) ReduceMin() (z int32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint32x4) ReduceMax() (z uint32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint32x4) ReduceMin() (z uint32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Int64x2) ReduceMax() (z int64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Int64x2) ReduceMin() (z int64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint64x2) ReduceMax() (z uint64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// Emulated
+func (x Uint64x2) ReduceMin() (z uint64)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated
+func (x Float32x4) ReduceMax() (z float32)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated
+func (x Float32x4) ReduceMin() (z float32)
+
+// ReduceMax returns the largest element of x.
+//
+//	z = max(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+//
+// Emulated
+func (x Float64x2) ReduceMax() (z float64)
+
+// ReduceMin returns the smallest element of x.
+//
+//	z = min(x[0], x[1], ...)
+//
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+//
+// Emulated
+func (x Float64x2) ReduceMin() (z float64)

@@ -7,6 +7,8 @@ package cache
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -31,10 +33,21 @@ type Cache interface {
 	FuzzDir() string
 }
 
-// A Cache is a package cache, backed by a file system directory tree.
+// A DiskCache is a package cache, backed by a file system directory tree.
 type DiskCache struct {
-	dir string
-	now func() time.Time
+	dir    string
+	now    func() time.Time
+	statfs func(dir string) (avail, total, bsize uint64)
+
+	trimBuildCache bool
+	openTime       time.Time
+	sizeSample     int64
+	sizeMinTarget  int64
+	sampleAcc      atomic.Int64
+	used           sync.Map
+	refreshOnce    sync.Once
+	lowDiskOnce    sync.Once
+	lowDisk        bool
 }
 
 // Open opens and returns the cache in the given directory.
@@ -86,6 +99,12 @@ func GetMmap(c Cache, id ActionID) ([]byte, Entry, bool, error)
 // OutputFile returns the name of the cache file storing output with the given OutputID.
 func (c *DiskCache) OutputFile(out OutputID) string
 
+// CleanCache resets trim metadata after 'go clean -cache' removes the cache entries in dir.
+// It truncates trim.txt (so an ongoing trim in another process won't overwrite the reset),
+// resets an existing size.txt to zero, and logs the clean in cache.log.
+// It creates nothing in an empty or nonexistent cache.
+func CleanCache(dir string)
+
 func (c *DiskCache) Close() error
 
 // Trim removes old cache entries that are likely not to be reused.
@@ -105,6 +124,10 @@ func (c *DiskCache) PutExecutable(id ActionID, name string, file io.ReadSeeker) 
 // It is meant for data that is OK to cache but that we expect to vary slightly from run to run,
 // like test output containing times and the like.
 func PutNoVerify(c Cache, id ActionID, file io.ReadSeeker) (OutputID, int64, error)
+
+// PutOptional is like Put, but a DiskCache may skip writing the entry
+// when the disk is nearly full. Callers must not assume OutputFile exists afterward.
+func PutOptional(c Cache, id ActionID, file io.ReadSeeker) (OutputID, int64, error)
 
 // PutBytes stores the given bytes in the cache as the output for the action ID.
 func PutBytes(c Cache, id ActionID, data []byte) error

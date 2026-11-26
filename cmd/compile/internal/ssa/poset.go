@@ -56,7 +56,7 @@ type Poset struct {
 	undo    []posetUndo
 }
 
-// bitset is a bit array for dense indexes.
+// Bitset is a bit array for dense indexes.
 type Bitset []uint
 
 func NewBitset(n int) Bitset

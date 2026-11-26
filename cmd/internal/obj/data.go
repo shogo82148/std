@@ -59,6 +59,12 @@ func (s *LSym) WriteAddr(ctxt *Link, off int64, siz int, rsym *LSym, roff int64)
 // This is a weak reference.
 func (s *LSym) WriteWeakAddr(ctxt *Link, off int64, siz int, rsym *LSym, roff int64)
 
+// WriteFuncPtr writes the code word stored in a function value.
+func (s *LSym) WriteFuncPtr(ctxt *Link, off int64, rsym *LSym)
+
+// WriteWeakFuncPtr writes a weak code word stored in a function value or itab.
+func (s *LSym) WriteWeakFuncPtr(ctxt *Link, off int64, rsym *LSym)
+
 // WriteCURelativeAddr writes a pointer-sized address into s at offset off.
 // rsym and roff specify the relocation for the address which will be
 // resolved by the linker to an offset from the DW_AT_low_pc attribute of

@@ -74,11 +74,15 @@ type ELFArch struct {
 	Androiddynld   string
 	Linuxdynld     string
 	LinuxdynldMusl string
-	Freebsddynld   string
-	Netbsddynld    string
-	Openbsddynld   string
-	Dragonflydynld string
-	Solarisdynld   string
+	// LinuxdynldFallbacks lists additional fallback Linux dynamic linkers
+	// tried on native builds when neither Linuxdynld nor LinuxdynldMusl
+	// exists on the host (for example, armhf/armel dynamic linkers).
+	LinuxdynldFallbacks []string
+	Freebsddynld        string
+	Netbsddynld         string
+	Openbsddynld        string
+	Dragonflydynld      string
+	Solarisdynld        string
 
 	Reloc1    func(*Link, *OutBuf, *loader.Loader, loader.Sym, loader.ExtReloc, int, int64) bool
 	RelocSize uint32

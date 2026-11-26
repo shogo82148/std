@@ -438,7 +438,7 @@ func (x Uint16x32) PermuteScalarsHiGrouped(a, b, c, d uint8) Uint16x32
 // Performance: If a through d are constants, then an instruction will be
 // inlined, otherwise a jump table is generated.
 //
-// Asm: VPSHUFLW, CPU Feature: AVX512
+// Asm: VPSHUFLW, CPU Feature: AVX
 func (x Int16x8) PermuteScalarsLo(a, b, c, d uint8) Int16x8
 
 // PermuteScalarsLo performs a permutation of vector x using the supplied indices:
@@ -450,7 +450,7 @@ func (x Int16x8) PermuteScalarsLo(a, b, c, d uint8) Int16x8
 // Performance: If a through d are constants, then an instruction will be
 // inlined, otherwise a jump table is generated.
 //
-// Asm: VPSHUFLW, CPU Feature: AVX512
+// Asm: VPSHUFLW, CPU Feature: AVX
 func (x Uint16x8) PermuteScalarsLo(a, b, c, d uint8) Uint16x8
 
 // PermuteScalarsLoGrouped performs a grouped permutation of vector x using the supplied indices:
@@ -514,206 +514,162 @@ func (x Uint16x16) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x16
 // Asm: VPSHUFLW, CPU Feature: AVX512
 func (x Uint16x32) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x32
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
-// even-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i])
-//
-// A carryless multiplication uses bitwise XOR instead of add-with-carry.
-// For example, to compute the carryless multiply of 0b1110 and 0b1011:
-//
-//	     1110
-//	   ⊗ 1011
-//	  ───────
-//	     1110
-//	    1110
-//	   0000
-//	⊕ 1110
-//	  ───────
-//	  1100010
-//
-// Carryless multiply can also be viewed as multiplying polynomials with
-// coefficients from GF(2). For example, the above example can be represented as
-//
-//	  (x^3 + x^2 + x^1) * (x^3 + x^1 + x^0)
-//	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
-//	= (x^6 + x^5 + x^1)
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
+// Asm: VPUNPCKHBW, CPU Feature: AVX2
+func (x Int8x32) InterleaveHiGrouped(y Int8x32) Int8x32
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
-// odd-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
+// Asm: VPUNPCKHBW, CPU Feature: AVX512
+func (x Int8x64) InterleaveHiGrouped(y Int8x64) Int8x64
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
-// odd-indexed elements of x and even-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
+// Asm: VPUNPCKHWD, CPU Feature: AVX2
+func (x Int16x16) InterleaveHiGrouped(y Int16x16) Int16x16
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
-// even-indexed elements of x and odd-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVXPCLMULQDQ
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
+// Asm: VPUNPCKHWD, CPU Feature: AVX512
+func (x Int16x32) InterleaveHiGrouped(y Int16x32) Int16x32
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
-// even-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i])
-//
-// A carryless multiplication uses bitwise XOR instead of add-with-carry.
-// For example, to compute the carryless multiply of 0b1110 and 0b1011:
-//
-//	     1110
-//	   ⊗ 1011
-//	  ───────
-//	     1110
-//	    1110
-//	   0000
-//	⊕ 1110
-//	  ───────
-//	  1100010
-//
-// Carryless multiply can also be viewed as multiplying polynomials with
-// coefficients from GF(2). For example, the above example can be represented as
-//
-//	  (x^3 + x^2 + x^1) * (x^3 + x^1 + x^0)
-//	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
-//	= (x^6 + x^5 + x^1)
-//
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
-func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) (z Uint64x4)
+// Asm: VPUNPCKHDQ, CPU Feature: AVX2
+func (x Int32x8) InterleaveHiGrouped(y Int32x8) Int32x8
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
-// odd-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
-func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) (z Uint64x4)
+// Asm: VPUNPCKHDQ, CPU Feature: AVX512
+func (x Int32x16) InterleaveHiGrouped(y Int32x16) Int32x16
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
-// odd-indexed elements of x and even-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
-func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) (z Uint64x4)
+// Asm: VPUNPCKHQDQ, CPU Feature: AVX2
+func (x Int64x4) InterleaveHiGrouped(y Int64x4) Int64x4
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
-// even-indexed elements of x and odd-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: VPCLMULQDQ
-func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) (z Uint64x4)
+// Asm: VPUNPCKHQDQ, CPU Feature: AVX512
+func (x Int64x8) InterleaveHiGrouped(y Int64x8) Int64x8
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
-// even-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i])
-//
-// A carryless multiplication uses bitwise XOR instead of add-with-carry.
-// For example, to compute the carryless multiply of 0b1110 and 0b1011:
-//
-//	     1110
-//	   ⊗ 1011
-//	  ───────
-//	     1110
-//	    1110
-//	   0000
-//	⊕ 1110
-//	  ───────
-//	  1100010
-//
-// Carryless multiply can also be viewed as multiplying polynomials with
-// coefficients from GF(2). For example, the above example can be represented as
-//
-//	  (x^3 + x^2 + x^1) * (x^3 + x^1 + x^0)
-//	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
-//	= (x^6 + x^5 + x^1)
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) (z Uint64x8)
+// Asm: VPUNPCKHBW, CPU Feature: AVX2
+func (x Uint8x32) InterleaveHiGrouped(y Uint8x32) Uint8x32
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
-// odd-indexed elements of x and y. The result of each carryless multiply is
-// twice the width of the input elements. The high bits are stored in elements
-// z[2*i+1] and the low bits are stored in elements z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) (z Uint64x8)
+// Asm: VPUNPCKHBW, CPU Feature: AVX512
+func (x Uint8x64) InterleaveHiGrouped(y Uint8x64) Uint8x64
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
-// odd-indexed elements of x and even-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
-//
-// See [CarrylessMultiplyEven] for details about carryless multiply.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) (z Uint64x8)
+// Asm: VPUNPCKHWD, CPU Feature: AVX2
+func (x Uint16x16) InterleaveHiGrouped(y Uint16x16) Uint16x16
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
-// even-indexed elements of x and odd-indexed elements of y. The result of each
-// carryless multiply is twice the width of the input elements. The high bits
-// are stored in elements z[2*i+1] and the low bits are stored in elements
-// z[2*i].
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-//	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
+// Asm: VPUNPCKHWD, CPU Feature: AVX512
+func (x Uint16x32) InterleaveHiGrouped(y Uint16x32) Uint16x32
+
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// Asm: VPUNPCKHDQ, CPU Feature: AVX2
+func (x Uint32x8) InterleaveHiGrouped(y Uint32x8) Uint32x8
+
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
 //
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) (z Uint64x8)
+// Asm: VPUNPCKHDQ, CPU Feature: AVX512
+func (x Uint32x16) InterleaveHiGrouped(y Uint32x16) Uint32x16
+
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKHQDQ, CPU Feature: AVX2
+func (x Uint64x4) InterleaveHiGrouped(y Uint64x4) Uint64x4
+
+// InterleaveHiGrouped interleaves the elements of the high half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKHQDQ, CPU Feature: AVX512
+func (x Uint64x8) InterleaveHiGrouped(y Uint64x8) Uint64x8
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLBW, CPU Feature: AVX2
+func (x Int8x32) InterleaveLoGrouped(y Int8x32) Int8x32
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLBW, CPU Feature: AVX512
+func (x Int8x64) InterleaveLoGrouped(y Int8x64) Int8x64
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLWD, CPU Feature: AVX2
+func (x Int16x16) InterleaveLoGrouped(y Int16x16) Int16x16
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLWD, CPU Feature: AVX512
+func (x Int16x32) InterleaveLoGrouped(y Int16x32) Int16x32
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLDQ, CPU Feature: AVX2
+func (x Int32x8) InterleaveLoGrouped(y Int32x8) Int32x8
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLDQ, CPU Feature: AVX512
+func (x Int32x16) InterleaveLoGrouped(y Int32x16) Int32x16
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLQDQ, CPU Feature: AVX2
+func (x Int64x4) InterleaveLoGrouped(y Int64x4) Int64x4
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLQDQ, CPU Feature: AVX512
+func (x Int64x8) InterleaveLoGrouped(y Int64x8) Int64x8
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLBW, CPU Feature: AVX2
+func (x Uint8x32) InterleaveLoGrouped(y Uint8x32) Uint8x32
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLBW, CPU Feature: AVX512
+func (x Uint8x64) InterleaveLoGrouped(y Uint8x64) Uint8x64
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLWD, CPU Feature: AVX2
+func (x Uint16x16) InterleaveLoGrouped(y Uint16x16) Uint16x16
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLWD, CPU Feature: AVX512
+func (x Uint16x32) InterleaveLoGrouped(y Uint16x32) Uint16x32
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLDQ, CPU Feature: AVX2
+func (x Uint32x8) InterleaveLoGrouped(y Uint32x8) Uint32x8
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLDQ, CPU Feature: AVX512
+func (x Uint32x16) InterleaveLoGrouped(y Uint32x16) Uint32x16
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLQDQ, CPU Feature: AVX2
+func (x Uint64x4) InterleaveLoGrouped(y Uint64x4) Uint64x4
+
+// InterleaveLoGrouped interleaves the elements of the low half of each 128-bit subvector of x and y.
+//
+// Asm: VPUNPCKLQDQ, CPU Feature: AVX512
+func (x Uint64x8) InterleaveLoGrouped(y Uint64x8) Uint64x8

@@ -436,12 +436,14 @@ func (db *DB) Exec(query string, args ...any) (Result, error)
 
 // QueryContextは、通常はSELECTで返される行を返すクエリーを実行します。
 // argsは、クエリー内のプレースホルダーパラメーター用です。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // QueryContextは、通常はSELECTで返される行を返すクエリーを実行します。
 // argsは、クエリー内のプレースホルダーパラメーター用です。
 //
-// QueryContextは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.QueryContext] を使用してください。
+// Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.QueryContext] を使用してください。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (db *DB) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリーを実行します。
@@ -496,21 +498,26 @@ func (db *DB) Conn(ctx context.Context) (*Conn, error)
 type Conn struct {
 	db *DB
 
-	// closemu prevents the connection from closing while there
-	// is an active query. It is held for read during queries
-	// and exclusively during close.
-	closemu closingMutex
-
 	// dc is owned until close, at which point
 	// it's returned to the connection pool.
 	dc *driverConn
 
-	// done transitions from false to true exactly once, on close.
-	// Once done, all operations fail with ErrConnDone.
-	done atomic.Bool
+	// mu coordinates operations with Close and guards the fields below.
+	//
+	// grabConn checks closed and counts the operation in numRefs while
+	// holding mu, so dc remains valid until that operation is released.
+	// Once closed is set no new operation can start, and whoever leaves
+	// the Conn closed with no running operations returns dc to the pool.
+	mu      sync.Mutex
+	numRefs int
+	closed  bool
+	bad     bool
 
-	releaseConnOnce sync.Once
-	// releaseConnCache is a cache of c.closemuRUnlockCondReleaseConn
+	// released is closed once dc is returned to the pool.
+	// It is allocated only if Close has to wait.
+	released chan struct{}
+
+	// releaseConnCache is a cache of c.releaseOp
 	// to save allocations in a call to grabConn.
 	releaseConnCache releaseConn
 }
@@ -524,6 +531,7 @@ func (c *Conn) ExecContext(ctx context.Context, query string, args ...any) (Resu
 
 // QueryContextは、通常はSELECTで返される行を返すクエリーを実行します。
 // argsは、クエリー内のプレースホルダーパラメーター用です。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリーを実行します。
@@ -679,11 +687,13 @@ func (tx *Tx) ExecContext(ctx context.Context, query string, args ...any) (Resul
 func (tx *Tx) Exec(query string, args ...any) (Result, error)
 
 // QueryContextは、通常SELECTのような行を返すクエリーを実行します。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Queryは、通常はSELECTで返される行を返すクエリーを実行します。
 //
 // Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.QueryContext] を使用してください。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリーを実行します。
@@ -762,12 +772,14 @@ func (s *Stmt) Exec(args ...any) (Result, error)
 
 // QueryContextは、指定された引数を使用してプリペアドクエリーステートメントを実行し、
 // クエリー結果を [*Rows] として返します。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Queryは、指定された引数を使用してプリペアドクエリーステートメントを実行し、
 // クエリー結果を*Rowsとして返します。
 //
 // Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.QueryContext] を使用してください。
+// 呼び出し元は、返された行を使い終えたら [Rows.Close] を呼び出さなければなりません。
 func (s *Stmt) Query(args ...any) (*Rows, error)
 
 // QueryRowContextは、指定された引数を使用してプリペアドクエリーステートメントを実行し、
@@ -794,6 +806,10 @@ func (s *Stmt) Close() error
 
 // Rowsはクエリーの結果です。そのカーソルは、結果セットの最初の行の前に開始します。
 // 行から行に進むには、 [Rows.Next] を使用してください。
+//
+// Rows は、閉じられるまでデータベース接続などのリソースを保持します。
+// 呼び出し元は、使い終えたら（通常は defer を使って）[Rows.Close] を呼び出さなければなりません。
+// Close は冪等であり、[Rows.Next] が false を返した後に呼び出しても安全です。
 type Rows struct {
 	dc          *driverConn
 	releaseConn func(error)

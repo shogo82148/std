@@ -21,6 +21,7 @@ import (
 type Package struct {
 	PackageName string
 	PackagePath string
+	fset        *token.FileSet
 	PtrSize     int64
 	IntSize     int64
 	GccOptions  []string
@@ -35,6 +36,7 @@ type Package struct {
 	Preamble    string
 	noCallbacks map[string]bool
 	noEscapes   map[string]bool
+	genFiles    []*File
 }
 
 // Fileは、単一のGo入力ファイルに関する情報を収集します。
@@ -45,6 +47,8 @@ type File struct {
 	Preamble    string
 	Ref         []*Ref
 	Calls       []*Call
+	Lits        []*Lit
+	LitMap      map[*ast.CompositeLit]*Lit
 	ExpFunc     []*ExpFunc
 	Name        map[string]*Name
 	NamePos     map[*Name]token.Pos
@@ -53,6 +57,8 @@ type File struct {
 	Edit        *edit.Buffer
 
 	debugs []*debug
+
+	gen *genBindingFile
 }
 
 // Callは、ASTのC.xxx関数の呼び出しを参照します。
@@ -60,6 +66,12 @@ type Call struct {
 	Call     *ast.CallExpr
 	Deferred bool
 	Done     bool
+}
+
+// Lit型はAST内のC.xxx型の複合リテラルを参照します。
+type Lit struct {
+	Lit  *ast.CompositeLit
+	Done bool
 }
 
 // Ref型はAST内のC.xxxの形式の式を参照します。

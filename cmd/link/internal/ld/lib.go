@@ -229,3 +229,15 @@ const (
 func ElfSymForReloc(ctxt *Link, s loader.Sym) int32
 
 func AddGotSym(target *Target, ldr *loader.Loader, syms *ArchSyms, s loader.Sym, elfRelocTyp uint32)
+
+// ElfAddDynAddrReloc emits an 8-byte ELF dynamic data relocation in .rela for r
+// at s+r.Off(): absReloc against targ when targ is SDYNIMPORT, or relReloc
+// (base-relative) otherwise.
+//
+// Symbol addresses have not been assigned yet when this is called (from
+// adddynrel during dodata), so the r_offset and, for relReloc, r_addend
+// fields are written with AddAddrPlus, which creates new R_ADDR relocations
+// that are resolved in the 'reloc' phase. For a relReloc, r is not marked
+// done, so it is still applied statically and the file contents hold the
+// right offset to the relocation target (e.g. for go version).
+func ElfAddDynAddrReloc(target *Target, ldr *loader.Loader, syms *ArchSyms, s loader.Sym, r loader.Reloc, rIdx int, absReloc, relReloc uint32)

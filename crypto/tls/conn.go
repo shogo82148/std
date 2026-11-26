@@ -62,6 +62,9 @@ type Conn struct {
 	// resumptionSecretは、処理または送信するための再開マスターシークレットです。または、NewSessionTicketメッセージを送信するためのものです。
 	resumptionSecret []byte
 	echAccepted      bool
+	// echGrease is true when the client sent a GREASE'd ECH extension
+	// instead of a real one.
+	echGrease bool
 
 	// ticketKeys は、この接続の有効なセッションチケットキーのセットです。
 	// 最初のキーは新しいチケットの暗号化に使用され、すべてのキーがデコードの試行に使用されます。

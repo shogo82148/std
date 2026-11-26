@@ -771,7 +771,3 @@ var SimType [NTYPE]Kind
 
 // Fake package for shape types (see typecheck.Shapify()).
 var ShapePkg = NewPkg("go.shape", "go.shape")
-
-func (t *Type) IsSIMD() bool
-
-func (t *Type) ContainsSIMD() bool

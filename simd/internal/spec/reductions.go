@@ -42,9 +42,21 @@ func ReduceSumFloats[E Floats, W Width](x Vec[E, W]) (z E)
 // ReduceMax returns the largest element of x.
 //
 //	z = max(x[0], x[1], ...)
+//
+// {{if eq .xB "float"}}
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's max built-in and the IEEE 754-2019 maximum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Max].
+// {{end}}
 func ReduceMax[E Elt, W Width](x Vec[E, W]) (z E)
 
 // ReduceMin returns the smallest element of x.
 //
 //	z = min(x[0], x[1], ...)
+//
+// {{if eq .xB "float"}}
+// If any element is NaN, the result is NaN, and -0 is considered less than +0.
+// This matches Go's min built-in and the IEEE 754-2019 minimum operation. Note
+// that on AMD64 (and only AMD64), it differs from [Min].
+// {{end}}
 func ReduceMin[E Elt, W Width](x Vec[E, W]) (z E)

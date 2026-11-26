@@ -76,6 +76,10 @@ var InlineCall = func(callerfn *ir.Func, call *ir.CallExpr, fn *ir.Func, inlInde
 	panic("unreachable")
 }
 
+// FlushDeferredSymEffects replays deferred inlining side effects for kept callers in slice
+// order so symbol creation stays deterministic (see noder.DropUnusedImportedInsts).
+func FlushDeferredSymEffects(kept []*ir.Func)
+
 // CalleeEffects appends any side effects from evaluating callee to init.
 func CalleeEffects(init *ir.Nodes, callee ir.Node)
 

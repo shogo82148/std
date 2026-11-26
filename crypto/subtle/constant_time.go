@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // subtleパッケージは、暗号化コードでよく使用される関数を実装しますが、正しく使用するために注意深い考慮が必要です。
+//
+// スカラープリミティブ（ConstantTimeSelect、ConstantTimeByteEq、ConstantTimeEq、
+// ConstantTimeLessOrEq）を組み合わせて定数時間アルゴリズムを構築する呼び出し元は、
+// それを囲む操作を [WithDataIndependentTiming] でラップすべきです。
 package subtle
 
 // ConstantTimeCompareは、2つのスライスxとyが同じ内容を持つ場合は1を返し、そうでない場合は0を返します。実行時間はスライスの長さに依存し、内容には独立しています。xとyの長さが一致しない場合は、即座に0を返します。

@@ -10,15 +10,25 @@ import (
 )
 
 type Rewriter struct {
-	pkg      *types2.Package
-	analyzer *Analyzer
-	info     *types2.Info
-	sizes    []int
+	pkg          *types2.Package
+	analyzer     *Analyzer
+	info         *types2.Info
+	sizes        []int
+	blankCounter int
 }
 
 func NewRewriter(pkg *types2.Package, info *types2.Info, analyzer *Analyzer, sizes []int) *Rewriter
 
 func (r *Rewriter) Rewrite(files []*syntax.File)
 
-// Generate an API matching the standalone compilation call
-func RewriteWrapper(pkg *types2.Package, info *types2.Info, files []*syntax.File) bool
+// RewriteWrapper applies the midway rewrite to files, which are the type
+// checked files of pkg.
+//
+// If any rewriting was performed, it returns a non-nil InitOrderPlan capturing
+// the pre-rewrite Go-spec initialization order, which the caller must Apply to
+// the re-checked types2.Info after typechecking finishes.
+//
+// It also returns the names of the package-level declarations that are
+// originals (see the comment at the top of this file). Every method of an
+// original type is also an original.
+func RewriteWrapper(pkg *types2.Package, info *types2.Info, files []*syntax.File) (originals []string, initOrderPlan *InitOrderPlan)

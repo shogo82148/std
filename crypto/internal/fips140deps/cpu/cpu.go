@@ -16,6 +16,7 @@ const (
 	LOONG64   = goarch.IsLoong64 == 1
 	PPC64     = goarch.IsPpc64 == 1
 	PPC64le   = goarch.IsPpc64le == 1
+	RISCV64   = goarch.IsRiscv64 == 1
 )
 
 var (
@@ -29,7 +30,10 @@ var (
 	LOONG64HasLASX = cpu.Loong64.HasLASX
 
 	RISCV64HasV      = cpu.RISCV64.HasV
+	RISCV64HasZbb    = cpu.RISCV64.HasZbb
 	RISCV64HasZvbb   = cpu.RISCV64.HasZvbb
+	RISCV64HasZvkg   = cpu.RISCV64.HasZvkg
+	RISCV64HasZvkned = cpu.RISCV64.HasZvkned
 	RISCV64HasZvknha = cpu.RISCV64.HasZvknha
 	RISCV64HasZvknhb = cpu.RISCV64.HasZvknhb
 	RISCV64VLENB     = cpu.RISCV64.VLENB

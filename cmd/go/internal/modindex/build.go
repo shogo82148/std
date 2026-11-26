@@ -8,6 +8,7 @@
 package modindex
 
 import (
+	"github.com/shogo82148/std/cmd/go/internal/build"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/io/fs"
 )
@@ -27,7 +28,7 @@ type Context struct {
 	// be absolute.
 	Dir string
 
-	CgoEnabled  bool
+	CgoEnabled  build.CgoMode
 	UseAllFiles bool
 	Compiler    string
 

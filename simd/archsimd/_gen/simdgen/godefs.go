@@ -32,6 +32,15 @@ type Operation struct {
 	// For masked operations, this will have the mask operand appended.
 	In []types.Operand
 
+	// CPUFeature is the CPU feature required to call the Go method.
+	//
+	// It starts as rawOperation.CPUFeature (the instruction's CPU feature)
+	// and may be adjusted where the Go API's requirements differ from the
+	// instruction's (for example, 512-bit Go types on VEX instructions, or
+	// compiler fallbacks). Use rawOperation.CPUFeature for properties of
+	// the instruction encoding itself.
+	CPUFeature string
+
 	// Sftimm, AsmRules, LowerRules, and PeepholeRules are the extra SSA
 	// rewrite rules for this operation. See [types.RawOperation].
 	Sftimm                              bool
