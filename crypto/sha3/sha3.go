@@ -74,7 +74,7 @@ func (s *SHA3) AppendBinary(p []byte) ([]byte, error)
 func (s *SHA3) UnmarshalBinary(data []byte) error
 
 // Clone は [hash.Cloner] を実装します。
-func (d *SHA3) Clone() (hash.Cloner, error)
+func (s *SHA3) Clone() (hash.Cloner, error)
 
 // SHAKE は SHAKE 拡張出力関数のインスタンスです。
 // ゼロ値は使用可能な SHAKE256 ハッシュです。

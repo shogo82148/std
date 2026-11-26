@@ -8,6 +8,7 @@ type CTR struct {
 	b          Block
 	ivlo, ivhi uint64
 	offset     uint64
+	keybuf     [BlockSize]byte
 }
 
 func NewCTR(b *Block, iv []byte) *CTR

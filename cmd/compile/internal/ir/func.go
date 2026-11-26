@@ -230,6 +230,13 @@ func (f *Func) OpenCodedDeferDisallowed() bool
 func (f *Func) ClosureResultsLost() bool
 func (f *Func) IsPackageInit() bool
 
+// CompiledByImport reports whether f (or its outermost enclosing function) is a generic
+// instantiation already compiled by an imported package (see noder.DropUnusedImportedInsts).
+func (f *Func) CompiledByImport() bool
+
+// Outermost returns the outermost function enclosing f, or f itself if not a closure.
+func (f *Func) Outermost() *Func
+
 func (f *Func) SetDupok(b bool)
 func (f *Func) SetWrapper(b bool)
 func (f *Func) SetABIWrapper(b bool)
@@ -241,6 +248,7 @@ func (f *Func) SetNeverReturns(b bool)
 func (f *Func) SetOpenCodedDeferDisallowed(b bool)
 func (f *Func) SetClosureResultsLost(b bool)
 func (f *Func) SetIsPackageInit(b bool)
+func (f *Func) SetCompiledByImport(b bool)
 
 func (f *Func) SetWBPos(pos src.XPos)
 

@@ -12,3 +12,8 @@ const CacheLinePadSize = 64
 // If the CPU name can not be determined an
 // empty string is returned.
 func Name() string
+
+// XSAVEComponent returns the size of XSAVE state component i, and whether it
+// must be 64-byte aligned in the compacted format used by XSAVEC. It must only
+// be called if X86.HasXSAVEC.
+func XSAVEComponent(i uint32) (size uint32, align64 bool)

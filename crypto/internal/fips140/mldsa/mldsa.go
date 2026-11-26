@@ -20,7 +20,6 @@ type PrivateKey struct {
 	seed [32]byte
 	pub  PublicKey
 	a    [maxK * maxL]nttElement
-	t1   [maxK]nttElement
 	s1   [maxL]nttElement
 	s2   [maxK]nttElement
 	t0   [maxK]nttElement

@@ -4,9 +4,11 @@
 
 package fips140hash
 
-import (
-	"github.com/shogo82148/std/hash"
-)
+import "github.com/shogo82148/std/hash"
+
+// RegisterSHA3Unwrap is called by crypto/sha3 at init time with a function
+// that unwraps a *crypto/sha3.SHA3 into a *crypto/internal/fips140/sha3.Digest.
+func RegisterSHA3Unwrap(f func(hash.Hash) (hash.Hash, bool))
 
 // Unwrap returns h, or a crypto/internal/fips140 inner implementation of h.
 //

@@ -5,8 +5,8 @@
 package ssa
 
 // IsNewObject reports whether v is a pointer to a freshly allocated & zeroed object,
-// if so, also returns the memory state mem at which v is zero.
-func IsNewObject(v *Value, select1 []*Value) (mem *Value, ok bool)
+// if so, returns the call that allocated it.
+func IsNewObject(v *Value) *Value
 
 // A ZeroRegion records parts of an object which are known to be zero.
 // A ZeroRegion only applies to a single memory state.
@@ -28,4 +28,4 @@ func IsSanitizerSafeAddr(v *Value) bool
 
 // ComputeZeroMap returns a map from an ID of a memory value to
 // a set of locations that are known to be zeroed at that memory value.
-func (f *Func) ComputeZeroMap(select1 []*Value) map[ID]ZeroRegion
+func (f *Func) ComputeZeroMap() map[ID]ZeroRegion

@@ -25,6 +25,8 @@ type Checker struct {
 	objMap  map[Object]*declInfo
 	objList []Object
 	impMap  map[importKey]*Package
+	// TODO(gri) should this be extended to also track known invalid types?
+	boundedTypes instanceLookup
 
 	// pkgPathMapはパッケージ名をインポートパスの集合にマッピングします。
 	// インポートグラフのどこかでその名前に対して見た異なるインポートパスの集合です。

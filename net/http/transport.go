@@ -260,7 +260,8 @@ func (t *Transport) Clone() *Transport
 // 環境変数でプロキシーが定義されていない場合、またはNO_PROXYによって指定されたリクエストにプロキシーを使用しない場合、
 // nilのURLとnilのエラーが返されます。
 //
-// 特別な場合として、req.URL.Hostが"localhost"（ポート番号ありまたはなし）の場合、nilのURLとnilのエラーが返されます。
+// 特別な場合として、req.URL.Hostが"localhost"またはループバックアドレス（ポート番号ありまたはなし）の場合、
+// nilのURLとnilのエラーが返されます。
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
 // ProxyURLは、常に同じURLを返すプロキシー関数（[Transport] で使用するため）を返します。

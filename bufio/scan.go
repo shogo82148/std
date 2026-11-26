@@ -86,7 +86,8 @@ var ErrFinalToken = errors.New("final token")
 // Scanは、 [Scanner.Bytes] または [Scanner.Text] メソッドを介して利用可能な次のトークンに [Scanner] を進めます。
 // 入力の終わりに到達するかエラーが発生すると、falseを返します。
 // Scanがfalseを返した後、 [Scanner.Err] メソッドはスキャン中に発生したエラーを返しますが、
-// エラーが[io.EOF]の場合、 [Scanner.Err] はnilを返します。
+// エラーが [io.EOF] の場合、 [Scanner.Err] はnilを返します。
+// Scanがfalseを返した後は、以降の呼び出しもfalseを返します。
 // スキャンが進まずに空のトークンを多数返す場合、スキャナーはパニックを引き起こします。
 // これは、スキャナーの一般的なエラーモードです。
 func (s *Scanner) Scan() bool

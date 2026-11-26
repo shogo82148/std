@@ -91,7 +91,8 @@ type FnState struct {
 func EnableLogging(doit bool)
 
 // MergeRanges creates a new range list by merging the ranges from
-// its two arguments, then returns the new list.
+// its two arguments, then returns the new list. Both inputs must
+// be sorted by Start.
 func MergeRanges(in1, in2 []Range) []Range
 
 // UnifyRanges merges the ranges from 'c' into the list of ranges for 's'.

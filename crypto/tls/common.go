@@ -79,7 +79,9 @@ type ConnectionState struct {
 	// ServerNameはクライアントが送信するServer Name Indication拡張機能の値です。これはサーバーとクライアントの両方で利用できます。
 	ServerName string
 
-	// PeerCertificates は、ピアから送信された証明書が解析されたものであり、送信順に格納されています。最初の要素は、接続が検証されるリーフ証明書です。
+	// PeerCertificates は、ピアから送信された証明書が解析されたものであり、送信順に格納されています。
+	// 最初の要素は、接続の検証対象となるリーフ証明書です。残りは検証されていない証明書であり、
+	// チェーンを構築する際の中間証明書として使用できます。
 	//
 	// クライアント側では空にすることはできません。サーバー側では、Config.ClientAuth が RequireAnyClientCert または RequireAndVerifyClientCert でない場合、空にすることができます。
 	//
@@ -271,6 +273,10 @@ type CertificateRequestInfo struct {
 	// Versionは、この接続のために交渉されたTLSのバージョンです。
 	Version uint16
 
+	// noFIPS140Restrictions は、SupportsCertificate で使用するために
+	// Config.noFIPS140Restrictions を反映したものです。
+	noFIPS140Restrictions bool
+
 	// ctxは進行中のハンドシェイクのコンテキストです。
 	ctx context.Context
 }
@@ -363,9 +369,22 @@ type Config struct {
 	// 可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
+	// UPKIRevocation は、ローカルの UPKI 失効キャッシュに対してサーバー証明書をチェックするかどうかを制御します。
+	//
+	// ゼロ値の場合、利用可能であればプラットフォームのデフォルトのキャッシュが自動的に使用されます。
+	// 失効したと報告された証明書は拒否しますが、キャッシュのデータに含まれていない証明書や、
+	// SCT が埋め込まれていない証明書は許可します。
+	// GODEBUG 設定 tlsupki=0 を指定すると、プラットフォームのデフォルトのキャッシュに依存する構成に対する
+	// チェックが無効になります。これは、Go 1.27 以前を対象とするプログラムのデフォルトです。
+	//
+	// UPKIRevocation は、サーバー証明書のクライアント側の検証にのみ適用されます。
+	UPKIRevocation UPKIRevocationConfig
+
 	// VerifyPeerCertificateは、nilでない場合、TLSクライアントまたはサーバーによる
 	// 通常の証明書検証の後に呼び出されます。この関数は、ピアから提供された生のASN.1証明書と、
-	// 通常の処理で見つかった検証済みチェーンを受け取ります。non-nilエラーを返す場合、
+	// 通常の処理で見つかった検証済みチェーンを受け取ります。rawCerts の最初の要素は、
+	// 接続の検証対象となるリーフ証明書で、残りは検証されていない証明書であり、
+	// チェーンを構築する際の中間証明書として使用できます。non-nilエラーを返す場合、
 	// ハンドシェイクは中止され、そのエラーが結果となります。
 	//
 	// 通常の検証が失敗した場合、このコールバックが考慮される前にハンドシェイクは中止されます。
@@ -589,6 +608,10 @@ type Config struct {
 
 	// autoSessionTicketKeysはsessionTicketKeysと似ていますが、自動回転ロジックによって所有されています。Config.ticketKeysを参照してください。
 	autoSessionTicketKeys []ticketKey
+	// noFIPS140Restrictions disables the FIPS 140-3 TLS algorithm and certificate
+	// restrictions applied when GODEBUG=fips140=on is set. It does not override
+	// restrictions forced by importing crypto/tls/fipsonly.
+	noFIPS140Restrictions bool
 }
 
 // EncryptedClientHelloKeyは、クライアントが知っている特定のECH設定に

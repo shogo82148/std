@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd
+//go:build goexperiment.simdstable
 
 package archsimd
 
-// CarrylessMultiplyEven computes the elementwise carryless multiplication of
+// CarrylessMulEven computes the elementwise carryless multiplication of
 // even-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
@@ -33,22 +33,22 @@ package archsimd
 //	= (x^6 + x^5 + (1^1)x^4 + (1^1)x^3 + (1^1)x^2 + x^1)
 //	= (x^6 + x^5 + x^1)
 //
-// Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) (z Uint64x2)
+// Asm: PMULL if CPU feature PMULL, Emulated otherwise
+func (x Uint64x2) CarrylessMulEven(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyOdd computes the elementwise carryless multiplication of
+// CarrylessMulOdd computes the elementwise carryless multiplication of
 // odd-indexed elements of x and y. The result of each carryless multiply is
 // twice the width of the input elements. The high bits are stored in elements
 // z[2*i+1] and the low bits are stored in elements z[2*i].
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
-// Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
+// Asm: PMULL if CPU feature PMULL, Emulated otherwise
+func (x Uint64x2) CarrylessMulOdd(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyOddEven computes the elementwise carryless multiplication of
+// CarrylessMulOddEven computes the elementwise carryless multiplication of
 // odd-indexed elements of x and even-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -56,12 +56,12 @@ func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) (z Uint64x2)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i+1], y[2*i])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
-// Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
+// Asm: PMULL if CPU feature PMULL, Emulated otherwise
+func (x Uint64x2) CarrylessMulOddEven(y Uint64x2) (z Uint64x2)
 
-// CarrylessMultiplyEvenOdd computes the elementwise carryless multiplication of
+// CarrylessMulEvenOdd computes the elementwise carryless multiplication of
 // even-indexed elements of x and odd-indexed elements of y. The result of each
 // carryless multiply is twice the width of the input elements. The high bits
 // are stored in elements z[2*i+1] and the low bits are stored in elements
@@ -69,7 +69,7 @@ func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) (z Uint64x2)
 //
 //	concat(z[2*i+1], z[2*i]) = clmul(x[2*i], y[2*i+1])
 //
-// See [CarrylessMultiplyEven] for details about carryless multiply.
+// See [CarrylessMulEven] for details about carryless multiply.
 //
-// Asm: PMULL, CPU Feature: PMULL
-func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) (z Uint64x2)
+// Asm: PMULL if CPU feature PMULL, Emulated otherwise
+func (x Uint64x2) CarrylessMulEvenOdd(y Uint64x2) (z Uint64x2)

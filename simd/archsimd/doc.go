@@ -2,15 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd
+//go:build goexperiment.simdstable
 
 // Package archsimd provides access to architecture-specific SIMD operations.
 //
 // This is a low-level package that exposes hardware-specific functionality.
 // It currently supports amd64, arm64 Neon, and WebAssembly SIMD.
 //
-// This package is experimental, and not subject to the Go 1 compatibility promise.
-// It only exists when building with the GOEXPERIMENT=simd environment variable set.
+// Some of its API is experimental, including all arm64 SVE support. The
+// experimental API exists only when building with the GOEXPERIMENT=simd
+// environment variable set, and it alone is not subject to the Go 1
+// compatibility promise. The rest of the package is.
 //
 // # Vector types and operations
 //
@@ -32,13 +34,22 @@
 //   - Bitwise: And, Or, Xor, etc.
 //   - Comparison: Equal, Greater, etc., which produce a mask.
 //   - Conversion: Convert between different vector types.
-//   - Field selection and rearrangement: GetElem, LookupMod, etc.
-//   - Masking: Masked, Merge.
+//   - Field selection and rearrangement: Elem, LookupMod, etc.
+//   - Masking: Masked, IfElse.
 //
 // The compiler recognizes certain patterns of operations and may optimize
 // them to more performant instructions. For example, on AVX512, an Add operation
 // followed by Masked may be optimized to a masked add instruction.
 // For this reason, not all hardware instructions are available as APIs.
+//
+// # Equality
+//
+// Vector and mask types are comparable with == and !=. For comparison, a vector
+// behaves like a struct with one field per element, and a mask like a struct
+// with one bool per element. For example, a Float32x4 compares like a
+// struct{ a, b, c, d float32 }. Like regular float comparison, NaNs are never
+// equal and +0 equals -0. The scalable vector and mask types of arm64 SVE are
+// not currently comparable.
 //
 // # CPU feature checks
 //
@@ -47,6 +58,12 @@
 // check for AVX2, AVX512, etc.
 // It is recommended to check for CPU features before using the corresponding
 // vector operations.
+//
+// The documentation of each vector type lists the CPU feature required to use
+// values of that type, such as loading, storing, and reinterpreting them. A
+// method that requires additional CPU features lists them in its own
+// documentation; a method that lists none requires only the features of the
+// types it operates on.
 //
 // # Notes
 //

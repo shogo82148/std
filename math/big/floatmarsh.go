@@ -7,7 +7,7 @@
 package big
 
 // GobEncodeは、[encoding/gob.GobEncoder] インターフェースを実装します。
-// [Float] の値とそのすべての属性（精度、丸めモード、精度）がマーシャルされます。
+// [Float] の値とそのすべての属性（精度、丸めモード、確度）がマーシャルされます。
 func (x *Float) GobEncode() ([]byte, error)
 
 // GobDecodeは、[encoding/gob.GobDecoder] インターフェースを実装します。

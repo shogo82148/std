@@ -16,18 +16,18 @@ type DeepCopier struct {
 	pkg             *types2.Package
 	analyzer        *Analyzer
 	dependentSuffix string
-	variantSuffix   string
 
 	vars map[*types2.Var]*types2.Var
 }
 
-func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, depSuffix, varSuffix string) *DeepCopier
+func NewDeepCopier(pkg *types2.Package, info *types2.Info, vecLen int, analyzer *Analyzer, depSuffix string) *DeepCopier
 
 // OnName rewrites "dependent" and SIMD names to their architecture-specific version.
 func (c *DeepCopier) OnName(id *syntax.Name) *syntax.Name
 
-// OnNameExpr rewrites references to simd.<simd type> into
-// <bridge package>.<size-dependent-type>.
+// OnNameExpr rewrites bare references to simd types or Load/Broadcast functions
+// (either within package simd or via dot-import `import . "simd"`) into
+// <bridge package>.<size-dependent-symbol>.
 func (c *DeepCopier) OnNameExpr(id *syntax.Name) syntax.Expr
 
 // OnSelector is looking for simd.Something, to be rewritten into

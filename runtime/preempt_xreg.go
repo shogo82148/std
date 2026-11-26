@@ -14,7 +14,8 @@
 // non-GP registers for operations that may involve pointers.
 //
 // For an architecture to support extended register state, it must provide a Go
-// definition of an xRegState type for storing the state, and its asyncPreempt
+// definition of an xRegs type for storing the state, with copyFrom and
+// scanRanges methods, and an xRegInitCPU function, and its asyncPreempt
 // implementation must write this register state to p.xRegs.scratch.
 
 package runtime

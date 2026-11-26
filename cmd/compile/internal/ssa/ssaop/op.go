@@ -83,6 +83,7 @@ type OpInfo struct {
 	symEffect         SymEffect
 	scale             uint8
 	ZeroUpperBits     uint8
+	ZeroUpperVec      bool
 }
 
 type OutputInfo struct {

@@ -30,8 +30,30 @@ func ConvertFloatToFloat[xE Floats, W Width, zE Floats](x Vec[xE, W]) (z Vec[zE,
 //	z[i] = {{.zE}}(x[i])
 //
 // When a conversion is inexact, this truncates the result (rounds toward zero).
-// If the converted result would be outside the representable range, the result
-// is architecture-dependent.
+//
+// The handling of NaN and values whose truncated result is outside the
+// representable range of {{.zE}} is architecture-dependent. ARM64 and WASM map
+// NaN to 0 and saturate out-of-range values (including ±Inf). AMD64 returns
+// {{if eq .zB "int"}}math.Min{{title .zE}}{{else}}math.Max{{title .zE}}{{end}} (the integer indefinite value) for NaN and all out-of-range
+// values.
+//
+// {{if eq .zB "int"}}
+//
+//	trunc(x)          ARM64/WASM  AMD64
+//	----------------  ----------  --------
+//	NaN               0           Min{{title .zE}}
+//	< Min{{title .zE}}, -Inf  Min{{title .zE}}    Min{{title .zE}}
+//	> Max{{title .zE}}, +Inf  Max{{title .zE}}    Min{{title .zE}}
+//
+// {{else}}
+//
+//	trunc(x)           ARM64/WASM  AMD64
+//	-----------------  ----------  ---------
+//	NaN                0           Max{{title .zE}}
+//	< 0, -Inf          0           Max{{title .zE}}
+//	> Max{{title .zE}}, +Inf  Max{{title .zE}}   Max{{title .zE}}
+//
+// {{end}}
 //
 // {{if lt .zN .xN}}
 // The results are stored in the low {{lanes .x "x"}} elements of z.
@@ -94,18 +116,7 @@ func TruncToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE
 
 // SaturateToZ converts each element of x to {{.zE}}, saturating values
 // that are outside the range of {{.zE}}.
-//
-//	z[i] = sat(x[i])
-//
-// The results are stored in the low {{lanes .x "x"}} elements of z.
-// The remaining elements of z are zero.
-//
-//specgen:name SaturateTo{{.zE | title}}
-//specgen:require zB=xB zN<xN
-func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
-
-// SaturateIntToUint converts each element of x to {{.zE}}, saturating values
-// that are outside the range of {{.zE}}. Negative values become 0.
+// {{- if and (eq .xB "int") (eq .zB "uint")}} Negative values become 0.{{end}}
 //
 //	z[i] = sat(x[i])
 //
@@ -114,7 +125,25 @@ func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec
 //
 //specgen:name SaturateTo{{.zE | title}}
 //specgen:require zN<xN
-func SaturateIntToUint[xE Ints, W Width, zE Uints](x Vec[xE, W]) (z Vec[zE, W])
+func SaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x Vec[xE, W]) (z Vec[zE, W])
+
+// ConcatSaturateToZ converts each element of x and y to {{.zE}}, saturating
+// values that are outside the range of {{.zE}}, and returns the concatenated
+// result.
+// {{- if and (eq .xB "int") (eq .zB "uint")}} Negative values become 0.{{end}}
+//
+//	z = concat(sat(x[...]), sat(y[...]))
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}
+//specgen:require zN=xN/2
+func ConcatSaturateToZ[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
+
+// ConcatSaturateToZGrouped divides x, y, and z into groups of 128 bits and
+// performs [ConcatSaturateTo{{.zE | title}}] on each group.
+//
+//specgen:name ConcatSaturateTo{{.zE | title}}Grouped
+//specgen:require zN=xN/2
+func ConcatSaturateToZGrouped[xE Ints | Uints, W Width, zE Ints | Uints](x, y Vec[xE, W]) (z Vec[zE, W])
 
 // ExtendLoLToZ {{if eq .xB "int"}}sign{{else}}zero{{end}}-extends the low {{.zL}} elements of x to {{.zE}}.
 //
@@ -131,6 +160,7 @@ func ExtendLoLToZ[E Ints | Uints, zE Ints | Uints](x Vec[E, Width128]) (z Vec[zE
 //
 //specgen:name ExtendLo{{.zL}}To{{.zE | title}}
 //specgen:require zB=xB zL<xL zW>xW
+//specgen:experiment
 func ExtendLoLToZWiden[E Ints | Uints, zE Ints | Uints, zW FixedWidth](x Vec[E, Width128]) (z Vec[zE, zW])
 
 // ConvertLoLToZ converts the low-indexed {{.zL}} elements of x to {{.zE}}.

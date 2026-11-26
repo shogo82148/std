@@ -6,6 +6,9 @@ package archsimd
 
 // Float32s is a scalable SIMD vector of float32s.
 //
+// Values of type Float32s are comparable. a == b if a[i] == b[i] for all elements.
+// Like float32 scalars, NaN != NaN, and +0 == -0.
+//
 // CPU Feature: SVE
 type Float32s struct {
 	float32x8 v256
@@ -37,6 +40,21 @@ func LoadFloat32sPart(s []float32) (z Float32s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Float32s) StorePart(s []float32) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Float32s) Elem(i uint8) (z float32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Float32s) SetElem(i uint8, y float32) (z Float32s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -59,10 +77,14 @@ func (x Float32s) Masked(mask Mask32s) (z Float32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat32s(x float32) (z Float32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float32s) String() string
 
 // Float64s is a scalable SIMD vector of float64s.
+//
+// Values of type Float64s are comparable. a == b if a[i] == b[i] for all elements.
+// Like float64 scalars, NaN != NaN, and +0 == -0.
 //
 // CPU Feature: SVE
 type Float64s struct {
@@ -95,6 +117,21 @@ func LoadFloat64sPart(s []float64) (z Float64s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Float64s) StorePart(s []float64) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Float64s) Elem(i uint8) (z float64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Float64s) SetElem(i uint8, y float64) (z Float64s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -117,10 +154,13 @@ func (x Float64s) Masked(mask Mask64s) (z Float64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastFloat64s(x float64) (z Float64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Float64s) String() string
 
 // Int8s is a scalable SIMD vector of int8s.
+//
+// Values of type Int8s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Int8s struct {
@@ -153,6 +193,21 @@ func LoadInt8sPart(s []int8) (z Int8s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int8s) StorePart(s []int8) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int8s) Elem(i uint8) (z int8)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int8s) SetElem(i uint8, y int8) (z Int8s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -182,10 +237,13 @@ func BroadcastInt8s(x int8) (z Int8s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int8s) ToMask() (z Mask8s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int8s) String() string
 
 // Int16s is a scalable SIMD vector of int16s.
+//
+// Values of type Int16s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Int16s struct {
@@ -218,6 +276,21 @@ func LoadInt16sPart(s []int16) (z Int16s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int16s) StorePart(s []int16) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int16s) Elem(i uint8) (z int16)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int16s) SetElem(i uint8, y int16) (z Int16s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -247,10 +320,13 @@ func BroadcastInt16s(x int16) (z Int16s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int16s) ToMask() (z Mask16s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int16s) String() string
 
 // Int32s is a scalable SIMD vector of int32s.
+//
+// Values of type Int32s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Int32s struct {
@@ -283,6 +359,21 @@ func LoadInt32sPart(s []int32) (z Int32s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int32s) StorePart(s []int32) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int32s) Elem(i uint8) (z int32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int32s) SetElem(i uint8, y int32) (z Int32s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -312,10 +403,13 @@ func BroadcastInt32s(x int32) (z Int32s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int32s) ToMask() (z Mask32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int32s) String() string
 
 // Int64s is a scalable SIMD vector of int64s.
+//
+// Values of type Int64s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Int64s struct {
@@ -348,6 +442,21 @@ func LoadInt64sPart(s []int64) (z Int64s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Int64s) StorePart(s []int64) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Int64s) Elem(i uint8) (z int64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Int64s) SetElem(i uint8, y int64) (z Int64s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -377,10 +486,13 @@ func BroadcastInt64s(x int64) (z Int64s)
 // Asm: ZCMPNE, CPU Feature: SVE
 func (x Int64s) ToMask() (z Mask64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Int64s) String() string
 
 // Uint8s is a scalable SIMD vector of uint8s.
+//
+// Values of type Uint8s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Uint8s struct {
@@ -413,6 +525,21 @@ func LoadUint8sPart(s []uint8) (z Uint8s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint8s) StorePart(s []uint8) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint8s) Elem(i uint8) (z uint8)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint8s) SetElem(i uint8, y uint8) (z Uint8s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -435,10 +562,13 @@ func (x Uint8s) Masked(mask Mask8s) (z Uint8s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint8s(x uint8) (z Uint8s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint8s) String() string
 
 // Uint16s is a scalable SIMD vector of uint16s.
+//
+// Values of type Uint16s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Uint16s struct {
@@ -471,6 +601,21 @@ func LoadUint16sPart(s []uint16) (z Uint16s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint16s) StorePart(s []uint16) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint16s) Elem(i uint8) (z uint16)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint16s) SetElem(i uint8, y uint16) (z Uint16s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -493,10 +638,13 @@ func (x Uint16s) Masked(mask Mask16s) (z Uint16s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint16s(x uint16) (z Uint16s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint16s) String() string
 
 // Uint32s is a scalable SIMD vector of uint32s.
+//
+// Values of type Uint32s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Uint32s struct {
@@ -529,6 +677,21 @@ func LoadUint32sPart(s []uint32) (z Uint32s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint32s) StorePart(s []uint32) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint32s) Elem(i uint8) (z uint32)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint32s) SetElem(i uint8, y uint32) (z Uint32s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -551,10 +714,13 @@ func (x Uint32s) Masked(mask Mask32s) (z Uint32s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint32s(x uint32) (z Uint32s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint32s) String() string
 
 // Uint64s is a scalable SIMD vector of uint64s.
+//
+// Values of type Uint64s are comparable. a == b if a[i] == b[i] for all elements.
 //
 // CPU Feature: SVE
 type Uint64s struct {
@@ -587,6 +753,21 @@ func LoadUint64sPart(s []uint64) (z Uint64s, n int)
 // Asm: Emulated (predicate construction + ST1B).
 func (x Uint64s) StorePart(s []uint64) (n int)
 
+// Elem returns the i'th element x. If i >= x.Len(), it panics.
+//
+//	z = x[i]
+//
+// Asm: Emulated (a bounds check that can panic, then ZLASTB), CPU Feature: SVE
+func (x Uint64s) Elem(i uint8) (z uint64)
+
+// SetElem returns x with its i'th element set to y. If i >= x.Len(), it panics.
+//
+//	z = x
+//	z[i] = y
+//
+// Asm: Emulated (a bounds check that can panic, then PNEXT and ZCPY), CPU Feature: SVE
+func (x Uint64s) SetElem(i uint8, y uint64) (z Uint64s)
+
 // IfElse returns a vector with elements from x where mask is true, and y where
 // mask is false.
 //
@@ -609,15 +790,17 @@ func (x Uint64s) Masked(mask Mask64s) (z Uint64s)
 // Asm: ZDUP, CPU Feature: SVE
 func BroadcastUint64s(x uint64) (z Uint64s)
 
-// String returns x in the form "{x[0],x[1],...}".
+// String returns x in the form "{x[0],x[1],...}". Each element is formatted
+// like the %v format specifier.
 func (x Uint64s) String() string
 
-// Mask8s is a scalable mask for a SIMD vector of 8-bit elements.
+// Mask8s is a mask for a scalable SIMD vector of 8-bit elements.
 //
-// An SVE predicate holds one bit per byte of the vector it governs, so a
+// Values of type Mask8s are comparable.
+//
+// Note: An SVE predicate holds one bit per byte of the vector it governs, so a
 // Mask8s carries one bit for each byte of the runtime vector length, and
 // lane i is governed by bit i.
-//
 // In memory a Mask8s is a uint64 holding those bits, bit 0 first; the bits
 // beyond the runtime vector length are zero. So the bits of m can be read with
 // *(*uint64)(unsafe.Pointer(&m)).
@@ -628,30 +811,60 @@ type Mask8s struct {
 	vals   uint64
 }
 
-// Mask8sAllTrue returns a mask with every lane true.
+// Mask8sAllTrue returns a mask where every element is true.
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask8sAllTrue() Mask8s
+func Mask8sAllTrue() (z Mask8s)
 
-// Mask8sFromCount returns a mask whose first count lanes are true and the
-// rest false. A count of 0 or less gives no true lanes, and a count of the
-// vector length or more gives all true lanes.
+// Mask8sFromCount returns a mask whose first count elements are true and the rest
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
+//
+//	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask8sFromCount(count int) Mask8s
+func Mask8sFromCount(count int) (z Mask8s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask8s) First() Mask8s
+func (x Mask8s) First() (z Mask8s)
 
-// Next returns a mask with only the lane after the last active lane of x
-// active. If x has no active lanes, lane 0 is active; if its last active lane
-// is the last lane, no lanes are active.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask8s) Next() Mask8s
+func (x Mask8s) Next(cursor Mask8s) (z Mask8s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -668,22 +881,64 @@ func (x Mask8s) None() bool
 // Asm: PTEST, CPU Feature: SVE
 func (x Mask8s) Any() bool
 
+// And returns the bitwise AND of x and y.
+//
+//	z[i] = x[i] & y[i]
+//
+// Asm: AND (predicate), CPU Feature: SVE
+func (x Mask8s) And(y Mask8s) (z Mask8s)
+
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+//
+// Asm: BIC (predicate), CPU Feature: SVE
+func (x Mask8s) AndNot(y Mask8s) (z Mask8s)
+
+// Or returns the bitwise OR of x and y.
+//
+//	z[i] = x[i] | y[i]
+//
+// Asm: ORR (predicate), CPU Feature: SVE
+func (x Mask8s) Or(y Mask8s) (z Mask8s)
+
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+//
+// Asm: EOR (predicate), CPU Feature: SVE
+func (x Mask8s) Xor(y Mask8s) (z Mask8s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: NOT (predicate), CPU Feature: SVE
+func (x Mask8s) Not() (z Mask8s)
+
 // ToInt8s converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true", and 0 otherwise.
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask8s) ToInt8s() (z Int8s)
 
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask8s) TrailingZeros() int
+
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
 func (x Mask8s) String() string
 
-// Mask16s is a scalable mask for a SIMD vector of 16-bit elements.
+// Mask16s is a mask for a scalable SIMD vector of 16-bit elements.
 //
-// An SVE predicate holds one bit per byte of the vector it governs, so a
+// Values of type Mask16s are comparable.
+//
+// Note: An SVE predicate holds one bit per byte of the vector it governs, so a
 // Mask16s carries one bit for each byte of the runtime vector length, and
 // lane i is governed by bit 2*i. The bits in between are ignored.
-//
 // In memory a Mask16s is a uint64 holding those bits, bit 0 first; the bits
 // beyond the runtime vector length are zero. So the bits of m can be read with
 // *(*uint64)(unsafe.Pointer(&m)).
@@ -694,30 +949,60 @@ type Mask16s struct {
 	vals    uint64
 }
 
-// Mask16sAllTrue returns a mask with every lane true.
+// Mask16sAllTrue returns a mask where every element is true.
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask16sAllTrue() Mask16s
+func Mask16sAllTrue() (z Mask16s)
 
-// Mask16sFromCount returns a mask whose first count lanes are true and the
-// rest false. A count of 0 or less gives no true lanes, and a count of the
-// vector length or more gives all true lanes.
+// Mask16sFromCount returns a mask whose first count elements are true and the rest
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
+//
+//	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask16sFromCount(count int) Mask16s
+func Mask16sFromCount(count int) (z Mask16s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask16s) First() Mask16s
+func (x Mask16s) First() (z Mask16s)
 
-// Next returns a mask with only the lane after the last active lane of x
-// active. If x has no active lanes, lane 0 is active; if its last active lane
-// is the last lane, no lanes are active.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask16s) Next() Mask16s
+func (x Mask16s) Next(cursor Mask16s) (z Mask16s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -734,22 +1019,64 @@ func (x Mask16s) None() bool
 // Asm: PTEST, CPU Feature: SVE
 func (x Mask16s) Any() bool
 
+// And returns the bitwise AND of x and y.
+//
+//	z[i] = x[i] & y[i]
+//
+// Asm: AND (predicate), CPU Feature: SVE
+func (x Mask16s) And(y Mask16s) (z Mask16s)
+
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+//
+// Asm: BIC (predicate), CPU Feature: SVE
+func (x Mask16s) AndNot(y Mask16s) (z Mask16s)
+
+// Or returns the bitwise OR of x and y.
+//
+//	z[i] = x[i] | y[i]
+//
+// Asm: ORR (predicate), CPU Feature: SVE
+func (x Mask16s) Or(y Mask16s) (z Mask16s)
+
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+//
+// Asm: EOR (predicate), CPU Feature: SVE
+func (x Mask16s) Xor(y Mask16s) (z Mask16s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: NOT (predicate), CPU Feature: SVE
+func (x Mask16s) Not() (z Mask16s)
+
 // ToInt16s converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true", and 0 otherwise.
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask16s) ToInt16s() (z Int16s)
 
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask16s) TrailingZeros() int
+
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
 func (x Mask16s) String() string
 
-// Mask32s is a scalable mask for a SIMD vector of 32-bit elements.
+// Mask32s is a mask for a scalable SIMD vector of 32-bit elements.
 //
-// An SVE predicate holds one bit per byte of the vector it governs, so a
+// Values of type Mask32s are comparable.
+//
+// Note: An SVE predicate holds one bit per byte of the vector it governs, so a
 // Mask32s carries one bit for each byte of the runtime vector length, and
 // lane i is governed by bit 4*i. The bits in between are ignored.
-//
 // In memory a Mask32s is a uint64 holding those bits, bit 0 first; the bits
 // beyond the runtime vector length are zero. So the bits of m can be read with
 // *(*uint64)(unsafe.Pointer(&m)).
@@ -760,30 +1087,60 @@ type Mask32s struct {
 	vals    uint64
 }
 
-// Mask32sAllTrue returns a mask with every lane true.
+// Mask32sAllTrue returns a mask where every element is true.
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask32sAllTrue() Mask32s
+func Mask32sAllTrue() (z Mask32s)
 
-// Mask32sFromCount returns a mask whose first count lanes are true and the
-// rest false. A count of 0 or less gives no true lanes, and a count of the
-// vector length or more gives all true lanes.
+// Mask32sFromCount returns a mask whose first count elements are true and the rest
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
+//
+//	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask32sFromCount(count int) Mask32s
+func Mask32sFromCount(count int) (z Mask32s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask32s) First() Mask32s
+func (x Mask32s) First() (z Mask32s)
 
-// Next returns a mask with only the lane after the last active lane of x
-// active. If x has no active lanes, lane 0 is active; if its last active lane
-// is the last lane, no lanes are active.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask32s) Next() Mask32s
+func (x Mask32s) Next(cursor Mask32s) (z Mask32s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -800,22 +1157,64 @@ func (x Mask32s) None() bool
 // Asm: PTEST, CPU Feature: SVE
 func (x Mask32s) Any() bool
 
+// And returns the bitwise AND of x and y.
+//
+//	z[i] = x[i] & y[i]
+//
+// Asm: AND (predicate), CPU Feature: SVE
+func (x Mask32s) And(y Mask32s) (z Mask32s)
+
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+//
+// Asm: BIC (predicate), CPU Feature: SVE
+func (x Mask32s) AndNot(y Mask32s) (z Mask32s)
+
+// Or returns the bitwise OR of x and y.
+//
+//	z[i] = x[i] | y[i]
+//
+// Asm: ORR (predicate), CPU Feature: SVE
+func (x Mask32s) Or(y Mask32s) (z Mask32s)
+
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+//
+// Asm: EOR (predicate), CPU Feature: SVE
+func (x Mask32s) Xor(y Mask32s) (z Mask32s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: NOT (predicate), CPU Feature: SVE
+func (x Mask32s) Not() (z Mask32s)
+
 // ToInt32s converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true", and 0 otherwise.
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask32s) ToInt32s() (z Int32s)
 
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask32s) TrailingZeros() int
+
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.
 func (x Mask32s) String() string
 
-// Mask64s is a scalable mask for a SIMD vector of 64-bit elements.
+// Mask64s is a mask for a scalable SIMD vector of 64-bit elements.
 //
-// An SVE predicate holds one bit per byte of the vector it governs, so a
+// Values of type Mask64s are comparable.
+//
+// Note: An SVE predicate holds one bit per byte of the vector it governs, so a
 // Mask64s carries one bit for each byte of the runtime vector length, and
 // lane i is governed by bit 8*i. The bits in between are ignored.
-//
 // In memory a Mask64s is a uint64 holding those bits, bit 0 first; the bits
 // beyond the runtime vector length are zero. So the bits of m can be read with
 // *(*uint64)(unsafe.Pointer(&m)).
@@ -826,30 +1225,60 @@ type Mask64s struct {
 	vals    uint64
 }
 
-// Mask64sAllTrue returns a mask with every lane true.
+// Mask64sAllTrue returns a mask where every element is true.
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask64sAllTrue() Mask64s
+func Mask64sAllTrue() (z Mask64s)
 
-// Mask64sFromCount returns a mask whose first count lanes are true and the
-// rest false. A count of 0 or less gives no true lanes, and a count of the
-// vector length or more gives all true lanes.
+// Mask64sFromCount returns a mask whose first count elements are true and the rest
+// false. A count <= 0 gives no true elements, and a count >= z.Len()
+// gives all true elements.
+//
+//	z[i] = i < count
 //
 // Asm: PWHILELT, CPU Feature: SVE
-func Mask64sFromCount(count int) Mask64s
+func Mask64sFromCount(count int) (z Mask64s)
 
-// First returns a mask with only the first active lane of x active, or no
-// lanes active if x has none.
+// First returns a one-hot mask with only the lowest true element of x, or an
+// all-false mask if x is all false.
+//
+//	for i, elt := range x {
+//		if elt {
+//			z[i] = true
+//			break
+//		}
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask64s) First() Mask64s
+func (x Mask64s) First() (z Mask64s)
 
-// Next returns a mask with only the lane after the last active lane of x
-// active. If x has no active lanes, lane 0 is active; if its last active lane
-// is the last lane, no lanes are active.
+// Next returns a one-hot mask with the lowest true element of x that is above
+// the highest true element of cursor, or an all-false mask if there is no such
+// element. If cursor has no true elements, it returns a one-hot mask with the
+// first true element of x.
+//
+//	start := 0
+//	for i, c := range cursor {
+//		if c {
+//			start = i + 1
+//		}
+//	}
+//	for i := start; i < x.Len(); i++ {
+//		if x[i] {
+//			z[i] = true
+//			break
+//		}
+//	}
+//
+// Together with [First], this steps through the true elements of a mask one at
+// a time:
+//
+//	for cursor := x.First(); cursor.Any(); cursor = x.Next(cursor) {
+//		...
+//	}
 //
 // Asm: PNEXT, CPU Feature: SVE
-func (x Mask64s) Next() Mask64s
+func (x Mask64s) Next(cursor Mask64s) (z Mask64s)
 
 // All returns true when all positions in mask x are true.
 //
@@ -866,11 +1295,52 @@ func (x Mask64s) None() bool
 // Asm: PTEST, CPU Feature: SVE
 func (x Mask64s) Any() bool
 
+// And returns the bitwise AND of x and y.
+//
+//	z[i] = x[i] & y[i]
+//
+// Asm: AND (predicate), CPU Feature: SVE
+func (x Mask64s) And(y Mask64s) (z Mask64s)
+
+// AndNot returns the bitwise AND NOT of x and y.
+//
+//	z[i] = x[i] &^ y[i]
+//
+// Asm: BIC (predicate), CPU Feature: SVE
+func (x Mask64s) AndNot(y Mask64s) (z Mask64s)
+
+// Or returns the bitwise OR of x and y.
+//
+//	z[i] = x[i] | y[i]
+//
+// Asm: ORR (predicate), CPU Feature: SVE
+func (x Mask64s) Or(y Mask64s) (z Mask64s)
+
+// Xor returns the bitwise XOR of x and y.
+//
+//	z[i] = x[i] ^ y[i]
+//
+// Asm: EOR (predicate), CPU Feature: SVE
+func (x Mask64s) Xor(y Mask64s) (z Mask64s)
+
+// Not returns the bitwise negation of x.
+//
+//	z[i] = ^x[i]
+//
+// Asm: NOT (predicate), CPU Feature: SVE
+func (x Mask64s) Not() (z Mask64s)
+
 // ToInt64s converts the mask to a vector, where element i is set to ^0 (all bits
 // set, e.g., -1) if mask element i is "true", and 0 otherwise.
 //
 // Asm: ZCPY, CPU Feature: SVE
 func (x Mask64s) ToInt64s() (z Int64s)
+
+// TrailingZeros returns the number of low-order false (zero) elements in mask
+// x. If the mask is entirely false, it returns x.Len().
+//
+// Asm: Emulated (BRKB + CNTP), CPU Feature: SVE
+func (x Mask64s) TrailingZeros() int
 
 // String returns x in the form "{x[0],x[1],...}", where 0 means false and 1
 // means true.

@@ -83,3 +83,165 @@ func (x Float32s) HiToLo() (z Float32s)
 //
 // Emulated, CPU Feature: SVE
 func (x Float64s) HiToLo() (z Float64s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int8s) Less(y Int8s) (z Mask8s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int16s) Less(y Int16s) (z Mask16s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int32s) Less(y Int32s) (z Mask32s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int64s) Less(y Int64s) (z Mask64s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint8s) Less(y Uint8s) (z Mask8s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint16s) Less(y Uint16s) (z Mask16s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint32s) Less(y Uint32s) (z Mask32s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint64s) Less(y Uint64s) (z Mask64s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Like Go's < operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
+// Emulated, CPU Feature: SVE
+func (x Float32s) Less(y Float32s) (z Mask32s)
+
+// Less returns a mask indicating which elements of x are less than y.
+//
+//	z[i] = x[i] < y[i]
+//
+// Like Go's < operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
+// Emulated, CPU Feature: SVE
+func (x Float64s) Less(y Float64s) (z Mask64s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int8s) LessEqual(y Int8s) (z Mask8s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int16s) LessEqual(y Int16s) (z Mask16s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int32s) LessEqual(y Int32s) (z Mask32s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Int64s) LessEqual(y Int64s) (z Mask64s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint8s) LessEqual(y Uint8s) (z Mask8s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint16s) LessEqual(y Uint16s) (z Mask16s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint32s) LessEqual(y Uint32s) (z Mask32s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Emulated, CPU Feature: SVE
+func (x Uint64s) LessEqual(y Uint64s) (z Mask64s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Like Go's <= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
+// Emulated, CPU Feature: SVE
+func (x Float32s) LessEqual(y Float32s) (z Mask32s)
+
+// LessEqual returns a mask indicating which elements of x are less than or
+// equal to y.
+//
+//	z[i] = x[i] <= y[i]
+//
+// Like Go's <= operator on floating-point values, this follows IEEE 754: the
+// result is false if either element is NaN, and +0 equals -0.
+//
+// Emulated, CPU Feature: SVE
+func (x Float64s) LessEqual(y Float64s) (z Mask64s)

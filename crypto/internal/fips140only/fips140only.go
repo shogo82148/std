@@ -4,12 +4,6 @@
 
 package fips140only
 
-import (
-	"github.com/shogo82148/std/hash"
-)
-
 // Enforced reports whether FIPS 140-only mode is enabled and enforced, in which non-approved
 // cryptography returns an error or panics.
 func Enforced() bool
-
-func ApprovedHash(h hash.Hash) bool

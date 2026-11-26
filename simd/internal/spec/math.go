@@ -41,6 +41,15 @@ func AddSaturated[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //	z[i] = sat(x[i] - y[i])
 func SubSaturated[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
+// AddOddSubEven adds the odd-indexed elements of x and y and subtracts the
+// even-indexed elements of y from those of x.
+//
+//	z[2*i+1] = x[2*i+1] + y[2*i+1] // Add odd
+//	z[2*i] = x[2*i] - y[2*i]       // Subtract even
+//
+//specgen:experiment
+func AddOddSubEven[E Nums, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
 // Average returns the elementwise average of x and y, rounded toward +∞.
 //
 //	z[i] = (x[i] + y[i] + 1) / 2
@@ -166,7 +175,7 @@ func MinFloats[E Floats, W Width](x, y Vec[E, W]) (z Vec[Variation[E], W])
 //specgen:commutative
 func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
-// MulWidenLo multiplies corresponding elements in the lower half of x and y,
+// MulWiden multiplies corresponding elements in the lower half of x and y,
 // returning a vector of half as many elements, each with twice the input
 // element size.
 //
@@ -177,21 +186,32 @@ func Mul[E Elt, W Width](x, y Vec[E, W]) (z Vec[E, W])
 //
 //specgen:commutative
 //specgen:require z={xB}{xN*2}x{xL/2}
-func MulWidenLo[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+func MulWiden[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
 
-// MulWidenHi multiplies corresponding elements in the upper half of x and y,
+// MulWidenEven multiplies corresponding even-indexed elements of x and y,
 // returning a vector of half as many elements, each with twice the input
 // element size.
 //
-//	z[i] = {{.zE}}(x[{{lanes .z "z"}}+i]) * {{.zE}}(y[{{lanes .z "z"}}+i])
+//	z[i] = {{.zE}}(x[2*i]) * {{.zE}}(y[2*i])
 //
 // The doubled element width is sufficient to hold every product without
 // overflow.
 //
-//specgen:experiment
 //specgen:commutative
 //specgen:require z={xB}{xN*2}x{xL/2}
-func MulWidenHi[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+//specgen:experiment
+func MulWidenEven[E Ints | Uints, W Width, zE Ints | Uints](x, y Vec[E, W]) (z Vec[zE, W])
+
+// MulHigh multiplies corresponding elements of x and y and returns the high
+// half of each double-width product.
+//
+//	z[i] = (x[i] * y[i]) >> {{.xN}}
+//
+// The product is computed exactly, so no bits are lost before the shift.
+//
+//specgen:commutative
+//specgen:experiment
+func MulHigh[E Ints | Uints, W Width](x, y Vec[E, W]) (z Vec[E, W])
 
 // MulAddInts returns x * y + z elementwise.
 //
@@ -211,6 +231,41 @@ func MulAddInts[E Ints | Uints, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
 //specgen:name MulAdd
 func MulAddFloats[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[Variation[E], W])
 
+// MulAddEvenSubOdd returns x * y + z for the even-indexed elements and
+// x * y - z for the odd-indexed elements.
+//
+//	w[2*i] = x[2*i] * y[2*i] + z[2*i]         // Add even
+//	w[2*i+1] = x[2*i+1] * y[2*i+1] - z[2*i+1] // Subtract odd
+//
+// This performs a fused multiply-add, computing each result with a single
+// rounding rather than two and no intermediate overflow.
+//
+//specgen:experiment
+func MulAddEvenSubOdd[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+
+// MulAddOddSubEven returns x * y + z for the odd-indexed elements and
+// x * y - z for the even-indexed elements.
+//
+//	w[2*i+1] = x[2*i+1] * y[2*i+1] + z[2*i+1] // Add odd
+//	w[2*i] = x[2*i] * y[2*i] - z[2*i]         // Subtract even
+//
+// This performs a fused multiply-add, computing each result with a single
+// rounding rather than two and no intermediate overflow.
+//
+//specgen:experiment
+func MulAddOddSubEven[E Floats, W Width](x, y, z Vec[E, W]) (w Vec[E, W])
+
+// MulSign returns x multiplied by the sign of y (-1, 0 or 1), elementwise.
+//
+//	z[i] = x[i] * sign(y[i])
+//
+// That is, z[i] is -x[i] where y[i] is negative, 0 where y[i] is 0, and x[i]
+// where y[i] is positive. The negation wraps, so the most negative value stays
+// as it is.
+//
+//specgen:experiment
+func MulSign[E Ints, W Width](x, y Vec[E, W]) (z Vec[E, W])
+
 // Neg returns the elementwise negation of x.
 //
 //	z[i] = -x[i]
@@ -224,3 +279,17 @@ func Neg[E Ints | Floats, W Width](x Vec[E, W]) (z Vec[E, W])
 // Sqrt(x) is NaN if x < 0 or x is NaN. The sign and payload of a NaN result
 // are unspecified.
 func Sqrt[E Floats, W Width](x Vec[E, W]) (z Vec[E, W])
+
+// SumOf8AbsDiff computes the absolute difference of corresponding elements of
+// x and y, and sums each group of 8 adjacent differences, returning a vector
+// of one eighth as many elements, each with eight times the input element
+// size.
+//
+//	w[i] = abs(x[i] - y[i])
+//	z[j] = w[8*j] + w[8*j+1] + ... + w[8*j+7]
+//
+// Neither the differences nor the sums can overflow.
+//
+//specgen:commutative
+//specgen:require z=Uint64x{xL/8}
+func SumOf8AbsDiff[E int8 | uint8, W Width, zE Uints](x, y Vec[E, W]) (z Vec[zE, W])

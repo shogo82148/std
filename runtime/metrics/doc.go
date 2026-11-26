@@ -341,6 +341,10 @@ NaN、無限大。
 		デフォルト以外の GODEBUG=tarinsecurepath=... 設定により、
 		archive/tar パッケージで実行されたデフォルト以外の動作の回数。
 
+	/godebug/non-default-behavior/tlsechgrease:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=tlsechgrease=... setting.
+
 	/godebug/non-default-behavior/tlsmaxrsasize:events
 		デフォルト以外の GODEBUG=tlsmaxrsasize=... 設定により、
 		crypto/tls パッケージで実行されたデフォルト以外の動作の回数。
@@ -348,6 +352,14 @@ NaN、無限大。
 	/godebug/non-default-behavior/tlssha1:events
 		デフォルト以外の GODEBUG=tlssha1=... 設定により、
 		crypto/tls パッケージで実行されたデフォルト以外の動作の回数。
+
+	/godebug/non-default-behavior/tlssigalgscert:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=tlssigalgscert=... setting.
+
+	/godebug/non-default-behavior/tlsupki:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=tlsupki=... setting.
 
 	/godebug/non-default-behavior/updatemaxprocs:events
 		デフォルト以外の GODEBUG=updatemaxprocs=... 設定により、

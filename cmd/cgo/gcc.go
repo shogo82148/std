@@ -11,7 +11,7 @@ package main
 //  1. discards all #cgo CFLAGS, LDFLAGS, nocallback and noescape directives,
 //     so they don't make their way into _cgo_export.h.
 //  2. parse the nocallback and noescape directives.
-func (f *File) ProcessCgoDirectives()
+func (f *File) ProcessCgoDirectives(p *Package)
 
 // Translateは、インポートされたパッケージCへの参照を削除し、
 // 対応するGoの型、関数、変数への参照に置き換えて、f.AST（元のGoの入力）を書き換えます。

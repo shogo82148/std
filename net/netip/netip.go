@@ -397,10 +397,14 @@ func (p *Prefix) UnmarshalText(text []byte) error
 // AppendBinaryは、[encoding.BinaryAppender] インターフェースを実装します。
 // [Addr.AppendBinary] にプレフィックスビットを表す追加の1バイトを
 // 付加したものを返します。
+//
+// 無効なビット値は 0xff としてエンコードされます。
 func (p Prefix) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
 // これは、[Addr.MarshalBinary] に、プレフィックスビットを表す追加のバイトを追加したものを返します。
+//
+// 無効なビット値は 0xff としてエンコードされます。
 func (p Prefix) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。

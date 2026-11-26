@@ -35,6 +35,12 @@ var VetHandleStdout = copyToStdout
 // -{vet,fix}tool) were set explicitly on the command line.
 var VetExplicit bool
 
+// ReportDeferredVetError reports a deferred vet error recorded on a, if any.
+// During 'go test', vet actions that fail before producing vet.out defer
+// error reporting so syntax and type errors are not printed twice when the
+// compiler also fails. Callers invoke this when the build itself succeeded.
+func (b *Builder) ReportDeferredVetError(a *Action)
+
 // PkgconfigCmd returns a pkg-config binary name
 // defaultPkgConfig is defined in zdefaultcc.go, written by cmd/dist.
 func (b *Builder) PkgconfigCmd() string

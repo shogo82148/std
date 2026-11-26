@@ -54,13 +54,22 @@ func (g *GCMWithCounterNonce) NonceSize() int
 
 func (g *GCMWithCounterNonce) Overhead() int
 
+func (g *GCMWithCounterNonce) TagSize() int
+
 // Seal implements the [cipher.AEAD] interface, checking that the nonce prefix
 // is stable and that the counter is strictly increasing.
 //
 // It is not safe for concurrent use.
 func (g *GCMWithCounterNonce) Seal(dst, nonce, plaintext, data []byte) []byte
 
+// SealRaw is like [GCM.SealRaw], but it checks the nonce like Seal.
+//
+// It is not safe for concurrent use.
+func (g *GCMWithCounterNonce) SealRaw(out, tag, nonce, plaintext, additionalData []byte) error
+
 func (g *GCMWithCounterNonce) Open(dst, nonce, ciphertext, data []byte) ([]byte, error)
+
+func (g *GCMWithCounterNonce) OpenRaw(out, nonce, ciphertext, tag, additionalData []byte) error
 
 // NewGCMWithXORCounterNonce returns a new AEAD that works like GCM, but
 // enforces the construction of deterministic nonces. The nonce must be 96 bits,
@@ -122,10 +131,19 @@ func (g *GCMWithXORCounterNonce) NonceSize() int
 
 func (g *GCMWithXORCounterNonce) Overhead() int
 
+func (g *GCMWithXORCounterNonce) TagSize() int
+
 // Seal implements the [cipher.AEAD] interface, checking that the nonce prefix
 // is stable and that the counter is strictly increasing.
 //
 // It is not safe for concurrent use.
 func (g *GCMWithXORCounterNonce) Seal(dst, nonce, plaintext, data []byte) []byte
 
+// SealRaw is like [GCM.SealRaw], but it checks the nonce like Seal.
+//
+// It is not safe for concurrent use.
+func (g *GCMWithXORCounterNonce) SealRaw(out, tag, nonce, plaintext, additionalData []byte) error
+
 func (g *GCMWithXORCounterNonce) Open(dst, nonce, ciphertext, data []byte) ([]byte, error)
+
+func (g *GCMWithXORCounterNonce) OpenRaw(out, nonce, ciphertext, tag, additionalData []byte) error

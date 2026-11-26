@@ -3,3 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package unix
+
+const (
+	O_RESOLVE_BENEATH = 0x00800000
+)

@@ -20,5 +20,6 @@ type LoadOptions struct {
 }
 
 // Load loads a Go SIMD spec from the package in directory dir. This is the main
-// entrypoint to this package.
-func Load(dir string, opts *LoadOptions) ([]*Func, error)
+// entrypoint to this package. It returns the API functions and API types
+// described by the spec.
+func Load(dir string, opts *LoadOptions) ([]*Func, []*TypeDecl, error)
