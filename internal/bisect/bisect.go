@@ -216,9 +216,9 @@ func (m *Matcher) ShouldPrint(id uint64) bool
 // If the change should be printed, FileLine prints a one-line report to w.
 func (m *Matcher) FileLine(w Writer, file string, line int) bool
 
-// MatchStack assigns the current call stack a change ID.
-// If the stack should be printed, MatchStack prints it.
-// Then MatchStack reports whether a change at the current call stack should be enabled.
+// Stack assigns the current call stack a change ID.
+// If the stack should be printed, Stack prints it.
+// Then Stack reports whether a change at the current call stack should be enabled.
 func (m *Matcher) Stack(w Writer) bool
 
 // Writer is the same interface as io.Writer.
