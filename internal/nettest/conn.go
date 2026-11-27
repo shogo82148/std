@@ -70,7 +70,7 @@ func (c *Conn) LocalAddr() net.Addr
 // To set the remote address, set the local address of Conn's peer.
 func (c *Conn) SetLocalAddr(addr net.Addr)
 
-// LocalAddr returns the (fake) remote network address.
+// RemoteAddr returns the (fake) remote network address.
 func (c *Conn) RemoteAddr() net.Addr
 
 // SetDeadline sets the read and write deadlines for the connection.
