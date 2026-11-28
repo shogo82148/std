@@ -47,8 +47,6 @@ type File struct {
 	Preamble    string
 	Ref         []*Ref
 	Calls       []*Call
-	Lits        []*Lit
-	LitMap      map[*ast.CompositeLit]*Lit
 	ExpFunc     []*ExpFunc
 	Name        map[string]*Name
 	NamePos     map[*Name]token.Pos
@@ -66,12 +64,6 @@ type Call struct {
 	Call     *ast.CallExpr
 	Deferred bool
 	Done     bool
-}
-
-// A Lit refers to a composite literal of a C.xxx type in the AST.
-type Lit struct {
-	Lit  *ast.CompositeLit
-	Done bool
 }
 
 // A Ref refers to an expression of the form C.xxx in the AST.
